@@ -8,24 +8,24 @@
 <meta name="description" content="健康で、選択肢の多い人生が当たり前の社会をつくる。CHART GROUP 採用サイト">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Shippori+Mincho:wght@600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Shippori+Mincho:wght@600;700&family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
 :root{
   --pink:#F76FA1; --pink2:#FFA6C4; --coral:#FF8E6E;
   --teal:#2FB9C9; --teal2:#7ADCE6;
   --lav:#8E7CE0; --lav2:#C9BFF4;
-  --sun:#FFC94D; --leaf:#5ECFA0; --sky:#63B3ED; --plum:#B08BD9;
+  --sun:#FFD37A; --leaf:#8CD9C8; --sky:#7ADCE6; --plum:#C9BFF4;
   --bgA:#FFF7FA; --bgB:#FFFFFF; --mint:#F0FAFB; --lavbg:#F7F5FE;
   --deep1:#3B2E63; --deep2:#17515E;
-  --txd:#3B3550; --tx:#FFF9FC;
-  --mutd:#6E6884; --mut:#D9CFE6;
+  --txd:#2F2C3D; --tx:#FFF9FC;
+  --mutd:#5C5772; --teal-d:#1B8FA0; --mut:#D9CFE6;
   --lined:rgba(90,80,120,.16); --line:rgba(255,255,255,.18);
-  --en:'Poppins',system-ui,sans-serif;
-  --jp:'Zen Kaku Gothic New','Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif;
+  --en:'Quicksand',system-ui,sans-serif;
+  --jp:'Zen Maru Gothic','Hiragino Maru Gothic ProN','Hiragino Kaku Gothic ProN',sans-serif;
   --min:'Shippori Mincho','Hiragino Mincho ProN',serif;
   --grad-cta:linear-gradient(120deg,var(--pink) 0%,var(--coral) 100%);
   --grad-tp:linear-gradient(120deg,var(--teal) 0%,var(--pink) 100%);
-  --grad-tri:linear-gradient(120deg,var(--teal) 0%,var(--lav) 50%,var(--pink) 100%);
+  --grad-tri:linear-gradient(120deg,var(--teal) 0%,var(--pink) 100%);
   --r:18px;
 }
 *{margin:0;padding:0;box-sizing:border-box}
@@ -36,10 +36,10 @@ a{color:inherit;text-decoration:none}
 ::selection{background:var(--pink);color:#fff}
 
 /* ---------- intro / progress ---------- */
-.intro{position:fixed;inset:0;background:linear-gradient(135deg,var(--teal2) 0%,var(--lav2) 48%,var(--pink2) 100%);z-index:90;
+.intro{position:fixed;inset:0;background:linear-gradient(135deg,var(--teal2) 0%,var(--pink2) 100%);z-index:90;
 display:flex;align-items:center;justify-content:center;pointer-events:none;animation:introOut .75s cubic-bezier(.7,0,.2,1) 1.5s forwards}
 @keyframes introOut{to{transform:translateY(-101%);border-radius:0 0 50% 50%}}
-.intro-w{font-family:var(--en);font-weight:800;font-size:clamp(22px,5vw,34px);letter-spacing:.12em;color:#fff;opacity:0;animation:introIn .55s ease .15s forwards;text-shadow:0 2px 18px rgba(140,100,200,.35)}
+.intro-w{font-family:var(--en);font-weight:700;font-size:clamp(22px,5vw,34px);letter-spacing:.12em;color:#fff;opacity:0;animation:introIn .55s ease .15s forwards;text-shadow:0 2px 18px rgba(140,100,200,.35)}
 .intro-w em{font-style:normal;color:var(--txd)}
 @keyframes introIn{to{opacity:1}}
 .pbar{position:fixed;top:0;left:0;width:100%;height:3px;background:var(--grad-tri);transform:scaleX(0);transform-origin:left;z-index:70;pointer-events:none}
@@ -48,7 +48,7 @@ display:flex;align-items:center;justify-content:center;pointer-events:none;anima
 .hd{position:fixed;top:0;left:0;right:0;z-index:60;display:flex;align-items:center;justify-content:space-between;
 padding:13px clamp(18px,4vw,44px);transition:background .35s,border-color .35s,box-shadow .35s;border-bottom:1px solid transparent}
 .hd.on{background:rgba(255,255,255,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-color:var(--lined);box-shadow:0 8px 30px rgba(140,100,200,.10)}
-.hd-logo{font-family:var(--en);font-weight:800;font-size:18px;letter-spacing:.08em;color:#fff;transition:color .35s}
+.hd-logo{font-family:var(--en);font-weight:700;font-size:18px;letter-spacing:.08em;color:#fff;transition:color .35s}
 .hd.on .hd-logo{color:var(--txd)}
 .hd-logo em{font-style:normal;background:var(--grad-tp);-webkit-background-clip:text;background-clip:text;color:transparent}
 .hd-nav{display:flex;gap:24px;font-family:var(--en);font-weight:600;font-size:11.5px;letter-spacing:.14em;color:rgba(255,255,255,.85);transition:color .35s}
@@ -75,7 +75,7 @@ radial-gradient(70% 55% at 92% 30%,rgba(247,111,161,.38),transparent 62%)}
 .hero-in{position:relative;z-index:2;width:100%;max-width:1280px;margin:0 auto;display:flex;align-items:flex-end;justify-content:space-between;gap:24px}
 .hero-eyebrow{display:flex;align-items:center;gap:14px;font-family:var(--en);font-weight:700;font-size:clamp(11px,1.4vw,13px);letter-spacing:.3em;color:var(--pink2);margin-bottom:clamp(14px,2.5vh,26px)}
 .hero-eyebrow::after{content:"";width:clamp(48px,8vw,120px);height:2px;border-radius:2px;background:var(--grad-tp)}
-.hero-h1{font-family:var(--en);font-weight:800;font-size:clamp(3.4rem,14.5vw,10.5rem);line-height:.98;letter-spacing:.01em;color:#fff;text-transform:uppercase}
+.hero-h1{font-family:var(--en);font-weight:700;font-size:clamp(3.4rem,14.5vw,10.5rem);line-height:.98;letter-spacing:.01em;color:#fff;text-transform:uppercase}
 .hero-h1 .l2 i{background:var(--grad-tri);-webkit-background-clip:text;background-clip:text;color:transparent}
 .rise{display:block;overflow:hidden}
 .rise>span{display:block;transform:translateY(112%);animation:rise 1.05s cubic-bezier(.19,1,.22,1) forwards}
@@ -85,9 +85,16 @@ radial-gradient(70% 55% at 92% 30%,rgba(247,111,161,.38),transparent 62%)}
 .hl i{display:inline-block;font-style:normal;transform:translateY(118%) rotate(6deg);
 animation:hlUp .85s cubic-bezier(.34,1.4,.44,1) forwards;animation-delay:calc(var(--i,0)*.055s + 1.55s)}
 @keyframes hlUp{to{transform:none}}
+.hero-msg{margin-top:clamp(16px,2.8vh,30px)}
+.hm{display:block;overflow:hidden}
+.hm>span{display:block;font-family:var(--min);font-weight:600;color:#fff;font-size:clamp(1.15rem,4.4vw,2.05rem);letter-spacing:.14em;line-height:1.85;transform:translateY(115%);animation:hlUp .9s cubic-bezier(.19,1,.22,1) forwards}
+.hero-msg .hm:nth-child(1)>span{animation-delay:2.05s}
+.hero-msg .hm:nth-child(2)>span{animation-delay:2.18s}
+.hm:nth-child(1)>span{animation-delay:2.05s}
+.hm:nth-child(2)>span{animation-delay:2.22s}
 .hero-v{writing-mode:vertical-rl;font-family:var(--min);font-weight:600;font-size:clamp(15px,2.4vw,23px);letter-spacing:.32em;line-height:1.9;
 color:#fff;padding-top:8px;border-right:2px solid rgba(255,166,196,.85);padding-right:clamp(12px,1.6vw,20px);
-max-height:min(66vh,620px);opacity:0;animation:fade 1.2s ease 2.3s forwards}
+max-height:min(66vh,620px);opacity:0;animation:fade 1.2s ease 2.75s forwards}
 @keyframes fade{to{opacity:1}}
 .hero-scroll{position:absolute;left:clamp(18px,4vw,44px);bottom:0;z-index:3;display:flex;flex-direction:column;align-items:center;gap:10px;
 font-family:var(--en);font-weight:600;font-size:10px;letter-spacing:.28em;color:rgba(255,255,255,.7)}
@@ -105,7 +112,7 @@ font-family:var(--en);font-weight:600;font-size:10px;letter-spacing:.28em;color:
 .mq-in{display:flex;width:max-content;animation:mq 30s linear infinite}
 .mq span{font-family:var(--en);font-weight:700;font-size:clamp(14px,2.2vw,20px);letter-spacing:.18em;white-space:nowrap;padding-right:56px;color:var(--txd)}
 .mq b{font-weight:700}
-.mq .c1{color:var(--teal)}.mq .c2{color:var(--pink)}.mq .c3{color:var(--lav)}.mq .c4{color:var(--sun)}
+.mq .c1{color:var(--teal)}.mq .c2{color:var(--pink)}.mq .c3{color:var(--txd)}.mq .c4{color:var(--mutd)}
 @keyframes mq{to{transform:translateX(-50%)}}
 
 /* ---------- section scaffolding ---------- */
@@ -120,17 +127,16 @@ background:radial-gradient(circle,rgba(122,220,230,.14),transparent 62%);animati
 @keyframes blob{to{transform:translate(26vw,14vh) scale(1.25)}}
 @keyframes blob2{to{transform:translate(-22vw,-12vh) scale(1.3)}}
 .wrap{max-width:1120px;margin:0 auto;position:relative;z-index:1}
-.ghost{position:absolute;top:clamp(10px,2.2vw,24px);left:clamp(6px,3vw,28px);z-index:0;font-family:var(--en);font-weight:800;line-height:1;
+.ghost{position:absolute;top:clamp(10px,2.2vw,24px);left:clamp(6px,3vw,28px);z-index:0;font-family:var(--en);font-weight:700;line-height:1;
 font-size:clamp(3.5rem,11.5vw,8.2rem);letter-spacing:.02em;color:transparent;
 -webkit-text-stroke:1.5px rgba(142,124,224,.18);user-select:none;pointer-events:none;white-space:nowrap}
 .sec.dk .ghost{-webkit-text-stroke:1.5px rgba(255,255,255,.16)}
 .shead{position:relative;z-index:1;display:flex;align-items:center;gap:16px;margin-bottom:clamp(44px,7vw,84px)}
-.shead .en{font-family:var(--en);font-weight:800;font-size:clamp(24px,4.2vw,42px);letter-spacing:.05em;
-background:var(--grad-tp);-webkit-background-clip:text;background-clip:text;color:transparent}
+.shead .en{font-family:var(--en);font-weight:700;font-size:clamp(24px,4.2vw,42px);letter-spacing:.05em;color:var(--teal-d)}
 .shead .bar{flex:0 0 clamp(28px,4vw,54px);height:3px;border-radius:3px;background:var(--grad-tri)}
 .shead .jp{font-size:13px;letter-spacing:.4em;font-weight:700;color:var(--mutd)}
 .sec.dk .shead .jp{color:var(--mut)}
-.shead .spark{font-size:15px;color:var(--sun);line-height:1}
+.shead .spark{font-size:15px;color:var(--pink);line-height:1}
 /* 見出し演出：全セクション保証（.sec.in 起点） */
 html.js .shead .en{clip-path:inset(0 100% 0 0);transform:translateX(-14px)}
 html.js .sec.in .shead .en{animation:enIn .8s cubic-bezier(.22,1,.36,1) .12s both}
@@ -162,8 +168,8 @@ html:not(.js) .hd .hd-logo,html:not(.js) .hd .hd-nav,html:not(.js) .hd .hd-ig{co
 .sweep{position:absolute;top:clamp(70px,11vw,140px);left:-4%;width:108%;height:clamp(56px,10vw,120px);border-radius:999px;
 background:linear-gradient(100deg,var(--teal2),var(--teal));transform:translateX(-110%) rotate(-2deg);z-index:0;pointer-events:none;opacity:.9}
 .sweep.p{background:linear-gradient(100deg,var(--pink2),var(--pink))}
-.sweep.l{background:linear-gradient(100deg,var(--lav2),var(--lav))}
-.sweep.s{background:linear-gradient(100deg,#FFE29A,var(--sun))}
+.sweep.l{background:linear-gradient(100deg,#CFEFF4,var(--teal))}
+.sweep.s{background:linear-gradient(100deg,#FBD6E3,var(--pink))}
 .sweep::after{content:"";position:absolute;inset:0;border-radius:999px;background:#fff;opacity:.75;transform:translateX(-130%)}
 .lm{display:block;overflow:hidden;padding-bottom:.06em}
 .lm>span{display:block}
@@ -196,8 +202,7 @@ html.js .sec.in .biz-card .k{animation:stampT .65s cubic-bezier(.25,1.25,.4,1) .
 .creed{border-top:1px solid var(--lined)}
 .creed-row{display:grid;grid-template-columns:minmax(190px,340px) 1fr;gap:clamp(16px,4vw,60px);padding:clamp(26px,4.5vw,44px) 4px;border-bottom:1px solid var(--lined);align-items:baseline}
 .creed-row h3{font-weight:900;font-size:clamp(1.25rem,3.4vw,1.9rem);letter-spacing:.06em;line-height:1.5}
-.creed-row h3 small{display:block;font-family:var(--en);font-weight:700;font-size:11px;letter-spacing:.28em;margin-bottom:8px;
-background:var(--grad-tp);-webkit-background-clip:text;background-clip:text;color:transparent}
+.creed-row h3 small{display:block;font-family:var(--en);font-weight:700;font-size:11px;letter-spacing:.28em;margin-bottom:8px;color:var(--teal-d)}
 .creed-row p{color:var(--mutd);font-size:16px}
 @media(max-width:680px){.creed-row{grid-template-columns:1fr;gap:8px}}
 
@@ -220,10 +225,9 @@ background:var(--grad-tp);-webkit-background-clip:text;background-clip:text;colo
 .stat{position:relative;border:1px solid var(--lined);background:#fff;border-radius:var(--r);padding:clamp(22px,3.4vw,34px) clamp(20px,3vw,30px);overflow:hidden;transition:transform .35s,box-shadow .35s}
 .stat:hover{transform:translateY(-5px);box-shadow:0 18px 40px rgba(247,111,161,.16)}
 .stat.wide{grid-column:1/-1}
-.stat-l{font-family:var(--en);font-weight:700;font-size:11.5px;letter-spacing:.2em;margin-bottom:12px;
-background:var(--grad-tp);-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat-l{font-family:var(--en);font-weight:700;font-size:11.5px;letter-spacing:.2em;margin-bottom:12px;color:var(--teal-d)}
 .stat-l b{font-family:var(--jp);font-weight:700;letter-spacing:.1em}
-.stat-n{font-family:var(--en);font-weight:800;font-size:clamp(2.7rem,7.5vw,4.2rem);line-height:1;letter-spacing:.01em;
+.stat-n{font-family:var(--en);font-weight:700;font-size:clamp(2.7rem,7.5vw,4.2rem);line-height:1;letter-spacing:.01em;
 background:var(--grad-tri);-webkit-background-clip:text;background-clip:text;color:transparent}
 .stat-n small{font-family:var(--jp);font-size:.34em;font-weight:700;letter-spacing:.1em;color:var(--mutd);margin-left:8px;-webkit-text-fill-color:var(--mutd)}
 .stat-n .u{font-size:.62em;vertical-align:.16em}
@@ -287,7 +291,7 @@ html.js .rv.in .gbar i{transform:none}
 .reasons ol{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
 .reasons li{background:#fff;border:1px solid var(--lined);border-radius:14px;padding:14px 18px;font-weight:700;font-size:14.5px;letter-spacing:.04em;display:flex;align-items:center;gap:12px;transition:transform .3s,box-shadow .3s}
 .reasons li:hover{transform:translateY(-3px);box-shadow:0 12px 26px rgba(142,124,224,.14)}
-.reasons li b{font-family:var(--en);font-weight:800;background:var(--grad-tp);-webkit-background-clip:text;background-clip:text;color:transparent}
+.reasons li b{font-family:var(--en);font-weight:700;background:var(--grad-tp);-webkit-background-clip:text;background-clip:text;color:transparent}
 @media(max-width:860px){.cust-grid{grid-template-columns:1fr}}
 
 /* ---------- one day ---------- */
@@ -303,8 +307,8 @@ padding:8px 20px;border-radius:999px;margin-bottom:18px}
 padding:16px 22px;min-width:150px;text-align:center;transition:transform .3s,box-shadow .3s}
 .step:hover{transform:translateY(-4px);box-shadow:0 14px 30px rgba(247,111,161,.14)}
 .step+.step{margin-left:34px}
-.step+.step::before{content:"→";position:absolute;left:-27px;top:50%;transform:translateY(-50%);font-family:var(--en);font-weight:800;color:var(--lav);font-size:18px}
-.step b{font-family:var(--en);font-weight:800;font-size:15px;letter-spacing:.04em}
+.step+.step::before{content:"→";position:absolute;left:-27px;top:50%;transform:translateY(-50%);font-family:var(--en);font-weight:700;color:var(--lav);font-size:18px}
+.step b{font-family:var(--en);font-weight:700;font-size:15px;letter-spacing:.04em}
 .day.p1 .step b{color:var(--pink)}
 .day.p2 .step b{color:var(--teal)}
 .step span{font-weight:700;font-size:14px;letter-spacing:.06em}
@@ -317,9 +321,8 @@ html.js .sec.in .step{animation:stepIn .6s cubic-bezier(.3,1.4,.5,1) both;animat
 .tlegend span i{display:inline-block;width:11px;height:11px;border-radius:4px;margin-right:8px;font-style:normal;vertical-align:-1px}
 .trow{display:grid;grid-template-columns:minmax(120px,180px) 1fr;gap:14px 22px;align-items:center;padding:16px 0;border-bottom:1px dashed var(--lined)}
 .trow:last-child{border-bottom:0}
-.th b{display:block;font-family:var(--en);font-weight:800;font-size:clamp(1.25rem,3.4vw,1.7rem);
-background:var(--grad-tp);-webkit-background-clip:text;background-clip:text;color:transparent}
-.th b em{font-style:normal;font-family:var(--jp);font-weight:900;font-size:.62em;-webkit-text-fill-color:var(--txd);color:var(--txd)}
+.th b{display:block;font-family:var(--en);font-weight:700;font-size:clamp(1.25rem,3.4vw,1.7rem);color:var(--teal-d)}
+.th b em{font-style:normal;font-family:var(--jp);font-weight:900;font-size:.62em;color:var(--txd)}
 .th small{font-size:12.5px;font-weight:700;color:var(--mutd);letter-spacing:.04em}
 .tbar{display:flex;height:26px;border-radius:99px;overflow:hidden;background:rgba(142,124,224,.1)}
 .tbar i{display:block;height:100%}
@@ -348,16 +351,13 @@ padding-left:clamp(16px,3vw,26px);border-left:3px solid transparent;border-image
 .pnode{position:relative;margin-bottom:clamp(26px,4vw,40px)}
 .pnode::before{content:"";position:absolute;left:calc(-1*clamp(24px,4vw,36px) + 1px);top:14px;width:16px;height:16px;border-radius:50%;background:var(--pink);box-shadow:0 0 0 6px rgba(247,111,161,.18)}
 .pnode:nth-child(2)::before{background:var(--teal);box-shadow:0 0 0 6px rgba(47,185,201,.18)}
-.pnode:nth-child(3)::before{background:var(--lav);box-shadow:0 0 0 6px rgba(142,124,224,.18)}
-.pnode .pl{font-family:var(--en);font-weight:700;font-size:11px;letter-spacing:.28em;margin-bottom:6px;
-background:var(--grad-tp);-webkit-background-clip:text;background-clip:text;color:transparent}
+.pnode:nth-child(3)::before{background:var(--teal);box-shadow:0 0 0 6px rgba(47,185,201,.18)}
+.pnode .pl{font-family:var(--en);font-weight:700;font-size:11px;letter-spacing:.28em;margin-bottom:6px;color:var(--teal-d)}
 .pnode h3{display:inline-block;font-weight:900;font-size:clamp(1.1rem,3vw,1.45rem);letter-spacing:.06em;background:#fff;border:1px solid var(--lined);border-radius:14px;padding:14px 26px;transition:border-color .3s,transform .3s,box-shadow .3s}
 .pnode:hover h3{border-color:var(--pink2);transform:translateX(6px);box-shadow:0 12px 26px rgba(247,111,161,.14)}
 .pbranch{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-top:14px}
 .pbranch span{background:#fff;border:1px solid var(--lined);border-top:4px solid var(--teal);border-radius:12px;padding:15px 18px;font-weight:700;font-size:15px;letter-spacing:.05em;transition:transform .3s,box-shadow .3s}
-.pbranch span:nth-child(2){border-top-color:var(--pink)}
-.pbranch span:nth-child(3){border-top-color:var(--lav)}
-.pbranch span:nth-child(4){border-top-color:var(--sun)}
+.pbranch span:nth-child(even){border-top-color:var(--pink)}
 .pbranch span:hover{transform:translateY(-4px);box-shadow:0 12px 26px rgba(142,124,224,.16)}
 .pnew{margin-top:14px;display:inline-flex;align-items:center;gap:12px;border:1.5px dashed var(--pink);color:var(--pink);font-weight:700;font-size:14px;letter-spacing:.06em;padding:13px 22px;border-radius:999px;background:rgba(247,111,161,.05)}
 .pnew::before{content:"＋";font-weight:900}
@@ -376,8 +376,7 @@ background:var(--grad-tp);-webkit-background-clip:text;background-clip:text;colo
 .mem-card:hover{transform:translateY(-5px);box-shadow:0 18px 40px rgba(247,111,161,.14)}
 .mem-top{display:flex;align-items:center;gap:20px}
 .mem-top img{width:clamp(84px,11vw,116px);height:clamp(84px,11vw,116px);border-radius:50%;object-fit:cover;border:3px solid #fff;box-shadow:0 0 0 2px var(--pink2),0 10px 24px rgba(247,111,161,.2)}
-.mem-role{font-size:11.5px;letter-spacing:.2em;font-weight:700;margin-bottom:6px;
-background:var(--grad-tp);-webkit-background-clip:text;background-clip:text;color:transparent}
+.mem-role{font-size:11.5px;letter-spacing:.2em;font-weight:700;margin-bottom:6px;color:var(--teal-d)}
 .mem-name{font-weight:900;font-size:clamp(1.3rem,3vw,1.65rem);letter-spacing:.1em}
 .mem-card p{font-size:15px;color:var(--mutd)}
 @media(max-width:800px){.mem-grid{grid-template-columns:1fr}}
@@ -386,16 +385,14 @@ background:var(--grad-tp);-webkit-background-clip:text;background-clip:text;colo
 .why{background:linear-gradient(135deg,rgba(247,111,161,.10),rgba(122,220,230,.12));border:1px solid rgba(247,111,161,.3);border-radius:var(--r);padding:clamp(28px,5vw,54px) clamp(22px,4.5vw,52px)}
 .why-row{display:flex;gap:clamp(14px,2.5vw,24px);align-items:baseline;padding:clamp(16px,2.6vw,24px) 0;border-bottom:1px dashed rgba(142,124,224,.4)}
 .why-row:last-child{border-bottom:0}
-.why-row .no{font-family:var(--en);font-weight:800;font-size:clamp(1.1rem,2.6vw,1.5rem);flex:0 0 auto;
+.why-row .no{font-family:var(--en);font-weight:700;font-size:clamp(1.1rem,2.6vw,1.5rem);flex:0 0 auto;
 background:var(--grad-tp);-webkit-background-clip:text;background-clip:text;color:transparent}
 .why-row p{font-weight:900;font-size:clamp(1.02rem,2.9vw,1.4rem);letter-spacing:.05em;line-height:1.7}
 
 /* ---------- benefits ---------- */
 .bn-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(16px,2.4vw,26px);margin-top:clamp(40px,6vw,64px)}
 .bn{border-top:4px solid var(--teal);background:#fff;border:1px solid var(--lined);border-top-width:4px;border-radius:14px;padding:22px 20px 24px;transition:transform .3s,box-shadow .3s}
-.bn:nth-child(4n+2){border-top-color:var(--pink)}
-.bn:nth-child(4n+3){border-top-color:var(--lav)}
-.bn:nth-child(4n+4){border-top-color:var(--sun)}
+.bn:nth-child(even){border-top-color:var(--pink)}
 .bn:hover{transform:translateY(-4px);box-shadow:0 14px 30px rgba(142,124,224,.14)}
 .bn h3{font-weight:900;font-size:1.04rem;letter-spacing:.05em;line-height:1.7;margin-bottom:.7em;min-height:3.4em}
 .bn p{font-size:13.5px;color:var(--mutd)}
@@ -408,11 +405,11 @@ background:var(--grad-tp);-webkit-background-clip:text;background-clip:text;colo
 background:linear-gradient(120deg,var(--lav) 0%,var(--pink) 55%,var(--coral) 100%);color:#fff;
 padding:clamp(30px,5.5vw,58px) clamp(24px,5vw,56px);transition:transform .35s,box-shadow .35s;box-shadow:0 18px 44px rgba(247,111,161,.3)}
 .shindan:hover{transform:translateY(-5px);box-shadow:0 26px 56px rgba(247,111,161,.4)}
-.sh-ghost{position:absolute;right:-8px;top:-20px;font-family:var(--en);font-weight:800;font-size:clamp(3.8rem,11vw,7.6rem);line-height:1;
+.sh-ghost{position:absolute;right:-8px;top:-20px;font-family:var(--en);font-weight:700;font-size:clamp(3.8rem,11vw,7.6rem);line-height:1;
 color:transparent;-webkit-text-stroke:1.5px rgba(255,255,255,.3);pointer-events:none;user-select:none}
 .sh-en{font-family:var(--en);font-weight:700;font-size:12px;letter-spacing:.3em;margin-bottom:10px;color:rgba(255,255,255,.9)}
 .sh-t{position:relative;font-weight:900;font-size:clamp(1.25rem,4.4vw,2rem);letter-spacing:.05em;line-height:1.5}
-.sh-arrow{position:relative;font-family:var(--en);font-weight:800;font-size:clamp(1.6rem,5vw,2.6rem);transition:transform .3s;flex:0 0 auto}
+.sh-arrow{position:relative;font-family:var(--en);font-weight:700;font-size:clamp(1.6rem,5vw,2.6rem);transition:transform .3s;flex:0 0 auto}
 .shindan:hover .sh-arrow{transform:translateX(10px)}
 .gal{display:flex;gap:clamp(16px,2.5vw,26px);overflow-x:auto;scroll-snap-type:x mandatory;padding:10px 2px 26px;margin-top:clamp(36px,5vw,56px);
 scrollbar-width:thin;scrollbar-color:var(--pink2) transparent}
@@ -434,31 +431,32 @@ scrollbar-width:thin;scrollbar-color:var(--pink2) transparent}
 /* ---------- careers ---------- */
 .sec.dk{color:var(--tx)}
 .sec.careers{background:
-radial-gradient(90% 70% at 90% -8%,rgba(247,111,161,.35),transparent 55%),
-radial-gradient(80% 60% at 0% 100%,rgba(47,185,201,.3),transparent 58%),
-linear-gradient(135deg,var(--deep1) 0%,var(--deep2) 100%)}
-.sec.careers::before,.sec.careers::after{display:none}
-.job{border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.08);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
-border-radius:var(--r);padding:clamp(30px,5vw,56px);margin-top:clamp(36px,5vw,56px);display:flex;flex-direction:column;gap:22px}
+radial-gradient(90% 70% at 90% -8%,rgba(255,166,196,.35),transparent 55%),
+radial-gradient(80% 60% at 0% 100%,rgba(122,220,230,.35),transparent 58%),
+linear-gradient(160deg,#FFF3F8 0%,#EFFAFB 100%)}
+.job{border:1px solid var(--lined);background:#fff;
+border-radius:var(--r);padding:clamp(30px,5vw,56px);margin-top:clamp(36px,5vw,56px);display:flex;flex-direction:column;gap:22px;
+box-shadow:0 24px 56px rgba(247,111,161,.16)}
 .job-tag{align-self:flex-start;font-size:11.5px;font-weight:700;letter-spacing:.3em;color:#fff;background:var(--grad-cta);padding:8px 18px;border-radius:999px}
-.job h3{font-weight:900;font-size:clamp(1.45rem,4.6vw,2.4rem);line-height:1.6;letter-spacing:.04em;color:#fff}
-.job-meta{display:flex;flex-wrap:wrap;gap:10px 34px;color:var(--mut);font-size:15.5px;letter-spacing:.06em}
-.job-meta b{color:#fff;font-weight:700;font-size:1.15em}
-.job-meta span::before{content:"◆";color:var(--pink2);font-size:.7em;margin-right:12px;vertical-align:2px}
+.job h3{font-weight:900;font-size:clamp(1.45rem,4.6vw,2.4rem);line-height:1.6;letter-spacing:.04em;color:var(--txd)}
+.job-meta{display:flex;flex-wrap:wrap;gap:10px 34px;color:var(--mutd);font-size:15.5px;letter-spacing:.06em}
+.job-meta b{color:var(--txd);font-weight:700;font-size:1.15em}
+.job-meta span::before{content:"◆";color:var(--pink);font-size:.7em;margin-right:12px;vertical-align:2px}
 .job-btns{display:flex;flex-wrap:wrap;gap:14px;margin-top:8px}
 .job-cta{display:inline-flex;align-items:center;gap:14px;font-weight:700;letter-spacing:.16em;font-size:14px;
 color:#fff;background:var(--grad-cta);padding:17px 36px;border-radius:999px;box-shadow:0 12px 30px rgba(247,111,161,.4);transition:transform .3s,box-shadow .3s}
 .job-cta:hover{transform:translateY(-3px);box-shadow:0 18px 40px rgba(247,111,161,.5)}
-.job-cta::after{content:"→";font-family:var(--en);font-weight:800}
+.job-cta::after{content:"→";font-family:var(--en);font-weight:700}
 .job-cta2{display:inline-flex;align-items:center;gap:12px;font-weight:700;letter-spacing:.14em;font-size:13.5px;
-color:#fff;border:1.5px solid rgba(255,255,255,.7);padding:15px 30px;border-radius:999px;transition:background .3s,color .3s,transform .3s}
-.job-cta2::after{content:"→";font-family:var(--en);font-weight:800}
-.job-cta2:hover{background:#fff;color:var(--deep1);transform:translateY(-3px)}
+color:var(--pink);border:1.5px solid var(--pink);background:#fff;padding:15px 30px;border-radius:999px;transition:background .3s,color .3s,transform .3s}
+.job-cta2::after{content:"→";font-family:var(--en);font-weight:700}
+.job-cta2:hover{background:var(--pink);color:#fff;transform:translateY(-3px)}
+
 
 /* ---------- footer ---------- */
 .ft{padding:clamp(60px,9vw,110px) clamp(18px,4vw,44px) 40px;text-align:center;color:var(--tx);
 background:linear-gradient(160deg,var(--deep1) 0%,#241E3E 100%)}
-.ft-logo{font-family:var(--en);font-weight:800;font-size:clamp(2.6rem,10vw,6.4rem);line-height:1;letter-spacing:.03em;color:transparent;-webkit-text-stroke:1.5px rgba(255,255,255,.32);margin-bottom:26px}
+.ft-logo{font-family:var(--en);font-weight:700;font-size:clamp(2.6rem,10vw,6.4rem);line-height:1;letter-spacing:.03em;color:transparent;-webkit-text-stroke:1.5px rgba(255,255,255,.32);margin-bottom:26px}
 .ft-tag{font-family:var(--min);font-size:clamp(.95rem,2.4vw,1.15rem);letter-spacing:.14em;color:var(--mut);margin-bottom:44px}
 .ft-links{display:flex;flex-wrap:wrap;gap:14px 36px;justify-content:center;margin-bottom:44px;font-size:13px;font-weight:700;letter-spacing:.12em}
 .ft-links a{color:var(--mut);border-bottom:2px solid rgba(247,111,161,.55);padding-bottom:4px;transition:color .25s,border-color .25s}
@@ -494,7 +492,7 @@ background:linear-gradient(160deg,var(--deep1) 0%,#241E3E 100%)}
   html{scroll-behavior:auto}
   .intro,.pbar{display:none}
   .rise>span{transform:none;animation:none}.hero-v{opacity:1;animation:none}
-  .hl i{transform:none;animation:none}
+  .hl i,.hm>span{transform:none;animation:none;opacity:1}
   .rv,.lm>span,.ghost,.biz-card .k,.gal-it,.hero-in,.step,
   .shead .en,.shead .bar,.shead .jp,.shead .spark{animation:none !important;opacity:1 !important;transform:none !important;clip-path:none !important}
   .pfx img,.hero-bg img{animation:none !important;transform:none !important}
@@ -516,7 +514,7 @@ background:linear-gradient(160deg,var(--deep1) 0%,#241E3E 100%)}
       <stop offset="0%" stop-color="#2FB9C9"/><stop offset="100%" stop-color="#F76FA1"/>
     </linearGradient>
     <linearGradient id="grad-line" x1="0" y1="1" x2="1" y2="0">
-      <stop offset="0%" stop-color="#2FB9C9"/><stop offset="55%" stop-color="#8E7CE0"/><stop offset="100%" stop-color="#F76FA1"/>
+      <stop offset="0%" stop-color="#2FB9C9"/><stop offset="55%" stop-color="#7FB8D8"/><stop offset="100%" stop-color="#F76FA1"/>
     </linearGradient>
   </defs>
 </svg>
@@ -549,6 +547,10 @@ background:linear-gradient(160deg,var(--deep1) 0%,#241E3E 100%)}
         <span class="hl"><i style="--i:0">C</i><i style="--i:1">H</i><i style="--i:2">A</i><i style="--i:3">R</i><i style="--i:4">T</i></span>
         <span class="hl l2"><i style="--i:5">G</i><i style="--i:6">R</i><i style="--i:7">O</i><i style="--i:8">U</i><i style="--i:9">P</i></span>
       </h1>
+      <p class="hero-msg">
+        <span class="hm"><span>人に賭ける、</span></span>
+        <span class="hm"><span>未来をつくる。</span></span>
+      </p>
     </div>
     <p class="hero-v">健康で、選択肢の多い人生が当たり前の社会をつくる</p>
   </div>
@@ -630,7 +632,7 @@ background:linear-gradient(160deg,var(--deep1) 0%,#241E3E 100%)}
 <!-- ================= DATA ================= -->
 <section class="sec mint" id="data">
   <div class="ghost">DATA</div>
-  <div class="sweep l" aria-hidden="true"></div>
+  <div class="sweep" aria-hidden="true"></div>
   <div class="wrap">
     <div class="shead"><span class="en">DATA</span><span class="bar"></span><span class="jp">数字で見るCHART</span><span class="spark">✦</span></div>
     <h2 class="lead"><span class="lm"><span>急成長企業</span></span></h2>
@@ -759,18 +761,18 @@ background:linear-gradient(160deg,var(--deep1) 0%,#241E3E 100%)}
       <div class="donut-wrap rv">
         <svg class="donut" viewBox="0 0 220 220" style="transform:rotate(-90deg)" role="img" aria-label="お客様の年齢層">
           <circle cx="110" cy="110" r="70" stroke="rgba(142,124,224,.14)"/>
-          <circle class="dseg" cx="110" cy="110" r="70" stroke="#8E7CE0" style="--dl:64.6;--sd:.2s"/>
-          <circle class="dseg" cx="110" cy="110" r="70" stroke="#2FB9C9" style="--dl:90.6;--sd:.45s" transform="rotate(52.9 110 110)"/>
-          <circle class="dseg" cx="110" cy="110" r="70" stroke="#F76FA1" style="--dl:129.3;--sd:.7s" transform="rotate(127.1 110 110)"/>
-          <circle class="dseg" cx="110" cy="110" r="70" stroke="#63B3ED" style="--dl:116.5;--sd:.95s" transform="rotate(232.9 110 110)"/>
-          <circle class="dseg" cx="110" cy="110" r="70" stroke="#B08BD9" style="--dl:38.7;--sd:1.2s" transform="rotate(328.3 110 110)"/>
+          <circle class="dseg" cx="110" cy="110" r="70" stroke="#BFA9E8" style="--dl:64.6;--sd:.2s"/>
+          <circle class="dseg" cx="110" cy="110" r="70" stroke="#3FB9C9" style="--dl:90.6;--sd:.45s" transform="rotate(52.9 110 110)"/>
+          <circle class="dseg" cx="110" cy="110" r="70" stroke="#F585AC" style="--dl:129.3;--sd:.7s" transform="rotate(127.1 110 110)"/>
+          <circle class="dseg" cx="110" cy="110" r="70" stroke="#7FA8DC" style="--dl:116.5;--sd:.95s" transform="rotate(232.9 110 110)"/>
+          <circle class="dseg" cx="110" cy="110" r="70" stroke="#9AA6B8" style="--dl:38.7;--sd:1.2s" transform="rotate(328.3 110 110)"/>
         </svg>
         <div class="dlegend">
-          <span><i style="background:#8E7CE0"></i>20代<b>14.7%</b></span>
-          <span><i style="background:#2FB9C9"></i>30代<b>20.6%</b></span>
-          <span><i style="background:#F76FA1"></i>40代<b>29.4%</b></span>
-          <span><i style="background:#63B3ED"></i>50代<b>26.5%</b></span>
-          <span><i style="background:#B08BD9"></i>60代以上<b>8.8%</b></span>
+          <span><i style="background:#BFA9E8"></i>20代<b>14.7%</b></span>
+          <span><i style="background:#3FB9C9"></i>30代<b>20.6%</b></span>
+          <span><i style="background:#F585AC"></i>40代<b>29.4%</b></span>
+          <span><i style="background:#7FA8DC"></i>50代<b>26.5%</b></span>
+          <span><i style="background:#9AA6B8"></i>60代以上<b>8.8%</b></span>
         </div>
       </div>
       <div class="gender-card rv" style="--d:.1s">
@@ -797,7 +799,7 @@ background:linear-gradient(160deg,var(--deep1) 0%,#241E3E 100%)}
 </section>
 
 <!-- ================= CAREER PATH ================= -->
-<section class="sec lav" id="path">
+<section class="sec white" id="path">
   <div class="ghost">PATH</div>
   <div class="wrap">
     <div class="shead"><span class="en">CAREER PATH</span><span class="bar"></span><span class="jp">豊富なキャリアパス</span><span class="spark">✦</span></div>
@@ -947,37 +949,37 @@ background:linear-gradient(160deg,var(--deep1) 0%,#241E3E 100%)}
 </section>
 
 <!-- ================= TRAINING ================= -->
-<section class="sec lav" id="training">
+<section class="sec mint" id="training">
   <div class="ghost">TRAINING</div>
   <div class="wrap">
     <div class="shead"><span class="en">TRAINING</span><span class="bar"></span><span class="jp">研修期間の目安</span><span class="spark">✦</span></div>
 
     <div class="rv">
       <div class="tlegend">
-        <span><i style="background:#7ADCE6"></i>会社理念</span>
-        <span><i style="background:#F76FA1"></i>トレーニング</span>
-        <span><i style="background:#3B3550"></i>業務</span>
-        <span><i style="background:#FFC94D"></i>新規体験</span>
-        <span><i style="background:#8FE388"></i>整体</span>
-        <span><i style="background:#5ECFA0"></i>OJT</span>
+        <span><i style="background:#9ADFE8"></i>会社理念</span>
+        <span><i style="background:#F585AC"></i>トレーニング</span>
+        <span><i style="background:#6B6F8A"></i>業務</span>
+        <span><i style="background:#F8CE9A"></i>新規体験</span>
+        <span><i style="background:#B4E3C2"></i>整体</span>
+        <span><i style="background:#7CC9B0"></i>OJT</span>
       </div>
 
       <div class="trow">
         <div class="th"><b>約30<em>時間</em></b><small>柔道整復師・TR経験者</small></div>
         <div class="tbar" aria-hidden="true">
-          <i style="--i:0;width:10%;background:#7ADCE6"></i><i style="--i:1;width:22%;background:#F76FA1"></i><i style="--i:2;width:20%;background:#3B3550"></i><i style="--i:3;width:18%;background:#FFC94D"></i><i style="--i:4;width:14%;background:#8FE388"></i><i style="--i:5;width:16%;background:#5ECFA0"></i>
+          <i style="--i:0;width:10%;background:#9ADFE8"></i><i style="--i:1;width:22%;background:#F585AC"></i><i style="--i:2;width:20%;background:#6B6F8A"></i><i style="--i:3;width:18%;background:#F8CE9A"></i><i style="--i:4;width:14%;background:#B4E3C2"></i><i style="--i:5;width:16%;background:#7CC9B0"></i>
         </div>
       </div>
       <div class="trow">
         <div class="th"><b>約40<em>時間</em></b><small>柔道整復師・PT</small></div>
         <div class="tbar" aria-hidden="true">
-          <i style="--i:0;width:8%;background:#7ADCE6"></i><i style="--i:1;width:22%;background:#F76FA1"></i><i style="--i:2;width:24%;background:#3B3550"></i><i style="--i:3;width:20%;background:#FFC94D"></i><i style="--i:4;width:12%;background:#8FE388"></i><i style="--i:5;width:14%;background:#5ECFA0"></i>
+          <i style="--i:0;width:8%;background:#9ADFE8"></i><i style="--i:1;width:22%;background:#F585AC"></i><i style="--i:2;width:24%;background:#6B6F8A"></i><i style="--i:3;width:20%;background:#F8CE9A"></i><i style="--i:4;width:12%;background:#B4E3C2"></i><i style="--i:5;width:14%;background:#7CC9B0"></i>
         </div>
       </div>
       <div class="trow">
         <div class="th"><b>約60<em>時間</em></b><small>TR経験者</small></div>
         <div class="tbar" aria-hidden="true">
-          <i style="--i:0;width:8%;background:#7ADCE6"></i><i style="--i:1;width:16%;background:#F76FA1"></i><i style="--i:2;width:24%;background:#3B3550"></i><i style="--i:3;width:26%;background:#FFC94D"></i><i style="--i:4;width:12%;background:#8FE388"></i><i style="--i:5;width:14%;background:#5ECFA0"></i>
+          <i style="--i:0;width:8%;background:#9ADFE8"></i><i style="--i:1;width:16%;background:#F585AC"></i><i style="--i:2;width:24%;background:#6B6F8A"></i><i style="--i:3;width:26%;background:#F8CE9A"></i><i style="--i:4;width:12%;background:#B4E3C2"></i><i style="--i:5;width:14%;background:#7CC9B0"></i>
         </div>
       </div>
     </div>
@@ -987,7 +989,7 @@ background:linear-gradient(160deg,var(--deep1) 0%,#241E3E 100%)}
 <!-- ================= BENEFITS ================= -->
 <section class="sec white" id="benefits">
   <div class="ghost">BENEFITS</div>
-  <div class="sweep s" aria-hidden="true"></div>
+  <div class="sweep p" aria-hidden="true"></div>
   <div class="wrap">
     <div class="shead"><span class="en">BENEFITS</span><span class="bar"></span><span class="jp">休日・福利厚生</span><span class="spark">✦</span></div>
     <div class="body rv" style="max-width:720px">
@@ -1061,7 +1063,7 @@ background:linear-gradient(160deg,var(--deep1) 0%,#241E3E 100%)}
   <div class="wrap">
     <div class="shead"><span class="en">COMPANY</span><span class="bar"></span><span class="jp">会社情報</span><span class="spark">✦</span></div>
     <dl class="co-dl rv">
-      <div class="co-row"><dt>会社名</dt><dd>パーソナルジムCHART</dd></div>
+      <div class="co-row"><dt>会社名</dt><dd>CHART株式会社</dd></div>
       <div class="co-row"><dt>事業内容</dt><dd>ヘルスケア事業<ul><li>・パーソナルジムCHART</li><li>・ピラティススタジオMiaece</li></ul></dd></div>
       <div class="co-row"><dt>法人番号</dt><dd>1011101110693</dd></div>
       <div class="co-row"><dt>企業WEBサイト</dt><dd><a href="https://chart-happiness.com/" target="_blank" rel="noopener">https://chart-happiness.com/</a></dd></div>
@@ -1072,11 +1074,11 @@ background:linear-gradient(160deg,var(--deep1) 0%,#241E3E 100%)}
 </section>
 
 <!-- ================= CAREERS ================= -->
-<section class="sec dk careers" id="careers">
+<section class="sec careers" id="careers">
   <div class="ghost">CAREERS</div>
-  <div class="sweep l" aria-hidden="true"></div>
+  <div class="sweep" aria-hidden="true"></div>
   <div class="wrap">
-    <div class="shead"><span class="en" style="background:linear-gradient(120deg,var(--teal2),var(--pink2));-webkit-background-clip:text;background-clip:text">CAREERS</span><span class="bar"></span><span class="jp">採用情報</span><span class="spark">✦</span></div>
+    <div class="shead"><span class="en">CAREERS</span><span class="bar"></span><span class="jp">採用情報</span><span class="spark">✦</span></div>
     <div class="body rv" style="max-width:680px">
       <p>現在、下記の職種で募集を行なっています。<br>応募を検討される方は、以下のページをご覧ください。</p>
     </div>
@@ -1102,7 +1104,7 @@ background:linear-gradient(160deg,var(--deep1) 0%,#241E3E 100%)}
     <a href="https://chart-group.github.io/chart-/recruit-shindan.html" target="_blank" rel="noopener">CHART入社後　キャリア診断</a>
     <a href="https://www.instagram.com/chart.recruit?igsh=MWlndDgwZDhsZ2Nsdg==" target="_blank" rel="noopener">CHART recruit インスタグラム</a>
   </div>
-  <p class="ft-cp">© 2026 パーソナルジムCHART</p>
+  <p class="ft-cp">© 2026 CHART株式会社</p>
 </footer>
 
 <script>
