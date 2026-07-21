@@ -1,0 +1,1502 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CHART カラダづくり診断</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=Noto+Sans+JP:wght@400;500;700&family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap');
+:root {
+  --navy: #1F9C8C;      /* メイン(フレッシュティール) */
+  --gold: #FF8A5C;      /* アクセント(コーラルオレンジ) */
+  --goldsoft: #FFE8DC;  /* アクセント淡(ピーチ) */
+  --paper: #FFF9F2;     /* 背景(あたたかいクリーム) */
+  --ink: #3D3A37;
+  --inksoft: #8A857E;
+  --line: #F0E0D2;
+  --alert: #E8654F;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: 'Noto Sans JP', sans-serif; -webkit-font-smoothing: antialiased; }
+button { font: inherit; cursor: pointer; background: none; border: none; padding: 0; color: inherit; }
+.wrap { max-width: 32rem; margin: 0 auto; padding: 40px 24px; }
+.header { text-align: center; margin-bottom: 40px; }
+.eyebrow { font-family: 'M PLUS Rounded 1c', sans-serif; font-size: 11px; letter-spacing: 0.25em; color: var(--gold); }
+.title { font-family: 'Zen Maru Gothic', sans-serif; font-weight: 700; font-size: 26px; color: var(--navy); letter-spacing: 0.04em; margin: 8px 0 0; }
+.text-center { text-align: center; }
+.intro-p { font-size: 14px; color: var(--inksoft); line-height: 1.75; margin: 0 0 32px; }
+.btn-primary { background: var(--navy); color: var(--gold); font-family: 'M PLUS Rounded 1c', sans-serif; font-weight: 700; font-size: 14px; letter-spacing: 0.05em; padding: 12px 32px; border-radius: 2px; }
+.dial { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 32px; }
+.dial-c { width: 28px; height: 28px; border-radius: 9999px; border: 2px solid #C9C4B6; color: #B4AE9E; display: flex; align-items: center; justify-content: center; font-family: 'M PLUS Rounded 1c', sans-serif; font-weight: 700; font-size: 13px; transition: all .3s; }
+.dial-c.cur { width: 36px; height: 36px; border-color: var(--gold); background: var(--navy); color: var(--gold); }
+.dial-c.done { border-color: var(--gold); background: var(--gold); color: var(--navy); }
+.dial-l { width: 20px; height: 2px; background: #D8D3C5; }
+.dial-l.done { background: var(--gold); }
+.step-lead { font-weight: 700; font-size: 15px; color: var(--navy); margin-bottom: 16px; line-height: 1.6; }
+.q-lead { font-size: 12px; color: var(--inksoft); margin: -4px 0 8px; }
+.field { margin-bottom: 20px; }
+.field-label { font-family: 'M PLUS Rounded 1c', sans-serif; font-size: 12px; letter-spacing: 0.08em; color: var(--inksoft); margin-bottom: 8px; }
+.field-hint { font-size: 10.5px; color: var(--inksoft); margin-top: 6px; }
+.txt-input { width: 100%; padding: 10px 12px; border: 1.5px solid var(--line); background: #fff; font-size: 14px; color: var(--ink); outline: none; border-radius: 0; font-family: inherit; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+.opt-card { display: block; width: 100%; text-align: left; padding: 16px 20px; border: 1.5px solid var(--line); background: #fff; border-radius: 2px; transition: all .15s; }
+.opt-card.sel { border-color: var(--gold); background: var(--navy); color: var(--goldsoft); }
+.opt-title { display: block; font-weight: 700; font-size: 15px; }
+.opt-desc { display: block; margin-top: 4px; font-size: 12.5px; color: var(--inksoft); }
+.opt-card.sel .opt-desc { color: var(--goldsoft); opacity: .85; }
+.pills { display: flex; flex-wrap: wrap; gap: 6px; }
+.pill { min-width: 40px; text-align: center; padding: 9px 0; border: 1px solid var(--line); background: #fff; color: var(--ink); font-family: 'M PLUS Rounded 1c', sans-serif; font-weight: 700; font-size: 13px; border-radius: 2px; transition: all .15s; }
+.pill.sel { background: var(--navy); color: var(--gold); border-color: var(--gold); }
+.qblock { margin-bottom: 24px; }
+.q-title { font-weight: 700; font-size: 14px; color: var(--navy); margin-bottom: 8px; }
+.stack > * + * { margin-top: 8px; }
+.navrow { display: flex; justify-content: space-between; align-items: center; margin-top: 32px; }
+.back-btn { font-size: 13px; color: var(--inksoft); }
+.btn-next { background: var(--navy); color: var(--gold); font-family: 'M PLUS Rounded 1c', sans-serif; font-weight: 700; font-size: 13px; padding: 10px 24px; border-radius: 2px; }
+.btn-next:disabled { background: #D8D3C5; color: #8B8676; cursor: default; }
+.err { color: var(--alert); font-size: 12px; margin-top: 4px; }
+.hero { background: var(--navy); border: 1px solid var(--gold); border-radius: 2px; padding: 24px; margin-bottom: 16px; }
+.hero-eyebrow { font-family: 'M PLUS Rounded 1c', sans-serif; font-size: 10px; letter-spacing: 0.2em; color: var(--gold); }
+.hero-title { font-family: 'Zen Maru Gothic', sans-serif; font-size: 20px; color: #fff; font-weight: 700; margin: 4px 0; }
+.hero-sub { font-size: 11px; color: var(--goldsoft); margin-bottom: 16px; }
+.hero-hr { height: 1px; background: var(--gold); opacity: .4; margin-bottom: 16px; }
+.hero-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; text-align: center; }
+.stat-n { font-family: 'M PLUS Rounded 1c', sans-serif; font-size: 22px; color: var(--gold); font-weight: 700; }
+.stat-l { font-size: 10px; color: var(--goldsoft); }
+.over-card { background: #F6E4E1; border: 1px solid var(--alert); padding: 16px; margin-bottom: 16px; }
+.over-t { color: var(--alert); font-weight: 700; font-size: 13px; margin-bottom: 4px; }
+.over-b { font-size: 12px; color: var(--navy); line-height: 1.7; }
+.copy-btn { display: block; width: 100%; padding: 12px 0; background: var(--navy); color: var(--gold); font-family: 'M PLUS Rounded 1c', sans-serif; font-weight: 700; font-size: 13px; border-radius: 2px; text-align: center; }
+.copy-note { font-size: 10.5px; color: var(--inksoft); text-align: center; margin: 6px 0 16px; }
+.pace-card { background: var(--goldsoft); border: 1px solid var(--gold); padding: 16px; margin-bottom: 16px; }
+.pace-b { font-size: 12px; color: var(--navy); line-height: 1.7; }
+.tabs { display: flex; border-bottom: 1px solid var(--line); margin-bottom: 20px; }
+.tab { flex: 1; padding: 10px 0; text-align: center; font-weight: 700; font-size: 12px; color: var(--inksoft); border-bottom: 2px solid transparent; }
+.tab.active { color: var(--navy); border-bottom-color: var(--gold); }
+.sec-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.sec-title { font-weight: 700; font-size: 13px; color: var(--navy); }
+.hint { font-size: 10.5px; color: var(--inksoft); }
+.ex-card { border: 1px solid var(--line); background: #fff; }
+.ex-card.open { border-color: var(--gold); }
+.ex-head { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; text-align: left; }
+.ex-left { display: flex; align-items: center; gap: 12px; }
+.ex-num { font-family: 'M PLUS Rounded 1c', sans-serif; font-size: 11px; color: var(--gold); font-weight: 700; min-width: 18px; }
+.ex-name { display: block; font-size: 13.5px; font-weight: 700; color: var(--ink); }
+.ex-meta { display: block; font-size: 10.5px; color: var(--inksoft); }
+.ex-arrow { font-size: 12px; color: var(--inksoft); transition: transform .2s; }
+.ex-arrow.rot { transform: rotate(180deg); }
+.ex-body { border-top: 1px solid #EFEBE0; padding: 12px 16px; }
+.ex-lbl { font-size: 10px; font-weight: 700; color: var(--gold); letter-spacing: 0.05em; }
+.ex-desc { font-size: 12px; line-height: 1.7; color: var(--ink); margin-top: 2px; }
+.ex-reps { margin-top: 8px; font-size: 11.5px; font-weight: 700; color: var(--navy); }
+.varbox { background: var(--paper); padding: 12px; }
+.var-l { font-size: 10px; font-weight: 700; color: var(--inksoft); }
+.var-t { font-size: 11.5px; color: var(--ink); margin-top: 2px; }
+.strategy { background: var(--goldsoft); border: 1px solid var(--gold); padding: 20px; margin: 24px 0 32px; }
+.str-t { font-weight: 700; font-size: 12.5px; color: var(--navy); margin-bottom: 4px; }
+.str-b { font-size: 12.5px; color: var(--navy); line-height: 1.7; }
+.pfc-cell { border: 1px solid var(--line); background: #fff; padding: 12px; text-align: center; }
+.pfc-n { font-family: 'M PLUS Rounded 1c', sans-serif; font-size: 16px; font-weight: 700; color: var(--navy); }
+.pfc-l { font-size: 10px; color: var(--inksoft); }
+.days { display: flex; flex-wrap: wrap; gap: 6px; margin: 16px 0; }
+.day-btn { padding: 6px 12px; border: 1px solid var(--line); background: #fff; color: var(--ink); font-family: 'M PLUS Rounded 1c', sans-serif; font-size: 12px; font-weight: 700; border-radius: 2px; }
+.day-btn.active { background: var(--navy); color: var(--gold); }
+.tchip { min-width: 44px; text-align: center; line-height: 1.3; }
+.tchip-s { display: block; font-size: 9px; font-weight: 700; opacity: .75; }
+.swapsel { border-color: var(--gold); background: var(--goldsoft); color: var(--navy); box-shadow: 0 0 0 2px var(--gold) inset; }
+.meal { margin-bottom: 16px; }
+.meal-t { font-weight: 700; font-size: 12.5px; color: var(--navy); margin-bottom: 6px; }
+.frow { margin-bottom: 8px; }
+.food { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: #fff; border: 1px solid var(--line); }
+.food-n { font-size: 12.5px; color: var(--ink); }
+.food-g { font-family: 'M PLUS Rounded 1c', sans-serif; font-size: 12px; color: var(--gold); font-weight: 700; }
+.subs { margin-top: 4px; padding-left: 12px; font-size: 10.5px; color: var(--inksoft); }
+.veg { padding: 8px 12px; background: #fff; border: 1px solid var(--line); font-size: 12px; color: var(--inksoft); }
+.total-card { background: #fff; border: 1px solid var(--gold); padding: 16px; margin: 16px 0; }
+.total-t { font-weight: 700; font-size: 12.5px; color: var(--navy); margin-bottom: 4px; }
+.total-b { font-family: 'M PLUS Rounded 1c', sans-serif; font-size: 12px; color: var(--inksoft); line-height: 1.7; }
+.caution { background: var(--paper); border: 1px solid var(--line); padding: 16px; }
+.caution-t { font-weight: 700; font-size: 12.5px; color: var(--navy); margin-bottom: 6px; }
+.caution-i { font-size: 11.5px; line-height: 1.7; color: var(--ink); margin-bottom: 4px; }
+.supcard { background: #fff; border: 1px solid var(--line); padding: 16px; }
+.sup-n { font-weight: 700; font-size: 12.5px; color: var(--navy); }
+.sup-note { font-size: 11.5px; color: var(--inksoft); margin-top: 2px; }
+.bigcard { padding: 20px; margin-bottom: 16px; border: 1px solid var(--line); background: #fff; }
+.bigcard.goldbg { background: var(--goldsoft); border-color: var(--gold); }
+.bigcard.goldline { border-color: var(--gold); }
+.big-t { font-weight: 700; font-size: 13px; color: var(--navy); margin-bottom: 4px; }
+.big-b { font-size: 12.5px; color: var(--navy); line-height: 1.7; }
+.big-type { font-family: 'M PLUS Rounded 1c', sans-serif; font-size: 15px; color: var(--gold); font-weight: 700; margin-bottom: 4px; }
+.big-note { font-size: 12px; color: var(--inksoft); line-height: 1.6; }
+.plat-step { background: #fff; border: 1px solid var(--line); padding: 16px; display: flex; gap: 12px; }
+.plat-n { font-family: 'M PLUS Rounded 1c', sans-serif; font-size: 16px; color: var(--gold); font-weight: 700; min-width: 22px; }
+.plat-t { font-weight: 700; font-size: 13px; color: var(--navy); }
+.plat-b { font-size: 12px; color: var(--inksoft); line-height: 1.7; margin-top: 4px; }
+.logic-card { border: 1px solid var(--line); background: #fff; margin-top: 24px; }
+.logic-head { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; text-align: left; font-weight: 700; font-size: 12.5px; color: var(--navy); }
+.logic-body { border-top: 1px solid #EFEBE0; padding: 12px 16px; }
+.logic-i { font-size: 11.5px; line-height: 1.8; color: var(--ink); margin-bottom: 6px; }
+.img-modal { position: fixed; inset: 0; background: rgba(60,52,46,.94); z-index: 50; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; }
+.img-modal img { max-width: 100%; max-height: 60vh; border: 1px solid var(--gold); background: #1F9C8C; }
+.img-modal-note { color: var(--goldsoft); font-size: 13px; line-height: 1.7; text-align: center; margin: 14px 0 4px; max-width: 32rem; }
+.img-modal-sub { color: rgba(255,232,220,.7); font-size: 11px; text-align: center; margin-bottom: 14px; }
+.img-modal-close { background: var(--gold); color: var(--navy); font-family: 'M PLUS Rounded 1c', sans-serif; font-weight: 700; font-size: 13px; padding: 10px 28px; border-radius: 2px; }
+.img-modal-dl { color: var(--goldsoft); font-size: 12px; text-decoration: underline; margin-top: 12px; display: inline-block; }
+.reset-btn { display: block; width: 100%; padding: 12px 0; margin-top: 16px; border: 1.5px solid var(--navy); color: var(--navy); font-family: 'M PLUS Rounded 1c', sans-serif; font-weight: 700; font-size: 13px; border-radius: 2px; background: transparent; text-align: center; }
+.note { font-size: 10.5px; color: var(--inksoft); line-height: 1.6; }
+.mb8 { margin-bottom: 8px; } .mb16 { margin-bottom: 16px; } .mt8 { margin-top: 8px; } .mt16 { margin-top: 16px; }
+/* ---- v10 ポップ化オーバーライド ---- */
+.opt-card, .bigcard, .hero, .pace-card, .over-card, .caution, .supcard, .plat-step, .logic-card, .strategy, .pfc-cell, .food, .veg, .total-card, .ex-card, .txt-input, .img-modal img { border-radius: 16px; }
+.frow .subs { padding-left: 16px; }
+.btn-primary, .btn-next, .copy-btn, .reset-btn, .pill, .day-btn, .img-modal-close { border-radius: 999px; }
+.btn-primary, .btn-next:not(:disabled), .copy-btn { color: #FFFFFF; }
+.pill.sel, .day-btn.active { color: #FFFFFF; }
+.opt-card.sel { color: #FFFFFF; }
+.dial-c.cur { color: #FFFFFF; }
+.hero { background: linear-gradient(135deg, #23AC9A 0%, #1F9C8C 55%, #178578 100%); box-shadow: 0 8px 24px rgba(31,156,140,.25); }
+.hero-title { color: #FFFFFF; }
+.opt-card, .ex-card, .bigcard, .supcard, .plat-step { box-shadow: 0 2px 8px rgba(61,58,55,.05); }
+.tab.active { border-bottom-width: 3px; }
+.title { font-weight: 900; }
+.brand-logo { display:block; height:34px; width:auto; margin:0 auto 12px; }
+.trainer-badge { display:inline-block; margin-top:8px; font-family:'M PLUS Rounded 1c',sans-serif; font-size:10px; font-weight:700; letter-spacing:.1em; color:var(--gold); background:var(--goldsoft); padding:3px 12px; border-radius:999px; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script>
+/* ============ データ定義 ============ */
+var CHART_LOGO_IMG = new Image();
+CHART_LOGO_IMG.src = 'data:image/png;base64,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';
+var STEPS = ["基本情報", "目的", "環境", "性格診断"];
+var JOB_FACTORS = { "デスクワーク中心": 1.35, "立ち仕事が多い": 1.5, "肉体労働": 1.65 };
+var EXP_ALLOWED = { "初心者": ["初級"], "経験あり": ["初級", "中級"], "上級": ["初級", "中級", "上級"] };
+var INJURY_OPTIONS = ["膝", "腰", "肩"];
+var AVOID_OPTIONS = ["魚介", "卵", "乳製品", "大豆"];
+var CONV_LINES = [
+  "P(タンパク質): サラダチキン1個 ≒ 鶏むね100g(P約24g) / ゆで卵1個=P6g / ギリシャヨーグルト1個=P10g / 焼き鳥もも2本=P約16g / プロテインドリンク1本=P15〜20g",
+  "C(炭水化物): おにぎり1個 ≒ 白米100g(C約40g) / バナナ1本=C27g / 干し芋50g=C33g / 全粒粉サンド1個=C約30g",
+  "F(脂質): 素焼きナッツ小袋25g=F約13g / オリーブオイル小分け1袋=F約10g",
+  "使い方: 表示グラムの食材が用意できない日は、P→C→Fの順に上の換算で近づければOK。厳密さより「毎日だいたい合っている」ことが結果を作ります"
+];
+var PERSONAL_MET = 6.0;        // パーソナル1回の平均強度
+var PERSONAL_MIN = 50;         // パーソナル1回の実働時間
+var KCAL_PER_KG = 7200;        // 体脂肪1kgのエネルギー
+
+var EXERCISES = [
+  { id: "sq1", name: "スクワット", cat: "下半身", equip: "自重", time: 5, met: 5.0, level: "初級", joints: ["膝"],
+    purpose: "下半身全体(太もも・お尻)と体幹を同時に使う基礎種目。消費カロリーが大きく、あらゆる目的の土台になる。",
+    desc: "足を肩幅に開き、膝とつま先を同じ向きに保ったまま、お尻を後ろに引くように下げる。太ももが床と平行になる深さが目安。",
+    reps: "15回 × 3セット", alt: "ワイドスクワット(足幅を広げ、内もも重視に切替)",
+    easier: "椅子スクワット(椅子にお尻が触れたら立つ)", harder: "ジャンプスクワット" },
+  { id: "sq2", name: "ブルガリアンスプリットスクワット", cat: "下半身", equip: "自重", time: 6, met: 5.5, level: "中級", joints: ["膝"],
+    purpose: "片脚ずつ強い負荷をかけ、お尻ともも前を集中的に刺激。左右差の改善にも有効。",
+    desc: "後ろ足を椅子やソファに乗せ、前足で体を上下させる。前膝がつま先より大きく前に出ないよう注意。",
+    reps: "左右各10回 × 3セット", alt: "その場ランジ(左右交互に踏み込む)",
+    easier: "スプリットスクワット(両足とも床)", harder: "ダンベルを両手に持つ" },
+  { id: "sq3", name: "ダンベルゴブレットスクワット", cat: "下半身", equip: "ダンベル", time: 6, met: 5.0, level: "中級", joints: ["膝"],
+    purpose: "重りを胸の前で抱えることでフォームが安定し、背中を丸めずに下半身へ負荷をかけられる。",
+    desc: "ダンベルを胸の前で縦に抱え、背中をまっすぐ保ったまましゃがむ。かかと重心をキープ。",
+    reps: "12回 × 3セット", alt: "自重スクワット(回数を1.5倍に増やす)",
+    easier: "自重スクワットに変更", harder: "重量を上げる/テンポを遅く" },
+  { id: "hip1", name: "ヒップリフト", cat: "下半身", equip: "自重", time: 4, met: 3.5, level: "初級",
+    purpose: "お尻(大臀筋)ともも裏を直接刺激。ヒップアップと腰痛予防の基本種目。",
+    desc: "仰向けで膝を立て、お尻を締めながら腰を持ち上げる。腰を反らせすぎず、膝から肩まで一直線で止める。",
+    reps: "15回 × 3セット", alt: "四つ這いヒップエクステンション(片脚を後ろへ蹴り上げ)",
+    easier: "可動域を小さく", harder: "片脚ヒップリフト" },
+  { id: "core1", name: "プランク", cat: "体幹", equip: "自重", time: 3, met: 3.0, level: "初級",
+    purpose: "体幹全体を固める力を養う。姿勢維持とお腹の引き締めの土台。",
+    desc: "肘とつま先で体を支え、頭からかかとまで一直線をキープ。腰が落ちたり上がったりしないようお腹に力を入れる。",
+    reps: "30秒 × 3セット", alt: "デッドバグ(腰に不安がある場合はこちら)",
+    easier: "膝つきプランク", harder: "60秒キープ/片脚を浮かせる" },
+  { id: "core2", name: "デッドバグ", cat: "体幹", equip: "自重", time: 4, met: 2.8, level: "初級",
+    purpose: "腰を守りながら深部の体幹(腹横筋)を鍛える。反り腰の改善に有効。",
+    desc: "仰向けで両手両膝を上げ、対角の手足をゆっくり伸ばして戻す。腰と床の間に隙間を作らないのがポイント。",
+    reps: "左右各8回 × 3セット", alt: "プランク(静止キープ型に切替)",
+    easier: "脚だけを動かす", harder: "動作をさらにゆっくり(4秒かけて)" },
+  { id: "core3", name: "バードドッグ", cat: "体幹", equip: "自重", time: 4, met: 2.8, level: "初級",
+    purpose: "体幹の安定と背面の連動を鍛える。姿勢改善と腰痛予防の定番。",
+    desc: "四つ這いから対角の手足をまっすぐ伸ばし、体幹がぶれないよう2秒キープして戻す。",
+    reps: "左右各8回 × 3セット", alt: "デッドバグ(仰向け版の同系種目)",
+    easier: "手と足を片方ずつ交互に", harder: "肘と膝をタッチしてから伸ばす" },
+  { id: "core4", name: "サイドプランク", cat: "体幹", equip: "自重", time: 3, met: 3.0, level: "中級",
+    purpose: "脇腹(腹斜筋)とくびれ周りを強化。体の横ブレを防ぐ筋力を作る。",
+    desc: "横向きで肘と足の側面で体を支え、頭から足まで一直線をキープ。腰が落ちやすいので注意。",
+    reps: "左右各20秒 × 3セット", alt: "立位サイドベンド(立って脇腹を縮める)",
+    easier: "膝つきサイドプランク", harder: "上側の脚を持ち上げる" },
+  { id: "up1", name: "プッシュアップ", cat: "上半身", move: "push", equip: "自重", time: 5, met: 3.8, level: "初級", joints: ["肩"],
+    purpose: "胸・肩・二の腕を一度に鍛える上半身の基礎種目。",
+    desc: "手を肩幅よりやや広く置き、体を一直線に保ったまま胸を床に近づける。肘は45度程度に開く。",
+    reps: "10回 × 3セット", alt: "壁プッシュアップ(立ったまま壁に向かって)",
+    easier: "膝つき/壁プッシュアップ", harder: "足を台に乗せる" },
+  { id: "up2", name: "ダンベルショルダープレス", cat: "上半身", move: "push", equip: "ダンベル", time: 5, met: 4.0, level: "中級", joints: ["肩"],
+    purpose: "肩(三角筋)を強化し、肩幅と上半身のメリハリを作る。",
+    desc: "ダンベルを肩の高さに構え、真上へ押し上げる。腰を反らせないようお腹に軽く力を入れる。",
+    reps: "10回 × 3セット", alt: "パイクプッシュアップ(お尻を高く上げた腕立て)",
+    easier: "軽い重量で座って行う", harder: "重量を上げる" },
+  { id: "up3", name: "チューブローイング", cat: "上半身", move: "pull", equip: "チューブ", time: 5, met: 3.5, level: "初級",
+    purpose: "背中(広背筋・僧帽筋)を引き締め、猫背改善に直結する引く動作。",
+    desc: "チューブを足裏に引っ掛け、肘を体の後ろへ引いて肩甲骨を寄せる。背中を丸めない。",
+    reps: "15回 × 3セット", alt: "タオルローイング(タオルを足に掛けて引く)",
+    easier: "チューブを緩めに持つ", harder: "引き切った位置で2秒キープ" },
+  { id: "up4", name: "ダンベルベンチプレス", cat: "上半身", move: "push", equip: "ダンベル", time: 6, met: 4.0, level: "中級", joints: ["肩"],
+    purpose: "胸(大胸筋)をピンポイントで強化。胸の厚み・バストラインづくりの主力。",
+    desc: "仰向けでダンベルを胸の上に構え、真上へ押し上げる。手首を立てて持つ。床の上ならフロアプレスでOK。",
+    reps: "10回 × 3セット", alt: "プッシュアップ(手幅を広めにして胸狙い)",
+    easier: "重量を下げてフロアプレス", harder: "重量を上げる" },
+  { id: "up5", name: "スーパーマン(バックエクステンション)", cat: "上半身", move: "pull", equip: "自重", time: 4, met: 3.5, level: "初級", joints: ["腰"],
+    purpose: "背面全体(脊柱起立筋・広背筋まわり)を自重で強化。器具なしで「引く筋肉」を鍛える柱になる種目。",
+    desc: "うつ伏せで両手両脚を軽く浮かせ、背中を縮める意識で2秒キープして戻す。腰を反らせすぎず、みぞおちから上を持ち上げる。",
+    reps: "12回 × 3セット", alt: "タオルローイング(タオルを足裏に掛けて引く)",
+    easier: "上体だけを浮かせる", harder: "手を前に伸ばしたまま行う" },
+  { id: "cardio1", name: "その場ステップ", cat: "有酸素", equip: "自重", time: 8, met: 6.0, level: "初級",
+    purpose: "低負荷で心拍を上げる有酸素の入口。脂肪燃焼と体力の底上げ。",
+    desc: "その場で腿を上げながらリズミカルに足踏み。腕もしっかり振る。会話がギリギリできる強度が目安。",
+    reps: "3分継続 × 2〜3セット", alt: "踏み台昇降(階段や低い台を使う)",
+    easier: "ペースを落とす", harder: "腿を腰の高さまで上げる" },
+  { id: "cardio2", name: "バーピー", cat: "有酸素", equip: "自重", time: 6, met: 8.0, level: "上級", joints: ["膝", "腰"],
+    purpose: "全身+高心拍の複合種目。短時間で消費カロリーを最も稼げる部類。",
+    desc: "しゃがんで手をつき、脚を後ろへ伸ばして戻し、立ち上がってジャンプ。フォームが崩れたら回数より質を優先。",
+    reps: "8回 × 3セット", alt: "スクワット+その場ジョグの組み合わせ",
+    easier: "ジャンプなし(立ち上がるだけ)", harder: "プッシュアップを追加" },
+  { id: "cardio3", name: "マウンテンクライマー", cat: "有酸素", equip: "自重", time: 5, met: 8.0, level: "中級", joints: ["肩"],
+    purpose: "体幹+有酸素の複合。お腹周りと心肺を同時に鍛える。",
+    desc: "プランク姿勢から膝を交互に胸へ引き寄せる。腰が上がりすぎないよう一直線を意識。",
+    reps: "20秒 × 3セット", alt: "その場もも上げ(立位で膝を高く)",
+    easier: "テンポをゆっくり", harder: "スピードアップ/30秒に延長" },
+  { id: "flex1", name: "股関節ストレッチ", cat: "柔軟性", equip: "自重", time: 4, met: 2.3, level: "初級",
+    purpose: "座り姿勢で硬くなる股関節前面を緩め、腰の負担と反り腰を軽減する。",
+    desc: "片膝立ちになり、骨盤を前へスライドさせて股関節の前面を伸ばす。反動をつけずじんわり。",
+    reps: "左右各30秒", alt: "仰向け膝抱えストレッチ",
+    easier: "浅い位置で止める", harder: "後ろ足の甲を手で持つ" },
+  { id: "flex2", name: "猫背改善キャットアンドカウ", cat: "柔軟性", equip: "自重", time: 4, met: 2.5, level: "初級", style: "pilates",
+    purpose: "背骨をしなやかに動かし、猫背・肩こりをリセットする。",
+    desc: "四つ這いで背中を丸める→反らすをゆっくり交互に。呼吸に合わせて(吐きながら丸め、吸いながら反らす)。",
+    reps: "10往復", alt: "座位で胸を開くストレッチ(両手を後ろで組む)",
+    easier: "可動域を小さく", harder: "各ポジションで3秒キープ" },
+  { id: "flex3", name: "骨盤底筋エクササイズ", cat: "柔軟性", equip: "自重", time: 5, met: 2.0, level: "初級", style: "pilates",
+    purpose: "骨盤を内側から支える筋肉。産前産後ケア・姿勢・下腹の引き締めの要。",
+    desc: "仰向けで膝を立て、息を吐きながら下腹の奥をゆっくり締めて、吸いながら緩める。お尻や脚に力が入らないように。",
+    reps: "10回 × 2セット", alt: "ドローイン(お腹を凹ませたまま呼吸)",
+    easier: "締める秒数を短く", harder: "締めた状態を5秒キープ" },
+  /* ---- ピラティス種目(マット・全環境対応) ---- */
+  { id: "pl1", name: "ペルビックカール", cat: "下半身", equip: "自重", time: 4, met: 3.0, level: "初級", style: "pilates",
+    purpose: "背骨をひとつずつ動かしながら、お尻ともも裏をやさしく目覚めさせるピラティスの基本。腰まわりの緊張リセットにも。",
+    desc: "仰向けで膝を立て、息を吐きながら尾骨→腰→背中の順に持ち上げる。上で一呼吸キープし、吐きながら上から順にゆっくり下ろす。",
+    reps: "8回 × 2セット", alt: "ヒップリフト(シンプル版)",
+    easier: "可動域を小さく", harder: "片脚で行う" },
+  { id: "pl2", name: "ハンドレッド", cat: "体幹", equip: "自重", time: 4, met: 3.0, level: "中級", style: "pilates",
+    purpose: "呼吸と体幹を同時に鍛えるピラティスの代名詞。お腹の深部に火を入れるウォームアップ。",
+    desc: "仰向けで頭と肩を起こして脚を持ち上げ、腕を小さく上下させながら「5カウント吸って5カウント吐く」を10セット(計100カウント)。",
+    reps: "100カウント × 1〜2セット", alt: "デッドバグ",
+    easier: "頭を下ろして膝を曲げる", harder: "脚を床すれすれまで下げる" },
+  { id: "pl3", name: "ロールアップ", cat: "体幹", equip: "自重", time: 4, met: 3.0, level: "中級", style: "pilates", joints: ["腰"],
+    purpose: "背骨を一節ずつ丸めて起き上がる動き。お腹の引き締めと背骨のしなやかさを同時に育てる。",
+    desc: "仰向けから腕を天井→前方へ伸ばし、息を吐きながら背骨を上から順に丸めて起き上がる。吸って背筋を伸ばし、吐きながら下から順に戻る。",
+    reps: "8回 × 2セット", alt: "自重クランチ(可動域小さめ)",
+    easier: "膝を曲げて届くところまで", harder: "動作に4秒かける" },
+  { id: "pl4", name: "シングルレッグストレッチ", cat: "体幹", equip: "自重", time: 4, met: 3.5, level: "初級", style: "pilates",
+    purpose: "体幹を安定させたまま脚を動かす「安定×動き」の練習。お腹の引き締めと動きの土台づくり。",
+    desc: "仰向けで頭と肩を起こし、片膝を胸へ引き寄せ、もう一方の脚を伸ばす。呼吸に合わせて左右交互に。腰は床に軽くつけたまま。",
+    reps: "左右各10回 × 2セット", alt: "デッドバグ",
+    easier: "頭を下ろして行う", harder: "伸ばす脚を低くする" },
+  { id: "pl5", name: "ダブルレッグストレッチ", cat: "体幹", equip: "自重", time: 4, met: 3.5, level: "中級", style: "pilates",
+    purpose: "手脚を同時に伸ばしても体幹がブレない力を作る。ぽっこりお腹対策の主力。",
+    desc: "仰向けで頭と肩を起こして両膝を抱え、吸いながら手脚を斜め上へ伸ばし、吐きながら抱え直す。腰を反らせない。",
+    reps: "8回 × 2セット", alt: "シングルレッグストレッチ",
+    easier: "脚を高めに伸ばす", harder: "脚を低く伸ばす" },
+  { id: "pl6", name: "スイミング", cat: "上半身", move: "pull", equip: "自重", time: 4, met: 3.5, level: "初級", style: "pilates", joints: ["腰"],
+    purpose: "背面全体(背中・お尻・もも裏)を連動させ、姿勢を後ろから支える力を育てる。",
+    desc: "うつ伏せで対角の手脚を小さく交互にパタパタと持ち上げる。腰を反らせすぎず、お腹を軽く引き込んだまま。",
+    reps: "20カウント × 3セット", alt: "バードドッグ",
+    easier: "手だけ・脚だけを交互に", harder: "テンポは変えず可動域を広く" },
+  { id: "pl7", name: "サイドキックシリーズ", cat: "下半身", equip: "自重", time: 5, met: 3.0, level: "初級", style: "pilates",
+    purpose: "横向きで骨盤を安定させたまま脚を動かし、お尻の横(中臀筋)と内ももを引き締める。",
+    desc: "横向きに寝て体を一直線にし、上の脚を前後にゆっくりスイング。骨盤がグラつかないよう体幹で支える。",
+    reps: "左右各12回 × 2セット", alt: "横向きレッグリフト",
+    easier: "振り幅を小さく", harder: "前後それぞれ2秒キープ" },
+  { id: "pl8", name: "ティーザー", cat: "体幹", equip: "自重", time: 4, met: 4.0, level: "上級", style: "pilates", joints: ["腰"],
+    purpose: "体をV字に保つピラティスの花形。体幹の総合力とバランスの仕上げ種目。",
+    desc: "仰向けから手脚を伸ばしたまま同時に起き上がり、V字でキープして戻る。反動を使わず、呼吸を止めない。",
+    reps: "5回 × 2セット", alt: "ロールアップ",
+    easier: "膝を曲げて行う", harder: "V字キープを5秒に" },
+  { id: "pl9", name: "スパインツイスト", cat: "柔軟性", equip: "自重", time: 3, met: 2.5, level: "初級", style: "pilates",
+    purpose: "背骨の回旋をなめらかにし、デスクワークで固まった背中・くびれ周りをほぐす。",
+    desc: "長座で背筋を伸ばしたまま、息を吐きながら上体を左右へツイスト。骨盤は正面に向けたまま。",
+    reps: "左右各6回", alt: "座位ツイストストレッチ",
+    easier: "膝を曲げて座る", harder: "回した位置で一呼吸キープ" },
+  { id: "pl10", name: "ソウ(のこぎり)", cat: "柔軟性", equip: "自重", time: 4, met: 2.5, level: "初級", style: "pilates",
+    purpose: "ツイスト+前屈で、もも裏と背中を同時にストレッチ。呼吸を深くする効果も。",
+    desc: "開脚で座り、上体をひねりながら小指を反対のつま先へ「のこぎり」のように伸ばし、息を吐き切って戻る。",
+    reps: "左右各5回", alt: "開脚前屈",
+    easier: "膝を軽く曲げる", harder: "吐く息をさらに長く" },
+  { id: "pl11", name: "マーメイドストレッチ", cat: "柔軟性", equip: "自重", time: 3, met: 2.3, level: "初級", style: "pilates",
+    purpose: "体側(わき腹〜背中)を大きく伸ばし、呼吸の入りやすい胸郭を作る。",
+    desc: "横座りで片腕を頭上へ伸ばし、息を吐きながら体側をアーチ状に伸ばす。お尻が浮かないように。",
+    reps: "左右各30秒", alt: "立位サイドストレッチ",
+    easier: "肘をついて浅めに", harder: "目線を天井へ、軽い回旋を加える" },
+  { id: "pl12", name: "ピラティスプッシュアップ", cat: "上半身", move: "push", equip: "自重", time: 5, met: 3.5, level: "中級", style: "pilates", joints: ["肩"],
+    purpose: "立位から背骨を丸めてプランクへ「流れる」ピラティス版腕立て。全身の連動+胸・二の腕。",
+    desc: "立位から背骨を丸め、手を床に歩かせてプランクへ。脇を締めたプッシュアップを行い、逆再生で立位に戻る。",
+    reps: "5回 × 2セット", alt: "膝つきプッシュアップ",
+    easier: "歩いて戻るだけ(腕立てなし)", harder: "プッシュアップを2回ずつ" },
+  { id: "mc1", name: "レッグプレス", cat: "下半身", equip: "マシン", time: 6, met: 5.0, level: "初級", joints: ["膝"],
+    purpose: "腰への負担を抑えつつ、太もも・お尻に高重量をかけられる下半身の主力マシン。",
+    desc: "シートに深く座り、足を腰幅でプレートに置く。膝を伸ばし切らない位置まで押し、ゆっくり戻す。",
+    reps: "12回 × 3セット", alt: "自宅なら: スクワット/ゴブレットスクワット",
+    easier: "重量を下げて可動域を確保", harder: "足幅・足位置を変えて刺激を変える" },
+  { id: "mc2", name: "チェストプレス", cat: "上半身", move: "push", equip: "マシン", time: 5, met: 4.0, level: "初級", joints: ["肩"],
+    purpose: "軌道が固定されているため、初心者でも安全に胸を追い込めるマシン。",
+    desc: "グリップが胸の高さに来るようシートを調整し、肩甲骨を軽く寄せたまま前方へ押し出す。",
+    reps: "12回 × 3セット", alt: "自宅なら: プッシュアップ",
+    easier: "重量を下げる", harder: "戻す動作を3秒かけて行う" },
+  { id: "mc3", name: "ラットプルダウン", cat: "上半身", move: "pull", equip: "マシン", time: 5, met: 4.0, level: "初級", joints: ["肩"],
+    purpose: "背中の広がり(広背筋)を作る代表マシン。姿勢改善・後ろ姿づくりの主役。",
+    desc: "バーを肩幅より広く握り、胸を張ったまま鎖骨に向かって引き下げる。反動を使わない。",
+    reps: "12回 × 3セット", alt: "自宅なら: チューブ/タオルローイング",
+    easier: "重量を下げる", harder: "引き切った位置で1秒キープ" },
+  { id: "mc4", name: "シーテッドロー", cat: "上半身", move: "pull", equip: "マシン", time: 5, met: 4.0, level: "初級",
+    purpose: "背中の厚みと肩甲骨まわりを強化。デスクワークで丸まった姿勢を戻す。",
+    desc: "背筋を立てて座り、肘を体側に沿わせながらグリップをお腹へ引く。肩がすくまないように。",
+    reps: "12回 × 3セット", alt: "自宅なら: チューブローイング",
+    easier: "重量を下げる", harder: "戻しをゆっくり(3秒)" },
+  { id: "mc5", name: "レッグカール", cat: "下半身", equip: "マシン", time: 4, met: 4.0, level: "初級",
+    purpose: "もも裏(ハムストリング)を集中的に鍛える。ヒップアップと膝の安定に直結。",
+    desc: "パッドをかかと上に当て、もも裏の収縮を感じながら膝を曲げる。腰が浮かないよう注意。",
+    reps: "12回 × 3セット", alt: "自宅なら: ヒップリフト",
+    easier: "重量を下げる", harder: "片脚ずつ行う" },
+  { id: "mc6", name: "アブドミナルクランチ", cat: "体幹", equip: "マシン", time: 4, met: 3.5, level: "初級", joints: ["腰"],
+    purpose: "腹直筋を安全な軌道で収縮させ、お腹の引き締めを直接狙うマシン。",
+    desc: "みぞおちを丸めるイメージで上体を倒し、ゆっくり戻す。首だけで倒さない。",
+    reps: "15回 × 3セット", alt: "自宅なら: 自重クランチ/デッドバグ",
+    easier: "重量を下げる", harder: "戻す動作を3秒かけて行う" },
+  { id: "mc7", name: "トレッドミル傾斜ウォーク", cat: "有酸素", equip: "マシン", time: 10, met: 6.5, level: "初級",
+    purpose: "傾斜歩きは膝に優しく脂肪燃焼効率が高い、ジム有酸素の定番。",
+    desc: "傾斜5〜10%・速度は「会話がギリギリできる」程度に設定し、手すりに頼らず歩く。",
+    reps: "10〜15分", alt: "自宅なら: 踏み台昇降/その場ステップ",
+    easier: "傾斜と速度を下げる", harder: "傾斜を上げる(速度は上げすぎない)" }
+];
+
+var GOAL_WEIGHTS = {
+  "減量": { "有酸素": 0.4, "体幹": 0.2, "下半身": 0.2, "上半身": 0.1, "柔軟性": 0.1 },
+  "筋肥大": { "下半身": 0.25, "上半身": 0.3, "体幹": 0.2, "有酸素": 0.1, "柔軟性": 0.15 },
+  "姿勢改善": { "体幹": 0.35, "柔軟性": 0.3, "上半身": 0.15, "下半身": 0.1, "有酸素": 0.1 },
+  "健康維持": { "下半身": 0.2, "体幹": 0.2, "上半身": 0.2, "有酸素": 0.2, "柔軟性": 0.2 },
+  "産前産後ケア": { "体幹": 0.3, "柔軟性": 0.25, "下半身": 0.2, "上半身": 0.15, "有酸素": 0.1 }
+};
+
+
+var DAY_SLOTS = { 1: [0], 2: [0, 3], 3: [0, 2, 4], 4: [0, 1, 3, 4], 5: [0, 1, 2, 4, 5], 6: [0, 1, 2, 4, 5, 6], 7: [0, 1, 2, 3, 4, 5, 6] };
+var SPLIT_TYPES = { full: ["full"], ul: ["upper", "lower"], ppl: ["push", "pull", "legs"] };
+var DAY_TYPES = {
+  full:     { label: "全身",   chip: "全", primary: null,     w: null },
+  upper:    { label: "上半身", chip: "上", primary: "上半身", w: { "上半身": 0.5, "体幹": 0.2, "有酸素": 0.2, "柔軟性": 0.1 } },
+  lower:    { label: "下半身", chip: "下", primary: "下半身", w: { "下半身": 0.5, "体幹": 0.2, "有酸素": 0.2, "柔軟性": 0.1 } },
+  push:     { label: "押す日", chip: "押", primary: "上半身", move: "push", w: { "上半身": 0.5, "体幹": 0.15, "有酸素": 0.25, "柔軟性": 0.1 } },
+  pull:     { label: "引く日", chip: "引", primary: "上半身", move: "pull", w: { "上半身": 0.5, "体幹": 0.2, "有酸素": 0.2, "柔軟性": 0.1 } },
+  legs:     { label: "脚の日", chip: "脚", primary: "下半身", w: { "下半身": 0.55, "体幹": 0.15, "有酸素": 0.2, "柔軟性": 0.1 } },
+  recovery: { label: "回復",   chip: "回", primary: "柔軟性", w: { "柔軟性": 0.55, "有酸素": 0.3, "体幹": 0.15 } },
+  rest:     { label: "休養",   chip: "休" }
+};
+function splitPlan(freq) {
+  if (freq <= 3) return { key: "full", name: "全身法", note: "週3回以下は毎回全身を刺激するのが最も効率的。各部位が週2〜3回刺激され、回復日(超回復に必要な48〜72時間)も自然に確保されます。" };
+  if (freq <= 5) return { key: "ul", name: "上下分割", note: "週4〜5回は上半身と下半身を交互に行う分割。同じ部位に48時間以上の回復を確保しながら頻度を上げられます。" };
+  return { key: "ppl", name: "プッシュ/プル/脚 3分割", note: "週6回以上は「押す/引く/脚」の3分割。毎日動いても、各筋群には中2日の回復が入る設計です。" };
+}
+function buildWeekSchedule(freq) {
+  var plan = splitPlan(freq);
+  var slots = DAY_SLOTS[freq] || DAY_SLOTS[3];
+  var sched = DAYS.map(function (day) { return { day: day, type: "rest" }; });
+  slots.forEach(function (di, k) {
+    var t = (freq === 7 && k === 6) ? "recovery" : SPLIT_TYPES[plan.key][k % SPLIT_TYPES[plan.key].length];
+    sched[di].type = t;
+  });
+  return { plan: plan, sched: sched };
+}
+function swapDays(i, j) {
+  var t = state.schedTypes[i];
+  state.schedTypes[i] = state.schedTypes[j];
+  state.schedTypes[j] = t;
+}
+function adjacencyWarn(types, splitKey) {
+  for (var i = 0; i < 6; i++) {
+    var a = types[i], b = types[i + 1];
+    if (a !== "rest" && b !== "rest") {
+      if (splitKey === "full") return true;
+      if (a === b && a !== "recovery") return true;
+    }
+  }
+  return false;
+}
+function getDayWeights(dayType, goal) {
+  if (dayType === "full") return GOAL_WEIGHTS[goal];
+  var base = {};
+  Object.keys(DAY_TYPES[dayType].w).forEach(function (k) { base[k] = DAY_TYPES[dayType].w[k]; });
+  var primary = DAY_TYPES[dayType].primary;
+  if (goal === "減量" && base["有酸素"] !== undefined && primary && dayType !== "recovery") {
+    base["有酸素"] += 0.1; base[primary] -= 0.1;
+  }
+  if (goal === "筋肥大" && base["有酸素"] !== undefined && primary && dayType !== "recovery") {
+    base[primary] += 0.1; base["有酸素"] = Math.max(0.05, base["有酸素"] - 0.1);
+  }
+  return base;
+}
+
+var GOALS = [
+  { id: "減量", label: "減量", desc: "体脂肪を落として引き締める" },
+  { id: "筋肥大", label: "筋肥大・ボディメイク", desc: "筋量を増やして体型を変える" },
+  { id: "姿勢改善", label: "姿勢改善", desc: "猫背・反り腰などを整える" },
+  { id: "健康維持", label: "健康維持・体力向上", desc: "無理なく体力を保つ" },
+  { id: "産前産後ケア", label: "産前産後ケア", desc: "骨盤底筋・体幹をケアする" }
+];
+
+var EQUIP_OPTIONS = [
+  { id: "自重のみ", label: "自重のみ", desc: "器具なし。体ひとつでOK" },
+  { id: "最小限の器具(チューブ等)", label: "最小限の器具(チューブ等)", desc: "チューブ・ヨガマット程度" },
+  { id: "ダンベル等あり", label: "ダンベル等あり", desc: "自宅にダンベルなどの器具がある" },
+  { id: "マシンジムに通える", label: "マシンジムに通える", desc: "マシン種目中心+自宅代替案も表示" }
+];
+
+var TIME_OPTIONS = ["15", "30", "45", "60", "75", "90"];
+
+var PERSONALITY_QUESTIONS = [
+  { q: "同じトレーニングメニューが続くと、どう感じますか?", opts: [{ t: "飽きてしまい、やる気が落ちる", type: "変化欲求型" }, { t: "慣れてきて逆にやりやすい", type: "型維持型" }] },
+  { q: "続ける上で一番の原動力は?", opts: [{ t: "数字(体重・回数)が伸びるのを見るのが楽しい", type: "自己成長実感型" }, { t: "誰かに見てもらえる・褒められると頑張れる", type: "他者承認型" }] },
+  { q: "過去に運動が続かなかったとしたら、主な理由は?", opts: [{ t: "忙しくて時間が取れなくなった", type: "挫折しやすい型" }, { t: "単調で飽きた/結果が見えなかった", type: "変化欲求型" }] },
+  { q: "サポートはどちらが好みですか?", opts: [{ t: "細かくメニューやリマインドを管理してほしい", type: "挫折しやすい型" }, { t: "大枠だけ決めて、あとは自由にやりたい", type: "型維持型" }] },
+  { q: "成果はどう感じたいですか?", opts: [{ t: "グラフや記録で自分の伸びを確認したい", type: "自己成長実感型" }, { t: "仲間やトレーナーに報告して反応をもらいたい", type: "他者承認型" }] }
+];
+
+var STRATEGY = {
+  "変化欲求型": { label: "変化欲求型", desc: "2週間ごとにメニューをローテーションし、新しい種目を定期的に投入します。各種目の「キツくする」バリエーションを積極的に使うのもおすすめです。" },
+  "型維持型": { label: "型維持型", desc: "固定ルーティンを軸に、達成率をチェック形式で可視化します。同じ種目の回数・秒数を少しずつ更新していく進め方が合っています。" },
+  "他者承認型": { label: "他者承認型", desc: "記録をインストラクターやコミュニティに共有する導線を用意します。週1回、担当トレーナーに実施報告を送るだけでも継続率が変わります。" },
+  "自己成長実感型": { label: "自己成長実感型", desc: "挙上重量・回数・体組成の推移を記録して見える化します。週次で数値を振り返る時間を5分だけ確保してください。" },
+  "挫折しやすい型": { label: "挫折しやすい型", desc: "リマインド頻度を上げ、1回あたりの負荷を小さく設計します。「15分だけ」「1種目だけ」でもOKというルールにするのがコツです。" }
+};
+
+var PROTEIN_SOURCES = [
+  { name: "鶏むね肉(皮なし)", p: 23, f: 1.9, c: 0 },
+  { name: "鶏もも肉(皮なし)", p: 19, f: 5, c: 0 },
+  { name: "豚ヒレ肉", p: 22, f: 3.5, c: 0 },
+  { name: "牛赤身肉(もも)", p: 21, f: 5, c: 0 },
+  { name: "白身魚(タラ等)", p: 18, f: 0.5, c: 0, tag: "魚介" },
+  { name: "鮭", p: 22, f: 4.5, c: 0, tag: "魚介" },
+  { name: "卵(ゆで卵)", p: 12.5, f: 10, c: 0.5, tag: "卵" },
+  { name: "木綿豆腐", p: 7, f: 4.5, c: 1.5, tag: "大豆" },
+  { name: "納豆", p: 16.5, f: 10, c: 12, tag: "大豆" },
+  { name: "無脂肪ギリシャヨーグルト", p: 10, f: 0.3, c: 4, tag: "乳製品" },
+  { name: "ツナ缶(水煮)", p: 24, f: 1, c: 0, tag: "魚介" }
+];
+var CARB_SOURCES = [
+  { name: "白米(炊飯後)", p: 2.5, f: 0.3, c: 37 },
+  { name: "玄米(炊飯後)", p: 2.8, f: 1, c: 35 },
+  { name: "オートミール(乾)", p: 13.5, f: 5.7, c: 69 },
+  { name: "さつまいも(蒸し)", p: 1.2, f: 0.2, c: 31 },
+  { name: "全粒粉パスタ(茹で)", p: 5.3, f: 0.9, c: 28 }
+];
+var FAT_SOURCES = [
+  { name: "オリーブオイル", p: 0, f: 100, c: 0 },
+  { name: "アーモンド", p: 20, f: 54, c: 10 },
+  { name: "アボカド", p: 2, f: 18, c: 2 },
+  { name: "くるみ", p: 15, f: 68, c: 7 }
+];
+var VEG_OPTIONS = ["ブロッコリー", "ほうれん草のお浸し", "きのこソテー", "キャベツの千切り", "海藻サラダ", "パプリカのグリル", "小松菜炒め"];
+var VEG_MACROS = { p: 2, f: 0.3, c: 5, kcal: 30 }; // 野菜120gあたりの目安
+
+var MEAL_CAUTIONS = [
+  "調理油は大さじ1杯で約110kcal。脂質源の枠(オイル・ナッツ等)を調理油に置き換えてもOK",
+  "ドレッシング・砂糖・みりん等の調味料もカロリーに含まれる",
+  "肉・魚のグラムは調理前、米は炊飯後の目安",
+  "外食時は「タンパク源の主菜+ご飯の量」の2点だけ守れれば十分",
+  "水分は1日1.5〜2Lを目安に。空腹感の一部は水分不足のサイン",
+  "同じ食材が続いたら代替リストで置き換えてOK(数値はほぼ維持されます)"
+];
+
+var PLATEAU_STEPS = [
+  { n: 1, title: "記録の精度を見直す", body: "調理油・飲み物・味付け・つまみ食いなど「隠れカロリー」を3日間だけ全て記録します。停滞の原因は、じつはここで見つかることがいちばん多いんです。" },
+  { n: 2, title: "体重以外の指標を確認する", body: "ウエスト・写真・服のフィット感をチェック。水分やホルモン周期で体重は1〜2kg前後します。見た目が変わっていれば、それは停滞ではなくちゃんと前進しています。" },
+  { n: 3, title: "日常の活動量を上げる", body: "1日の歩数を+2,000歩。トレーニングを増やす前に、日常の消費(通勤・家事・階段)を底上げする方が続きます。" },
+  { n: 4, title: "有酸素を少しだけ追加する", body: "週1回追加、または毎回10分延長。一気に増やすと反動が来るので「少しだけ」が原則です。" },
+  { n: 5, title: "摂取カロリーを微調整する", body: "ステップ4まで試して2週間動かない場合のみ、100〜150kcalだけ下げます。最初から食事を大きく削らないのがコツです。" },
+  { n: 6, title: "ダイエットブレイクを入れる", body: "1〜2週間、維持カロリーに戻します。代謝と心理の回復により、再開後に体重が動き出すケースが多い方法です。" }
+];
+
+var DAYS = ["Day1", "Day2", "Day3", "Day4", "Day5", "Day6", "Day7"];
+
+/* ============ 計算ロジック ============ */
+function kcalOf(f) { return f.p * 4 + f.f * 9 + f.c * 4; }
+function scaleFood(food, g) {
+  return {
+    name: food.name, g: g,
+    p: +((food.p * g) / 100).toFixed(1),
+    f: +((food.f * g) / 100).toFixed(1),
+    c: +((food.c * g) / 100).toFixed(1),
+    kcal: Math.round((kcalOf(food) * g) / 100)
+  };
+}
+function getSubs(list, food, n) {
+  n = n || 2;
+  var others = list.filter(function (f) { return f.name !== food.name; });
+  var startIdx = list.findIndex(function (f) { return f.name === food.name; });
+  var rotated = others.slice(startIdx % others.length).concat(others.slice(0, startIdx % others.length));
+  return rotated.slice(0, n);
+}
+function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+
+/* --- メニュー生成: 時間予算に合わせて種目数を伸縮し、余りは仕上げ有酸素で埋める --- */
+function pickMenu(goal, equipLevel, sessionTime, dayType, opts) {
+  dayType = dayType || "full";
+  opts = opts || {};
+  var dt = DAY_TYPES[dayType];
+  var weights = getDayWeights(dayType, goal);
+  var isGym = equipLevel === "マシンジムに通える";
+  var allowedEquip = isGym ? ["自重", "チューブ", "ダンベル", "マシン"] :
+    equipLevel === "自重のみ" ? ["自重"] :
+    equipLevel === "最小限の器具(チューブ等)" ? ["自重", "チューブ"] : ["自重", "チューブ", "ダンベル"];
+  var pool = EXERCISES.filter(function (e) { return allowedEquip.indexOf(e.equip) !== -1; });
+  if (opts.injuries && opts.injuries.length > 0) {
+    pool = pool.filter(function (e) {
+      return !e.joints || !e.joints.some(function (j) { return opts.injuries.indexOf(j) !== -1; });
+    });
+  }
+
+  var budget = parseInt(sessionTime, 10);
+  var slots = clamp(Math.round(budget / 5), 3, 14);
+  var picked = [];
+  Object.keys(weights).forEach(function (cat) {
+    var count = Math.max(1, Math.round(weights[cat] * slots));
+    var items = pool.filter(function (e) { return e.cat === cat; });
+    if (dt.move && cat === "上半身") {
+      var moved = items.filter(function (e) { return e.move === dt.move; });
+      if (moved.length > 0) items = moved;
+    }
+    if (opts.exp && EXP_ALLOWED[opts.exp]) {
+      var lvOk = items.filter(function (e) { return EXP_ALLOWED[opts.exp].indexOf(e.level) !== -1; });
+      if (lvOk.length > 0) items = lvOk;
+    }
+    if (isGym) {
+      items = items.slice().sort(function (a, b) { return (b.equip === "マシン" ? 1 : 0) - (a.equip === "マシン" ? 1 : 0); });
+    }
+    if (opts.style === "ピラティス中心") {
+      items = items.slice().sort(function (a, b) { return (b.style === "pilates" ? 1 : 0) - (a.style === "pilates" ? 1 : 0); });
+    } else if (opts.style === "筋トレ中心") {
+      items = items.slice().sort(function (a, b) { return (a.style === "pilates" ? 1 : 0) - (b.style === "pilates" ? 1 : 0); });
+    } else {
+      var np = items.filter(function (e) { return e.style !== "pilates"; });
+      var pp = items.filter(function (e) { return e.style === "pilates"; });
+      var mixed = []; var mi = 0;
+      while (np.length || pp.length) {
+        if (mi % 2 === 0) { mixed.push(np.length ? np.shift() : pp.shift()); }
+        else { mixed.push(pp.length ? pp.shift() : np.shift()); }
+        mi++;
+      }
+      items = mixed;
+    }
+    picked = picked.concat(items.slice(0, count));
+  });
+
+  var total = 0;
+  var fitted = [];
+  for (var i = 0; i < picked.length; i++) {
+    var ex = picked[i];
+    if (total + ex.time <= budget || fitted.length < 3) { fitted.push(ex); total += ex.time; }
+  }
+
+  var rounds = Math.max(1, Math.floor(budget / Math.max(total, 1)));
+  rounds = Math.min(rounds, 3);
+  var plannedMin = total * rounds;
+
+  var leftover = budget - plannedMin;
+  var finisher = null;
+  if (leftover >= 6) {
+    var isRec = dayType === "recovery";
+    finisher = {
+      id: "fin", name: isRec ? "クールダウンウォーク" : (isGym ? "仕上げ有酸素(トレッドミル)" : "仕上げ有酸素(その場ステップ)"),
+      cat: "有酸素", equip: isGym ? "マシン" : "自重", time: leftover, met: isRec ? 3.0 : (isGym ? 6.5 : 6.0), level: "初級",
+      purpose: "メニュー後の残り時間を有酸素で使い切り、セッション全体の消費カロリーを設計値に合わせる仕上げ枠。",
+      desc: "会話がギリギリできる強度で" + leftover + "分。心拍を上げすぎず一定を保つのがポイント。",
+      reps: leftover + "分継続", alt: "踏み台昇降/屋外ウォーキング(同じ時間でOK)",
+      easier: "時間を半分にして休憩を挟む", harder: "ラスト2分だけペースを上げる"
+    };
+    plannedMin += leftover;
+  }
+
+  var metMinutes = 0;
+  fitted.forEach(function (e) { metMinutes += e.met * e.time; });
+  metMinutes *= rounds;
+  if (finisher) metMinutes += finisher.met * finisher.time;
+
+  return { menu: fitted, rounds: rounds, finisher: finisher, circuitMin: total, plannedMin: plannedMin, metMinutes: metMinutes };
+}
+
+/* --- METs法: 消費kcal = MET × 3.5 × 体重 ÷ 200 × 分 --- */
+function sessionBurn(metMinutes, weightKg) {
+  return Math.round(metMinutes * 3.5 * weightKg / 200);
+}
+
+function calcResults(d, weeklyMetMinutes) {
+  var w = parseFloat(d.weight), h = parseFloat(d.height), a = parseFloat(d.age);
+  var tw = parseFloat(d.targetWeight), m = parseFloat(d.months);
+  var bmi = w / ((h / 100) * (h / 100));
+  var bf = parseFloat(d.bodyfat);
+  var lbm = null, bmrFormula = "Mifflin-St Jeor式";
+  var bmr;
+  if (!isNaN(bf) && bf >= 5 && bf <= 60) {
+    lbm = +(w * (1 - bf / 100)).toFixed(1);
+    bmr = 370 + 21.6 * lbm;
+    bmrFormula = "Katch-McArdle式(除脂肪体重ベース)";
+  } else {
+    bmr = d.gender === "女性" ? 10 * w + 6.25 * h - 5 * a - 161 : 10 * w + 6.25 * h - 5 * a + 5;
+  }
+  bmr = Math.round(bmr);
+
+  var homeF = parseInt(d.freq, 10) || 0;
+  var pers = parseInt(d.personal, 10) || 0;
+
+  var selfWeekly = sessionBurn(weeklyMetMinutes, w);
+  var persSession = sessionBurn(PERSONAL_MET * PERSONAL_MIN, w);
+  var avgSession = homeF > 0 ? Math.round(selfWeekly / homeF) : 0;
+  var weeklyBurn = selfWeekly + persSession * pers;
+  var exDaily = Math.round(weeklyBurn / 7);
+  var jobLabel = d.job || "デスクワーク中心";
+  var jobFactor = JOB_FACTORS[jobLabel] || 1.35;
+  var tdee = Math.round(bmr * jobFactor + exDaily);
+
+  var diffKg = w - tw;
+  var days = m * 30.4;
+  var deficit = Math.abs(diffKg) < 0.5 ? 0 : (diffKg * KCAL_PER_KG) / days;
+  var overLimit = null, overTitle = "", paceNote = null;
+  var maxDef = Math.min(750, Math.round(tdee * 0.25));
+  var maxSur = 350;
+
+  if (deficit > maxDef) {
+    var realisticM = ((diffKg * KCAL_PER_KG) / maxDef / 30.4).toFixed(1);
+    overLimit = "lose";
+    overTitle = "ちょっとハイペースすぎるかも";
+    paceNote = m + "ヶ月で" + diffKg.toFixed(1) + "kg減には1日約" + Math.round(deficit) + "kcalも減らす必要があり、体への負担が大きく続けるのがつらくなりがちです。無理なく続けられる上限(−" + maxDef + "kcal/日)で計算し直しました。このペースなら約" + realisticM + "ヶ月で届く見込みです。";
+    deficit = maxDef;
+  } else if (deficit < -maxSur) {
+    var realisticG = ((Math.abs(diffKg) * KCAL_PER_KG) / maxSur / 30.4).toFixed(1);
+    overLimit = "gain";
+    overTitle = "増やすペースが少し速すぎるかも";
+    paceNote = "このペースだと筋肉より体脂肪が増えやすくなってしまうため、+" + maxSur + "kcal/日を上限に計算し直しました。約" + realisticG + "ヶ月かけて増やすのがおすすめです。";
+    deficit = -maxSur;
+  }
+
+  var targetCal = Math.round(tdee - deficit);
+  var floorCal = Math.max(d.gender === "女性" ? 1200 : 1500, bmr);
+  if (targetCal < floorCal) {
+    targetCal = floorCal;
+    var achievableDef = Math.max(1, tdee - floorCal);
+    var realisticF = ((diffKg * KCAL_PER_KG) / achievableDef / 30.4).toFixed(1);
+    overLimit = "lose";
+    overTitle = "食べる量が少なくなりすぎるかも";
+    paceNote = "計算上の摂取カロリーが基礎代謝(" + bmr + "kcal)を下回るため、" + floorCal + "kcal/日を下限にしました。基礎代謝を下回る食事制限はリバウンドしやすく、体調も崩しやすいのでおすすめできません。このカロリーなら約" + realisticF + "ヶ月で届く見込み。足りない分は歩数や運動回数を増やしてカバーするのが安心です。";
+  }
+
+  var weeklyPace = ((tdee - targetCal) * 7) / KCAL_PER_KG;
+  var proteinG;
+  if (lbm !== null) {
+    var lbmFactor = d.goal === "減量" ? 2.4 : d.goal === "筋肥大" ? 2.6 : d.goal === "産前産後ケア" ? 2.0 : 1.8;
+    proteinG = Math.round(lbm * lbmFactor);
+  } else {
+    var proteinFactor = d.goal === "減量" ? 2.0 : d.goal === "筋肥大" ? 2.2 : d.goal === "産前産後ケア" ? 1.8 : 1.6;
+    proteinG = Math.round(w * proteinFactor);
+  }
+  var fatG = Math.round((targetCal * 0.25) / 9);
+  var carbG = Math.max(50, Math.round((targetCal - proteinG * 4 - fatG * 9) / 4));
+  return {
+    bmi: bmi.toFixed(1), bmr: bmr, tdee: tdee, exDaily: exDaily,
+    selfWeekly: selfWeekly, avgSession: avgSession, persSession: persSession, weeklyBurn: weeklyBurn,
+    targetCal: targetCal, proteinG: proteinG, fatG: fatG, carbG: carbG,
+    weeklyPace: weeklyPace, overLimit: overLimit, overTitle: overTitle, paceNote: paceNote,
+    totalSessions: homeF + pers, lbm: lbm, bmrFormula: bmrFormula, jobFactor: jobFactor, jobLabel: jobLabel
+  };
+}
+
+/* --- 食事プラン: P・Fを先に確保し、Cの量で1食のカロリーを目標に着地させる --- */
+function buildWeekPlan(targetP, targetF, targetC, targetCal, pList) {
+  var PL = (pList && pList.length >= 3) ? pList : PROTEIN_SOURCES;
+  var splits = [0.3, 0.4, 0.3];
+  var week = DAYS.map(function (day, di) {
+    var pIdx = [(di + 0) % PL.length, (di + 4) % PL.length, (di + 8) % PL.length];
+    var cIdx = [(di + 0) % CARB_SOURCES.length, (di + 2) % CARB_SOURCES.length, (di + 4) % CARB_SOURCES.length];
+    var meals = splits.map(function (split, si) {
+      var kcalT = targetCal * split;
+      var pT = targetP * split;
+      var fT = targetF * split;
+
+      var pFood = PL[pIdx[si]];
+      var gP = clamp(Math.round((pT / pFood.p) * 100), 50, 350);
+      if (pFood.f > 3) {
+        var gPfat = Math.floor(((fT * 1.1 - VEG_MACROS.f) / pFood.f) * 100);
+        gP = clamp(Math.min(gP, gPfat), 50, 350);
+      }
+      var mP = scaleFood(pFood, gP);
+
+      var fFood = FAT_SOURCES[(di * 3 + si) % FAT_SOURCES.length];
+      var fMax = Math.max(10, Math.round(35000 / kcalOf(fFood)));
+      var fGap = fT - mP.f - VEG_MACROS.f;
+      var gF = 0;
+      if (fGap >= 2) gF = clamp(Math.round((fGap / fFood.f) * 100), 3, fMax);
+
+      var kcalSoFar = mP.kcal + VEG_MACROS.kcal + (gF > 0 ? Math.round((kcalOf(fFood) * gF) / 100) : 0);
+      var cFood = CARB_SOURCES[cIdx[si]];
+      var cRemainKcal = Math.max(0, kcalT - kcalSoFar);
+      var gC = clamp(Math.round((cRemainKcal / kcalOf(cFood)) * 100), 20, 400);
+      var mC = scaleFood(cFood, gC);
+
+      /* 主食が上限に達した場合、残差カロリーを脂質源に回して着地させる */
+      var residual = Math.round(cRemainKcal - mC.kcal);
+      if (residual > 30) gF = clamp(gF + Math.round((residual / kcalOf(fFood)) * 100), 3, fMax);
+      var mF = gF > 0 ? scaleFood(fFood, gF) : null;
+
+      var veg = VEG_OPTIONS[(di + si) % VEG_OPTIONS.length];
+      var mealKcal = mP.kcal + mC.kcal + (mF ? mF.kcal : 0) + VEG_MACROS.kcal;
+      return {
+        mP: mP, mC: mC, mF: mF, veg: veg,
+        pSubs: getSubs(PL, pFood), cSubs: getSubs(CARB_SOURCES, cFood),
+        fSubs: mF ? getSubs(FAT_SOURCES, FAT_SOURCES[(di * 3 + si) % FAT_SOURCES.length]) : null,
+        kcal: mealKcal
+      };
+    });
+    var totals = meals.reduce(function (acc, mm) {
+      return {
+        p: acc.p + mm.mP.p + mm.mC.p + (mm.mF ? mm.mF.p : 0) + VEG_MACROS.p,
+        f: acc.f + mm.mP.f + mm.mC.f + (mm.mF ? mm.mF.f : 0) + VEG_MACROS.f,
+        c: acc.c + mm.mC.c + mm.mP.c + (mm.mF ? mm.mF.c : 0) + VEG_MACROS.c,
+        kcal: acc.kcal + mm.kcal
+      };
+    }, { p: 0, f: 0, c: 0, kcal: 0 });
+    return { day: day, meals: meals, totals: totals };
+  });
+  var avgProtein = week.reduce(function (s, dd) { return s + dd.totals.p; }, 0) / 7;
+  var avgKcal = Math.round(week.reduce(function (s, dd) { return s + dd.totals.kcal; }, 0) / 7);
+  return { week: week, avgProtein: avgProtein, avgKcal: avgKcal };
+}
+
+function proteinAssessment(targetP, avgProtein) {
+  var gap = Math.round(targetP - avgProtein);
+  if (gap <= targetP * 0.1) {
+    return { needed: false, msg: "食事プランのみで目標たんぱく質量をほぼ達成できています。プロテインは必須ではありません。" };
+  }
+  var scoops = Math.ceil(gap / 24);
+  return { needed: true, msg: "食事だけでは1日あたり約" + gap + "gのたんぱく質が不足します。プロテイン" + scoops + "杯(約" + scoops * 24 + "g)を補うことを推奨します。" };
+}
+
+function proteinTypeRecommend(goal) {
+  if (goal === "減量") return { type: "WPI(ホエイアイソレート)", reason: "脂質・糖質が少なく、カロリーを抑えながらたんぱく質を摂取しやすいタイプです。" };
+  if (goal === "筋肥大") return { type: "WPC(ホエイコンセントレート)", reason: "価格対たんぱく質量のバランスが良く、増量期に続けやすいタイプです。" };
+  if (goal === "産前産後ケア") return { type: "—", reason: "産前産後は専門家(医師・管理栄養士)に相談の上で選択してください。" };
+  return { type: "WPC または ソイプロテイン", reason: "日常的な補助として扱いやすいタイプです。乳製品が苦手な場合はソイ/ピープロテインを選択してください。" };
+}
+
+function supplementSuggestions(goal, proteinNeeded) {
+  var base = [];
+  if (goal === "産前産後ケア") {
+    return [{ name: "サプリメント全般", note: "産前産後は必要な栄養素が個人差・時期によって大きく異なるため、医師・管理栄養士に相談の上で検討してください。ここでは一般的なサプリの提案を控えます。" }];
+  }
+  if (proteinNeeded) base.push({ name: "プロテインパウダー", note: "食事だけでは不足するたんぱく質を補うための一般的な選択肢です。" });
+  if (goal === "筋肥大") base.push({ name: "クレアチン", note: "筋力トレーニングを行う人に一般的に使われる成分です。持病がある場合は医師に相談してください。" });
+  base.push({ name: "マルチビタミン&ミネラル", note: "食事制限期間の栄養バランス補助として一般的に使われます。" });
+  if (goal === "減量" || goal === "健康維持") base.push({ name: "オメガ3(フィッシュオイル等)", note: "一般的な健康維持目的で使われる成分です。" });
+  return base;
+}
+
+/* ============ 状態 ============ */
+var state = {
+  step: -1,
+  resultTab: "training",
+  openDay: 0,
+  openTDay: 0,
+  schedTypes: null,
+  swapMode: false,
+  swapFirst: null,
+  openEx: null,
+  openLogic: false,
+  openAdv: false,
+  imgModal: null,
+  err: null,
+  data: { gender: "女性", age: "30", height: "160", weight: "60", targetWeight: "55", months: "3", goal: "", equip: "", time: "", freq: "3", personal: "1", style: "ミックス", bodyfat: "", exp: "", job: "デスクワーク中心", injuries: [], avoid: [], answers: [] }
+};
+
+function personalityType() {
+  var counts = {};
+  state.data.answers.forEach(function (t) { if (t) counts[t] = (counts[t] || 0) + 1; });
+  var entries = Object.keys(counts).map(function (k) { return [k, counts[k]]; });
+  entries.sort(function (a, b) { return b[1] - a[1]; });
+  return entries.length ? entries[0][0] : null;
+}
+
+function canProceed() {
+  var d = state.data;
+  if (state.step === 0) return true;
+  if (state.step === 1) return !!d.goal;
+  if (state.step === 2) return !!(d.equip && d.time && d.freq && d.personal !== "");
+  if (state.step === 3) return d.answers.filter(Boolean).length === PERSONALITY_QUESTIONS.length;
+  return true;
+}
+
+function computeAll() {
+  var d = state.data;
+  var freq = parseInt(d.freq, 10) || 1;
+  var base = buildWeekSchedule(freq);
+  if (!state.schedTypes || state.schedTypes.length !== 7 ||
+      state.schedTypes.filter(function (t) { return t !== "rest"; }).length !== freq) {
+    state.schedTypes = base.sched.map(function (s) { return s.type; });
+  }
+  var ws = { plan: base.plan, sched: DAYS.map(function (day, i) { return { day: day, type: state.schedTypes[i] }; }) };
+  var typeMenus = {};
+  var weeklyMet = 0;
+  ws.sched.forEach(function (s) {
+    if (s.type === "rest") return;
+    if (!typeMenus[s.type]) typeMenus[s.type] = pickMenu(d.goal, d.equip, d.time, s.type, { exp: d.exp || "", injuries: d.injuries || [], style: d.style || "ミックス" });
+    s.menu = typeMenus[s.type];
+    weeklyMet += s.menu.metMinutes;
+  });
+  var r = calcResults(d, weeklyMet);
+  var avoid = d.avoid || [];
+  var pList = PROTEIN_SOURCES.filter(function (f) { return !f.tag || avoid.indexOf(f.tag) === -1; });
+  var wp = buildWeekPlan(r.proteinG, r.fatG, r.carbG, r.targetCal, pList);
+  var pc = proteinAssessment(r.proteinG, wp.avgProtein);
+  var pt = proteinTypeRecommend(d.goal);
+  var sup = supplementSuggestions(d.goal, pc.needed);
+  return { d: d, ws: ws, typeMenus: typeMenus, r: r, wp: wp, pc: pc, pt: pt, sup: sup, ptype: personalityType() };
+}
+
+/* ============ コピー用テキスト ============ */
+function buildCopyText() {
+  var A = computeAll();
+  var d = A.d, r = A.r, wp = A.wp;
+  var paceAbs = Math.abs(r.weeklyPace);
+  var paceStr = paceAbs < 0.005 ? "維持" : "週あたり約" + paceAbs.toFixed(2) + "kg" + (r.weeklyPace > 0 ? "減" : "増") + "ペース";
+
+  var L = [];
+  L.push("━━━━━━━━━━━━━━━");
+  L.push("CHART カラダづくり診断プラン");
+  L.push("━━━━━━━━━━━━━━━");
+  L.push("");
+  L.push("このプランは、あなたの現在の状態と目標をもとに作成した専用メニューです。");
+  L.push("トレーニング・お食事・サプリの目安をまとめています。無理なく続けられるよう、迷ったときの参考にしてください 😊");
+  L.push("");
+  L.push("【あなたの情報】");
+  L.push(d.gender + " / " + d.age + "歳 / " + d.height + "cm / " + d.weight + "kg");
+  L.push("目標: " + d.targetWeight + "kg(" + d.months + "ヶ月) / 目的: " + d.goal);
+  L.push("タイプ: " + STRATEGY[A.ptype].label);
+  L.push("運動: 自主トレ週" + d.freq + "回(" + d.time + "分・" + A.ws.plan.name + ") + パーソナル週" + d.personal + "回");
+  L.push("環境: " + d.equip + " / スタイル: " + (d.style || "ミックス"));
+  var advL = [];
+  if (r.lbm) advL.push("体脂肪率" + d.bodyfat + "%(除脂肪" + r.lbm + "kg)");
+  if (d.exp) advL.push("経験:" + d.exp);
+  if ((d.injuries || []).length) advL.push("配慮部位:" + d.injuries.join("・"));
+  if ((d.avoid || []).length) advL.push("除外食材:" + d.avoid.join("・"));
+  if (advL.length) L.push("詳細設定: " + advL.join(" / "));
+  L.push("");
+  L.push("【数値目標(すべて連動計算)】");
+  L.push("BMI: " + r.bmi + " / 基礎代謝: " + r.bmr + "kcal");
+  L.push("総消費(TDEE): " + r.tdee + "kcal/日(基礎代謝×" + r.jobFactor + "[" + r.jobLabel + "]+運動消費" + r.exDaily + "kcal/日)");
+  L.push("運動消費: 自主トレ週合計約" + r.selfWeekly + "kcal(平均" + r.avgSession + "kcal/回) / パーソナル1回約" + r.persSession + "kcal / 週総計約" + r.weeklyBurn + "kcal");
+  L.push("摂取カロリー目安: " + r.targetCal + "kcal/日");
+  L.push("PFC: P" + r.proteinG + "g / F" + r.fatG + "g / C" + r.carbG + "g");
+  L.push("ペース: " + paceStr);
+  if (r.paceNote) { L.push("※" + r.overTitle); L.push("※" + r.paceNote); }
+  L.push("");
+  L.push("【週間スケジュール(" + A.ws.plan.name + ")】");
+  L.push(A.ws.sched.map(function (s) { return s.day + ":" + DAY_TYPES[s.type].label; }).join(" / "));
+  L.push("※Day1〜7は予定に合わせて入れ替えOK(週合計の消費は不変)");
+  L.push("");
+  var typeOrder = [];
+  A.ws.sched.forEach(function (s) { if (s.type !== "rest" && typeOrder.indexOf(s.type) === -1) typeOrder.push(s.type); });
+  typeOrder.forEach(function (tp) {
+    var dm = A.typeMenus[tp];
+    var dayBurn = sessionBurn(dm.metMinutes, parseFloat(d.weight));
+    L.push("【" + DAY_TYPES[tp].label + "メニュー(計" + dm.plannedMin + "分" + (dm.rounds > 1 ? "・" + dm.rounds + "周" : "") + "・消費約" + dayBurn + "kcal)】");
+    dm.menu.forEach(function (ex, i) {
+      L.push((i + 1) + ". " + ex.name + "(" + ex.cat + "・" + ex.level + ") " + ex.reps);
+      L.push("  目的: " + ex.purpose);
+      L.push("  代替: " + ex.alt);
+    });
+    if (dm.finisher) {
+      L.push((dm.menu.length + 1) + ". " + dm.finisher.name + " " + dm.finisher.reps);
+      L.push("  目的: " + dm.finisher.purpose);
+      L.push("  代替: " + dm.finisher.alt);
+    }
+    L.push("");
+  });
+  L.push("【休養日の過ごし方】");
+  L.push("完全休養か20分程度の散歩。筋肉は回復中に成長します(超回復)。" + (parseInt(d.personal, 10) > 0 ? "パーソナルは休養日に配置すると自主トレの回復と両立しやすいです。" : ""));
+  L.push("");
+  L.push("【あなたに合った続け方: " + STRATEGY[A.ptype].label + "】");
+  L.push(STRATEGY[A.ptype].desc);
+  L.push("");
+  L.push("【1週間の食事プラン(各日が目標" + r.targetCal + "kcalに連動)】");
+  wp.week.forEach(function (dd) {
+    var diff = dd.totals.kcal - r.targetCal;
+    L.push("[" + dd.day + "] 合計約" + dd.totals.kcal + "kcal(目標比" + (diff >= 0 ? "+" : "") + diff + ") P" + dd.totals.p.toFixed(0) + "/F" + dd.totals.f.toFixed(0) + "/C" + dd.totals.c.toFixed(0));
+    var labels = ["朝", "昼", "夕"];
+    dd.meals.forEach(function (mm, si) {
+      var line = "  " + labels[si] + ": " + mm.mP.name + " " + mm.mP.g + "g / " + mm.mC.name + " " + mm.mC.g + "g";
+      if (mm.mF) line += " / " + mm.mF.name + " " + mm.mF.g + "g";
+      line += " / " + mm.veg;
+      L.push(line);
+    });
+  });
+  L.push("");
+  L.push("【プロテイン】");
+  L.push(A.pc.msg);
+  L.push("推奨タイプ: " + A.pt.type);
+  L.push("");
+  L.push("【サプリの一般的な選択肢】");
+  A.sup.forEach(function (s) { L.push("・" + s.name); });
+  L.push("");
+  L.push("【うまくいかなくなったら(この順番で)】");
+  PLATEAU_STEPS.forEach(function (s) { L.push(s.n + ". " + s.title); });
+  L.push("");
+  L.push("【計算の根拠】");
+  L.push("・基礎代謝: " + r.bmrFormula + (r.lbm ? "(除脂肪体重 " + r.lbm + "kg)" : ""));
+  L.push("・総消費: 基礎代謝×" + r.jobFactor + "(" + r.jobLabel + ")+運動消費(種目MET値×時間×体重)");
+  L.push("・目標収支: 体重差×7,200kcal÷日数(安全上限・基礎代謝の下限つき)");
+  L.push("・PFC: P=体重×目的別係数 / F=総カロリーの25% / C=残り");
+  L.push("・食事: PとFを先に確保し、Cの量で各食のカロリーを目標に着地");
+  L.push("");
+  L.push("※このプランは一般的な目安です。体調に不安がある場合や、持病・服薬・妊娠中/産後の場合は、無理をせず医師にご相談ください。");
+  L.push("※持病・服薬中・妊娠中/産後の方は医師や管理栄養士にご相談ください。");
+  return L.join("\n");
+}
+
+function buildShoppingText() {
+  var A = computeAll();
+  var agg = {}, vegAgg = {};
+  A.wp.week.forEach(function (dd) {
+    dd.meals.forEach(function (mm) {
+      agg[mm.mP.name] = (agg[mm.mP.name] || 0) + mm.mP.g;
+      agg[mm.mC.name] = (agg[mm.mC.name] || 0) + mm.mC.g;
+      if (mm.mF) agg[mm.mF.name] = (agg[mm.mF.name] || 0) + mm.mF.g;
+      vegAgg[mm.veg] = (vegAgg[mm.veg] || 0) + 1;
+    });
+  });
+  var L = [];
+  L.push("【1週間の買い物リスト(目標" + A.r.targetCal + "kcal/日)】");
+  L.push("");
+  Object.keys(agg).sort(function (a, b) { return agg[b] - agg[a]; }).forEach(function (name) {
+    L.push("・" + name + ": 約" + Math.round(agg[name] / 10) * 10 + "g");
+  });
+  L.push("");
+  L.push("野菜(1食120g目安):");
+  Object.keys(vegAgg).forEach(function (name) {
+    L.push("・" + name + ": " + vegAgg[name] + "食分(約" + vegAgg[name] * 120 + "g)");
+  });
+  L.push("");
+  L.push("※肉・魚は調理前、米は炊飯後の重量。調味料・飲み物は別途");
+  L.push("※同カテゴリ内なら代替リストの食材に置き換えOK");
+  return L.join("\n");
+}
+
+function copyShopping(btn) {
+  var text = buildShoppingText();
+  function done(ok) {
+    btn.textContent = ok ? "コピーしました ✓" : "コピーできませんでした";
+    setTimeout(function () { btn.textContent = "1週間の買い物リストをコピー"; }, 2000);
+  }
+  function fallback() {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed'; ta.style.top = '0'; ta.style.left = '0'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.focus(); ta.select();
+    try { ta.setSelectionRange(0, text.length); } catch (e) {}
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta); done(ok);
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function () { done(true); }, function () { fallback(); });
+  } else { fallback(); }
+}
+
+function saveImage(btn) {
+  function run() {
+    try {
+      var A = computeAll(); var d = A.d, r = A.r;
+      var cv = document.createElement('canvas'); cv.width = 1080; cv.height = 1350;
+      var x = cv.getContext('2d');
+      var sans = "'Noto Sans JP', sans-serif", serif = "'Zen Maru Gothic', sans-serif", num = "'M PLUS Rounded 1c', sans-serif";
+      x.fillStyle = '#1F9C8C'; x.fillRect(0, 0, 1080, 1350);
+      x.strokeStyle = '#FF8A5C'; x.lineWidth = 4; x.strokeRect(30, 30, 1020, 1290);
+      x.textAlign = 'center';
+      x.fillStyle = '#FFE8DC'; x.font = '24px ' + sans;
+      x.fillText('B O D Y   D I A G N O S T I C S', 540, 148);
+      if (CHART_LOGO_IMG && CHART_LOGO_IMG.complete && CHART_LOGO_IMG.naturalWidth) {
+        var lw = 300, lh = lw * CHART_LOGO_IMG.naturalHeight / CHART_LOGO_IMG.naturalWidth;
+        x.drawImage(CHART_LOGO_IMG, 540 - lw/2, 70, lw, lh);
+      }
+      x.fillStyle = '#FFFFFF'; x.font = 'bold 58px ' + serif;
+      x.fillText(d.goal + ' × ' + STRATEGY[A.ptype].label, 540, 250);
+      x.fillStyle = '#FFE8DC'; x.font = '30px ' + sans;
+      x.fillText('目標 ' + d.targetWeight + 'kg / ' + d.months + 'ヶ月 ・ ' + A.ws.plan.name, 540, 320);
+      x.strokeStyle = 'rgba(255,138,92,.5)'; x.lineWidth = 2;
+      x.beginPath(); x.moveTo(140, 380); x.lineTo(940, 380); x.stroke();
+      function stat(cx, label, val) {
+        x.fillStyle = '#FF8A5C'; x.font = 'bold 70px ' + num; x.fillText(val, cx, 510);
+        x.fillStyle = '#FFE8DC'; x.font = '24px ' + sans; x.fillText(label, cx, 560);
+      }
+      var paceAbs = Math.abs(r.weeklyPace);
+      var paceVal = paceAbs < 0.005 ? '—' : paceAbs.toFixed(2);
+      var paceLab = (r.weeklyPace > 0.01 ? '減量' : r.weeklyPace < -0.01 ? '増量' : '維持') + ' kg/週';
+      stat(250, '総消費 kcal/日', String(r.tdee));
+      stat(540, '摂取目安 kcal/日', String(r.targetCal));
+      stat(830, paceLab, paceVal);
+      x.fillStyle = '#FFFFFF'; x.font = 'bold 42px ' + num;
+      x.fillText('P ' + r.proteinG + 'g   ・   F ' + r.fatG + 'g   ・   C ' + r.carbG + 'g', 540, 680);
+      x.fillStyle = '#FFE8DC'; x.font = '28px ' + sans;
+      var strip = A.ws.sched.map(function (s) { return DAY_TYPES[s.type].chip; }).join('  ');
+      x.fillText('Day1〜7:   ' + strip, 540, 770);
+      x.fillStyle = '#FF8A5C'; x.font = '26px ' + sans;
+      x.fillText('週の運動消費 約' + r.weeklyBurn + 'kcal を摂取カロリーに反映済み', 540, 850);
+      x.fillStyle = 'rgba(255,232,220,.85)'; x.font = '24px ' + sans;
+      x.fillText('自主トレ 週' + d.freq + '回 × ' + d.time + '分 ・ パーソナル 週' + d.personal + '回', 540, 900);
+      x.fillStyle = 'rgba(255,255,255,.45)'; x.font = '20px ' + sans;
+      x.fillText('※一般的な目安であり、医療・栄養指導ではありません', 540, 1230);
+      if (CHART_LOGO_IMG && CHART_LOGO_IMG.complete && CHART_LOGO_IMG.naturalWidth) {
+        var lw2 = 180, lh2 = lw2 * CHART_LOGO_IMG.naturalHeight / CHART_LOGO_IMG.naturalWidth;
+        x.drawImage(CHART_LOGO_IMG, 540 - lw2/2, 1268, lw2, lh2);
+      } else {
+        x.fillStyle = '#FF8A5C'; x.font = 'bold 30px ' + num;
+        x.fillText('CHART', 540, 1290);
+      }
+      var dataUrl = cv.toDataURL('image/png');
+      function openModal() { state.imgModal = dataUrl; render(); }
+      function resetBtn(label) {
+        btn.textContent = label || '結果画像を保存';
+        if (label) setTimeout(function () { btn.textContent = '結果画像を保存'; }, 2000);
+      }
+      if (navigator.share && navigator.canShare && cv.toBlob) {
+        cv.toBlob(function (blob) {
+          var file = null;
+          try { file = new File([blob], 'CHART_診断結果.png', { type: 'image/png' }); } catch (e) { file = null; }
+          if (blob && file && navigator.canShare({ files: [file] })) {
+            navigator.share({ files: [file], title: 'CHART 診断結果' }).then(function () {
+              resetBtn('共有メニューを開きました ✓');
+            }, function (err) {
+              if (err && err.name === 'AbortError') { resetBtn(); }
+              else { openModal(); resetBtn(); }
+            });
+          } else { openModal(); resetBtn(); }
+        }, 'image/png');
+      } else { openModal(); resetBtn(); }
+    } catch (e) {
+      btn.textContent = '保存できませんでした';
+      setTimeout(function () { btn.textContent = '結果画像を保存'; }, 2000);
+    }
+  }
+  if (document.fonts && document.fonts.ready) { document.fonts.ready.then(run, run); } else { run(); }
+}
+
+function copyResult(btn) {
+  var text = buildCopyText();
+  function done(ok) {
+    btn.textContent = ok ? "コピーしました ✓" : "コピーできませんでした";
+    setTimeout(function () { btn.textContent = "診断結果をコピー"; }, 2000);
+  }
+  function fallback() {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed'; ta.style.top = '0'; ta.style.left = '0'; ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.focus(); ta.select();
+    try { ta.setSelectionRange(0, text.length); } catch (e) {}
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+    done(ok);
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function () { done(true); }, function () { fallback(); });
+  } else {
+    fallback();
+  }
+}
+
+/* ============ 描画 ============ */
+function opt(key, value, title, desc) {
+  var sel = state.data[key] === value;
+  return '<button class="opt-card' + (sel ? ' sel' : '') + '" data-action="set" data-key="' + key + '" data-value="' + value + '">' +
+    '<span class="opt-title">' + title + '</span>' +
+    (desc ? '<span class="opt-desc">' + desc + '</span>' : '') +
+    '</button>';
+}
+
+function pillSet(key, value, label) {
+  var sel = state.data[key] === value;
+  return '<button class="pill' + (sel ? ' sel' : '') + '" data-action="mset" data-key="' + key + '" data-value="' + value + '">' + label + '</button>';
+}
+function pillTog(key, value, label) {
+  var arr = state.data[key] || [];
+  var sel = arr.indexOf(value) !== -1;
+  return '<button class="pill' + (sel ? ' sel' : '') + '" data-action="mtog" data-key="' + key + '" data-value="' + value + '">' + label + '</button>';
+}
+function pill(key, value, label) {
+  var sel = state.data[key] === value;
+  return '<button class="pill' + (sel ? ' sel' : '') + '" data-action="set" data-key="' + key + '" data-value="' + value + '">' + label + '</button>';
+}
+
+function dialView() {
+  var html = '<div class="dial">';
+  for (var i = 0; i < STEPS.length; i++) {
+    var cls = i < state.step ? 'done' : i === state.step ? 'cur' : '';
+    html += '<div class="dial-c ' + cls + '">' + (i + 1) + '</div>';
+    if (i < STEPS.length - 1) html += '<div class="dial-l ' + (i < state.step ? 'done' : '') + '"></div>';
+  }
+  return html + '</div>';
+}
+
+function introView() {
+  return '<div class="text-center">' +
+    '<p class="intro-p">お客様の情報を入力すると、その方専用のトレーニング・1週間の食事プラン・サプリの目安・停滞時の対処法までを自動作成します。結果はそのままコピーしてお客様にお渡しできます。所要時間は約2分です。</p>' +
+    '<button class="btn-primary" data-action="start">診断をはじめる</button></div>';
+}
+
+function step0View() {
+  var d = state.data;
+  var monthPills = [];
+  for (var i = 1; i <= 12; i++) monthPills.push(pill('months', String(i), String(i)));
+  return '<div>' +
+    '<div class="step-lead">お客様の基本プロフィールを入力してください 📝</div>' +
+    '<div class="field"><div class="field-label">性別</div><div class="grid3">' + ["女性", "男性", "回答しない"].map(function (g) { return opt('gender', g, g); }).join('') + '</div></div>' +
+    '<div class="field"><div class="field-label">年齢</div><input class="txt-input" type="number" data-key="age" value="' + d.age + '"></div>' +
+    '<div class="grid2">' +
+    '<div class="field"><div class="field-label">身長(cm)</div><input class="txt-input" type="number" data-key="height" value="' + d.height + '"></div>' +
+    '<div class="field"><div class="field-label">現体重(kg)</div><input class="txt-input" type="number" data-key="weight" value="' + d.weight + '"></div>' +
+    '</div>' +
+    '<div class="field"><div class="field-label">目標体重(kg)</div><input class="txt-input" type="number" data-key="targetWeight" value="' + d.targetWeight + '"></div>' +
+    '<div class="field"><div class="field-label">目標達成期間(ヶ月)</div><div class="q-lead">いつまでに目標を達成したいですか?(無理なペースは自動で調整します)</div><div class="pills">' + monthPills.join('') + '</div></div>' +
+    (state.err ? '<div class="err">' + state.err + '</div>' : '') +
+    '</div>';
+}
+
+function step1View() {
+  return '<div class="step-lead">お客様の目標に、いちばん近いものを選んでください 🎯</div>' +
+    '<div class="stack">' + GOALS.map(function (g) { return opt('goal', g.id, g.label, g.desc); }).join('') + '</div>';
+}
+
+function step2View() {
+  var freqPills = [], persPills = [];
+  for (var i = 1; i <= 7; i++) freqPills.push(pill('freq', String(i), String(i)));
+  for (var j = 0; j <= 7; j++) persPills.push(pill('personal', String(j), String(j)));
+  return '<div>' +
+    '<div class="step-lead">お客様の環境に合わせてメニューを組みます 🏠</div>' +
+    '<div class="field"><div class="field-label">トレーニング環境</div><div class="q-lead">お客様が実施できる範囲のものを選んでください</div><div class="stack">' + EQUIP_OPTIONS.map(function (e) { return opt('equip', e.id, e.label, e.desc); }).join('') + '</div></div>' +
+    '<div class="field"><div class="field-label">トレーニングのスタイル</div><div class="q-lead">お客様の希望に合うスタイルを選んでください(あとから変更もOK)</div><div class="stack">' + [["筋トレ中心", "しっかり鍛えて変えたい"], ["ピラティス中心", "整えながら、しなやかに"], ["ミックス", "筋トレ×ピラティスのいいとこ取り"]].map(function (s) { return opt('style', s[0], s[0], s[1]); }).join('') + '</div><div class="field-hint">産前産後ケアが目的の場合は「ピラティス中心」がおすすめです</div></div>' +
+    '<div class="field"><div class="field-label">1回あたりの実施可能時間</div><div class="q-lead">お客様が1回に確保できる時間を選んでください</div><div class="grid3">' + TIME_OPTIONS.map(function (t) { return opt('time', t, t + '分'); }).join('') + '</div><div class="field-hint">時間が長いほど1回の消費カロリーが増え、摂取カロリー計算に反映されます</div></div>' +
+    '<div class="field"><div class="field-label">自分でのトレーニング頻度(週)</div><div class="q-lead">お客様がご自身でトレーニングできる週の回数は?</div><div class="pills">' + freqPills.join('') + '</div><div class="field-hint">お客様がご自身で行う週の回数</div></div>' +
+    '<div class="field"><div class="field-label">パーソナルトレーニング(週)</div><div class="q-lead">お客様が現在パーソナルに通っている週の回数</div><div class="pills">' + persPills.join('') + '</div><div class="field-hint">お客様が現在パーソナルに通っている週の回数(通っていない場合は0)。消費カロリーに含めます</div></div>' +
+    '<div class="logic-card" style="margin-top:4px;margin-bottom:8px">' +
+    '<button class="logic-head" data-action="adv"><span>くわしく設定(任意)— もっと精度を上げたい方へ</span><span class="ex-arrow' + (state.openAdv ? ' rot' : '') + '">▾</span></button>' +
+    (state.openAdv ? '<div class="logic-body">' +
+      '<div class="field"><div class="field-label">体脂肪率(%)</div><input class="txt-input" type="number" data-key="bodyfat" value="' + (state.data.bodyfat || '') + '" placeholder="任意"><div class="field-hint">体組成計や店舗測定の値。入力すると計算式が除脂肪体重ベース(Katch-McArdle式)に切り替わり、精度が上がります</div></div>' +
+      '<div class="field"><div class="field-label">運動経験</div><div class="pills">' + ["初心者", "経験あり", "上級"].map(function (v) { return pillSet('exp', v, v); }).join('') + '</div><div class="field-hint">種目の難易度を調整します(もう一度タップで解除=全レベル)</div></div>' +
+      '<div class="field"><div class="field-label">日中の活動量</div><div class="pills">' + Object.keys(JOB_FACTORS).map(function (v) { return pillSet('job', v, v); }).join('') + '</div></div>' +
+      '<div class="field"><div class="field-label">配慮したい部位(痛み・不安)</div><div class="pills">' + INJURY_OPTIONS.map(function (v) { return pillTog('injuries', v, v); }).join('') + '</div><div class="field-hint">負担の大きい種目を自動で外します。現在痛みがある場合はトレーニング前に医療機関・トレーナーへ</div></div>' +
+      '<div class="field" style="margin-bottom:4px"><div class="field-label">避けたい食材</div><div class="pills">' + AVOID_OPTIONS.map(function (v) { return pillTog('avoid', v, v); }).join('') + '</div><div class="field-hint">食事プランのタンパク源から除外します</div></div>' +
+      '</div>' : '') +
+    '</div>' +
+    '</div>';
+}
+
+function step3View() {
+  return '<div class="step-lead">最後に、お客様に合った続け方を見つけます。ヒアリングをもとに、近い方を選んでください 💭</div>' +
+    PERSONALITY_QUESTIONS.map(function (q, qi) {
+    return '<div class="qblock"><div class="q-title">Q' + (qi + 1) + '. ' + q.q + '</div><div class="stack">' +
+      q.opts.map(function (o) {
+        var sel = state.data.answers[qi] === o.type;
+        return '<button class="opt-card' + (sel ? ' sel' : '') + '" data-action="answer" data-q="' + qi + '" data-value="' + o.type + '"><span class="opt-title" style="font-size:14px">' + o.t + '</span></button>';
+      }).join('') + '</div></div>';
+  }).join('');
+}
+
+function navView() {
+  var ok = canProceed();
+  return '<div class="navrow">' +
+    '<button class="back-btn" data-action="back">← 戻る</button>' +
+    '<button class="btn-next" data-action="next"' + (ok ? '' : ' disabled') + '>' + (state.step === 3 ? '結果を見る →' : '次へ →') + '</button>' +
+    '</div>';
+}
+
+function exCardView(ex, i) {
+  var open = state.openEx === ex.id;
+  var html = '<div class="ex-card' + (open ? ' open' : '') + '">' +
+    '<button class="ex-head" data-action="ex" data-value="' + ex.id + '">' +
+    '<span class="ex-left"><span class="ex-num">' + String(i + 1).padStart(2, '0') + '</span>' +
+    '<span><span class="ex-name">' + ex.name + '</span><span class="ex-meta">' + ex.cat + '・' + ex.level + '・' + ex.time + '分' + (ex.equip === "マシン" ? '・マシン' : '') + (ex.style === "pilates" ? '・ピラティス' : '') + '</span></span></span>' +
+    '<span class="ex-arrow' + (open ? ' rot' : '') + '">▾</span></button>';
+  if (open) {
+    html += '<div class="ex-body">' +
+      '<div class="ex-lbl">この種目のねらい</div><div class="ex-desc">' + ex.purpose + '</div>' +
+      '<div class="ex-lbl mt8">やり方</div><div class="ex-desc">' + ex.desc + '</div>' +
+      '<div class="ex-reps">目安: ' + ex.reps + '</div>' +
+      '<div class="ex-lbl mt8">できない時はこれでOK 🙆</div><div class="ex-desc">' + ex.alt + '</div>' +
+      '<div class="grid2 mt8">' +
+      '<div class="varbox"><div class="var-l">ラクにするなら</div><div class="var-t">' + ex.easier + '</div></div>' +
+      '<div class="varbox"><div class="var-l">キツくするなら</div><div class="var-t">' + ex.harder + '</div></div>' +
+      '</div></div>';
+  }
+  return html + '</div>';
+}
+
+function foodRowView(item, subs) {
+  return '<div class="frow"><div class="food"><span class="food-n">' + item.name + '</span><span class="food-g">' + item.g + 'g</span></div>' +
+    (subs && subs.length ? '<div class="subs">代替: ' + subs.map(function (s) { return s.name; }).join(' / ') + '</div>' : '') + '</div>';
+}
+
+function resultView() {
+  var A = computeAll();
+  var d = A.d, r = A.r, wp = A.wp, pc = A.pc, pt = A.pt, sup = A.sup, ptype = A.ptype;
+
+  var paceAbs = Math.abs(r.weeklyPace);
+  var paceLabel = r.weeklyPace > 0.01 ? '減量kg/週' : r.weeklyPace < -0.01 ? '増量kg/週' : '維持';
+  var paceVal = paceAbs < 0.005 ? '—' : paceAbs.toFixed(2);
+
+  var html = '<div class="hero">' +
+    '<div class="hero-eyebrow">DIAGNOSTIC RESULT</div>' +
+    '<div class="hero-title">' + d.goal + ' / ' + STRATEGY[ptype].label + '</div>' +
+    '<div class="hero-sub">目標 ' + d.targetWeight + 'kg(' + d.months + 'ヶ月) ・ 自主トレ週' + d.freq + '回×' + d.time + '分 + パーソナル週' + d.personal + '回</div>' +
+    '<div class="hero-hr"></div>' +
+    '<div class="hero-grid">' +
+    '<div><div class="stat-n">' + r.tdee + '</div><div class="stat-l">総消費kcal/日</div></div>' +
+    '<div><div class="stat-n">' + r.targetCal + '</div><div class="stat-l">摂取目安kcal/日</div></div>' +
+    '<div><div class="stat-n">' + paceVal + '</div><div class="stat-l">' + paceLabel + '</div></div>' +
+    '</div></div>';
+
+  if (r.overLimit) {
+    html += '<div class="over-card"><div class="over-t">⚠ ' + r.overTitle + '</div><div class="over-b">' + r.paceNote + '</div></div>';
+  }
+
+  html += '<div class="grid2" style="margin-bottom:6px">' +
+    '<button class="copy-btn" data-action="copy" style="margin:0">診断結果をコピー</button>' +
+    '<button class="copy-btn" data-action="img" style="margin:0;background:transparent;border:1.5px solid var(--gold);color:var(--gold)">結果画像を保存</button>' +
+    '</div>' +
+    '<div class="copy-note">「診断結果をコピー」でお客様に送れる文面を、そのままコピーできます</div>';
+
+  var tabs = [["training", "トレーニング"], ["meals", "食事"], ["supplement", "サプリ"], ["plateau", "停滞したら"]];
+  html += '<div class="tabs">' + tabs.map(function (t) {
+    return '<button class="tab' + (state.resultTab === t[0] ? ' active' : '') + '" data-action="tab" data-value="' + t[0] + '">' + t[1] + '</button>';
+  }).join('') + '</div>';
+
+  if (state.resultTab === 'training') {
+    var w = parseFloat(d.weight);
+    var freqN = parseInt(d.freq, 10) || 1;
+    var splitNote = A.ws.plan.note + (freqN === 5 ? "(翌週は下半身の日から開始して交互に)" : "");
+    html += '<div class="bigcard goldbg"><div class="big-t">分割法: ' + A.ws.plan.name + '(自主トレ週' + d.freq + '回)</div>' +
+      '<div class="big-note" style="color:var(--navy)">' + splitNote + ' Day1〜7はパーソナルや予定に合わせて自由に入れ替えOK(週の合計消費は変わりません)。</div></div>';
+
+    html += '<div class="flex" style="justify-content:space-between;align-items:center;margin-bottom:8px">' +
+      '<span class="hint">' + (state.swapMode ? '入れ替えたい2つの日を順にタップ' : 'タップで各日のメニューを表示') + '</span>' +
+      '<button class="pill' + (state.swapMode ? ' sel' : '') + '" data-action="swapmode">' + (state.swapMode ? '入れ替え終了' : '日程を入れ替える') + '</button></div>';
+
+    html += '<div class="days" style="margin:0 0 16px">' + A.ws.sched.map(function (s, i) {
+      var cls = 'day-btn tchip';
+      if (!state.swapMode && state.openTDay === i) cls += ' active';
+      if (state.swapMode && state.swapFirst === i) cls += ' swapsel';
+      return '<button class="' + cls + '" data-action="tday" data-value="' + i + '">' + s.day + '<span class="tchip-s">' + DAY_TYPES[s.type].chip + '</span></button>';
+    }).join('') + '</div>';
+
+    if (adjacencyWarn(state.schedTypes, A.ws.plan.key)) {
+      html += '<div class="pace-card"><div class="pace-b">⚠ 同じ部位のトレーニングが連日に並んでいます。筋肉の回復(超回復)には同部位で48時間以上が目安です。予定の都合で連日になる場合は、2日目を軽めにするか回復メニューに置き換えるのがおすすめです。</div></div>';
+    }
+
+    var sel = A.ws.sched[state.openTDay];
+    if (sel.type === "rest") {
+      html += '<div class="bigcard"><div class="big-t">' + sel.day + ': 休養日</div>' +
+        '<div class="big-note">筋肉はお休みしている間にこそ育ちます(超回復)。今日は完全オフか、20分くらいのお散歩でOK 🌿 ' +
+        (parseInt(d.personal, 10) > 0 ? 'パーソナル(週' + d.personal + '回)はこの休養日に配置すると、自主トレの回復と両立しやすくなります。' : '') +
+        'この休養日を動かしたいときは「日程を入れ替える」から。</div></div>';
+    } else {
+      var dm = sel.menu;
+      var dayBurn = sessionBurn(dm.metMinutes, w);
+      var headTxt = sel.day + ': ' + DAY_TYPES[sel.type].label + 'メニュー(計' + dm.plannedMin + '分' + (dm.rounds > 1 ? '・' + dm.rounds + '周' : '') + ')';
+      var list = dm.menu.map(function (ex, i) { return exCardView(ex, i); });
+      if (dm.finisher) list.push(exCardView(dm.finisher, dm.menu.length));
+      html += '<div class="sec-head"><span class="sec-title">' + headTxt + '</span><span class="hint">タップで詳細</span></div>' +
+        '<div class="note mb8">開始前: 2〜3分のその場足踏み+肩・股関節回し(ウォームアップ)</div>' +
+        '<div class="stack">' + list.join('') + '</div>' +
+        '<div class="note mt8">終了後: 使った部位を各30秒ストレッチ(柔軟性種目がある日はそれで代替OK)</div>' +
+        (dm.rounds > 1 ? '<div class="note mt8">※ 01〜' + String(dm.menu.length).padStart(2, '0') + 'を' + dm.rounds + '周してから仕上げに進みます</div>' : '') +
+        '<div class="bigcard goldline mt16"><div class="big-t">この日の消費目安: 約' + dayBurn + 'kcal</div>' +
+        '<div class="big-note">種目ごとのMET値×時間×体重(' + d.weight + 'kg)で算出。週間スケジュール全体の消費 約' + r.selfWeekly + 'kcal+パーソナル分は、摂取カロリー' + r.targetCal + 'kcalの計算にすでに反映されています。</div></div>';
+    }
+    if ((d.injuries || []).length > 0) {
+      html += '<div class="note mt8">※ ' + d.injuries.join('・') + 'に負担の大きい種目を自動で外しています。実施中に痛みが出た場合は中止し、担当トレーナー・医療機関にご相談ください。</div>';
+    }
+    html += '<div class="bigcard mt16"><div class="big-t">レベルアップのルール 💪</div>' +
+      '<div class="big-note">全セットを余裕を持って完了できた種目は、2週間を目安に「回数+2(秒数種目は+10秒)」。それも余裕になったら各種目の「キツくするなら」へ進みます。少しずつ数字がちょっとずつ増えていくこと、それ自体がカラダの成長サインです。</div></div>';
+    html += '<div class="strategy"><div class="str-t">継続戦略:' + STRATEGY[ptype].label + '</div><div class="str-b">' + STRATEGY[ptype].desc + '</div></div>';
+  }
+
+  if (state.resultTab === 'meals') {
+    var dayData = wp.week[state.openDay];
+    var dayDiff = dayData.totals.kcal - r.targetCal;
+    html += '<div class="grid3 mb8">' +
+      [["P", r.proteinG], ["F", r.fatG], ["C", r.carbG]].map(function (x) {
+        return '<div class="pfc-cell"><div class="pfc-n">' + x[1] + 'g</div><div class="pfc-l">' + x[0] + ' 目標/日</div></div>';
+      }).join('') + '</div>' +
+      '<div class="note">※医療・栄養指導ではなく目安です。各日の合計が目標' + r.targetCal + 'kcalに着地するよう、P・脂質を先に確保し主食量で自動調整しています。</div>' +
+      '<div class="days">' + wp.week.map(function (dd, i) {
+        return '<button class="day-btn' + (state.openDay === i ? ' active' : '') + '" data-action="day" data-value="' + i + '">' + dd.day + '</button>';
+      }).join('') + '</div>';
+
+    var labels = ["朝食", "昼食", "夕食"];
+    for (var si = 0; si < 3; si++) {
+      var mm = dayData.meals[si];
+      html += '<div class="meal"><div class="meal-t">' + labels[si] + '(約' + mm.kcal + 'kcal)</div>' +
+        foodRowView(mm.mP, mm.pSubs) + foodRowView(mm.mC, mm.cSubs) +
+        (mm.mF ? foodRowView(mm.mF, mm.fSubs) : '') +
+        '<div class="veg">+ 野菜: ' + mm.veg + '(約120g)</div></div>';
+    }
+
+    html += '<div class="total-card"><div class="total-t">この日の合計(目安)</div><div class="total-b">' +
+      'P ' + dayData.totals.p.toFixed(0) + 'g ・ F ' + dayData.totals.f.toFixed(0) + 'g ・ C ' + dayData.totals.c.toFixed(0) + 'g ・ 約' + dayData.totals.kcal + 'kcal<br>' +
+      '目標 ' + r.targetCal + 'kcal との差: ' + (dayDiff >= 0 ? '+' : '') + dayDiff + 'kcal</div></div>' +
+      '<div class="caution"><div class="caution-t">食事の注意点</div>' + MEAL_CAUTIONS.map(function (c) { return '<div class="caution-i">・' + c + '</div>'; }).join('') + '</div>' +
+      '<button class="reset-btn" data-action="copyshop">1週間の買い物リストをコピー</button>' +
+      '<div class="caution mt16"><div class="caution-t">コンビニ換算の目安(食材を用意できない日に)</div>' + CONV_LINES.map(function (c) { return '<div class="caution-i">・' + c + '</div>'; }).join('') + '</div>';
+  }
+
+  if (state.resultTab === 'supplement') {
+    html += '<div class="bigcard' + (pc.needed ? ' goldbg' : ' goldline') + '"><div class="big-t">プロテインって必要?</div><div class="big-b">' + pc.msg + '</div></div>' +
+      '<div class="bigcard"><div class="big-t">おすすめプロテイン種類</div><div class="big-type">' + pt.type + '</div><div class="big-note">' + pt.reason + '</div></div>' +
+      '<div class="sec-title mb8">目的別サプリの一般的な選択肢</div>' +
+      '<div class="stack mb16">' + sup.map(function (s) { return '<div class="supcard"><div class="sup-n">' + s.name + '</div><div class="sup-note">' + s.note + '</div></div>'; }).join('') + '</div>' +
+      '<div class="note">※特定の医薬品的効能を示すものではなく一般的な情報です。持病・服薬中の方、妊娠中・産後の方は医師や管理栄養士にご相談ください。</div>';
+  }
+
+  if (state.resultTab === 'plateau') {
+    html += '<div class="pace-card"><div class="pace-b">体重が<b>2週間以上</b>動かなくなったら、上から順に1つずつ試します。1ステップにつき約2週間、効果を確認してから次へ進むのがポイント。食事をがまんするのは、じつは最後の手段です。</div></div>' +
+      '<div class="stack">' + PLATEAU_STEPS.map(function (s) {
+        return '<div class="plat-step"><div class="plat-n">' + s.n + '</div><div><div class="plat-t">' + s.title + '</div><div class="plat-b">' + s.body + '</div></div></div>';
+      }).join('') + '</div>' +
+      '<div class="note mt16">※体調不良をともなう停滞や、強い疲労感が続くときは、ひとりで調整せず担当トレーナーや医療機関に相談してくださいね。</div>';
+  }
+
+  /* 計算根拠(折りたたみ) */
+  html += '<div class="logic-card">' +
+    '<button class="logic-head" data-action="logic"><span>この結果のしくみ(計算方法)</span><span class="ex-arrow' + (state.openLogic ? ' rot' : '') + '">▾</span></button>' +
+    (state.openLogic ?
+      '<div class="logic-body">' +
+      '<div class="logic-i">① 基礎代謝: ' + r.bmrFormula + (r.lbm ? '(除脂肪体重 ' + r.lbm + 'kg)' : '') + ' → ' + r.bmr + 'kcal</div>' +
+      '<div class="logic-i">② 日常活動: 基礎代謝 × ' + r.jobFactor + '(' + r.jobLabel + ')</div>' +
+      '<div class="logic-i">③ 運動消費: 種目ごとのMET値 × 時間 × 体重で算出し週合計→日割り(+' + r.exDaily + 'kcal/日)。トレーニング時間・頻度・パーソナル回数を変えるとここが変わります</div>' +
+      '<div class="logic-i">④ 総消費(TDEE): ②+③ = ' + r.tdee + 'kcal/日</div>' +
+      '<div class="logic-i">⑤ 目標収支: 体重差 × 7,200kcal ÷ 日数。ただし1日−750kcal(またはTDEEの25%)を上限、基礎代謝を下限とする安全設計</div>' +
+      '<div class="logic-i">⑥ PFC: P=体重×目的別係数(1.6〜2.2g) / F=総カロリーの25% / C=残り</div>' +
+      '<div class="logic-i">⑦ 食事プラン: 各食でPと脂質を先に確保し、主食(C)の量でカロリーを目標に着地。だから日々の合計が摂取目安とほぼ一致します</div>' +
+      '</div>' : '') +
+    '</div>';
+
+  html += '<button class="reset-btn" data-action="reset">もう一度診断する</button>';
+  return html;
+}
+
+function render() {
+  var inner = '<div class="header"><img class="brand-logo" src="data:image/png;base64,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" alt="CHART"><div class="eyebrow">BODY DIAGNOSTICS</div><h1 class="title">カラダづくり診断</h1><div class="trainer-badge">トレーナー用</div></div>';
+  if (state.step >= 0 && state.step <= 3) inner += dialView();
+  if (state.step === -1) inner += introView();
+  if (state.step === 0) inner += step0View();
+  if (state.step === 1) inner += step1View();
+  if (state.step === 2) inner += step2View();
+  if (state.step === 3) inner += step3View();
+  if (state.step >= 0 && state.step <= 3) inner += navView();
+  if (state.step === 4) inner += resultView();
+  var modal = '';
+  if (state.imgModal) {
+    modal = '<div class="img-modal">' +
+      '<img src="' + state.imgModal + '" alt="診断結果">' +
+      '<div class="img-modal-note">画像を<b>長押し</b> →「<b>&quot;写真&quot;に追加</b>」(または「画像を保存」)を選ぶと写真フォルダに保存できます</div>' +
+      '<div class="img-modal-sub">Androidの場合: 長押し →「画像をダウンロード」</div>' +
+      '<button class="img-modal-close" data-action="imgclose">閉じる</button>' +
+      '<a class="img-modal-dl" href="' + state.imgModal + '" download="CHART_診断結果.png">ファイルとして保存する場合はこちら</a>' +
+      '</div>';
+  }
+  document.getElementById('root').innerHTML = '<div class="wrap">' + inner + '</div>' + modal;
+}
+
+/* ============ イベント ============ */
+function handleNext() {
+  if (state.step === 0) {
+    var d = state.data;
+    var nums = [d.age, d.height, d.weight, d.targetWeight];
+    var bad = nums.some(function (v) { return !v || isNaN(parseFloat(v)) || parseFloat(v) <= 0; });
+    if (bad) { state.err = '数値をすべて入力してください'; render(); return; }
+    state.err = null;
+  }
+  if (!canProceed()) return;
+  state.step++;
+  if (state.step === 4) {
+    state.resultTab = 'training'; state.openDay = 0; state.openEx = null; state.openLogic = false;
+    state.schedTypes = null; state.swapMode = false; state.swapFirst = null;
+    var ws0 = buildWeekSchedule(parseInt(state.data.freq, 10) || 1);
+    state.openTDay = 0;
+    for (var ti = 0; ti < ws0.sched.length; ti++) { if (ws0.sched[ti].type !== "rest") { state.openTDay = ti; break; } }
+  }
+  render();
+}
+
+document.addEventListener('click', function (e) {
+  var t = e.target.closest('[data-action]');
+  if (!t) return;
+  var a = t.getAttribute('data-action');
+  if (a === 'start') { state.step = 0; render(); }
+  else if (a === 'back') { state.step--; render(); }
+  else if (a === 'next') { handleNext(); }
+  else if (a === 'set') { state.data[t.getAttribute('data-key')] = t.getAttribute('data-value'); render(); }
+  else if (a === 'answer') { state.data.answers[parseInt(t.getAttribute('data-q'), 10)] = t.getAttribute('data-value'); render(); }
+  else if (a === 'tab') { state.resultTab = t.getAttribute('data-value'); render(); }
+  else if (a === 'day') { state.openDay = parseInt(t.getAttribute('data-value'), 10); render(); }
+  else if (a === 'swapmode') { state.swapMode = !state.swapMode; state.swapFirst = null; render(); }
+  else if (a === 'tday') {
+    var tIdx = parseInt(t.getAttribute('data-value'), 10);
+    if (state.swapMode) {
+      if (state.swapFirst === null) state.swapFirst = tIdx;
+      else if (state.swapFirst === tIdx) state.swapFirst = null;
+      else { swapDays(state.swapFirst, tIdx); state.swapFirst = null; }
+    } else { state.openTDay = tIdx; state.openEx = null; }
+    render();
+  }
+  else if (a === 'ex') { var id = t.getAttribute('data-value'); state.openEx = state.openEx === id ? null : id; render(); }
+  else if (a === 'logic') { state.openLogic = !state.openLogic; render(); }
+  else if (a === 'adv') { state.openAdv = !state.openAdv; render(); }
+  else if (a === 'mset') {
+    var mk = t.getAttribute('data-key'), mv = t.getAttribute('data-value');
+    state.data[mk] = state.data[mk] === mv ? "" : mv;
+    if (mk === 'job' && state.data[mk] === "") state.data[mk] = "デスクワーク中心";
+    render();
+  }
+  else if (a === 'mtog') {
+    var gk = t.getAttribute('data-key'), gv = t.getAttribute('data-value');
+    var arr = state.data[gk] || [];
+    var gi = arr.indexOf(gv);
+    if (gi === -1) arr.push(gv); else arr.splice(gi, 1);
+    state.data[gk] = arr;
+    render();
+  }
+  else if (a === 'copy') { copyResult(t); }
+  else if (a === 'copyshop') { copyShopping(t); }
+  else if (a === 'img') { saveImage(t); }
+  else if (a === 'imgclose') { state.imgModal = null; render(); }
+  else if (a === 'reset') {
+    state.step = -1; state.resultTab = 'training'; state.openDay = 0; state.openTDay = 0; state.schedTypes = null; state.swapMode = false; state.swapFirst = null; state.openEx = null; state.openLogic = false; state.imgModal = null; state.err = null;
+    state.data.goal = ''; state.data.equip = ''; state.data.time = ''; state.data.answers = [];
+    render();
+  }
+});
+
+document.addEventListener('input', function (e) {
+  var k = e.target.getAttribute && e.target.getAttribute('data-key');
+  if (k) state.data[k] = e.target.value;
+});
+
+render();
+</script>
+</body>
+</html>
