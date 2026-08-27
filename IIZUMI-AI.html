@@ -279,10 +279,18 @@ h1 em::after{
 .masc i[data-p="idea"]{background-image:var(--m-idea)}
 .masc i[data-p="stop"]{background-image:var(--m-stop)}
 .masc i[data-p="sleep"]{background-image:var(--m-sleep)}
+.masc i[data-p="hmm"]{background-image:var(--m-hmm)}
+.masc i[data-p="stand"]{background-image:var(--m-stand)}
+.masc i[data-p="orb"]{background-image:var(--m-orb)}
+.masc i[data-p="pointdown"]{background-image:var(--m-pointdown)}
+.masc i[data-p="point"]{background-image:var(--m-point)}
+.masc i[data-p="shield"]{background-image:var(--m-shield)}
+.masc i[data-p="calendar"]{background-image:var(--m-calendar)}
+.masc i[data-p="bow"]{background-image:var(--m-bow)}
 
 /* 追従キャラ（ヘッダーが画面から外れたら出る） */
 #fmasc{
-  position:fixed;z-index:60;bottom:14px;right:max(12px,calc(50% - 476px));
+  position:fixed;z-index:60;top:12px;right:max(10px,calc(50% - 476px));
   background:var(--paper);border:1.5px solid var(--line2);border-radius:22px;
   box-shadow:0 10px 28px rgba(51,51,51,.15);isolation:isolate;
   padding:9px 9px 3px;cursor:pointer;-webkit-tap-highlight-color:transparent;
@@ -402,6 +410,14 @@ mark{background:var(--teal-p);color:var(--teal-d);border-radius:4px;padding:0 3p
         <i data-p="idea"></i>
         <i data-p="stop"></i>
         <i data-p="sleep"></i>
+        <i data-p="hmm"></i>
+        <i data-p="stand"></i>
+        <i data-p="orb"></i>
+        <i data-p="pointdown"></i>
+        <i data-p="point"></i>
+        <i data-p="shield"></i>
+        <i data-p="calendar"></i>
+        <i data-p="bow"></i>
       </div>
     </div>
 
@@ -447,6 +463,14 @@ mark{background:var(--teal-p);color:var(--teal-d);border-radius:4px;padding:0 3p
     <i data-p="idea"></i>
     <i data-p="stop"></i>
     <i data-p="sleep"></i>
+    <i data-p="hmm"></i>
+    <i data-p="stand"></i>
+    <i data-p="orb"></i>
+    <i data-p="pointdown"></i>
+    <i data-p="point"></i>
+    <i data-p="shield"></i>
+    <i data-p="calendar"></i>
+    <i data-p="bow"></i>
   </span>
   <span class="up">TOP</span>
 </button>
@@ -725,7 +749,7 @@ function card(d){
     L+=`<div class="layer" data-t="${mk}"><div class="mk">${mk}</div>
       <div class="lb"><div class="llab">${lab}</div><p class="ltxt">${lnk(hi(v))}</p></div></div>`;
   });
-  return `<article class="qa${d.cat==='alert'?' alert':''}" id="q${d.id}">
+  return `<article class="qa${d.cat==='alert'?' alert':''}" id="q${d.id}" data-cat="${d.cat}">
     <button class="qbtn" aria-expanded="false">
       <span class="qcat">${catName(d.cat)}${chk?'<em class="chk">要確認</em>':''}</span>
       <span class="qtxt">${hi(d.q)}</span><span class="qmark"></span>
@@ -743,12 +767,12 @@ function render(open){
     html=`<div class="near"><div class="nearh"><span class="fic ic-hmm"></span><div><h2>その言葉では見つかりませんでした</h2>
       <p>${near.length?'近い内容の質問はこちらです。':'別の言い方で検索するか、カテゴリから探してください。'}</p></div></div>
       <ul>${near.map(d=>`<li><button data-id="${d.id}">${esc(d.q)}<span class="sug-c" style="margin-left:8px">${catName(d.cat)}</span></button></li>`).join('')}</ul></div>`;
-    list.innerHTML=html; lastCount=0; lastNear=near.length>0; syncMasc(); return;
+    list.innerHTML=html; lastCount=0; lastNear=near.length>0; lastCat=''; syncMasc(); return;
   }
   list.innerHTML=r.map(card).join('')+
     `<div class="listend"><span class="fic ic-stand"></span><p>ここまで（${r.length}件）<br>
       <small>見つからないときは言い方を変えるか、飯泉に直接確認</small></p></div>`;
-  lastCount=r.length; lastNear=false; syncMasc();
+  lastCount=r.length; lastNear=false; lastCat=r.length?r[0].cat:''; syncMasc();
   if(open){
     const t=list.querySelector('#q'+open);
     if(t){ t.classList.add('open'); t.querySelector('.qbtn').setAttribute('aria-expanded','true'); }
@@ -807,11 +831,22 @@ document.addEventListener('keydown',e=>{
 /* ---------- mascot ---------- */
 const mascEl=$('#masc'), cntEl=$('#cntn'), fmEl=$('#fmasc');
 const mascAll=[...document.querySelectorAll('.masc')];
-let lastCount=DATA.length, lastNear=false, tempUntil=0, mascT, idleT;
+let lastCount=DATA.length, lastNear=false, lastCat='', tempUntil=0, mascT, idleT;
+const pick1=a=>a[Math.floor(Math.random()*a.length)];
+const FIRSTPOSE=pick1(['hello','talk','point','stand','orb','idea','cheer']);
+/* カテゴリごとの立ち姿 */
+const CATPOSE={
+  biz:'talk', creed:'bow', flow:'pointdown', sales:'good', counsel:'question',
+  retention:'hello', line:'type', claim:'hmm', tech:'cheer', body:'orb',
+  medical:'stop', ops:'calendar', rule:'shield', pay:'tablet', career:'point',
+  mgmt:'stand', recruit:'talk', fc:'cheer', kpi:'tablet', mental:'sleep',
+  growth:'idea', fw:'think', philo:'bow'
+};
 function basePose(){
-  if(!terms.length) return active==='all'?'hello':'tablet';
+  if(!terms.length) return active==='all'?FIRSTPOSE:(CATPOSE[active]||'tablet');
   if(!lastCount) return lastNear?'think':'question';
-  return lastCount<=3?'good':'talk';
+  if(lastCount<=3) return 'good';
+  return CATPOSE[lastCat]||'talk';
 }
 function setPose(p){
   for(const m of mascAll) for(const x of m.children) x.classList.toggle('on',x.dataset.p===p);
@@ -832,22 +867,21 @@ function wake(){
   idleT=setTimeout(()=>{tempUntil=0;setPose('sleep')},120000);
 }
 qIn.addEventListener('input',()=>{wake();pose('type',900)});
-$('#rnd').addEventListener('click',()=>{wake();pose('cheer',2600)});
+$('#rnd').addEventListener('click',()=>{wake();pose(pick1(['cheer','good','idea','hello','point']),2600)});
 list.addEventListener('click',e=>{
   wake();
   const b=e.target.closest('.qbtn'); if(!b) return;
   const a=b.closest('.qa');
-  if(a.classList.contains('open')) pose(a.querySelector('.chk')?'stop':'idea',2400);
+  if(a.classList.contains('open'))
+    pose(a.querySelector('.chk')?'stop':(CATPOSE[a.dataset.cat]||'idea'),2600);
 });
 if(fmEl){
   fmEl.addEventListener('click',()=>{wake();window.scrollTo({top:0,behavior:'smooth'})});
   if('IntersectionObserver' in window){
-    const vis={h:true,f:false};
     const io=new IntersectionObserver(es=>{
-      for(const e of es) vis[e.target===mascEl?'h':'f']=e.isIntersecting;
-      fmEl.classList.toggle('on',!vis.h&&!vis.f);
+      for(const e of es) fmEl.classList.toggle('on',!e.isIntersecting);
     },{rootMargin:'0px 0px -30px 0px'});
-    io.observe(mascEl); io.observe($('.ft'));
+    io.observe(mascEl);
   }
 }
 document.addEventListener('pointerdown',wake,{passive:true});
