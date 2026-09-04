@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CHART 店舗マップ</title>
+<style>
+  :root{
+    --ink:#070B14; --panel:#0D1524; --panel-2:#111C2E; --line:#1E2C46;
+    --text:#E9EEF8; --muted:#77879F; --gold:#FFC759; --teal:#43D9C4;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:
+      radial-gradient(1200px 700px at 78% -10%, #12203a 0%, transparent 60%),
+      radial-gradient(900px 600px at 0% 100%, #0f1b2e 0%, transparent 55%),
+      var(--ink);
+    color:var(--text);
+    font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","BIZ UDPGothic","Yu Gothic Medium","Yu Gothic","Noto Sans JP",system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased; min-height:100vh; font-feature-settings:"palt" 1;
+  }
+  .wrap{max-width:1220px;margin:0 auto;padding:22px 18px 60px}
+
+  header{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;
+         padding-bottom:16px;border-bottom:1px solid var(--line)}
+  .brand{display:flex;align-items:baseline;gap:12px}
+  .brand h1{margin:0;font-size:23px;font-weight:800;letter-spacing:.14em}
+  .brand span{font-size:12px;color:var(--muted);letter-spacing:.06em}
+  .tally{display:flex;align-items:flex-end;gap:22px}
+  .tally .big{display:flex;align-items:baseline;gap:6px}
+  .tally .big b{font-size:46px;font-weight:800;line-height:.85;letter-spacing:-.03em;color:var(--gold);
+                text-shadow:0 0 22px rgba(255,199,89,.45);font-variant-numeric:tabular-nums}
+  .tally .big i{font-style:normal;font-size:13px;color:var(--muted)}
+  .split{display:flex;gap:14px;font-size:12.5px;color:var(--muted);padding-bottom:4px}
+  .split u{text-decoration:none;color:var(--text);font-weight:700;font-variant-numeric:tabular-nums}
+  .dot{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:5px;vertical-align:1px}
+  .dot.g{background:var(--gold);box-shadow:0 0 8px var(--gold)}
+  .dot.t{background:var(--teal);box-shadow:0 0 8px var(--teal)}
+
+  .controls{display:flex;gap:12px;flex-wrap:wrap;margin:18px 0 14px}
+  .field{display:flex;flex-direction:column;gap:6px;min-width:150px;flex:1 1 170px;max-width:230px}
+  .field label{font-size:11.5px;color:var(--muted);letter-spacing:.05em}
+  select{
+    appearance:none;-webkit-appearance:none;
+    background:var(--panel-2)
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8'><path d='M1 1l5 5 5-5' fill='none' stroke='%2377879F' stroke-width='1.6'/></svg>")
+      no-repeat right 12px center;
+    color:var(--text);border:1px solid var(--line);border-radius:9px;
+    padding:11px 34px 11px 13px;font-size:14.5px;width:100%;font-family:inherit;cursor:pointer;
+  }
+  :focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+  .stage{display:grid;grid-template-columns:1fr 316px;gap:16px;align-items:start}
+  @media (max-width:880px){ .stage{grid-template-columns:1fr} }
+
+  .mapbox{position:relative;background:linear-gradient(160deg,#0b1424 0%,#0a1120 100%);
+          border:1px solid var(--line);border-radius:16px;overflow:hidden}
+  .mapbox svg{display:block;width:100%;height:auto}
+  .viewtag{position:absolute;left:14px;top:12px;font-size:12px;color:var(--muted);
+           letter-spacing:.08em;pointer-events:none}
+  .viewtag b{color:var(--text);font-weight:700;font-size:14px;letter-spacing:.06em}
+  .hint{margin:9px 2px 0;font-size:11.5px;color:var(--muted);line-height:1.6}
+
+  .pref{fill:rgba(44,76,124,.14);stroke:rgba(12,20,34,.85);stroke-width:.9;stroke-linejoin:round}
+  .pref.live{fill:rgba(255,199,89,.10);stroke:rgba(255,199,89,.30)}
+  .coast{fill:none;stroke:#3A5D8F;stroke-width:1.2;stroke-linejoin:round}
+  .rail{fill:none;stroke:rgba(255,199,89,.30);stroke-width:1.4}
+  .river{fill:none;stroke:rgba(67,217,196,.24);stroke-width:1.6;stroke-linecap:round}
+  .gridline{stroke:rgba(120,160,220,.055);stroke-width:1}
+  .link{stroke:rgba(255,199,89,.16);stroke-width:1}
+
+  .node{cursor:pointer}
+  .halo{filter:url(#glow)}
+  .node .core{stroke-width:.8}
+  .node.dim{opacity:.16;pointer-events:none}
+  .node .pulse{fill:none;stroke-width:1.4}
+
+  .plabel{font-size:11.5px;fill:var(--muted);letter-spacing:.06em;pointer-events:none}
+  .wlabel{font-size:10.5px;fill:rgba(119,135,159,.62);letter-spacing:.08em;pointer-events:none}
+  .pcount{font-weight:800;font-size:15px;fill:#06101f;pointer-events:none;font-variant-numeric:tabular-nums}
+  .nlabel{font-size:11.5px;font-weight:700;fill:var(--text);pointer-events:none;
+          paint-order:stroke;stroke:#070B14;stroke-width:3.2px;stroke-linejoin:round}
+
+  @keyframes ignite{from{opacity:0;transform:scale(.35)}to{opacity:1;transform:scale(1)}}
+  @keyframes ping{0%{transform:scale(1);opacity:.55}75%,100%{transform:scale(3.4);opacity:0}}
+  .node{animation:ignite .5s cubic-bezier(.2,.9,.3,1) backwards;animation-delay:calc(var(--i) * 45ms);
+        transform-box:fill-box;transform-origin:center}
+  .node .pulse{animation:ping 3.4s ease-out infinite;animation-delay:calc(var(--i) * 220ms);
+        transform-box:fill-box;transform-origin:center}
+  @media (prefers-reduced-motion:reduce){
+    .node,.node .pulse{animation:none}
+    .node .pulse{opacity:.28}
+  }
+
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+  .panel h2{margin:0;padding:14px 16px 12px;font-size:13.5px;font-weight:700;letter-spacing:.07em;
+            border-bottom:1px solid var(--line)}
+  .list{max-height:540px;overflow-y:auto;overscroll-behavior:contain}
+  @media (max-width:880px){ .list{max-height:360px} }
+  .row{display:grid;grid-template-columns:14px 1fr auto;gap:10px;align-items:start;
+       padding:11px 15px;border-bottom:1px solid rgba(30,44,70,.6);cursor:pointer;width:100%;
+       background:none;border-left:0;border-right:0;border-top:0;text-align:left;color:inherit;
+       font-family:inherit}
+  .row:hover,.row:focus-visible{background:var(--panel-2);outline:none}
+  .row.on{background:var(--panel-2);box-shadow:inset 3px 0 0 var(--gold)}
+  .row.on.fc{box-shadow:inset 3px 0 0 var(--teal)}
+  .row .pip{width:8px;height:8px;border-radius:50%;margin-top:6px}
+  .row .nm{font-size:14.5px;font-weight:700;line-height:1.35;display:block}
+  .row .ad{font-size:11.5px;color:var(--muted);line-height:1.5;margin-top:3px;
+           word-break:break-all;display:block}
+  .row .tag{font-size:10.5px;color:var(--muted);border:1px solid var(--line);
+            border-radius:5px;padding:2px 6px;white-space:nowrap;margin-top:3px}
+
+  .bars{padding:8px 16px 16px}
+  .bar{display:grid;grid-template-columns:76px 1fr 30px;gap:10px;align-items:center;padding:9px 0;
+       cursor:pointer;background:none;border:0;color:inherit;width:100%;font-family:inherit;text-align:left}
+  .bar:hover .track i{filter:brightness(1.3)}
+  .bar span{font-size:13px}
+  .bar .track{height:7px;background:#131F33;border-radius:4px;overflow:hidden}
+  .bar .track i{display:block;height:100%;background:var(--gold);box-shadow:0 0 12px rgba(255,199,89,.6)}
+  .bar u{text-decoration:none;font-size:14px;font-weight:800;text-align:right;font-variant-numeric:tabular-nums}
+
+  .tip{position:absolute;pointer-events:none;z-index:5;background:rgba(8,16,29,.94);
+       border:1px solid var(--line);border-radius:10px;padding:9px 12px;max-width:230px;opacity:0;
+       transform:translate(-50%,-118%);transition:opacity .12s;backdrop-filter:blur(6px)}
+  .tip.show{opacity:1}
+  .tip b{display:block;font-size:13.5px;margin-bottom:3px}
+  .tip small{color:var(--muted);font-size:11px;line-height:1.5;display:block}
+  .tip em{font-style:normal;color:var(--gold);font-size:10.5px}
+  .tip em.fc{color:var(--teal)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="brand"><h1>CHART 店舗マップ</h1><span>2026.09</span></div>
+    <div class="tally">
+      <div class="big"><b id="tCount">0</b><i>店舗</i></div>
+      <div class="split">
+        <div><span class="dot g"></span>直営 <u id="tOwn">0</u></div>
+        <div><span class="dot t"></span>FC <u id="tFc">0</u></div>
+      </div>
+    </div>
+  </header>
+
+  <div class="controls">
+    <div class="field">
+      <label for="selView">表示する地域</label>
+      <select id="selView"></select>
+    </div>
+    <div class="field">
+      <label for="selFilter">絞り込み</label>
+      <select id="selFilter">
+        <option value="all">すべて</option>
+        <option value="own">直営のみ</option>
+        <option value="fc">FCのみ</option>
+        <option value="A">エリアA</option>
+        <option value="B">エリアB</option>
+        <option value="C">エリアC</option>
+        <option value="D">エリアD</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="stage">
+    <div>
+      <div class="mapbox" id="mapbox">
+        <div class="viewtag" id="viewtag"></div>
+        <div class="tip" id="tip"></div>
+      </div>
+      <p class="hint" id="hint"></p>
+    </div>
+    <aside class="panel">
+      <h2 id="panelTitle">店舗一覧</h2>
+      <div id="panelBody"></div>
+    </aside>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   店舗データ　ここを書き換えれば地図が変わります
+   ============================================================ */
+const STORES = [
+  {name:"表参道",    type:"own", area:"A", pref:"東京都", addr:"東京都港区南青山2-27-22 青山安田ビル",      lat:35.6702, lng:139.7175},
+  {name:"東長崎",    type:"own", area:"A", pref:"東京都", addr:"東京都豊島区南長崎5-29-12 ユートリー",       lat:35.7262, lng:139.6858},
+  {name:"旗の台",    type:"own", area:"A", pref:"東京都", addr:"東京都品川区旗の台4-4-2 グリーンキャピタル", lat:35.6040, lng:139.7015},
+  {name:"曳舟",      type:"own", area:"A", pref:"東京都", addr:"東京都墨田区東向島2-31-20 1階",             lat:35.7180, lng:139.8178},
+  {name:"京成小岩",  type:"own", area:"A", pref:"東京都", addr:"東京都江戸川区北小岩2-9-13 井上ビル1階",     lat:35.7478, lng:139.8873},
+  {name:"大山",      type:"own", area:"B", pref:"東京都", addr:"東京都板橋区大谷口上町36-2 ジョイビル",      lat:35.7443, lng:139.6938},
+  {name:"目白",      type:"own", area:"B", pref:"東京都", addr:"東京都豊島区目白4-19-20 C・MFⅡ",            lat:35.7233, lng:139.6985},
+  {name:"駒込",      type:"own", area:"B", pref:"東京都", addr:"東京都北区中里2-16-3 トナミビル",            lat:35.7368, lng:139.7490},
+  {name:"鷺ノ宮",    type:"own", area:"B", pref:"東京都", addr:"東京都中野区鷺宮3-35-2 鳥羽店舗 1階",        lat:35.7228, lng:139.6432},
+  {name:"千川ANNEX", type:"own", area:"C", pref:"東京都", addr:"東京都豊島区要町3-11-1 菊信第一ビル",        lat:35.7388, lng:139.6908},
+  {name:"西馬込",    type:"own", area:"C", pref:"東京都", addr:"東京都大田区南馬込5-38-1 1F",               lat:35.5858, lng:139.7105},
+  {name:"武蔵関",    type:"own", area:"C", pref:"東京都", addr:"東京都練馬区関町北1-23-18 1F",              lat:35.7292, lng:139.5850},
+  {name:"千川",      type:"own", area:"C", pref:"東京都", addr:"東京都豊島区要町3-28-13 モリセイ",           lat:35.7392, lng:139.6920},
+  {name:"西落合",    type:"own", area:"D", pref:"東京都", addr:"東京都新宿区西落合2-10-12 地下1階",          lat:35.7248, lng:139.6825},
+  {name:"成増",      type:"own", area:"D", pref:"東京都", addr:"東京都板橋区成増3-19-21 亀田ビル",           lat:35.7765, lng:139.6315},
+  {name:"平和台",    type:"own", area:"D", pref:"東京都", addr:"東京都練馬区北町7-10-9 Kフラット",           lat:35.7602, lng:139.6535},
+  {name:"牛込柳町",  type:"own", area:"D", pref:"東京都", addr:"東京都新宿区原町3-9-8 重田ビル 1階",         lat:35.6978, lng:139.7232},
+  {name:"桜台",      type:"own", area:"D", pref:"東京都", addr:"東京都練馬区桜台4-12-23 1階",               lat:35.7400, lng:139.6665},
+  {name:"中板橋",    type:"fc",  area:"",  pref:"東京都", addr:"東京都板橋区仲町37-6 星ビル 1F",  fc:"リードブリッジ", lat:35.7522, lng:139.7000},
+  {name:"亀有",      type:"fc",  area:"",  pref:"東京都", addr:"東京都葛飾区亀有3-11-14 山岸",     fc:"リードブリッジ", lat:35.7630, lng:139.8482},
+  {name:"東武練馬",  type:"fc",  area:"",  pref:"東京都", addr:"東京都練馬区北町2-29-12 HMW",      fc:"リードブリッジ", lat:35.7648, lng:139.6665},
+  {name:"富士店",    type:"fc",  area:"",  pref:"静岡県", addr:"静岡県富士市吉原4-8-11 1F",                             lat:35.1612, lng:138.6905}
+];
+
+/* ============================================================
+   都道府県の輪郭 [緯度, 経度]
+   ============================================================ */
+const PREF={
+北海道:[[45.52,141.94],[45.30,142.20],[45.05,142.55],[44.60,142.75],[44.35,143.35],[44.10,143.90],[43.95,144.30],[43.85,144.60],[43.80,144.90],[44.05,145.05],[44.32,145.32],[44.05,145.20],[43.75,145.10],[43.55,145.35],[43.38,145.82],[43.20,145.55],[43.05,145.10],[42.98,144.85],[42.95,144.38],[42.85,143.95],[42.60,143.55],[42.30,143.35],[41.93,143.25],[42.10,142.60],[42.30,142.20],[42.50,141.85],[42.63,141.60],[42.55,141.20],[42.32,140.97],[42.35,140.60],[42.51,140.38],[42.30,140.45],[42.11,140.58],[41.95,140.65],[41.78,140.73],[41.55,140.45],[41.40,140.11],[41.60,140.10],[41.87,140.13],[42.15,139.95],[42.45,139.85],[42.65,140.00],[42.80,140.22],[43.05,140.30],[43.33,140.35],[43.25,140.75],[43.20,141.00],[43.25,141.35],[43.55,141.45],[43.95,141.63],[44.35,141.70],[44.90,141.75],[45.20,141.65],[45.42,141.68]],
+青森県:[[41.55,140.91],[41.43,141.46],[41.15,141.40],[40.95,141.38],[40.60,141.55],[40.45,141.68],[40.45,141.20],[40.44,140.70],[40.42,140.30],[40.50,140.05],[40.62,139.93],[40.90,140.10],[41.15,140.25],[41.25,140.34],[41.05,140.60],[40.85,140.75],[40.95,141.05],[41.15,141.00],[41.30,140.88]],
+岩手県:[[40.45,141.20],[40.45,141.68],[40.30,141.75],[39.90,141.95],[39.55,142.07],[39.30,141.95],[39.00,141.90],[38.98,141.55],[38.98,141.05],[39.20,140.85],[39.50,140.80],[39.90,140.80],[40.20,140.90],[40.45,141.00]],
+宮城県:[[38.98,141.05],[38.98,141.55],[38.90,141.60],[38.55,141.45],[38.35,141.50],[38.30,141.10],[38.15,140.98],[37.95,140.95],[37.90,140.75],[37.92,140.55],[38.05,140.35],[38.25,140.45],[38.55,140.55],[38.80,140.65],[38.95,140.75]],
+秋田県:[[40.50,140.05],[40.42,140.30],[40.44,140.70],[40.45,141.00],[40.20,140.90],[39.90,140.80],[39.50,140.80],[39.20,140.85],[38.98,140.75],[38.95,140.30],[39.10,140.05],[39.30,139.90],[39.55,139.90],[39.75,139.80],[39.95,139.70],[40.00,140.05],[40.20,140.00],[40.35,139.95]],
+山形県:[[39.10,140.05],[38.95,140.30],[38.80,140.65],[38.55,140.55],[38.25,140.45],[38.05,140.35],[37.90,140.20],[37.80,139.95],[37.90,139.75],[38.15,139.60],[38.40,139.55],[38.70,139.70],[38.95,139.85],[39.05,139.95]],
+福島県:[[37.95,140.95],[37.60,141.00],[37.30,141.05],[37.05,140.95],[36.90,140.65],[36.92,140.20],[36.95,139.85],[37.00,139.50],[37.05,139.30],[37.30,139.25],[37.55,139.35],[37.80,139.55],[37.90,139.75],[37.90,140.20],[37.92,140.55],[37.90,140.75]],
+茨城県:[[36.90,140.65],[36.83,140.80],[36.55,140.70],[36.30,140.60],[36.05,140.65],[35.85,140.83],[35.88,140.65],[35.95,140.45],[36.02,140.20],[36.05,139.95],[35.95,139.80],[36.10,139.75],[36.22,139.72],[36.30,139.68],[36.45,139.75],[36.60,139.95],[36.75,140.30],[36.92,140.20]],
+栃木県:[[37.15,139.85],[37.05,140.00],[36.90,140.20],[36.75,140.30],[36.60,139.95],[36.45,139.75],[36.30,139.68],[36.20,139.70],[36.22,139.55],[36.35,139.42],[36.55,139.35],[36.75,139.35],[36.95,139.45],[37.10,139.60]],
+群馬県:[[36.95,139.45],[36.75,139.35],[36.55,139.35],[36.35,139.42],[36.22,139.55],[36.10,139.40],[36.05,139.10],[36.00,138.90],[36.10,138.70],[36.25,138.50],[36.40,138.45],[36.55,138.60],[36.70,138.70],[36.85,138.90],[36.95,139.10],[37.05,139.30]],
+埼玉県:[[36.05,139.10],[36.10,139.40],[36.22,139.55],[36.22,139.72],[36.10,139.75],[35.95,139.80],[35.88,139.88],[35.80,139.88],[35.79,139.72],[35.78,139.60],[35.77,139.47],[35.79,139.33],[35.80,139.18],[35.84,139.01],[35.86,138.94],[35.92,138.80],[36.00,138.72],[36.00,138.92]],
+千葉県:[[35.85,140.83],[35.71,140.87],[35.55,140.60],[35.30,140.40],[35.10,140.10],[34.90,139.89],[35.05,139.83],[35.25,139.83],[35.45,139.90],[35.62,139.89],[35.72,139.90],[35.78,139.88],[35.95,139.80],[36.05,139.95],[36.02,140.20],[35.95,140.45],[35.88,140.65]],
+東京都:[[35.86,138.94],[35.84,139.01],[35.82,139.10],[35.80,139.18],[35.79,139.27],[35.79,139.33],[35.78,139.40],[35.77,139.47],[35.76,139.53],[35.77,139.56],[35.78,139.59],[35.78,139.62],[35.78,139.66],[35.79,139.69],[35.80,139.72],[35.81,139.77],[35.82,139.81],[35.81,139.86],[35.78,139.88],[35.76,139.90],[35.72,139.91],[35.69,139.90],[35.66,139.90],[35.64,139.87],[35.64,139.84],[35.63,139.81],[35.61,139.79],[35.57,139.80],[35.55,139.79],[35.53,139.76],[35.56,139.70],[35.58,139.67],[35.60,139.64],[35.62,139.61],[35.63,139.57],[35.64,139.53],[35.65,139.48],[35.66,139.44],[35.62,139.43],[35.59,139.40],[35.56,139.44],[35.53,139.47],[35.55,139.40],[35.59,139.36],[35.61,139.29],[35.64,139.25],[35.68,139.20],[35.72,139.13],[35.76,139.03],[35.80,138.96]],
+神奈川県:[[35.62,139.43],[35.66,139.44],[35.65,139.48],[35.64,139.53],[35.63,139.57],[35.62,139.61],[35.60,139.64],[35.58,139.67],[35.56,139.70],[35.53,139.76],[35.47,139.72],[35.38,139.72],[35.28,139.70],[35.19,139.65],[35.13,139.62],[35.20,139.58],[35.28,139.53],[35.33,139.45],[35.33,139.35],[35.28,139.25],[35.20,139.15],[35.13,139.10],[35.25,139.05],[35.40,139.02],[35.52,139.00],[35.60,139.05],[35.63,139.15],[35.60,139.28]],
+新潟県:[[38.50,139.55],[38.25,139.45],[37.95,139.05],[37.80,138.90],[37.60,138.75],[37.37,138.55],[37.18,138.24],[37.03,137.80],[36.95,137.85],[36.90,138.10],[36.95,138.40],[36.90,138.60],[37.00,138.80],[37.05,139.05],[37.05,139.30],[37.30,139.25],[37.55,139.35],[37.80,139.55],[38.05,139.60],[38.30,139.55]],
+富山県:[[37.03,137.80],[36.85,137.45],[36.75,137.25],[36.78,137.10],[36.85,136.98],[36.75,136.92],[36.60,136.88],[36.50,136.98],[36.45,137.12],[36.38,137.28],[36.45,137.45],[36.58,137.55],[36.72,137.65],[36.88,137.72],[36.95,137.85]],
+石川県:[[37.53,137.33],[37.45,137.05],[37.30,136.85],[37.10,136.75],[36.95,136.72],[36.80,136.72],[36.60,136.60],[36.42,136.42],[36.30,136.30],[36.25,136.40],[36.32,136.60],[36.42,136.75],[36.52,136.85],[36.62,136.90],[36.75,136.95],[36.90,137.00],[37.05,137.10],[37.20,137.15],[37.35,137.20]],
+福井県:[[36.30,136.30],[36.25,136.40],[36.18,136.20],[36.05,136.05],[35.92,135.98],[35.78,135.95],[35.65,135.75],[35.53,135.55],[35.48,135.72],[35.52,135.92],[35.58,136.15],[35.65,136.35],[35.75,136.50],[35.90,136.55],[36.05,136.55],[36.20,136.45]],
+山梨県:[[35.90,138.72],[35.86,138.94],[35.80,138.96],[35.72,139.00],[35.63,139.05],[35.55,139.00],[35.45,138.92],[35.36,138.86],[35.28,138.72],[35.35,138.58],[35.45,138.42],[35.60,138.32],[35.75,138.35],[35.88,138.55]],
+長野県:[[36.95,138.40],[36.90,138.60],[36.85,138.90],[36.70,138.70],[36.55,138.60],[36.40,138.45],[36.25,138.50],[36.10,138.70],[36.00,138.72],[35.90,138.72],[35.88,138.55],[35.75,138.35],[35.60,138.32],[35.50,138.20],[35.35,138.05],[35.25,137.90],[35.20,137.75],[35.30,137.60],[35.45,137.50],[35.60,137.55],[35.75,137.60],[35.90,137.55],[36.05,137.60],[36.20,137.55],[36.35,137.45],[36.38,137.28],[36.45,137.12],[36.55,137.35],[36.70,137.60],[36.85,138.10],[36.90,138.25]],
+岐阜県:[[36.45,137.12],[36.38,137.28],[36.35,137.45],[36.20,137.55],[36.05,137.60],[35.90,137.55],[35.75,137.60],[35.60,137.55],[35.45,137.50],[35.35,137.45],[35.30,137.28],[35.25,137.10],[35.20,136.95],[35.25,136.75],[35.32,136.60],[35.42,136.45],[35.55,136.40],[35.65,136.50],[35.75,136.55],[35.90,136.60],[36.05,136.65],[36.20,136.80],[36.30,136.95],[36.40,137.05]],
+静岡県:[[35.63,138.60],[35.55,138.85],[35.45,138.95],[35.35,139.02],[35.22,139.10],[35.05,139.10],[34.90,139.10],[34.62,138.90],[34.75,138.77],[34.91,138.79],[35.03,138.87],[35.10,138.86],[35.13,138.70],[35.02,138.52],[34.97,138.40],[34.87,138.32],[34.72,138.25],[34.60,138.23],[34.65,138.05],[34.68,137.80],[34.66,137.60],[34.75,137.50],[34.90,137.47],[35.05,137.55],[35.20,137.65],[35.30,137.85],[35.45,138.10],[35.55,138.30]],
+愛知県:[[35.30,137.45],[35.25,137.60],[35.20,137.65],[35.05,137.55],[34.90,137.47],[34.75,137.50],[34.66,137.60],[34.63,137.35],[34.58,137.02],[34.65,137.10],[34.72,137.20],[34.78,137.10],[34.72,136.95],[34.70,136.85],[34.80,136.87],[34.95,136.85],[35.05,136.83],[35.15,136.83],[35.25,136.92],[35.30,137.05],[35.32,137.25]],
+三重県:[[35.15,136.83],[35.05,136.83],[34.95,136.85],[34.85,136.85],[34.75,136.85],[34.65,136.85],[34.55,136.85],[34.40,136.90],[34.28,136.90],[34.15,136.75],[34.05,136.55],[33.95,136.30],[33.90,136.20],[34.00,136.05],[34.10,135.95],[34.25,135.95],[34.40,136.00],[34.55,136.05],[34.70,136.00],[34.85,136.15],[34.95,136.35],[35.10,136.50],[35.18,136.65]],
+滋賀県:[[35.18,136.65],[35.10,136.50],[34.95,136.35],[34.85,136.15],[34.90,136.00],[35.00,135.90],[35.10,135.88],[35.25,135.95],[35.35,135.90],[35.48,135.95],[35.52,135.92],[35.48,135.72],[35.53,135.55],[35.58,136.15],[35.45,136.40],[35.35,136.55],[35.25,136.62]],
+京都府:[[35.77,135.22],[35.70,135.40],[35.60,135.50],[35.53,135.55],[35.48,135.72],[35.52,135.92],[35.48,135.95],[35.35,135.90],[35.25,135.95],[35.10,135.88],[35.00,135.90],[34.90,135.85],[34.82,135.78],[34.86,135.66],[34.95,135.58],[35.05,135.50],[35.15,135.40],[35.25,135.30],[35.40,135.20],[35.55,135.15],[35.68,135.15]],
+大阪府:[[34.95,135.58],[34.86,135.66],[34.82,135.78],[34.72,135.72],[34.60,135.68],[34.48,135.58],[34.35,135.45],[34.28,135.30],[34.35,135.20],[34.45,135.28],[34.55,135.38],[34.65,135.42],[34.72,135.42],[34.80,135.42],[34.88,135.45]],
+兵庫県:[[35.65,134.63],[35.62,134.85],[35.60,135.05],[35.55,135.15],[35.40,135.20],[35.25,135.30],[35.15,135.40],[35.05,135.50],[34.95,135.58],[34.88,135.45],[34.80,135.42],[34.72,135.30],[34.65,135.15],[34.68,135.00],[34.75,134.85],[34.72,134.70],[34.78,134.55],[34.85,134.40],[34.90,134.25],[35.00,134.25],[35.15,134.30],[35.30,134.35],[35.45,134.42],[35.55,134.52]],
+奈良県:[[34.82,135.78],[34.86,135.66],[34.72,135.72],[34.60,135.68],[34.45,135.70],[34.30,135.72],[34.15,135.72],[34.05,135.78],[34.15,135.85],[34.25,135.95],[34.40,136.00],[34.55,136.05],[34.70,136.00],[34.78,135.90]],
+和歌山県:[[34.30,135.15],[34.20,135.15],[34.05,135.10],[33.90,135.10],[33.80,135.20],[33.70,135.35],[33.55,135.45],[33.45,135.70],[33.43,135.76],[33.55,135.90],[33.70,135.99],[33.85,136.05],[33.95,135.98],[34.05,135.85],[34.15,135.72],[34.30,135.72],[34.35,135.45],[34.33,135.30]],
+鳥取県:[[35.62,134.55],[35.55,134.40],[35.52,134.24],[35.50,134.05],[35.48,133.85],[35.52,133.60],[35.55,133.32],[35.42,133.35],[35.30,133.35],[35.20,133.45],[35.12,133.60],[35.10,133.80],[35.15,134.00],[35.20,134.20],[35.28,134.35],[35.40,134.45],[35.52,134.52]],
+島根県:[[35.55,133.32],[35.45,133.20],[35.42,132.95],[35.45,132.75],[35.35,132.55],[35.20,132.30],[35.05,132.20],[34.90,132.05],[34.78,131.95],[34.68,131.85],[34.65,132.05],[34.72,132.25],[34.80,132.45],[34.90,132.65],[35.00,132.85],[35.05,133.05],[35.10,133.25],[35.15,133.35],[35.25,133.35],[35.40,133.35]],
+岡山県:[[35.12,133.60],[35.15,133.85],[35.12,134.05],[35.05,134.20],[34.95,134.25],[34.85,134.28],[34.75,134.30],[34.65,134.25],[34.60,134.10],[34.55,133.95],[34.45,133.85],[34.42,133.65],[34.45,133.45],[34.55,133.30],[34.65,133.25],[34.80,133.20],[34.95,133.15],[35.05,133.25],[35.10,133.45]],
+広島県:[[34.95,133.15],[34.80,133.20],[34.65,133.25],[34.55,133.30],[34.45,133.45],[34.35,133.35],[34.30,133.20],[34.35,133.00],[34.30,132.80],[34.30,132.60],[34.35,132.45],[34.28,132.30],[34.15,132.20],[34.25,132.15],[34.40,132.15],[34.55,132.20],[34.65,132.05],[34.80,132.45],[34.90,132.65],[35.00,132.85],[35.05,133.05]],
+山口県:[[34.68,131.85],[34.78,131.95],[34.65,132.05],[34.55,132.20],[34.40,132.15],[34.25,132.15],[34.15,132.20],[34.05,132.05],[33.98,131.85],[33.95,131.60],[33.95,131.30],[33.95,130.94],[34.10,130.90],[34.25,130.98],[34.35,131.15],[34.42,131.40],[34.55,131.65]],
+徳島県:[[34.23,134.62],[34.10,134.62],[33.95,134.70],[33.83,134.75],[33.70,134.55],[33.60,134.35],[33.65,134.15],[33.80,133.95],[33.95,133.90],[34.05,134.05],[34.10,134.30]],
+香川県:[[34.38,134.05],[34.28,134.35],[34.23,134.62],[34.10,134.35],[34.05,134.10],[34.10,133.85],[34.20,133.70],[34.30,133.85]],
+愛媛県:[[34.02,133.55],[33.96,133.28],[34.07,132.99],[33.95,132.85],[33.84,132.72],[33.70,132.55],[33.55,132.40],[33.35,132.02],[33.48,132.35],[33.42,132.50],[33.30,132.58],[33.15,132.60],[33.02,132.65],[33.10,132.80],[33.25,133.00],[33.40,133.15],[33.55,133.25],[33.70,133.35],[33.85,133.45],[33.95,133.50]],
+高知県:[[33.02,132.65],[32.95,132.68],[32.85,132.80],[32.72,133.02],[32.85,133.20],[33.00,133.35],[33.20,133.45],[33.35,133.55],[33.45,133.70],[33.50,133.85],[33.48,134.00],[33.35,134.10],[33.25,134.18],[33.40,134.25],[33.60,134.35],[33.65,134.15],[33.80,133.95],[33.90,133.75],[33.85,133.45],[33.70,133.35],[33.55,133.25],[33.40,133.15],[33.25,133.00],[33.10,132.80]],
+福岡県:[[33.95,130.94],[33.88,131.05],[33.70,131.10],[33.55,131.05],[33.40,130.95],[33.25,130.75],[33.18,130.60],[33.20,130.45],[33.30,130.35],[33.42,130.20],[33.55,130.15],[33.65,130.25],[33.75,130.45],[33.85,130.70],[33.92,130.85]],
+佐賀県:[[33.42,130.20],[33.30,130.35],[33.20,130.45],[33.18,130.60],[33.10,130.50],[33.05,130.30],[33.05,130.15],[33.15,129.95],[33.28,129.92],[33.38,130.02],[33.45,130.12]],
+長崎県:[[33.38,129.42],[33.28,129.55],[33.20,129.70],[33.05,129.68],[32.92,129.72],[32.80,129.78],[32.72,129.85],[32.62,130.00],[32.72,130.12],[32.85,130.18],[32.98,130.12],[33.05,130.15],[33.15,129.95],[33.28,129.92],[33.35,129.70],[33.40,129.55]],
+熊本県:[[33.05,130.30],[33.10,130.50],[33.18,130.60],[33.25,130.75],[33.10,131.05],[32.95,131.15],[32.80,131.15],[32.65,131.10],[32.50,130.95],[32.40,130.75],[32.30,130.60],[32.20,130.45],[32.15,130.30],[32.30,130.20],[32.45,130.25],[32.60,130.35],[32.75,130.30],[32.90,130.30]],
+大分県:[[33.72,131.75],[33.55,131.85],[33.35,131.75],[33.20,131.70],[33.05,131.75],[32.95,131.65],[32.90,131.45],[33.00,131.25],[33.10,131.05],[33.25,130.90],[33.40,130.95],[33.55,131.05],[33.70,131.10],[33.68,131.35],[33.70,131.60]],
+宮崎県:[[32.90,131.45],[32.95,131.65],[32.85,131.98],[32.60,131.85],[32.40,131.75],[32.20,131.65],[31.95,131.50],[31.75,131.45],[31.55,131.40],[31.38,131.34],[31.35,131.15],[31.45,131.00],[31.60,130.95],[31.75,130.90],[31.90,131.00],[32.10,131.05],[32.30,131.10],[32.50,131.15],[32.70,131.25],[32.85,131.35]],
+鹿児島県:[[31.35,131.15],[31.38,131.34],[31.28,130.90],[31.10,130.75],[30.99,130.66],[31.15,130.60],[31.30,130.60],[31.45,130.55],[31.60,130.58],[31.50,130.40],[31.35,130.30],[31.25,130.30],[31.35,130.15],[31.55,130.15],[31.70,130.20],[31.85,130.35],[31.95,130.55],[31.95,130.75],[31.85,130.95],[31.75,130.90],[31.60,130.95],[31.45,131.00]],
+沖縄県:[[26.70,128.32],[26.52,128.08],[26.36,127.86],[26.22,127.72],[26.09,127.67],[26.14,127.80],[26.32,127.96],[26.50,128.10],[26.63,128.28]]
+};
+/* 島（都道府県には含めず、地図の形として描くもの） */
+const ISLES={
+  淡路島:[[34.58,134.75],[34.45,134.90],[34.30,134.85],[34.22,134.72],[34.30,134.60],[34.45,134.60],[34.55,134.65]],
+  佐渡:[[38.32,138.52],[38.05,138.25],[37.82,138.28],[37.85,138.50],[38.10,138.55]]
+};
+
+/* 東京23区の中心（地図の目印ラベル用） */
+const WARDS={千代田区:[35.694,139.754],中央区:[35.671,139.772],港区:[35.658,139.751],新宿区:[35.694,139.703],
+文京区:[35.708,139.752],台東区:[35.712,139.780],墨田区:[35.710,139.801],江東区:[35.673,139.817],
+品川区:[35.609,139.730],目黒区:[35.641,139.698],大田区:[35.561,139.716],世田谷区:[35.646,139.653],
+渋谷区:[35.664,139.698],中野区:[35.707,139.664],杉並区:[35.700,139.636],豊島区:[35.726,139.716],
+北区:[35.753,139.734],荒川区:[35.736,139.783],板橋区:[35.751,139.709],練馬区:[35.736,139.652],
+足立区:[35.775,139.804],葛飾区:[35.743,139.847],江戸川区:[35.707,139.868]};
+
+const YAMANOTE=[[35.681,139.767],[35.675,139.763],[35.666,139.758],[35.628,139.739],[35.620,139.728],[35.626,139.723],[35.634,139.716],[35.647,139.710],[35.658,139.701],[35.670,139.702],[35.683,139.702],[35.690,139.700],[35.701,139.700],[35.712,139.703],[35.721,139.706],[35.729,139.711],[35.731,139.728],[35.733,139.739],[35.736,139.747],[35.738,139.761],[35.732,139.767],[35.728,139.771],[35.721,139.778],[35.714,139.777],[35.707,139.774],[35.698,139.773],[35.692,139.771]];
+const ARAKAWA=[[35.784,139.723],[35.770,139.752],[35.755,139.790],[35.732,139.820],[35.700,139.850],[35.670,139.860],[35.645,139.862]];
+const FUJI=[35.3606,138.7274];
+
+/* ============================================================
+   描画
+   ============================================================ */
+const SVGNS="http://www.w3.org/2000/svg";
+const el=(t,a={})=>{const n=document.createElementNS(SVGNS,t);for(const k in a)n.setAttribute(k,a[k]);return n;};
+const $=id=>document.getElementById(id);
+const box=$("mapbox"), tip=$("tip"), selView=$("selView"), selFilter=$("selFilter");
+let selected=null, currentSvg=null;
+
+function makeProjector(b,w,h,pad){
+  const s=b[0],we=b[1],n=b[2],e=b[3], kx=Math.cos((s+n)/2*Math.PI/180);
+  const gw=(e-we)*kx, gh=(n-s), scale=Math.min((w-pad*2)/gw,(h-pad*2)/gh);
+  const ox=(w-gw*scale)/2, oy=(h-gh*scale)/2;
+  return (lat,lng)=>[ox+(lng-we)*kx*scale, oy+(n-lat)*scale];
+}
+const path=(pts,P,close)=>pts.map((p,i)=>(i?"L":"M")+P(p[0],p[1]).map(v=>v.toFixed(1)).join(" ")).join("")+(close?"Z":"");
+
+function boundsFor(key){
+  if(key==="jp"){
+    let s=30.4,w=127.9,n=45.9,e=146.2;
+    STORES.forEach(o=>{s=Math.min(s,o.lat-.6);n=Math.max(n,o.lat+.6);w=Math.min(w,o.lng-.6);e=Math.max(e,o.lng+.6);});
+    return [s,w,n,e];
+  }
+  if(key==="東京都") return [35.520,139.520,35.830,139.915];
+  if(PREF[key]){
+    let s=90,w=180,n=-90,e=-180;
+    PREF[key].forEach(p=>{s=Math.min(s,p[0]);n=Math.max(n,p[0]);w=Math.min(w,p[1]);e=Math.max(e,p[1]);});
+    const py=(n-s)*.08, px=(e-w)*.08;
+    return [s-py,w-px,n+py,e+px];
+  }
+  const list=STORES.filter(o=>o.pref===key);
+  if(!list.length) return [34.9,138.1,35.6,139.2];
+  let s=90,w=180,n=-90,e=-180;
+  list.forEach(o=>{s=Math.min(s,o.lat);n=Math.max(n,o.lat);w=Math.min(w,o.lng);e=Math.max(e,o.lng);});
+  const py=Math.max((n-s)*.6,.22), px=Math.max((e-w)*.6,.26);
+  return [s-py,w-px,n+py,e+px];
+}
+
+function relax(nodes,min){
+  for(let it=0;it<60;it++){
+    let moved=false;
+    for(let i=0;i<nodes.length;i++)for(let j=i+1;j<nodes.length;j++){
+      const a=nodes[i],b=nodes[j];
+      let dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy);
+      if(d<min){
+        if(d<0.01){dx=Math.cos(i)*.5;dy=Math.sin(i)*.5;d=.7;}
+        const p=(min-d)/2/d;
+        a.x-=dx*p;a.y-=dy*p;b.x+=dx*p;b.y+=dy*p;moved=true;
+      }
+    }
+    if(!moved)break;
+  }
+}
+function filtered(){
+  const f=selFilter.value;
+  return STORES.filter(s=> f==="all" ? true : (f==="own"||f==="fc") ? s.type===f : s.area===f);
+}
+
+function defs(svg){
+  const d=el("defs");
+  const g=el("filter",{id:"glow",x:"-120%",y:"-120%",width:"340%",height:"340%"});
+  g.appendChild(el("feGaussianBlur",{stdDeviation:"7",result:"b"}));
+  const m=el("feMerge");
+  ["b","b","SourceGraphic"].forEach(i=>m.appendChild(el("feMergeNode",{in:i})));
+  g.appendChild(m);d.appendChild(g);
+  const p=el("pattern",{id:"dots",width:"26",height:"26",patternUnits:"userSpaceOnUse"});
+  p.appendChild(el("circle",{cx:"1",cy:"1",r:"1",fill:"rgba(120,165,225,.10)"}));
+  d.appendChild(p);svg.appendChild(d);
+}
+
+function render(){
+  const key=selView.value||"jp";
+  const isJp=key==="jp";
+  const W=isJp?600:640, H=isJp?650:600;
+  const P=makeProjector(boundsFor(key),W,H,isJp?24:30);
+
+  box.querySelectorAll("svg").forEach(n=>n.remove());
+  const svg=el("svg",{viewBox:"0 0 "+W+" "+H,role:"img","aria-label":(isJp?"全国":key)+"の店舗地図"});
+  currentSvg=svg;
+  defs(svg);
+  svg.appendChild(el("rect",{x:0,y:0,width:W,height:H,fill:"url(#dots)"}));
+  const gl=el("g");
+  for(let i=1;i<6;i++){
+    gl.appendChild(el("line",{x1:0,y1:H*i/6,x2:W,y2:H*i/6,class:"gridline"}));
+    gl.appendChild(el("line",{x1:W*i/6,y1:0,x2:W*i/6,y2:H,class:"gridline"}));
+  }
+  svg.appendChild(gl);
+  $("viewtag").innerHTML="<b>"+(isJp?"全国":key)+"</b>";
+
+  const live={};
+  filtered().forEach(s=>{live[s.pref]=true});
+
+  if(isJp){
+    const g=el("g");
+    Object.keys(PREF).forEach(p=>{
+      g.appendChild(el("path",{d:path(PREF[p],P,true),class:"pref"+(live[p]?" live":"")}));
+    });
+    Object.keys(ISLES).forEach(k=>g.appendChild(el("path",{d:path(ISLES[k],P,true),class:"pref"})));
+    svg.appendChild(g);
+    $("hint").textContent="光っている点をタップすると、その都道府県の地図に切り替わります。都道府県の形はおおまかな輪郭です。";
+    drawPrefNodes(svg,P); buildPrefPanel();
+  }else{
+    if(PREF[key]){
+      svg.appendChild(el("path",{d:path(PREF[key],P,true),class:"pref live"}));
+      svg.appendChild(el("path",{d:path(PREF[key],P,true),class:"coast"}));
+    }
+    if(key==="東京都"){
+      svg.appendChild(el("path",{d:path(YAMANOTE,P,true),class:"rail"}));
+      svg.appendChild(el("path",{d:path(ARAKAWA,P,false),class:"river"}));
+      const wg=el("g");
+      Object.keys(WARDS).forEach(w=>{
+        const c=P(WARDS[w][0],WARDS[w][1]);
+        if(c[0]<12||c[0]>W-12||c[1]<12||c[1]>H-12) return;
+        wg.appendChild(Object.assign(el("text",{class:"wlabel",x:c[0],y:c[1],"text-anchor":"middle"}),{textContent:w}));
+      });
+      svg.appendChild(wg);
+      const y=P(35.700,139.700);
+      svg.appendChild(Object.assign(el("text",{class:"plabel",x:y[0]-4,y:y[1]+30}),{textContent:"山手線"}));
+      $("hint").textContent="薄い文字は区名、金色の輪は山手線、青緑の線は荒川です。細い線で結ばれた店どうしは約2.5km以内で、行き来しやすい組み合わせです。";
+    }else if(key==="静岡県"){
+      const f=P(FUJI[0],FUJI[1]);
+      svg.appendChild(el("path",{d:"M"+f[0]+" "+(f[1]-24)+"L"+(f[0]+27)+" "+(f[1]+14)+"L"+(f[0]-27)+" "+(f[1]+14)+"Z",class:"coast"}));
+      svg.appendChild(Object.assign(el("text",{class:"plabel",x:f[0],y:f[1]+30,"text-anchor":"middle"}),{textContent:"富士山"}));
+      $("hint").textContent="静岡県の輪郭と富士山の位置を重ねています。";
+    }else{
+      $("hint").textContent="細い線で結ばれた店どうしは約2.5km以内で、行き来しやすい組み合わせです。";
+    }
+    drawStoreNodes(svg,P,key); buildStorePanel(key);
+  }
+  box.appendChild(svg);
+}
+
+function drawPrefNodes(svg,P){
+  const by={};
+  filtered().forEach(s=>{(by[s.pref]=by[s.pref]||[]).push(s)});
+  const g=el("g");
+  Object.keys(by).forEach((pref,i)=>{
+    const arr=by[pref];
+    const lat=arr.reduce((a,s)=>a+s.lat,0)/arr.length, lng=arr.reduce((a,s)=>a+s.lng,0)/arr.length;
+    const c0=P(lat,lng), x=c0[0], y=c0[1];
+    const r=9+Math.sqrt(arr.length)*3.6;
+    const c=arr.every(s=>s.type==="fc")?"var(--teal)":"var(--gold)";
+    const n=el("g",{class:"node",style:"--i:"+i,tabindex:"0",role:"button",
+      "aria-label":pref+" "+arr.length+"店舗",transform:"translate("+x+","+y+")"});
+    n.appendChild(el("circle",{class:"pulse",cx:0,cy:0,r:r,stroke:c}));
+    n.appendChild(el("circle",{class:"halo",cx:0,cy:0,r:r*.86,fill:c,opacity:.30}));
+    n.appendChild(el("circle",{cx:0,cy:0,r:r*.62,fill:c,opacity:.95}));
+    n.appendChild(Object.assign(el("text",{class:"pcount",x:0,y:5,"text-anchor":"middle"}),{textContent:arr.length}));
+    n.appendChild(Object.assign(el("text",{class:"plabel",x:0,y:r+16,"text-anchor":"middle"}),{textContent:pref}));
+    const go=()=>{selView.value=pref;selected=null;render();};
+    n.addEventListener("click",go);
+    n.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();go();}});
+    n.addEventListener("pointerenter",()=>showTip(x,y,"<b>"+pref+"</b><small>"+arr.length+"店舗　タップで拡大</small>"));
+    n.addEventListener("pointerleave",hideTip);
+    g.appendChild(n);
+  });
+  svg.appendChild(g);
+}
+
+function drawStoreNodes(svg,P,pref){
+  const list=filtered().filter(s=>s.pref===pref);
+  const nodes=list.map(s=>{const p=P(s.lat,s.lng);return{s:s,x:p[0],y:p[1]};});
+  relax(nodes,15);
+
+  const lg=el("g");
+  for(let i=0;i<nodes.length;i++)for(let j=i+1;j<nodes.length;j++){
+    const a=nodes[i],b=nodes[j];
+    const km=Math.hypot((a.s.lat-b.s.lat)*111,(a.s.lng-b.s.lng)*91);
+    if(km<2.5) lg.appendChild(el("line",{x1:a.x,y1:a.y,x2:b.x,y2:b.y,class:"link"}));
+  }
+  svg.appendChild(lg);
+
+  const g=el("g");
+  nodes.forEach((nd,i)=>{
+    const c=nd.s.type==="fc"?"var(--teal)":"var(--gold)";
+    const n=el("g",{class:"node",style:"--i:"+i,tabindex:"0",role:"button",
+      "aria-label":nd.s.name+" "+nd.s.addr,"data-name":nd.s.name,transform:"translate("+nd.x+","+nd.y+")"});
+    n.appendChild(el("circle",{class:"pulse",cx:0,cy:0,r:7,stroke:c}));
+    n.appendChild(el("circle",{class:"halo",cx:0,cy:0,r:8.5,fill:c,opacity:.34}));
+    n.appendChild(el("circle",{class:"core",cx:0,cy:0,r:3.6,style:"fill:"+c+";stroke:#06101f"}));
+    n.appendChild(Object.assign(el("text",{class:"nlabel",x:11,y:4,"data-label":nd.s.name,
+      opacity:selected===nd.s.name?1:0}),{textContent:nd.s.name}));
+    n.addEventListener("click",()=>select(nd.s.name));
+    n.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();select(nd.s.name);}});
+    n.addEventListener("pointerenter",()=>showTip(nd.x,nd.y,
+      "<b>"+nd.s.name+"</b><small>"+nd.s.addr+"</small><em class=\""+nd.s.type+"\">"+
+      (nd.s.type==="fc" ? ("FC"+(nd.s.fc?"／"+nd.s.fc:"")) : ("直営"+(nd.s.area?"／エリア"+nd.s.area:"")))+"</em>"));
+    n.addEventListener("pointerleave",hideTip);
+    g.appendChild(n);
+  });
+  svg.appendChild(g);
+  paintSelection();
+}
+
+function showTip(x,y,html){
+  if(!currentSvg) return;
+  const r=currentSvg.getBoundingClientRect(), vb=currentSvg.viewBox.baseVal;
+  tip.innerHTML=html;
+  tip.style.left=(x/vb.width*r.width)+"px";
+  tip.style.top=(y/vb.height*r.height)+"px";
+  tip.classList.add("show");
+}
+const hideTip=()=>tip.classList.remove("show");
+
+function select(name){
+  selected = selected===name ? null : name;
+  paintSelection();
+  const row=document.querySelector('.row[data-name="'+CSS.escape(name)+'"]');
+  if(row&&selected) row.scrollIntoView({block:"nearest",behavior:"smooth"});
+}
+function paintSelection(){
+  document.querySelectorAll(".row").forEach(r=>r.classList.toggle("on",r.dataset.name===selected));
+  document.querySelectorAll(".node[data-name]").forEach(n=>n.classList.toggle("dim",!!selected&&n.dataset.name!==selected));
+  document.querySelectorAll("[data-label]").forEach(t=>t.setAttribute("opacity",t.dataset.label===selected?1:0));
+}
+
+function buildPrefPanel(){
+  const by={};
+  filtered().forEach(s=>{(by[s.pref]=by[s.pref]||[]).push(s)});
+  const max=Math.max(1,...Object.keys(by).map(k=>by[k].length));
+  $("panelTitle").textContent="都道府県別の店舗数";
+  const wrap=document.createElement("div");wrap.className="bars";
+  Object.keys(by).sort((a,b)=>by[b].length-by[a].length).forEach(pref=>{
+    const arr=by[pref];
+    const b=document.createElement("button");b.className="bar";
+    b.innerHTML="<span>"+pref+"</span><div class=\"track\"><i style=\"width:"+(arr.length/max*100)+"%\"></i></div><u>"+arr.length+"</u>";
+    b.addEventListener("click",()=>{selView.value=pref;selected=null;render();});
+    wrap.appendChild(b);
+  });
+  const body=$("panelBody");body.innerHTML="";body.appendChild(wrap);
+}
+
+function buildStorePanel(pref){
+  const list=filtered().filter(s=>s.pref===pref);
+  $("panelTitle").textContent=pref+"の店舗　"+list.length+"件";
+  const body=$("panelBody");body.innerHTML="";
+  const lb=document.createElement("div");lb.className="list";
+  if(!list.length) lb.innerHTML='<p style="padding:20px 16px;color:var(--muted);font-size:13px;margin:0">この条件に合う店舗はありません。絞り込みを「すべて」に戻してください。</p>';
+  list.forEach(s=>{
+    const col=s.type==="fc"?"var(--teal)":"var(--gold)";
+    const b=document.createElement("button");
+    b.className="row"+(s.type==="fc"?" fc":"");b.dataset.name=s.name;
+    b.innerHTML="<span class=\"pip\" style=\"background:"+col+";box-shadow:0 0 9px "+col+"\"></span>"+
+      "<span><span class=\"nm\">"+s.name+"</span><span class=\"ad\">"+s.addr+"</span></span>"+
+      "<span class=\"tag\">"+(s.type==="fc"?"FC":(s.area||"直営"))+"</span>";
+    b.addEventListener("click",()=>select(s.name));
+    lb.appendChild(b);
+  });
+  body.appendChild(lb);
+}
+
+function init(){
+  $("tCount").textContent=STORES.length;
+  $("tOwn").textContent=STORES.filter(s=>s.type==="own").length;
+  $("tFc").textContent=STORES.filter(s=>s.type==="fc").length;
+  const prefs=[];
+  STORES.forEach(s=>{if(prefs.indexOf(s.pref)<0)prefs.push(s.pref)});
+  prefs.sort();
+  selView.innerHTML='<option value="jp">全国</option>'+prefs.map(p=>'<option value="'+p+'">'+p+'</option>').join("");
+  render();
+}
+selView.addEventListener("change",()=>{selected=null;render();});
+selFilter.addEventListener("change",()=>{selected=null;render();});
+window.addEventListener("resize",hideTip);
+init();
+</script>
+</body>
+</html>
