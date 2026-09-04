@@ -1324,7 +1324,7 @@ const HAIGU={
 '戌':'誠実で一途。決めた相手を守り抜くタイプ。信頼を裏切られることに一番弱い。',
 '亥':'思い込んだら一直線。純度が高く、途中でブレません。周りが見えなくなることも。'
 };
-const JUNI_SCORE={'長生':84,'沐浴':58,'冠帯':80,'建禄':88,'帝旺':90,'衰':64,'病':54,'死':50,'墓':62,'絶':46,'胎':62,'養':72};
+const JUNI_SCORE={'長生':86,'沐浴':56,'冠帯':82,'建禄':90,'帝旺':93,'衰':64,'病':52,'死':46,'墓':62,'絶':40,'胎':60,'養':73};
 
 /* ================= 図表（すべて外部ライブラリなしの純SVG） ================= */
 const GC={'木':'#5fc47a','火':'#e8705a','土':'#d9a558','金':'#b9c0cf','水':'#5b8fd6'};
@@ -1687,7 +1687,7 @@ function buildFacts(o){
     yojin:sp.some(x=>x.n.indexOf('羊刃')>=0),
     kubou:sp.some(x=>x.n.indexOf('空亡')>=0),
     kubouTsuki:sp.some(x=>x.n.indexOf('空亡')>=0&&x.n.indexOf('月柱')>=0),
-    spouseClash:SOUKOKU2[dayG]===dayShiG||SOUKOKU2[dayShiG]===dayG,
+    spouseClash:SOUKOKU2[dayShiG]===dayG,   // 日支が日干を剋す方向のみ（両方向だと4割に出てしまう）
     // 姓名
     jinLead:has(LEAD_N,S.jin), jinInner:has(INNER_N,S.jin),
     gaiSocial:has(SOCIAL_N,S.gai), gaiSolo:has(SOLO_N,S.gai),
@@ -1740,17 +1740,17 @@ const CROSS_DAILY=[
 ];
 
 const CROSS_WORK=[
- {p:10,c:F=>!F.strong&&F.star.官>=1&&F.J,
+ {p:10,c:F=>!F.strong&&F.star.官>=1&&F.J&&(F.shinScore<0.37||F.tr.w_chaos>=2),
   t:F=>'<b>「引き受ける構え」と「容量」が噛み合っていません。</b>命式に官星（'+(F.hasStar('偏官')?'偏官':'正官')+'）があり、責任を担う星を持っています。MBTIもJで、決めたことを守る型。ところが四柱は身弱で、器そのものは大きくない。この組み合わせは「引き受けすぎて潰れる」に一直線です。断る技術が、あなたにとっては能力開発そのものになります。'},
  {p:10,c:F=>F.strong&&F.star.官===0&&!F.J,
   t:F=>'<b>力はあるのに枠がない配置です。</b>身強で容量は十分、しかし命式に官星（自分を律する星）がなく、MBTIもP。放っておくと力が拡散します。他人から与えられる締め切りより、自分で決めた締め切りの方が効きにくいタイプなので、外部に宣言する形で枠を作ると機能します。'},
  {p:9,c:F=>F.iqHigh&&F.eqLow.n==='人への影響'&&F.jinLead,
   t:F=>'<b>頭は届いているのに、伝達で損をしています。</b>IQ推定'+F.iq+'、名前の人格も前に出る質。にもかかわらずEQの「人への影響」が'+F.eqLow.s+'で最も低い。考えの質ではなく、届け方だけがボトルネックです。結論を先に言う・相手の言葉に翻訳する、この2点だけで評価が変わる位置にいます。'},
- {p:9,c:F=>F.kaigou&&F.axL>=4&&F.junG==='強',
-  t:F=>'<b>魁罡・主導性・十二運がすべて「押し切る」で揃っています。</b>日柱が魁罡、回答も引っ張る側、エネルギーの出方も「'+F.junDay+'」で強い。突破力は明確に武器ですが、三つとも同じ方向なのでブレーキがありません。反対意見を言ってくれる人を意図的に配置しないと、勢いのまま崖まで行きます。'},
- {p:8,c:F=>F.star.印>=1&&F.N&&F.tr.growth>=4,
+ {p:9,c:F=>F.kaigou&&F.axL>=3&&F.strong,
+  t:F=>'<b>魁罡・主導性・容量がすべて「押し切る」で揃っています。</b>日柱が魁罡、回答も引っ張る側、しかも身強で受け止める器もある。突破力は明確に武器ですが、三つとも同じ方向なのでブレーキがありません。反対意見を言ってくれる人を意図的に配置しないと、勢いのまま崖まで行きます。'},
+ {p:8,c:F=>F.star.印>=1&&F.N&&F.motive==='growth',
   t:F=>'<b>学びで回復し、学びで伸びる型です。</b>命式に印星（'+(F.hasStar('印綬')?'印綬':'偏印')+'）があり、MBTIはN、動機も成長。この三つが揃うと、休息より「新しいインプット」の方が回復手段として効きます。疲れたら休むのではなく、疲れたら学ぶ。ただし出口を作らないと知識が渋滞するので、教える側に回ると一気に加速します。'},
- {p:8,c:F=>F.star.表現>=1&&F.T&&F.style1==='論理型',
+ {p:8,c:F=>F.star.表現>=1&&F.T&&F.style1==='論理型'&&F.iqHigh,
   t:F=>'<b>感性と論理が両立している珍しい組み合わせです。</b>命式の表現星（'+(F.hasStar('傷官')?'傷官':'食神')+'）、MBTIのT、思考のクセも論理型。感じたことを筋道立てて言語化できるので、「説明する」「設計する」「教える」仕事で価値が跳ねます。逆に、感覚だけで進む現場では窮屈さを感じます。'},
  {p:8,c:F=>F.kubouTsuki&&F.star.官>=1,
   t:F=>'<b>社会的な評価が、手応えとして返ってきにくい配置です。</b>月柱（社会・仕事の柱）が空亡にかかっています。官星を持っているので責任は担うのに、その分の実感が薄い。これは働きが足りないのではなく、この領域が「一般的なやり方が効きにくい」という意味です。外からの評価を燃料にすると枯れるので、自分の基準を先に持ってください。'},
@@ -1764,7 +1764,7 @@ const CROSS_WORK=[
   t:F=>'<b>本人の質は高いのに、長期の流れに負荷がある配置です。</b>人格（性格の中心）は良い数ですが、総格（人生全体）が重い数。これは「短期で結果を出し続ける形」の方が合うという読み方ができます。一つの場所に長く積むより、区切りを作って更新していく設計が向きます。'},
  {p:6,c:F=>F.tenotsu&&!F.strong,
   t:F=>'<b>一人で背負う設計になっていません。</b>身弱で容量が小さい一方、天乙貴人という「引き上げられる縁」を持っています。この組み合わせは、自力より他力で伸びる型です。誰に相談できるかが、そのまま実力の一部になります。抱え込んだ瞬間に配置の強みが消えます。'},
- {p:5,c:F=>F.eqSpread>=20,
+ {p:5,c:F=>F.eqSpread>=42,
   t:F=>'<b>EQ4軸の落差が'+F.eqSpread+'点あります。</b>最も高いのが'+F.eqTop.n+'（'+F.eqTop.s+'）、最も低いのが'+F.eqLow.n+'（'+F.eqLow.s+'）。凸凹があるタイプは、平均を上げるより「低い軸を他人に補ってもらう」方が早く結果が出ます。誰と組むかで成果が大きく変わる配置です。'}
 ];
 
@@ -1776,7 +1776,7 @@ const CROSS_LOVE=[
  {p:9,c:F=>F.star.財===0&&F.star.官===0&&F.loveSpd<=-2,
   t:F=>'<b>縁が向こうから来る配置ではなく、自分からも動かない状態です。</b>命式に恋愛を示す星（財星・官星）がなく、回答でも距離を縮めるのに時間がかかると出ています。これは魅力の問題ではありません。動いた分だけしか結果が出ないタイプなので、受け身の期間がそのまま空白になります。'},
  {p:9,c:F=>F.spouseClash,
-  t:F=>'<b>配偶者の座に緊張のある配置です。</b>日干（'+F.dayKan+'・'+F.dayG+'）と日支（'+F.dayG+'を剋す、または剋される五行）が相剋の関係にあります。パートナーとの間に自然な摩擦が生じやすい読み方をしますが、これは「合わない」ではなく「刺激が強い」という意味です。穏やかさより手応えを求めるなら、むしろ機能します。'},
+  t:F=>'<b>配偶者の座から、あなたが抑えられる配置です。</b>日干（'+F.dayKan+'・'+F.dayG+'）を、配偶者の座である日支の五行が剋しています。パートナーとの間に自然な摩擦が生じやすい読み方をしますが、これは「合わない」ではなく「刺激が強い」という意味です。穏やかさより手応えを求めるなら、むしろ機能します。'},
  {p:8,c:F=>F.eqTop.n==='共感力'&&F.loveDep>=2,
   t:F=>'<b>読めるがゆえに、合わせすぎています。</b>EQでは共感力が'+F.eqTop.s+'で最も高く、回答でも自分が引く傾向。相手の状態が見えてしまうので、言う前に飲み込むことが習慣化しやすい配置です。察する力は才能ですが、察したことを言わないと、相手はあなたが満たされていると誤解し続けます。'},
  {p:8,c:F=>F.jinGaiGap>=8&&F.loveSpd>=2,
@@ -1796,7 +1796,7 @@ const CROSS_LIFE=[
   t:F=>'<b>適応で獲得したものが多く、しかも容量は大きくない。</b>4軸のうち'+F.nGap+'つで、生まれ持った性質と今の振る舞いがズレていました。これは「よく適応してきた」証拠ですが、身弱の配置でそれをやっているということは、演じている分だけ確実に削れているということでもあります。全部を降ろす必要はありません。ひとつだけ、演じなくていい場所を確保してください。'},
  {p:10,c:F=>F.nMatch>=3,
   t:F=>'<b>名前・生まれた日・自分の答えが'+F.nMatch+'つの軸で一致しています。</b>これはかなり珍しい状態です。素材と現在地が噛み合っているので迷いが少なく、力の出し方に無理がありません。ただし、ズレがない人は変化のきっかけも外から来ません。意識的に負荷をかけないと、この配置は同じ場所に留まります。'},
- {p:9,c:F=>F.iq-F.eqT>=45,
+ {p:9,c:F=>F.iq-F.eqT>=56,
   t:F=>'<b>頭と対人のあいだに大きな開きがあります。</b>IQ推定'+F.iq+'に対してEQ総合'+F.eqT+'。理解の速さが、そのまま人への伝わりやすさにはなっていません。あなたにとって当たり前の飛躍が、相手には説明の省略に見えます。この差を自覚しているかどうかだけで、人生の摩擦の総量が変わります。'},
  {p:9,c:F=>F.kaigou&&F.nGap>=2,
   t:F=>'<b>極端な素材に、多面的な適応が乗っています。</b>日柱が魁罡という平凡に収まらない並びで、さらに複数の軸で後天的な獲得がある。振れ幅が大きいのは配置通りです。当たったときの突き抜け方が違う代わりに、外したときの落ち方も深い。これは直すものではなく、前提として設計に織り込むものです。'},
@@ -1862,12 +1862,17 @@ const CROSS_UN=[
 function fireRules(rules,F,max){
   const out=[];
   rules.slice().sort((a,b)=>b.p-a.p).forEach(r=>{
-    if(out.length>=max) return;
     let ok=false; try{ ok=!!r.c(F); }catch(e){ ok=false; }
-    if(ok){ try{ out.push(r.t(F)); }catch(e){} }
+    if(ok&&typeof __RULECOND==='function') __RULECOND(r);  // 条件成立（検証用）
+    if(out.length>=max) return;
+    if(ok){
+      if(typeof __RULEHIT==='function') __RULEHIT(r);   // 実際に採用（検証用）
+      try{ out.push(r.t(F)); }catch(e){}
+    }
   });
   return out;
 }
+var __RULEHIT=null, __RULECOND=null;
 
 /* ================= 状態 ================= */
 let answers={}, currentQ=0;
@@ -2419,8 +2424,9 @@ function calcMeishiki(y,mo,d){
   seq.sort((a,b)=>a.jd-b.jd);
   const SHI_OF={'立春':'寅','啓蟄':'卯','清明':'辰','立夏':'巳','芒種':'午','小暑':'未','立秋':'申','白露':'酉','寒露':'戌','立冬':'亥','大雪':'子','小寒':'丑'};
   const IDX={'寅':1,'卯':2,'辰':3,'巳':4,'午':5,'未':6,'申':7,'酉':8,'戌':9,'亥':10,'子':11,'丑':12};
-  let cur=seq[0];
+  let cur=seq[0], nxt=null;
   for(let i=0;i<seq.length;i++){ if(seq[i].jd<=birth) cur=seq[i]; }
+  for(let i=0;i<seq.length;i++){ if(seq[i].jd>birth){ nxt=seq[i]; break; } }
   const mShiChar=SHI_OF[cur.name];
   const mShi=SHI.indexOf(mShiChar);
   const mKan=(yKan*2+IDX[mShiChar]+1)%10;
@@ -2430,11 +2436,18 @@ function calcMeishiki(y,mo,d){
   const dKan=dIdx%10, dShi=dIdx%12;
   // 節入り日（JST）
   const setsuDate=jdToYMD(cur.jd+9/24);
-  const onBoundary=(setsuDate.y===y&&setsuDate.m===mo&&setsuDate.d===d);
+  const nextDate=nxt?jdToYMD(nxt.jd+9/24):null;
+  const sameDay=function(t){ return t&&t.y===y&&t.m===mo&&t.d===d; };
+  // 区間の開始日だけでなく「その日のうちに次の節入りが来る」場合も境界として扱う
+  const onBoundary=sameDay(setsuDate)||sameDay(nextDate);
+  const boundaryName=sameDay(nextDate)?nxt.name:cur.name;
+  const boundaryNext=sameDay(nextDate);
   return {
     year:[KAN[yKan],SHI[yShi]], month:[KAN[mKan],SHI[mShi]], day:[KAN[dKan],SHI[dShi]],
     yKan:yKan,mKan:mKan,dKan:dKan,yShi:yShi,mShi:mShi,dShi:dShi,
-    setsuName:cur.name, setsuDate:setsuDate, yearForPillar:yearForPillar, onBoundary:onBoundary
+    setsuName:cur.name, setsuDate:setsuDate, yearForPillar:yearForPillar, onBoundary:onBoundary,
+    boundaryName:boundaryName, boundaryNext:boundaryNext,
+    nextName:nxt?nxt.name:null, nextDate:nextDate
   };
 }
 function jdToYMD(jd){
@@ -2599,7 +2612,12 @@ function computeResult(partial){
     love_open:0,love_slow:0,love_talk:0,love_avoid:0,love_dep:0,love_indep:0,love_express:0};
   questions.forEach(q=>{const s=answers[q.id];if(s===undefined||s===-1)return;
     Object.keys(q.scores[s]).forEach(k=>{tr[k]=(tr[k]||0)+q.scores[s][k]*SCALE;});});
-  const mbti=(tr.E>=tr.I?'E':'I')+(tr.S>=tr.N?'S':'N')+(tr.T>=tr.F?'T':'F')+(tr.J>=tr.P?'J':'P');
+  /* MBTIは素点の単純比較だと軸ごとに偏る（実測でJ:P=82:18だった）。
+     乱数2000件で測った各極の中央値と四分位幅で標準化してから比較する。 */
+  const AXN={E:[5,7],I:[5,7],S:[2,2],N:[3,4],T:[10,7],F:[9,7],J:[7,6],P:[3,3]};
+  const az=function(k){const n=AXN[k];return ((tr[k]||0)-n[0])/n[1];};
+  const mbti=(az('E')>=az('I')?'E':'I')+(az('S')>=az('N')?'S':'N')
+            +(az('T')>=az('F')?'T':'F')+(az('J')>=az('P')?'J':'P');
 
   /* ---------- IQ（復活） ---------- */
   let iqRaw=60+tr.logic*3.1+tr.sys*1.9+tr.IQ_b*2.4+tr.creative*1.45+(tr.aware>2?4:0)+tr.growth*0.38;
@@ -2619,7 +2637,9 @@ function computeResult(partial){
     {n:'感情の制御',s:norm(42+tr.J*1.45+tr.persist*1.9+tr.stable*2.8+(tr.aware>=3?3:0)-tr.w_emotion*5+(tr.E>=6?3:0)+(tr.meaning>=5?2:0),0.622,17.1),d:'ストレスや葛藤の中で、感情に流されずにいられるか。'},
     {n:'人への影響',s:norm(41+tr.E*1.9+tr.leader*2.8+tr.mgmt*1.45+tr.care*0.95+tr.motiv*1.45,0.821,3.4),d:'言動を通して、まわりの行動が実際に変わるか。'}
   ];
-  const eqT=Math.round(eq.reduce((a,b)=>a+b.s,0)/4);
+  /* 4軸平均は中心に寄る（実測 p25=64 p50=68 p75=72）。中央値68を軸に広げる */
+  const eqAvg=eq.reduce((a,b)=>a+b.s,0)/4;
+  const eqT=Math.max(20,Math.min(100,Math.round((eqAvg-68)*2.3+68)));
   const eqDesc=eqT>=75?'感情知性が全体的に高く、自己理解と対人の両面でバランスが取れています。'
     :eqT>=55?'特定の軸に強みがあり、弱い軸を整えることで対人力がもう一段伸びる位置にいます。'
     :'感情面の内省と他者理解の経験を重ねることで、大きく伸びしろがあるステージです。';
@@ -2714,21 +2734,58 @@ function computeResult(partial){
     {n:'実務型',v:tr.S*1.2+tr.J+tr.persist*1.2,d:'手順と現物から入る。抽象論より、まず一つ確実に片付ける方が性に合う。'}
   ].sort((a,b)=>b.v-a.v);
 
-  /* ---------- 強み・弱み・動機 ---------- */
-  const st=[];
-  if(tr.logic>=3)st.push('筋道を立てる力');if(tr.sys>=3)st.push('仕組みにする力');
-  if(tr.collab>=3)st.push('人と組む力');if(tr.F>=2)st.push('聴く力');
-  if(tr.E>=3)st.push('場を開く力');if(tr.persist>=2)st.push('粘る力');
-  if(tr.growth>=3)st.push('伸びようとする力');if(tr.ach>=3)st.push('やり切る力');
-  if(tr.creative>=2)st.push('思いつく力');if(tr.meaning>=3)st.push('意味を持つ力');
-  if(tr.aware>=3)st.push('自分を見る力');if(tr.care>=3)st.push('人を育てる力');
-  if(!st.length)st.push('動く力','誠実さ','合わせる力');
-  const wk=[];
-  if(tr.w_detail>=1)wk.push('細部が気になりすぎる');if(tr.w_emotion>=1)wk.push('感情の波が出やすい');
-  if(tr.w_perf>=1)wk.push('完璧を求めて動き出せない');if(tr.w_bored>=1)wk.push('同じことが続くと飽きる');
-  if(tr.w_rel>=2)wk.push('人間関係に消耗しやすい');if(tr.w_chaos>=1)wk.push('抱えすぎて回らなくなる');
-  if(tr.w_lost>=1)wk.push('先が見えないと止まる');
-  if(!wk.length)wk.push('周りに合わせすぎる','優先順位の切り替え');
+  /* ---------- 強み・弱み（相対評価） ----------
+     以前は「logic>=3なら筋道を立てる力」のような絶対しきい値だったが、
+     45問に増やした結果ほぼ全員が全項目を超え、誰でも同じ6個が並んでいた。
+     乱数回答3000回で各トレイトの中央値(p50)と上位1割(p90)を実測し、
+     偏差に直してから上位だけを採用する方式に変更した。 */
+  const NORM={logic:[7,12],sys:[3,7],collab:[6,10],F:[9,16],E:[6,12],persist:[5,10],
+    growth:[7,13],ach:[6,10],creative:[3,7],meaning:[6,10],aware:[7,11],care:[7,11],
+    T:[9,16],N:[3,6],S:[2,4],J:[7,12],P:[3,6],I:[4,11],mgmt:[5,9],leader:[2,7],
+    specialist:[3,7],autonomy:[3,7],independence:[1,5],EQ_b:[4,9],IQ_b:[0,5],
+    w_detail:[0,1],w_emotion:[2,5],w_perf:[0,1],w_bored:[1,4],w_rel:[0,3],w_chaos:[1,3],w_lost:[0,2]};
+  const z=function(k){ const n=NORM[k]; if(!n) return 0;
+    return ((tr[k]||0)-n[0])/Math.max(1,(n[1]-n[0])); };
+
+  const ST_DEF=[
+    ['筋道を立てる力',   z('logic')*.7+z('IQ_b')*.3],
+    ['仕組みにする力',   z('sys')*.7+z('J')*.3],
+    ['人と組む力',       z('collab')],
+    ['聴く力',           z('F')*.6+z('EQ_b')*.4],
+    ['場を開く力',       z('E')],
+    ['粘る力',           z('persist')],
+    ['伸びようとする力', z('growth')],
+    ['やり切る力',       z('ach')],
+    ['思いつく力',       z('creative')*.6+z('N')*.4],
+    ['意味を持つ力',     z('meaning')],
+    ['自分を見る力',     z('aware')],
+    ['人を育てる力',     z('care')*.6+z('mgmt')*.4],
+    ['決めきる力',       z('leader')*.6+z('autonomy')*.4],
+    ['全体を回す力',     z('mgmt')*.6+z('sys')*.4],
+    ['深く掘る力',       z('specialist')*.6+z('persist')*.4],
+    ['一人で立つ力',     z('independence')*.6+z('autonomy')*.4],
+    ['現場で動く力',     z('S')*.6+z('P')*.4],
+    ['先を読む力',       z('N')*.6+z('IQ_b')*.4]
+  ].sort(function(a,b){return b[1]-a[1];});
+  const st=ST_DEF.slice(0,5).map(function(x){return x[0];});
+  const stTop=ST_DEF[0];
+
+  const WK_DEF=[
+    ['感情の波が出やすい',       z('w_emotion')],
+    ['細部が気になりすぎる',     z('w_detail')],
+    ['完璧を求めて動き出せない', z('w_perf')],
+    ['同じことが続くと飽きる',   z('w_bored')],
+    ['人間関係に消耗しやすい',   z('w_rel')],
+    ['抱えすぎて回らなくなる',   z('w_chaos')],
+    ['先が見えないと止まる',     z('w_lost')],
+    ['押しが強く出すぎる',       z('leader')*.5+z('T')*.5],
+    ['人に合わせすぎる',         z('collab')*.4+z('F')*.4-z('leader')*.2],
+    ['一人で抱えがち',           z('independence')*.5+z('I')*.5],
+    ['決めるのが遅い',           z('P')*.5+z('w_perf')*.5]
+  ].sort(function(a,b){return b[1]-a[1];});
+  const wk=WK_DEF.filter(function(x){return x[1]>0.15;}).slice(0,3).map(function(x){return x[0];});
+  if(wk.length<2) wk.push(WK_DEF[wk.length][0]);
+
   const MJP={growth:'成長',ach:'達成',meaning:'意味',stable:'安定'};
   const mRank=[['growth',tr.growth],['ach',tr.ach],['meaning',tr.meaning],['stable',tr.stable]]
     .sort((a,b)=>b[1]-a[1]);
@@ -2749,20 +2806,32 @@ function computeResult(partial){
   const inyoSc=(S.nYo===0||S.nIn===0)?40:dIn<=1?88:dIn===2?66:52;
   // 五行バランス
   const lack=['木','火','土','金','水'].filter(k=>gg[k]/ggTot<0.09);
+  /* 三柱だと五行の偏りは大きく出るのが普通。実測 dev p05=0.23 p50=0.51 p95=0.84 に合わせ、
+     dev=0.23→88、dev=0.84→40 を通す直線に補正（旧式は85%が最低点に張り付いていた） */
   const dev=['木','火','土','金','水'].reduce((p,k)=>p+Math.abs(gg[k]/ggTot-0.2),0);
-  const gogyoSc=Math.round(Math.max(28,Math.min(95,96-dev*130-lack.length*14)));
+  const gogyoSc=Math.round(Math.max(30,Math.min(95,88-(dev-0.232)*78.4-lack.length*8)));
   // 通変星構成
   const uniq=starList.filter((v,i,a)=>a.indexOf(v)===i).length;
-  let tsuSc=44+uniq*10;
-  if(cnt('傷官')&&cnt('偏官')&&!cnt('印綬')&&!cnt('偏印'))tsuSc-=14;
-  if(cnt('印綬')||cnt('偏印'))tsuSc+=5;
-  tsuSc=Math.max(30,Math.min(92,tsuSc));
+  /* 旧式は種類数だけで54/64/74/84の4値しか取らなかった。
+     支えの星の有無・偏り・身強身弱との噛み合いも見て段階を増やす */
+  const gCnt={自我:0,表現:0,財:0,官:0,印:0};
+  starList.forEach(function(s){ if(STAR_GROUP[s]) gCnt[STAR_GROUP[s]]++; });
+  let tsuSc=26+uniq*10;
+  if(gCnt.印>0)tsuSc+=6;
+  if(gCnt.官>0)tsuSc+=4;
+  if(gCnt.財>0)tsuSc+=3;
+  if(cnt('傷官')>=2)tsuSc-=12;
+  if(gCnt.自我>=3)tsuSc-=8;
+  if(cnt('傷官')&&cnt('偏官')&&gCnt.印===0)tsuSc-=10;
+  if(isStrong ? (gCnt.財+gCnt.官+gCnt.表現>0) : (gCnt.印+gCnt.自我>0)) tsuSc+=5;
+  tsuSc=Math.max(30,Math.min(96,tsuSc));
   // 特殊星
   let spSc=64;
   if(tenHit.length)spSc+=22; if(has(KAIGOU,dayGZ))spSc+=10;
   if(yoHit.length)spSc-=10; if(kbNames.length)spSc-=8;
   spSc=Math.max(30,Math.min(94,spSc));
-  const iqSc=Math.round(Math.max(28,Math.min(96,(iq-70)/68*64+28)));
+  /* IQ実測 p50=103 p95=123。100→62, 128→92 を通す直線に補正 */
+  const iqSc=Math.round(Math.max(28,Math.min(97,iq*1.071-45.1)));
 
   const PARAMS=[
     {c:'姓名判断',n:'天格（家系の土台）',v:S.ten+'画 '+k81(S.ten)[0],s:numScore(S.ten)},
@@ -2786,12 +2855,19 @@ function computeResult(partial){
   ];
   const avg=a=>Math.round(a.reduce((p,c)=>p+c,0)/a.length);
   const lifeSc=Math.max(20,Math.min(100,62+tr.life_care*4+Math.min(6,tr.life_rest)*2.5-Math.max(0,tr.life_drive-4)*2-tr.w_chaos*4));
-  const gDaily=avg([inyoSc,JUNI_SCORE[un.day],gogyoSc,eq[2].s,numScore(S.chi),numScore(S.ten),Math.round(lifeSc)]);
-  const gWork =avg([numScore(S.jin),numScore(S.sou),tsuSc,shinBalanceScore,iqSc,eq[3].s]);
+  /* 複数項目の平均は中心に寄る（実測で総合は53〜78に収まり90%が「吉」だった）。
+     実測した中央値を軸に広げ、5段階が意味を持つようにする */
+  const spread=function(v,center,k){ return Math.max(25,Math.min(97,Math.round((v-center)*k+center))); };
+  const gDailyRaw=avg([inyoSc,JUNI_SCORE[un.day],gogyoSc,eq[2].s,numScore(S.chi),numScore(S.ten),Math.round(lifeSc)]);
+  const gDaily=spread(gDailyRaw,64,2.4);
+  const gWorkRaw=avg([numScore(S.jin),numScore(S.sou),tsuSc,shinBalanceScore,iqSc,eq[3].s]);
+  const gWork =spread(gWorkRaw,68,2.4);
   const loveSc=Math.max(20,Math.min(100,60+tr.love_talk*3.5+tr.love_express*3+Math.min(6,tr.love_open)*1.5
     -tr.love_avoid*3.5-Math.max(0,Math.abs(tr.love_dep-tr.love_indep)-3)*2));
-  const gLove =avg([numScore(S.gai),inyoSc,eq[1].s,JUNI_SCORE[un.day],Math.round(loveSc)]);
-  const gLife =Math.round((gDaily*0.28+gWork*0.34+gLove*0.20+avg([spSc,sansaiSc,eqT])*0.18));
+  const gLoveRaw=avg([numScore(S.gai),inyoSc,eq[1].s,JUNI_SCORE[un.day],Math.round(loveSc)]);
+  const gLove =spread(gLoveRaw,67,1.8);
+  const gLifeRaw=(gDailyRaw*0.28+gWorkRaw*0.34+gLoveRaw*0.20+avg([spSc,sansaiSc,eqT])*0.18);
+  const gLife =spread(gLifeRaw,66,3.8);
 
   /* 年齢（大運の現在位置と結果表示で使う） */
   const AGE=(function(){const t=new Date();let a=t.getFullYear()-U.y;
@@ -3026,7 +3102,12 @@ function computeResult(partial){
     +'<div class="st">'+(p[4]||'—')+'</div></div>').join('');
   document.getElementById('r-setsu').innerHTML='月柱は「'+M.setsuName+'」（'+M.setsuDate.m+'月'+M.setsuDate.d+'日）からの区間で判定。'
     +'四柱推命では立春が年の変わり目なので、年柱は<b>'+M.yearForPillar+'年</b>として計算しました。'
-    +(M.onBoundary?'<br><br><span style="color:var(--rose)">※ 誕生日が節入り当日です。生まれた時刻によって月柱（場合により年柱）が変わる可能性があります。</span>':'');
+    +(M.onBoundary?'<br><br><span style="color:var(--rose)">※ <b>誕生日が「'+M.boundaryName+'」の当日です。</b>'
+      +(M.boundaryNext?'この日の途中で'+M.boundaryName+'を迎えるため、生まれた時刻が'+(M.nextDate?M.nextDate.m+'月'+M.nextDate.d+'日の':'')
+        +'切り替わりより後なら、月柱が次の区間になります。'
+        +(M.boundaryName==='立春'?'立春は四柱推命の年の変わり目なので、<b>年柱も1年ずれます</b>。':'')
+      :'生まれた時刻が切り替わりより前なら、月柱が前の区間になります。')
+      +'正確に見たい場合は出生時刻を添えて専門家にご確認ください。</span>':'');
   document.getElementById('r-nikkan').innerHTML='<b style="font-size:16px">'+dayKan+'（'+KAN_INYO[M.dKan]+'の'+dayG+'）— '+nk[0]+'</b><br><br>'+nk[1]
     +'<br><br><span style="font-size:12px;color:var(--silver-d)">※四柱推命では、この「日干」があなたの素材そのものと考えます。良い素材・悪い素材はなく、何に向いているかが違うだけです。</span>';
   document.getElementById('r-shin-gauge').innerHTML=chartShinGauge(shinScore,shinLabel);
@@ -3134,8 +3215,8 @@ function computeResult(partial){
     +'<div class="eq-track"><div class="eq-fill" style="width:'+e.s+'%"></div></div><div class="eq-desc">'+e.d+'</div></div>').join('');
   document.getElementById('r-think').innerHTML='あなたの思考は<b>'+styles[0].n+'</b>が主で、<b>'+styles[1].n+'</b>が補助です。<br><br>'+styles[0].d
     +'<br><br><span style="font-size:12px;color:var(--silver-d)">※これは頭の良し悪しではなく「どこから考え始めるか」の違いです。</span>';
-  document.getElementById('r-strengths').innerHTML=st.slice(0,6).map(x=>'<span class="tag">'+x+'</span>').join('');
-  document.getElementById('r-weak').innerHTML=wk.slice(0,4).map(x=>'<span class="tag w">'+x+'</span>').join('');
+  document.getElementById('r-strengths').innerHTML=st.slice(0,5).map(x=>'<span class="tag">'+x+'</span>').join('');
+  document.getElementById('r-weak').innerHTML=wk.slice(0,3).map(x=>'<span class="tag w">'+x+'</span>').join('');
   document.getElementById('r-behavior').textContent=BEHAVIOR[mbti]||'';
   document.getElementById('r-motive').innerHTML=motiveTxt;
 
@@ -3184,7 +3265,7 @@ function computeResult(partial){
     sansaiSc:sansaiSc,inyoSc:inyoSc,gogyoSc:gogyoSc,tsuSc:tsuSc,iqSc:iqSc,iqDesc:iqInfo.d,
     shinScore:shinScore,shinBalanceScore:shinBalanceScore,isStrong:isStrong,oneline:onelineTxt,dualTxt:dualTxt,
     motiveTxt:motiveTxt,mRankTxt:mRank.map(m=>MJP[m[0]]+m[1].toFixed(0)).join(' / '),
-    duRows:duRows,duNow:duNow,duNext:duNext,NY:NY,
+    duRows:duRows,duNow:duNow,duNext:duNext,NY:NY,stTop:stTop[0],
     duFwd:DU?DU.forward:null,duStart:DU?DU.startY:null,kishin:kishinSet(dayG,isStrong),
     styles:styles,un:un,stars:stars,gg:gg,age:age,qsF:qsF,PARAMS:PARAMS,
     gDaily:gDaily,gWork:gWork,gLove:gLove,gLife:gLife,shinLabel:shinLabel,sp:sp,
@@ -3297,8 +3378,8 @@ function buildCopyText(){
   L.push('');
   L.push('思考のクセ: '+R.styles[0].n+'（主）＋'+R.styles[1].n+'（補助）');
   L.push('  '+R.styles[0].d);
-  L.push('強み: '+R.st.slice(0,6).join('、'));
-  L.push('出すぎると疲れるところ: '+R.wk.slice(0,4).join('、'));
+  L.push('強み: '+R.st.slice(0,5).join('、')+'（'+R.stTop+'が最も突出）');
+  L.push('出すぎると疲れるところ: '+R.wk.slice(0,3).join('、'));
   L.push('');
   L.push('根っこにある動機: '+R.mRankTxt);
   L.push('  '+strip(R.motiveTxt.replace(/<br>/g,'\n  ')));
