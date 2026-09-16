@@ -234,6 +234,14 @@ ruby rt{font-size:.46em;color:var(--ink2);font-weight:400}
 .grades span{font-size:.64em;color:#2C5250;font-weight:800}
 .idcard .small{color:var(--tifInk);opacity:.72}
 
+/* ===== 戻るバー（全ページ・左上） ===== */
+.navbar{display:flex;align-items:center;gap:10px;margin:-2px 0 13px}
+.navbar .nb{background:var(--card);border:1.5px solid var(--tifL);border-radius:999px;padding:8px 15px;
+  font-size:.82em;font-weight:800;color:var(--tifD);box-shadow:0 2px 0 var(--line)}
+.navbar .nb:active{transform:translateY(1px);box-shadow:none}
+.navbar .nb[disabled]{opacity:.42;color:var(--ink2);border-color:var(--line);box-shadow:none}
+.navbar .nw{font-size:.76em;color:var(--ink2);font-weight:800;letter-spacing:.06em}
+
 /* ===== 講義ノート ===== */
 .pts{margin:9px 0 0;padding-left:1.25em}
 .pts li{margin-top:7px;font-size:.92em;line-height:1.7}
@@ -1158,7 +1166,7 @@ const today=()=>{const d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+
    ============================================================ */
 const POOL=[],BYID={};
 function addQ(id,lv,cat,q,a,wrongs,x){
-  const w=wrongs.filter(v=>v&&v!==a);
+  const w=[...new Set(wrongs.filter(v=>v&&v!==a))];   // 同じ文言の誤答が並ばないようにする
   if(w.length<3)return;
   const item={id,lv:Math.min(3,lv),cat,g:groupOf(cat),q,a,o:w.slice(0,3),x};
   POOL.push(item);BYID[id]=item;
@@ -1168,7 +1176,7 @@ function others(list,self,key){            // 誤答は同じ分類から。少�
   let p=list.filter(e=>e.i!==self.i&&e.c===self.c);
   if(p.length<3)p=list.filter(e=>e.i!==self.i&&groupOf(e.c)===groupOf(self.c));
   if(p.length<3)p=list.filter(e=>e.i!==self.i);
-  return p.map(e=>e[key]);
+  return [...new Set(p.map(e=>e[key]))];             // 同じ説明文を持つ項目があっても1つに寄せる
 }
 function buildPool(){
   N.forEach(e=>{
@@ -1217,29 +1225,49 @@ function record(id,ok){
 const dueList=()=>Object.keys(S.box).filter(id=>BYID[id]&&S.box[id].due<=Date.now());
 
 const LV={
- 1:{g:'基礎',name:'新人研修',desc:'現場に出る前に必ず越える最低ライン',n:20,pass:.9,gate:1},
- 2:{g:'1年',name:'初級',desc:'現場で最初に必要になる範囲',n:30,pass:.8},
- 3:{g:'2年',name:'中級',desc:'日常的につかう判断と数値',n:40,pass:.8},
- 4:{g:'3年',name:'上級',desc:'個別対応・線引き・講義まで',n:40,pass:.8}};
+ 1:{g:'ファースト',name:'基礎',desc:'現場に出る前に必ず越える最低ライン',n:20,pass:.9,gate:1,
+    body:'絶対に落とせない問題だけを全範囲から抜き出した段。線引きの判断を必ず含む'},
+ 2:{g:'セカンド',name:'初級',desc:'基本の全域。日々の指導で使う土台',n:30,pass:.8,
+    body:'基礎に、栄養素と用語の基本をひととおり足した範囲'},
+ 3:{g:'サード',name:'中級',desc:'数値と現場判断。7割が新しい範囲',n:40,pass:.8,
+    body:'中級の問題を7割、それまでの範囲を3割の配合で出題'},
+ 4:{g:'フォース',name:'上級',desc:'個別対応・線引き・講義まで',n:50,pass:.8,
+    body:'上級の問題を7割、それまでの範囲を3割の配合で出題'}};
 const STAGES=[1,2,3,4];
 const passOf=lv=>Math.round((LV[lv]?LV[lv].pass:.8)*100);
-/* 基礎は「絶対に落とせない問題」を抜き出した段。以降は難易度どおり */
-const poolOf=st=>st===1?POOL.filter(p=>p.core):POOL.filter(p=>p.lv===st-1);
+/* 段ごとの出題範囲：上に行くほど、新しい層の比重が上がる */
+const poolOf=r=>r===1?POOL.filter(p=>p.core)
+  :r===2?POOL.filter(p=>p.core||p.lv===1)
+  :POOL.filter(p=>p.lv<=r-1||p.core);
 const mark=p=>p===null?'—':p>=95?'◎':p>=80?'○':p>=60?'△':'×';
 
 /* ============================================================
    9. 画面
    ============================================================ */
-let tab='home',ui={},sess=null;
+let tab='home',ui={},sess=null,HIST=[];
+const WHERE={home:'教室',dex:'図鑑',book:'授業',train:'テスト',rec:'通知表',quiz:'テスト中'};
+function snap(){const u={};for(const k in ui)if(k!=='tm')u[k]=ui[k];return{tab,ui:u};}
+function pushNav(){HIST.push(snap());if(HIST.length>40)HIST.shift();}
+function navBack(){
+  if(HIST.length){const s=HIST.pop();tab=s.tab;ui=s.ui;}
+  else if(tab!=='home'){tab='home';ui={};}
+  else return;
+  render();scrollTo(0,0);
+}
+function navBar(){
+  const root=!HIST.length&&tab==='home';
+  return `<div class="navbar"><button class="nb" data-act="navback" ${root?'disabled':''}>← もどる</button>
+    <span class="nw">${WHERE[tab]||''}</span></div>`;
+}
 const TABS=[['home','🏫','教室'],['dex','🍱','図鑑'],['book','📖','授業'],['train','✏️','テスト'],['rec','📋','通知表']];
 function renderTabs(){
   $('#tabs').innerHTML=TABS.map(([k,e,l])=>
    `<button data-tab="${k}" ${tab===k?'aria-current="page"':''}><span class="ic">${e}</span>${l}</button>`).join('');
 }
-function go(t){tab=t;ui={};render();scrollTo(0,0);}
-function render(){applyFs();renderTabs();$('#view').innerHTML=({home:vHome,dex:vDex,book:vBook,train:vTrain,rec:vRec}[tab])();}
+function go(t){if(t!==tab||Object.keys(ui).length)pushNav();tab=t;ui={};render();scrollTo(0,0);}
+function render(){applyFs();renderTabs();$('#view').innerHTML=navBar()+({home:vHome,dex:vDex,book:vBook,train:vTrain,rec:vRec}[tab])();}
 const rule=(e,t)=>`<div class="rule"><span class="re">${e}</span><b>${t}</b></div>`;
-const back=t=>`<button class="back" data-act="back">◀ ${t}</button>`;
+const back=t=>'';
 const bestOf=lv=>{const h=S.hist.filter(x=>x.lv===lv&&x.big);return h.length?Math.max(...h.map(x=>x.pct)):null;};
 const clearedOf=l=>{const b=bestOf(l);return b!==null&&b>=passOf(l);};
 function idCard(){
@@ -1279,8 +1307,8 @@ function vHome(){
   h+=rule('🎒','きょうやること')+`<div class="grid2">
     <button class="cell" data-act="gotob"><span class="e">📚</span><span class="n">授業を受ける</span><span class="c">全${CH.length}時間／受けた${readN}</span></button>
     <button class="cell" data-act="gotod"><span class="e">🍱</span><span class="n">図鑑を引く</span><span class="c">${DEX.length}項目</span></button>
-    <button class="cell" data-mini="1"><span class="e">✏️</span><span class="n">小テスト</span><span class="c">基礎・10問</span></button>
-    <button class="cell" data-act="gotot"><span class="e">🔰</span><span class="n">基礎テスト</span><span class="c">20問・${passOf(1)}点で現場OK</span></button>
+    <button class="cell" data-mini="1"><span class="e">✏️</span><span class="n">小テスト</span><span class="c">ファースト・10問</span></button>
+    <button class="cell" data-act="gotot"><span class="e">🔰</span><span class="n">昇級テスト</span><span class="c">ファースト 20問・${passOf(1)}点</span></button>
   </div>`;
   h+=rule('👓','見やすさ')+`<div class="card">
     <div class="grid2">
@@ -1416,11 +1444,12 @@ function vTrain(){
     <span class="pill ${due?'':'gray'}">${due}問</span></div>
     <div style="margin-top:12px"><button class="btn ${due?'':'ghost'}" data-act="rev" ${due?'':'disabled'}>${due?'宿題をやる':'きょうの分は終わっています'}</button></div></div>`;
   h+=rule('✏️','テストの用意')+`<div class="card">
-    <div class="field" style="margin-top:0"><label>段階</label><select data-t="lv">
-      ${STAGES.map(l=>`<option value="${l}" ${lv===l?'selected':''}>${LV[l].g}（${LV[l].name}）｜${LV[l].desc}</option>`).join('')}</select></div>
+    <div class="field" style="margin-top:0"><label>段階（昇級）</label><select data-t="lv">
+      ${STAGES.map(l=>`<option value="${l}" ${lv===l?'selected':''}>${LV[l].g}（${LV[l].name}）｜${LV[l].desc}</option>`).join('')}</select>
+      <div class="small" style="margin-top:6px">${esc(LV[lv].body)}</div></div>
     <div class="field"><label>種類</label><select data-t="mode">
       <option value="mini" ${mode==='mini'?'selected':''}>小テスト（10問）</option>
-      <option value="big" ${mode==='big'?'selected':''}>${lv===1?'基礎テスト':'期末テスト'}（${LV[lv].n}問・${passOf(lv)}点で合格）</option></select></div>
+      <option value="big" ${mode==='big'?'selected':''}>${LV[lv].g}昇級テスト（${LV[lv].n}問・${passOf(lv)}点で合格）</option></select></div>
     <div class="field"><label>出るところ</label><select data-t="g" ${mode==='big'?'disabled':''}>
       <option value="all">ぜんぶ</option>
       ${Object.keys(GROUPS).map(k=>`<option value="${k}" ${g===k?'selected':''}>${GROUPS[k].emo} ${GROUPS[k].label}</option>`).join('')}</select>
@@ -1428,10 +1457,12 @@ function vTrain(){
     <div class="field"><label>答え合わせ</label><select data-t="fb">
       <option value="each" ${fb==='each'?'selected':''}>1問ごとにする</option>
       <option value="end" ${fb==='end'?'selected':''}>最後にまとめてする</option></select></div>
-    <div class="field"><button class="btn" data-act="start">${mode==='big'?(lv===1?'🔰 基礎テストを受ける':'🏆 '+LV[lv].g+'の期末テストを受ける'):'✏️ 小テストを受ける'}</button></div>
+    <div class="field"><button class="btn" data-act="start">${mode==='big'?(lv===1?'🔰 ':'🏆 ')+LV[lv].g+'昇級テストを受ける':'✏️ 小テストを受ける'}</button></div>
     <div class="small" style="margin-top:8px">この条件で出せる問題：${avail}問</div></div>`;
-  if(mode==='big'&&lv===1)h+=`<div class="sec"><div class="notice" style="border-color:var(--green)"><b style="color:var(--green)">🔰 基礎テストについて</b>
-    現場に出る前に越える最低ラインです。安全に関わる線引きを含むので、合格は${passOf(1)}点（${Math.ceil(LV[1].n*LV[1].pass)}/${LV[1].n}問）と高めにしています。合格すると学生証が「現場OK」になり、検証コード付きの修了証を発行できます。</div></div>`;
+  if(mode==='big')h+=`<div class="sec"><div class="notice" style="border-color:var(--${lv===1?'green':'tif'})">
+    <b style="color:var(--${lv===1?'green':'tifD'})">${lv===1?'🔰':'🏆'} ${LV[lv].g}（${LV[lv].name}）について</b>
+    ${lv===1?'現場に出る前に越える最低ラインです。安全に関わる線引きを必ず含むので、合格は'+passOf(1)+'点（'+Math.ceil(LV[1].n*LV[1].pass)+'/'+LV[1].n+'問）と高めにしています。合格すると学生証が「現場OK」になります。':esc(LV[lv].body)+'。合格は'+passOf(lv)+'点（'+Math.ceil(LV[lv].n*LV[lv].pass)+'/'+LV[lv].n+'問）です。'}
+    結果は終わったあとにコピーして提出できます。</div></div>`;
   return h;
 }
 
@@ -1452,18 +1483,34 @@ function begin(qs,opt){
   sess={qs,i:0,ans:[],lv:opt.lv||0,big:!!opt.big,fb:opt.fb||'each',label:opt.label,review:!!opt.review,t0:Date.now()};
   tab='quiz';renderQuiz();scrollTo(0,0);
 }
+function buildExam(rank,n,rnd,big){
+  if(rank===1){                              // ファースト：線引きを必ず6問入れる
+    const pool=POOL.filter(p=>p.core);
+    if(!big)return balanced(pool,n,rnd);
+    const ma=pool.filter(p=>p.must);
+    const must=pick(ma,Math.min(6,ma.length),rnd);
+    const ids=new Set(must.map(p=>p.id));
+    return shuffle(must.concat(balanced(pool.filter(p=>!ids.has(p.id)),n-must.length,rnd)),rnd);
+  }
+  if(rank===2)return balanced(POOL.filter(p=>p.core||p.lv===1),n,rnd);
+  const main=POOL.filter(p=>p.lv===rank-1);            // サード以上：新しい層を7割
+  const a=balanced(main,Math.round(n*.7),rnd);
+  const ids=new Set(a.map(p=>p.id));
+  const base=POOL.filter(p=>(p.lv<rank-1||p.core)&&!ids.has(p.id));
+  return shuffle(a.concat(balanced(base,n-a.length,rnd)),rnd);
+}
 function startQuiz(lv,g,mode,fb){
-  const pool=poolOf(lv).filter(p=>g==='all'||mode==='big'||p.g===g);
-  if(!pool.length){alert('この条件では問題がありません。出るところを広げてください。');return;}
-  const n=mode==='big'?Math.min(LV[lv].n,pool.length):Math.min(10,pool.length);
+  const big=mode==='big';
+  const n=big?LV[lv].n:10;
   const rnd=seeded(Date.now()>>>0);
   let qs;
-  if(mode==='big'&&lv===1){                 // 基礎テストは線引き系を必ず含める
-    const must=pick(pool.filter(p=>p.must),Math.min(6,pool.filter(p=>p.must).length),rnd);
-    const ids=new Set(must.map(p=>p.id));
-    qs=shuffle(must.concat(balanced(pool.filter(p=>!ids.has(p.id)),n-must.length,rnd)),rnd);
-  }else qs=(g==='all'||mode==='big')?balanced(pool,n,rnd):shuffle(pool,rnd).slice(0,n);
-  begin(qs,{lv,big:mode==='big',fb,label:LV[lv].g+(mode==='big'?(lv===1?' テスト':' 期末テスト'):' 小テスト')});
+  if(g==='all'||big)qs=buildExam(lv,n,rnd,big);
+  else{
+    const p=poolOf(lv).filter(x=>x.g===g);
+    if(!p.length){alert('この条件では問題がありません。出るところを広げてください。');return;}
+    qs=shuffle(p,rnd).slice(0,n);
+  }
+  begin(qs,{lv,big,fb,label:LV[lv].g+(big?' 昇級テスト':' 小テスト')});
 }
 const startIds=(ids,label)=>begin(shuffle(ids.map(i=>BYID[i]).filter(Boolean),seeded(Date.now()>>>0)),{label,fb:'each',review:true});
 const startGroup=(g,label)=>begin(shuffle(POOL.filter(p=>p.g===g),seeded(Date.now()>>>0)).slice(0,8),{label,fb:'each',review:true});
@@ -1496,7 +1543,7 @@ function renderQuiz(){
     }
     h+=`<div style="margin-top:14px"><button class="btn" data-act="next">${s.i+1===s.qs.length?'結果を見る':'つぎの問題へ'}</button></div>`;
   }
-  $('#view').innerHTML=h+`</div>`;
+  $('#view').innerHTML=navBar()+h+`</div>`;
 }
 const MARU=`<svg class="maru" viewBox="0 0 170 120" aria-hidden="true"><g fill="none" stroke="var(--green)" stroke-width="4" stroke-linecap="round" opacity=".8">
   <ellipse cx="85" cy="60" rx="58" ry="44"/><ellipse cx="85" cy="60" rx="46" ry="33" opacity=".65"/>
@@ -1575,8 +1622,39 @@ function renderResult(){
     h+=`<div class="sec"><button class="btn green" data-act="issue" data-ts="${s.ts}" ${S.name?'':'disabled'}>🎓 修了証を発行する</button>
       <div class="small" style="margin-top:8px">${S.name?'検証コード付きのテキストを作ります。':'先に通知表タブで名前を記入してください。'}</div></div>`;
   }
+  if(!s.review){
+    const txt=submitText(s,score,total,pct,pass,need);
+    h+=rule('📤','結果の提出')+`<div class="card">
+      <div class="small">このテキストをコピーして、LINEかメールで提出してください。${S.name?'':'<b style="color:var(--amber)">氏名が未記入です。教室の画面で名前を入れてから作り直してください。</b>'}</div>
+      <textarea readonly id="subbox" style="min-height:190px;margin-top:10px">${esc(txt)}</textarea>
+      <div class="field"><button class="btn" data-act="copysub">📋 結果をコピーする</button></div></div>`;
+  }
   h+=`<div class="sec grid2"><button class="btn ghost slim" data-act="retry">同じ条件でもう一度</button><button class="btn ghost slim" data-act="home">教室にもどる</button></div>`;
-  $('#view').innerHTML=h;
+  $('#view').innerHTML=navBar()+h;
+}
+
+function submitText(s,score,total,pct,pass,need){
+  const name=S.name||'（氏名未記入）',date=fmtDate(s.ts);
+  const by={};s.ans.forEach(a=>{const g=by[a.q.g]=by[a.q.g]||{o:0,n:0};a.ok?g.o++:g.n++;});
+  const wrong=s.ans.filter(a=>!a.ok);
+  const L=['CHART 栄養学学校　テスト結果',
+    '氏名：'+name,
+    '試験：'+s.label,
+    '得点：'+score+'/'+total+'（'+pct+'点）',
+    '判定：'+(pass?'合格':'不合格')+'（合格ライン '+need+'点）',
+    '日時：'+date,
+    '検証コード：'+code(`${name}|${s.label}|${score}/${total}|${date}`),
+    '',
+    '── 分野ごとの正答率 ──'];
+  Object.keys(by).forEach(g=>{const t=by[g].o+by[g].n;
+    L.push('・'+GROUPS[g].label+'　'+Math.round(by[g].o/t*100)+'%（'+by[g].o+'/'+t+'）');});
+  L.push('');
+  L.push('── まちがえた問題 '+wrong.length+'問 ──');
+  if(!wrong.length)L.push('・なし');
+  else wrong.forEach((a,i)=>L.push((i+1)+'. '+a.q.q.replace(/<br>/g,' ').replace(/<[^>]+>/g,'')+'\n　 正解：'+a.q.a));
+  L.push('');
+  L.push('※ 氏名・試験・得点・日時を書き換えると、検証コードと合わなくなります');
+  return L.join('\n');
 }
 
 /* ---------- 通知表 ---------- */
@@ -1594,11 +1672,11 @@ function vRec(){
 
   h+=rule('🏅','成績表')+`<div class="gradetable">`+STAGES.map(l=>{
     const b=bestOf(l),okd=clearedOf(l);
-    return `<div class="graderow"><span class="y">${l===1?'🔰 ':''}${LV[l].g}</span>
+    return `<div class="graderow"><span class="y">${l===1?'🔰':'🏆'} ${LV[l].g}</span>
       ${barHtml(b===null?0:b)}<span class="sc">${b===null?'—':b}</span>
       <span class="mk" style="color:var(--${okd?'green':'ink2'})">${okd?'合':'—'}</span></div>`;
   }).join('')+`</div>
-  <div class="small" style="margin-top:8px">各段階のテストの最高点。基礎は${passOf(1)}点、それ以降は${passOf(2)}点で合格。</div>`;
+  <div class="small" style="margin-top:8px">昇級テストの最高点。ファーストは${passOf(1)}点、セカンド以降は${passOf(2)}点で合格。</div>`;
 
   const gs=groupStats(),keys=Object.keys(gs).filter(k=>gs[k].o+gs[k].n>=3)
     .sort((a,b)=>gs[a].o/(gs[a].o+gs[a].n)-gs[b].o/(gs[b].o+gs[b].n));
@@ -1634,6 +1712,12 @@ function vRec(){
       ${e.big?`<span class="badge ${e.pass?'p':'f'}">${e.pass?'合格':'不合格'}</span>`:'<span class="badge f">練習</span>'}</div></div>`).join('');
   h+=`</div>`;
 
+  h+=rule('📤','これまでの記録を提出')+`<div class="card">
+    <div class="small">4段階の到達状況をまとめたテキストを作ります。定期面談のときにそのまま送れます。</div>
+    <div class="field"><button class="btn ghost slim" data-act="report">📋 記録をまとめる</button></div>
+    ${ui.report?`<textarea readonly id="repbox" style="min-height:170px">${esc(ui.report)}</textarea>
+      <div class="field"><button class="btn slim" data-act="copyrep">コピーする</button></div>`:''}</div>`;
+
   const last=S.hist.find(e=>e.big&&e.pass);
   h+=rule('🎓','修了証')+`<div class="card">`;
   if(!last)h+=`<div class="small">まだ合格した期末テストがありません。80点以上で発行できます。</div>`;
@@ -1663,6 +1747,34 @@ function vRec(){
   return h;
 }
 
+function reportText(){
+  const name=S.name||'（氏名未記入）';
+  const gs=groupStats();
+  const L=['CHART 栄養学学校　到達状況',
+    '氏名：'+name,
+    '作成日：'+fmtDate(Date.now()),
+    '',
+    '── 昇級の到達状況 ──'];
+  STAGES.forEach(l=>{const b=bestOf(l);
+    L.push('・'+LV[l].g+'（'+LV[l].name+'）　'+(b===null?'未受験':b+'点 / 合格ライン'+passOf(l)+'点　'+(clearedOf(l)?'合格':'未合格')));});
+  const top=[4,3,2,1].find(clearedOf);
+  L.push('');
+  L.push('現在の到達：'+(top?LV[top].g+'（'+LV[top].name+'）':'未到達'));
+  L.push('現場に出る基準：'+(clearedOf(1)?'クリア':'未クリア'));
+  const keys=Object.keys(gs).filter(k=>gs[k].o+gs[k].n>=3)
+    .sort((a,b)=>gs[a].o/(gs[a].o+gs[a].n)-gs[b].o/(gs[b].o+gs[b].n));
+  if(keys.length){
+    L.push('');L.push('── 分野ごとの正答率（苦手な順）──');
+    keys.forEach(g=>{const t=gs[g].o+gs[g].n;
+      L.push('・'+GROUPS[g].label+'　'+Math.round(gs[g].o/t*100)+'%（'+t+'問）');});
+  }
+  L.push('');
+  L.push('学習量：解いた問題 '+Object.keys(S.box).length+'問／定着 '+Object.values(S.box).filter(x=>x.b===5).length+'問／授業 '+Object.keys(S.read).length+'/'+CH.length+'回');
+  const hs=S.hist.filter(e=>e.big).slice(0,8);
+  if(hs.length){L.push('');L.push('── 直近の受験 ──');
+    hs.forEach(e=>L.push('・'+fmtDate(e.ts)+'　'+e.label+'　'+e.pct+'点　'+(e.pass?'合格':'不合格')));}
+  return L.join('\n');
+}
 function issueText(ts){
   const e=S.hist.find(x=>x.ts===ts);if(!e)return '';
   const name=S.name||'（氏名未記入）',date=fmtDate(e.ts);
@@ -1685,18 +1797,19 @@ function verifyText(t){
 document.addEventListener('click',e=>{
   const t=e.target.closest('[data-ch],button');if(!t)return;const d=t.dataset;
   if(d.tab){if(tab==='quiz'&&sess&&!sess.saved&&sess.ans.length&&!confirm('テストをやめますか？'))return;sess=null;go(d.tab);return;}
-  if(d.act==='back'){if(ui.dkey){const x=byKey(ui.dkey);ui.dkey=null;if(!ui.dkw&&!ui.dg&&!ui.dcore)ui.dg=x?x.g:null;}
-    else if(ui.dkw)ui.dkw='';else if(ui.dcore)ui.dcore=0;else if(ui.dg)ui.dg=null;else if(ui.ch)ui.ch=null;
-    render();scrollTo(0,0);return;}
+  if(d.act==='navback'||d.act==='back'){
+    if(tab==='quiz'&&sess&&!sess.saved&&sess.ans.length&&!confirm('テストを中断してもどりますか？'))return;
+    if(tab==='quiz')sess=null;
+    navBack();return;}
   if(d.act==='rev'){startReview();return;}
-  if(d.act==='dcore'){ui={dcore:1};tab='dex';render();scrollTo(0,0);return;}
+  if(d.act==='dcore'){pushNav();ui={dcore:1};tab='dex';render();scrollTo(0,0);return;}
   if(d.act==='gotob'){go('book');return;}
   if(d.act==='gotod'){go('dex');return;}
-  if(d.act==='gotot'){tab='train';ui={tmode:'big',tlv:1};render();scrollTo(0,0);return;}
+  if(d.act==='gotot'){pushNav();tab='train';ui={tmode:'big',tlv:1};render();scrollTo(0,0);return;}
   if(d.act==='home'){sess=null;go('home');return;}
-  if(d.dg){ui.dg=d.dg;ui.dkey=null;render();scrollTo(0,0);return;}
-  if(d.dk){tab='dex';ui={dkey:d.dk};render();scrollTo(0,0);return;}
-  if(d.ch){tab='book';ui={ch:d.ch};render();scrollTo(0,0);return;}
+  if(d.dg){pushNav();ui.dg=d.dg;ui.dkey=null;render();scrollTo(0,0);return;}
+  if(d.dk){pushNav();tab='dex';ui={dkey:d.dk};render();scrollTo(0,0);return;}
+  if(d.ch){pushNav();tab='book';ui={ch:d.ch};render();scrollTo(0,0);return;}
   if(d.ids){startIds(d.ids.split(','),d.label);return;}
   if(d.gq){startGroup(d.gq,d.label);return;}
   if(d.mini){startQuiz(+d.mini,'all','mini','each');return;}
@@ -1709,12 +1822,20 @@ document.addEventListener('click',e=>{
     if(sess.i>=sess.qs.length)renderResult();else{renderQuiz();scrollTo(0,0);}return;}
   if(d.act==='quit'){if(confirm('やめて結果を見ますか？')){if(sess.ans.length)renderResult();else{sess=null;go('home');}}return;}
   if(d.act==='retry'){if(sess.lv)startQuiz(sess.lv,'all',sess.big?'big':'mini',sess.fb);else startIds(sess.qs.map(q=>q.id),sess.label);return;}
-  if(d.act==='issue'){ui={issued:issueText(+d.ts)};tab='rec';render();scrollTo(0,0);return;}
-  if(d.act==='copy'||d.act==='copyexp'){
-    const el=document.getElementById(d.act==='copy'?'issued':'expbox');
-    el.select();el.setSelectionRange(0,99999);
-    try{navigator.clipboard?navigator.clipboard.writeText(el.value):document.execCommand('copy');
-      t.textContent='コピーしました';setTimeout(()=>t.textContent='コピーする',1600);}catch(err){document.execCommand('copy');}
+  if(d.act==='issue'){pushNav();ui={issued:issueText(+d.ts)};tab='rec';render();scrollTo(0,0);return;}
+  if(d.act==='report'){ui.report=reportText();render();return;}
+  if(d.act==='copy'||d.act==='copyexp'||d.act==='copysub'||d.act==='copyrep'){
+    const el=document.getElementById({copy:'issued',copyexp:'expbox',copysub:'subbox',copyrep:'repbox'}[d.act]);
+    if(!el)return;
+    const label=t.textContent;
+    try{el.focus();el.select();el.setSelectionRange(0,99999);}catch(e){}
+    let done=false;
+    try{
+      if(navigator&&navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(el.value);done=true;}
+      else if(document.execCommand){done=document.execCommand('copy');}
+    }catch(err){done=false;}
+    t.textContent=done?'✓ コピーしました':'長押しして選択・コピーしてください';
+    setTimeout(()=>{t.textContent=label;},1800);
     return;}
   if(d.act==='verify'){const r=verifyText(ui.vtext||'');ui.vok=r.ok;ui.vres=r.msg;render();return;}
   if(d.act==='export'){const j=JSON.stringify(S);ui.exp='NUT2:'+b64e(j)+':'+fnv(j).toString(16).toUpperCase();render();return;}
