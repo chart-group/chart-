@@ -1,0 +1,1756 @@
+<!DOCTYPE html>
+<html lang="ja" data-fs="m">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0ABAB5">
+<title>CHART 栄養学学校</title>
+<style>
+:root{
+  --fs:16.5px;
+  --bg:#EDF7F6; --card:#FFFFFF; --card2:#F3FAF9; --pale:#E3F4F2;
+  --ink:#16302E; --ink2:#4C6B68; --line:#D3E7E4;
+  --tif:#0ABAB5; --tifL:#81D8D0; --tifD:#07827E; --tifInk:#08302E;
+  --red:#B33A2E; --green:#1B7A56; --amber:#9A6412;
+  --sh:0 1px 2px rgba(16,48,46,.06),0 12px 24px -18px rgba(10,60,58,.45);
+}
+html[data-fs="s"]{--fs:15px}
+html[data-fs="m"]{--fs:16.5px}
+html[data-fs="l"]{--fs:18px}
+html[data-fs="xl"]{--fs:19.5px}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#101A19; --card:#172524; --card2:#1D2D2B; --pale:#18302E;
+    --ink:#EAF6F4; --ink2:#9FC2BE; --line:#2C403E;
+    --tif:#4FD8D2; --tifL:#2E6663; --tifD:#6EE2DC; --tifInk:#08302E;
+    --red:#F0A79B; --green:#7FD3A9; --amber:#E0B15C;
+    --sh:0 1px 2px rgba(0,0,0,.4),0 12px 24px -18px rgba(0,0,0,.9);
+  }
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{background:var(--bg);-webkit-text-size-adjust:100%}
+body{
+  margin:0;color:var(--ink);min-height:100dvh;background:var(--bg);
+  font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",YuGothic,"Noto Sans JP",sans-serif;
+  font-size:var(--fs);line-height:1.78;letter-spacing:.012em;
+  padding-bottom:calc(80px + env(safe-area-inset-bottom));
+}
+h1,h2,h3{margin:0;line-height:1.45;font-weight:800;letter-spacing:.005em}
+button,select,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer;border:none;background:none;padding:0}
+:focus-visible{outline:3px solid var(--tifD);outline-offset:2px;border-radius:8px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* ===== ヘッダー ===== */
+.top{position:sticky;top:0;z-index:20;background:var(--tif);color:var(--tifInk);
+  padding:calc(11px + env(safe-area-inset-top)) 16px 11px;box-shadow:0 2px 12px -4px rgba(10,90,88,.4)}
+.top .in{max-width:720px;margin:0 auto;display:flex;align-items:center;gap:10px}
+.top b{font-size:1.04em;font-weight:800;letter-spacing:.06em}
+.top .ic{font-size:1.35em}
+.top small{margin-left:auto;font-size:.68em;opacity:.78;letter-spacing:.12em}
+.wrap{max-width:720px;margin:0 auto;padding:16px 15px 34px}
+
+/* ===== カード ===== */
+.card{background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:16px 15px;box-shadow:var(--sh)}
+.card+.card{margin-top:12px}
+.sec{margin-top:24px}
+.rule{display:flex;align-items:center;gap:9px;margin:22px 0 11px}
+.rule .re{font-size:1.28em}
+.rule b{font-size:1.02em;font-weight:800;white-space:nowrap}
+.rule::after{content:'';flex:1;height:2px;border-radius:2px;background:var(--line)}
+.hr{height:1.5px;background:var(--line);margin:14px 0}
+.small{font-size:.83em;color:var(--ink2);line-height:1.72}
+.between{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.row{display:flex;gap:11px;align-items:center}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.pill{display:inline-block;background:var(--tifD);color:#fff;border-radius:999px;
+  padding:3px 13px;font-size:.76em;font-weight:800;white-space:nowrap}
+.pill.g{background:var(--green)} .pill.r{background:var(--red)} .pill.gray{background:var(--ink2)}
+.plate{display:inline-flex;align-items:center;gap:5px;background:var(--pale);border:1.5px solid var(--line);
+  border-radius:999px;padding:4px 12px;font-size:.78em;color:var(--ink)}
+.chip{display:inline-block;background:var(--pale);border:1.5px solid var(--line);border-radius:999px;
+  padding:6px 13px;font-size:.86em;margin:0 6px 7px 0}
+button.chip{color:var(--ink);font-weight:700}
+.stars{color:var(--tifD);font-size:.86em;letter-spacing:.08em;white-space:nowrap}
+.emo{font-size:1.75em;line-height:1}
+.emoplate{width:1.9em;height:1.9em;flex:none;display:grid;place-items:center;font-size:1.55em;
+  background:var(--pale);border:2px solid var(--tifL);border-radius:50%}
+
+/* ===== ボタン ===== */
+.btn{display:block;width:100%;text-align:center;padding:15px 16px;border-radius:12px;font-weight:800;font-size:1em;
+  background:var(--tifD);color:#fff;box-shadow:0 3px 0 rgba(4,80,77,.35)}
+.btn:active{transform:translateY(2px);box-shadow:0 1px 0 rgba(4,80,77,.35)}
+.btn[disabled]{background:var(--line);color:var(--ink2);box-shadow:none}
+.btn.ghost{background:var(--card);color:var(--ink);border:2px solid var(--tifL);box-shadow:0 3px 0 var(--line)}
+.btn.green{background:var(--green);box-shadow:0 3px 0 rgba(12,70,48,.35)}
+.btn.slim{padding:12px 13px;font-size:.88em}
+.back{display:inline-flex;align-items:center;gap:6px;color:var(--tifD);font-size:.88em;margin-bottom:13px;font-weight:800}
+
+/* ===== 入力 ===== */
+.field{margin-top:13px}
+.field label{display:block;font-size:.8em;color:var(--ink2);margin-bottom:5px;font-weight:800}
+select,input[type=text],textarea{width:100%;background:var(--card);border:2px solid var(--line);border-radius:12px;
+  padding:13px;appearance:none;-webkit-appearance:none}
+input[type=text]:focus,textarea:focus,select:focus{border-color:var(--tif)}
+select{background-image:linear-gradient(45deg,transparent 50%,var(--tifD) 50%),linear-gradient(135deg,var(--tifD) 50%,transparent 50%);
+  background-position:calc(100% - 19px) 50%,calc(100% - 13px) 50%;background-size:7px 7px,7px 7px;background-repeat:no-repeat;padding-right:38px}
+textarea{min-height:104px;font-size:.8em;line-height:1.6;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.ex{margin-top:7px;background:var(--pale);border-left:4px solid var(--tifL);border-radius:0 8px 8px 0;
+  padding:7px 11px;font-size:.78em;color:var(--ink2)}
+.ex b{color:var(--tifD);font-weight:800;margin-right:8px;font-size:.92em}
+.okline{margin-top:9px;font-size:.8em;color:var(--green);font-weight:800}
+.warnline{margin-top:9px;font-size:.8em;color:var(--amber);font-weight:800;line-height:1.6}
+
+/* ===== ホワイトボード ===== */
+.board{background:#FFFFFF;border:8px solid var(--line);border-radius:12px;padding:12px;color:var(--ink);
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.03),0 3px 0 rgba(16,60,58,.10);margin:15px 0}
+@media (prefers-color-scheme: dark){.board{background:#F4FAF9;border-color:#35514E}}
+.board svg{display:block;width:100%;height:auto}
+.board .cap{font-size:.82em;color:#4C6B68;text-align:center;margin-top:7px}
+
+/* ===== 食材棚 ===== */
+.shelf{background:var(--pale);border:2px solid var(--line);border-radius:16px;padding:12px}
+.shelf .cells{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.cell{position:relative;text-align:left;background:var(--card);border:1.5px solid var(--line);border-radius:12px;
+  padding:13px 12px 12px;box-shadow:0 2px 0 var(--line)}
+.cell .e{font-size:1.9em;display:block;line-height:1}
+.cell .n{display:block;font-weight:800;font-size:.95em;margin-top:7px}
+.cell .c{display:block;font-size:.76em;color:var(--ink2);margin-top:3px;line-height:1.55}
+.cell .num{position:absolute;top:9px;right:11px;font-size:.74em;color:var(--ink2);font-weight:800}
+
+/* ===== 一覧 ===== */
+.entry{width:100%;text-align:left;display:flex;align-items:center;gap:11px;background:var(--card);
+  border:1.5px solid var(--line);border-left:6px solid var(--tif);border-radius:12px;padding:12px;margin-top:9px;
+  box-shadow:0 2px 0 var(--line)}
+.entry .n{font-weight:800;font-size:1em}
+.subhead{display:inline-block;font-size:.8em;font-weight:800;color:#fff;background:var(--tifD);
+  border-radius:999px;padding:3px 14px;margin:21px 0 2px}
+
+/* ===== 図鑑カード ===== */
+.dl{display:grid;grid-template-columns:1.7em 1fr;gap:12px 10px;margin:0;align-items:start}
+.dl dt{font-size:1.1em;line-height:1.5}
+.dl dd{margin:0;font-size:.95em;line-height:1.78}
+.dl dd b{display:block;font-size:.78em;color:var(--tifD);font-weight:800}
+ruby rt{font-size:.46em;color:var(--ink2);font-weight:400}
+
+/* ===== おしながき ===== */
+.tt{width:100%;border-collapse:separate;border-spacing:0;background:var(--card);
+  border:1.5px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:var(--sh)}
+.tt td{padding:13px 10px;border-top:1.5px solid var(--line);font-size:.94em;vertical-align:middle}
+.tt tr:first-child td{border-top:none}
+.tt tr[data-ch]{cursor:pointer}
+.tt tr[data-ch]:active td{background:var(--card2)}
+.tt .h{width:4.6em;background:var(--pale);color:var(--ink2);font-size:.76em;font-weight:800;text-align:center}
+.tt .e{width:2.2em;font-size:1.35em;text-align:center}
+.tt .d{font-size:.78em;color:var(--ink2)}
+.tt .ck{width:2em;text-align:center;font-size:1em}
+.tt b{font-weight:800}
+
+/* ===== 授業ノート ===== */
+.lesson h3{font-size:1.05em;margin-top:20px;color:var(--tifD);display:flex;gap:7px;align-items:center}
+.lesson p{margin:6px 0 0;font-size:.97em;line-height:1.95;
+  background-image:repeating-linear-gradient(transparent,transparent calc(1.95em - 1.5px),var(--line) calc(1.95em - 1.5px),var(--line) 1.95em)}
+.facts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:15px}
+.fact{background:var(--card2);border:1.5px solid var(--line);border-left:5px solid var(--tif);border-radius:10px;padding:10px 12px}
+.fact b{display:block;font-size:.76em;color:var(--ink2);font-weight:800}
+.fact span{font-size:1.06em;font-weight:800}
+.key{background:var(--pale);border:2.5px solid var(--tifL);border-radius:12px;padding:15px;margin-top:17px;
+  font-size:1.02em;font-weight:800;line-height:1.7}
+.key em{display:block;font-style:normal;font-size:.76em;color:var(--tifD);margin-bottom:6px}
+
+/* ===== 貼り紙 ===== */
+.notice{background:var(--card);border:2.5px solid var(--red);border-radius:12px;padding:14px;font-size:.9em}
+.notice b{color:var(--red);display:block;margin-bottom:5px;font-weight:800}
+
+/* ===== テスト ===== */
+.qnum{font-size:.82em;color:var(--ink);font-weight:800}
+.qtext{font-size:1.14em;font-weight:800;line-height:1.68;margin:8px 0 16px}
+.gauge{height:12px;background:var(--pale);border:1.5px solid var(--line);border-radius:999px;overflow:hidden}
+.gauge i{display:block;height:100%;background:var(--tif)}
+.opt{display:block;width:100%;text-align:left;background:var(--card);border:2px solid var(--line);border-radius:12px;
+  padding:14px;margin-top:10px;font-size:1em;line-height:1.62;box-shadow:0 2px 0 var(--line)}
+.opt .mk{display:inline-grid;place-items:center;width:1.55em;height:1.55em;border-radius:50%;background:var(--pale);
+  border:2px solid var(--tifL);font-size:.8em;font-weight:800;margin-right:9px;vertical-align:-.35em}
+.opt.ok{border-color:var(--green);background:var(--card2)}
+.opt.ok .mk{background:var(--green);color:#fff;border-color:var(--green)}
+.opt.ng{border-color:var(--red);background:var(--card2)}
+.opt.ng .mk{background:var(--red);color:#fff;border-color:var(--red)}
+.exp{margin-top:15px;background:var(--card2);border:2px solid var(--line);border-radius:12px;padding:14px;font-size:.92em}
+.verdict{font-weight:800;font-size:1.04em}
+.vok{color:var(--green)} .vng{color:var(--red)}
+
+/* ===== 答案・振り返り ===== */
+.answer{text-align:center;padding:6px 0 2px;position:relative}
+.answer .big{font-size:3.5em;font-weight:800;line-height:1;color:var(--tifD)}
+.answer .big.ng{color:var(--ink2)}
+.maru{position:absolute;top:1.6em;left:50%;transform:translateX(-50%);width:11em;pointer-events:none}
+.hanko{display:inline-block;margin-top:15px;padding:10px 22px;border:3px solid var(--green);color:var(--green);
+  border-radius:10px;font-weight:800;letter-spacing:.16em;transform:rotate(-3deg)}
+.hanko.ng{border-color:var(--ink2);color:var(--ink2)}
+.statline{display:flex;gap:10px;margin-top:14px}
+.statline div{flex:1;background:var(--card2);border:1.5px solid var(--line);border-radius:10px;padding:9px 6px;text-align:center}
+.statline b{display:block;font-size:1.1em;font-weight:800}
+.statline span{font-size:.7em;color:var(--ink2);font-weight:700}
+.barrow{margin-top:11px}
+.barrow .lb{display:flex;justify-content:space-between;font-size:.8em;font-weight:700;margin-bottom:4px}
+.barrow .lb em{font-style:normal;color:var(--ink2);font-weight:800}
+.bar{height:10px;background:var(--pale);border-radius:999px;overflow:hidden;border:1px solid var(--line)}
+.bar i{display:block;height:100%;background:var(--tif);border-radius:999px}
+.bar i.low{background:var(--red)} .bar i.mid{background:var(--amber)}
+.wrongcard{background:var(--card);border:1.5px solid var(--line);border-left:6px solid var(--red);
+  border-radius:12px;padding:14px;margin-top:11px;box-shadow:var(--sh)}
+.ansrow{display:grid;grid-template-columns:1.5em 1fr;gap:6px 8px;margin-top:10px;font-size:.92em;align-items:start}
+.ansrow .x{color:var(--red);font-weight:800}
+.ansrow .o{color:var(--green);font-weight:800}
+.ansrow .t.ng{color:var(--ink2);text-decoration:line-through}
+.ansrow .t.ok{font-weight:800}
+.jump{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.jump button{background:var(--pale);border:1.5px solid var(--tifL);color:var(--tifD);border-radius:999px;
+  padding:6px 13px;font-size:.8em;font-weight:800}
+
+/* ===== 成績表 ===== */
+.gradetable{background:var(--card);border:1.5px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:var(--sh)}
+.graderow{display:flex;align-items:center;gap:11px;padding:13px 14px;border-top:1.5px solid var(--line)}
+.graderow:first-child{border-top:none}
+.graderow .y{width:4.6em;font-size:.82em;font-weight:800;color:var(--ink2)}
+.graderow .sc{font-size:1.35em;font-weight:800;min-width:2.6em;text-align:right}
+.graderow .mk{font-size:1.2em;font-weight:800;width:1.3em;text-align:center}
+.graderow .bar{flex:1}
+.hist{display:flex;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1.5px solid var(--line);font-size:.9em}
+.hist:last-child{border-bottom:none}
+.badge{display:inline-block;font-size:.72em;font-weight:800;border-radius:999px;padding:1px 9px}
+.badge.p{background:var(--green);color:#fff} .badge.f{background:var(--pale);color:var(--ink2)}
+.badge.core{background:var(--tif);color:var(--tifInk);font-size:.68em;vertical-align:.12em}
+
+/* ===== 学生証 ===== */
+.idcard{background:var(--tif);color:var(--tifInk);border-radius:16px;padding:17px;
+  box-shadow:0 3px 0 rgba(6,90,88,.3),var(--sh)}
+.idcard .lb{font-size:.74em;font-weight:800;letter-spacing:.1em;opacity:.72}
+.idcard .nm{font-size:1.3em;font-weight:800;margin-top:2px}
+.idcard .nm.empty{opacity:.55}
+.grades{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:14px}
+.grades div{background:rgba(255,255,255,.85);border-radius:10px;padding:8px 3px;text-align:center}
+.grades b{display:block;font-size:1.18em;font-weight:800;color:var(--tifInk);line-height:1.25}
+.grades span{font-size:.64em;color:#2C5250;font-weight:800}
+.idcard .small{color:var(--tifInk);opacity:.72}
+
+/* ===== 講義ノート ===== */
+.pts{margin:9px 0 0;padding-left:1.25em}
+.pts li{margin-top:7px;font-size:.92em;line-height:1.7}
+.pts li::marker{color:var(--tifD)}
+.faq{background:var(--card2);border:1.5px solid var(--line);border-left:5px solid var(--tif);
+  border-radius:0 12px 12px 0;padding:12px 13px;margin-top:11px}
+.faq .q{font-weight:800;font-size:.92em;color:var(--tifD)}
+.faq .a{font-size:.9em;margin-top:6px;line-height:1.75}
+.refs{margin:0;padding-left:1.25em}
+.refs li{margin-top:7px;font-size:.85em;color:var(--ink2);line-height:1.65}
+
+/* ===== タブ ===== */
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:30;display:grid;grid-template-columns:repeat(5,1fr);
+  background:var(--card);border-top:1.5px solid var(--line);padding-bottom:env(safe-area-inset-bottom);
+  box-shadow:0 -6px 18px -12px rgba(10,60,58,.4)}
+.tabbar button{position:relative;padding:8px 2px 10px;font-size:.68em;color:var(--ink2);font-weight:800;
+  display:flex;flex-direction:column;align-items:center;gap:3px}
+.tabbar .ic{font-size:1.9em;line-height:1.1;width:1.75em;height:1.5em;display:grid;place-items:center;border-radius:999px}
+.tabbar button[aria-current=page]{color:var(--tifD)}
+.tabbar button[aria-current=page] .ic{background:var(--pale);box-shadow:inset 0 0 0 2px var(--tif)}
+</style>
+</head>
+<body>
+<header class="top"><div class="in">
+  <span class="ic">🍎</span><b>CHART 栄養学学校</b>
+</div></header>
+<main class="wrap" id="view"></main>
+<nav class="tabbar" id="tabs"></nav>
+<script>
+
+const N=[
+{i:'carb',n:'糖質',k:'とうしつ',c:'三大栄養素',s:'エネルギー源',lv:1,
+ w:'体と脳の主要なエネルギー源。1gあたり4kcal',d:'集中力の低下、筋タンパクの分解が進む、低血糖',e:'体脂肪の増加、血糖コントロールの乱れ',
+ f:['米','パン','麺類','いも類','果物'],t:'グリコーゲンとして肝臓に約100g、筋肉に約300〜400g貯蔵される'},
+{i:'fiber',n:'食物繊維',k:'しょくもつせんい',c:'三大栄養素',s:'糖質の仲間',lv:1,
+ w:'便通を整える、食後血糖の急上昇をゆるやかにする、コレステロールの排泄を助ける',d:'便秘、腸内環境の悪化',e:'下痢、ミネラルの吸収低下',
+ f:['野菜','海藻','きのこ','豆類','全粒穀物'],t:'水溶性（ペクチン、β-グルカン）と不溶性（セルロース）に分かれる'},
+{i:'fat',n:'脂質',k:'ししつ',c:'三大栄養素',s:'エネルギー源',lv:1,
+ w:'1gあたり9kcalの高エネルギー源。細胞膜やホルモンの材料、脂溶性ビタミンの吸収を助ける',d:'ホルモン分泌の低下、肌荒れ、脂溶性ビタミンの不足',e:'体脂肪の増加、脂質異常症',
+ f:['油','ナッツ','肉の脂身','魚','乳製品'],t:'目標量は総エネルギーの20〜30%'},
+{i:'sfa',n:'飽和脂肪酸',k:'ほうわしぼうさん',c:'脂質の種類',s:'固まりやすい脂',lv:2,
+ w:'エネルギー源。常温で固形のものが多い',d:'通常の食事で不足することはほぼない',e:'LDLコレステロールの上昇、動脈硬化リスク',
+ f:['牛脂','豚脂','バター','生クリーム'],t:'目標量は総エネルギーの7%以下'},
+{i:'n3',n:'n-3系脂肪酸',k:'えぬさんけいしぼうさん',c:'脂質の種類',s:'必須脂肪酸',lv:2,
+ w:'炎症の調整、中性脂肪の低下、細胞膜の柔軟性',d:'皮膚炎、炎症が長引きやすくなる',e:'出血傾向（極端な高用量時）',
+ f:['さば','いわし','さけ','えごま油','亜麻仁油'],t:'EPA・DHA・α-リノレン酸が該当。体内で作れないため食事から摂る'},
+{i:'n6',n:'n-6系脂肪酸',k:'えぬろくけいしぼうさん',c:'脂質の種類',s:'必須脂肪酸',lv:2,
+ w:'細胞膜の構成、成長や皮膚の健康維持',d:'皮膚炎、成長障害',e:'n-3とのバランスが崩れる',
+ f:['大豆油','コーン油','ごま油','マヨネーズ'],t:'リノール酸が代表。現代の食事では不足より過多になりやすい'},
+{i:'trans',n:'トランス脂肪酸',k:'とらんすしぼうさん',c:'脂質の種類',s:'避けたい脂',lv:2,
+ w:'栄養上の必要性はない',d:'—',e:'LDL上昇とHDL低下、心血管疾患リスクの上昇',
+ f:['一部のマーガリン','ショートニング','加工菓子'],t:'WHOは総エネルギーの1%未満を推奨'},
+{i:'chol',n:'コレステロール',k:'これすてろーる',c:'脂質の種類',s:'体の材料',lv:2,
+ w:'細胞膜、ステロイドホルモン、胆汁酸、ビタミンDの材料',d:'ホルモン合成の低下',e:'人により血中脂質の悪化',
+ f:['卵','レバー','いくら','するめ'],t:'体内合成が大部分を占め、食事の影響には個人差が大きい'},
+{i:'prot',n:'タンパク質',k:'たんぱくしつ',c:'三大栄養素',s:'体をつくる',lv:1,
+ w:'筋肉、内臓、皮膚、髪、酵素、ホルモン、抗体の材料。1gあたり4kcal',d:'筋量低下、免疫力低下、むくみ、傷が治りにくい',e:'腎臓への負担（腎機能低下者）、エネルギー過剰',
+ f:['肉','魚','卵','大豆製品','乳製品'],t:'トレーニングをする人は体重1kgあたり1.6〜2.2gが目安'},
+{i:'eaa',n:'必須アミノ酸',k:'ひっすあみのさん',c:'タンパク質の種類',s:'9種類',lv:2,
+ w:'体内で合成できないため食事から摂る必要があるアミノ酸',d:'筋タンパク合成の低下',e:'特定のアミノ酸に偏るとバランスを崩す',
+ f:['卵','肉','魚','乳','大豆'],t:'バリン、ロイシン、イソロイシン、リジン、メチオニン、フェニルアラニン、トレオニン、トリプトファン、ヒスチジンの9種'},
+{i:'bcaa',n:'BCAA',k:'びーしーえーえー',c:'タンパク質の種類',s:'分岐鎖アミノ酸',lv:2,
+ w:'筋タンパク合成のスイッチ、運動中のエネルギー源',d:'—',e:'他のアミノ酸とのバランスが崩れる',
+ f:['ホエイプロテイン','肉','魚','卵'],t:'バリン・ロイシン・イソロイシンの3種。合成を最大化するには9種そろったEAAが必要'},
+{i:'water',n:'水',k:'みず',c:'その他',s:'必須成分',lv:1,
+ w:'体温調節、栄養素の運搬、老廃物の排泄。成人の体の約60%を占める',d:'脱水、パフォーマンス低下、熱中症',e:'低ナトリウム血症（短時間の大量摂取）',
+ f:['飲料水','汁物','果物','野菜'],t:'体重の2%の脱水で持久的パフォーマンスが落ち始める'},
+{i:'alc',n:'アルコール',k:'あるこーる',c:'その他',s:'嗜好品',lv:2,
+ w:'1gあたり7kcal。栄養素としての必要性はない',d:'—',e:'筋タンパク合成の抑制、睡眠の質低下、脂肪合成の促進',
+ f:['ビール','日本酒','焼酎','ワイン'],t:'減量中は「隠れカロリー」になりやすく、食事記録から漏れやすい'},
+
+{i:'vA',n:'ビタミンA',k:'びたみんえー',c:'ビタミン',s:'脂溶性',lv:1,
+ w:'視覚（ロドプシンの材料）、皮膚や粘膜の健康、免疫',d:'夜盲症、皮膚や粘膜の乾燥、感染しやすくなる',e:'頭痛、肝障害、妊娠初期は胎児への影響',
+ f:['レバー','うなぎ','にんじん','かぼちゃ'],t:'緑黄色野菜のβ-カロテンは体内で必要な分だけAに変換される'},
+{i:'vD',n:'ビタミンD',k:'びたみんでぃー',c:'ビタミン',s:'脂溶性',lv:1,
+ w:'カルシウムの吸収促進、骨の形成、筋機能の維持',d:'くる病、骨軟化症、骨密度の低下',e:'高カルシウム血症、腎障害',
+ f:['さけ','さんま','しらす','きのこ類'],t:'日光を浴びることで皮膚でも作られる。目安量は1日8.5μg'},
+{i:'vE',n:'ビタミンE',k:'びたみんいー',c:'ビタミン',s:'脂溶性',lv:1,
+ w:'抗酸化作用、細胞膜を酸化から守る',d:'溶血性貧血、神経症状（まれ）',e:'出血傾向（高用量サプリ）',
+ f:['植物油','アーモンド','アボカド','うなぎ'],t:'脂質と一緒に摂ると吸収されやすい'},
+{i:'vK',n:'ビタミンK',k:'びたみんけー',c:'ビタミン',s:'脂溶性',lv:1,
+ w:'血液の凝固、骨のタンパク質（オステオカルシン）の活性化',d:'出血が止まりにくい、新生児メレナ',e:'通常の食品では報告が少ない',
+ f:['納豆','ほうれん草','小松菜','ブロッコリー'],t:'血液をサラサラにする薬（ワルファリン）を飲んでいる人は納豆を避ける必要がある'},
+{i:'vB1',n:'ビタミンB1',k:'びたみんびーわん',c:'ビタミン',s:'水溶性',lv:1,
+ w:'糖質をエネルギーに変える補酵素。神経機能の維持',d:'脚気、疲労感、食欲不振、ウェルニッケ脳症',e:'過剰分は尿へ排泄される',
+ f:['豚肉','玄米','うなぎ','大豆'],t:'糖質を多く摂る人ほど必要量が増える'},
+{i:'vB2',n:'ビタミンB2',k:'びたみんびーつー',c:'ビタミン',s:'水溶性',lv:1,
+ w:'脂質をエネルギーに変える、皮膚や粘膜の再生',d:'口角炎、口内炎、脂漏性皮膚炎',e:'過剰分は尿へ排泄される',
+ f:['レバー','卵','納豆','牛乳'],t:'摂ると尿が黄色くなることがある'},
+{i:'niac',n:'ナイアシン',k:'ないあしん',c:'ビタミン',s:'水溶性',lv:2,
+ w:'糖質・脂質・タンパク質の代謝全般に関わる補酵素（NAD／NADP）',d:'ペラグラ（皮膚炎・下痢・認知症状）',e:'皮膚の紅潮、肝障害（高用量サプリ）',
+ f:['かつお','まぐろ','鶏むね肉','レバー'],t:'必須アミノ酸のトリプトファンから体内でも作られる'},
+{i:'vB6',n:'ビタミンB6',k:'びたみんびーろく',c:'ビタミン',s:'水溶性',lv:2,
+ w:'アミノ酸の代謝、神経伝達物質の合成',d:'皮膚炎、口内炎、末梢神経障害',e:'感覚神経障害（長期の高用量サプリ）',
+ f:['まぐろ','かつお','鶏肉','バナナ'],t:'タンパク質を多く摂る人ほど必要量が増える'},
+{i:'vB12',n:'ビタミンB12',k:'びたみんびーじゅうに',c:'ビタミン',s:'水溶性',lv:2,
+ w:'赤血球の生成、神経機能の維持、葉酸の再利用',d:'巨赤芽球性貧血、しびれなどの神経症状',e:'過剰の報告は少ない',
+ f:['しじみ','あさり','レバー','さんま'],t:'植物性食品にはほぼ含まれない。完全菜食の人は不足しやすい'},
+{i:'fol',n:'葉酸',k:'ようさん',c:'ビタミン',s:'水溶性',lv:2,
+ w:'DNAの合成、赤血球の生成、細胞分裂',d:'巨赤芽球性貧血、胎児の神経管閉鎖障害',e:'サプリでの高用量はB12欠乏を隠すことがある',
+ f:['ほうれん草','ブロッコリー','レバー','枝豆'],t:'妊娠を計画する女性はサプリで1日400μgの追加が推奨されている'},
+{i:'pan',n:'パントテン酸',k:'ぱんとてんさん',c:'ビタミン',s:'水溶性',lv:3,
+ w:'補酵素A（CoA）の構成成分として、糖質と脂質の代謝に関わる',d:'通常の食事では不足しにくい。手足のしびれ、疲労感',e:'報告は少ない',
+ f:['レバー','鶏肉','納豆','アボカド'],t:'名前のとおり多くの食品に広く含まれる'},
+{i:'bio',n:'ビオチン',k:'びおちん',c:'ビタミン',s:'水溶性',lv:3,
+ w:'糖新生や脂肪酸合成の酵素を助ける。皮膚や髪の健康',d:'皮膚炎、脱毛、食欲不振',e:'報告は少ない',
+ f:['レバー','卵黄','ナッツ','きのこ'],t:'生の卵白に含まれるアビジンが吸収を妨げる'},
+{i:'vC',n:'ビタミンC',k:'びたみんしー',c:'ビタミン',s:'水溶性',lv:1,
+ w:'コラーゲンの合成、抗酸化作用、非ヘム鉄の吸収を助ける',d:'壊血病、出血しやすい、疲労感',e:'下痢、腹痛（高用量サプリ）',
+ f:['ピーマン','ブロッコリー','キウイ','いちご'],t:'水に溶けやすく熱に弱いため、調理法で損失が出やすい'},
+
+{i:'na',n:'ナトリウム',k:'なとりうむ',c:'ミネラル',s:'多量',lv:1,
+ w:'細胞外液の浸透圧の調整、神経や筋肉の働き',d:'脱力感、けいれん、熱中症（大量発汗時）',e:'高血圧、むくみ、腎臓への負担',
+ f:['食塩','みそ','しょうゆ','加工食品'],t:'食塩相当量の目標量は男性7.5g未満、女性6.5g未満'},
+{i:'k',n:'カリウム',k:'かりうむ',c:'ミネラル',s:'多量',lv:1,
+ w:'細胞内液の調整、ナトリウムの排泄促進、血圧の調整',d:'脱力感、不整脈、筋けいれん',e:'高カリウム血症（腎機能が低下している場合）',
+ f:['バナナ','いも類','ほうれん草','大豆'],t:'腎機能が低下している人は制限されることがある'},
+{i:'ca',n:'カルシウム',k:'かるしうむ',c:'ミネラル',s:'多量',lv:1,
+ w:'骨と歯の主成分（約99%）、筋収縮、神経伝達、血液凝固',d:'骨密度の低下、骨粗鬆症、テタニー',e:'結石、他のミネラルの吸収阻害',
+ f:['牛乳','チーズ','しらす干し','小松菜'],t:'吸収にはビタミンDが必要。日本人に不足しやすい代表的なミネラル'},
+{i:'mg',n:'マグネシウム',k:'まぐねしうむ',c:'ミネラル',s:'多量',lv:2,
+ w:'300種類以上の酵素の働きを助ける、ATPの利用、骨の構成',d:'こむら返り、不整脈、疲労感',e:'下痢（サプリや薬剤）',
+ f:['アーモンド','海藻','大豆','玄米'],t:'発汗量の多いトレーニング者は不足しやすい'},
+{i:'p',n:'リン',k:'りん',c:'ミネラル',s:'多量',lv:2,
+ w:'骨の構成、ATPやリン脂質、DNAの材料',d:'通常の食事では不足しにくい。骨の痛み、脱力',e:'カルシウムの吸収阻害、骨密度の低下',
+ f:['乳製品','魚','肉','加工食品'],t:'加工食品の食品添加物から過剰になりやすい'},
+{i:'fe',n:'鉄',k:'てつ',c:'ミネラル',s:'微量',lv:1,
+ w:'ヘモグロビンとミオグロビンの材料として酸素を運ぶ',d:'鉄欠乏性貧血、息切れ、持久力の低下、疲れやすい',e:'吐き気、肝障害（サプリの過剰）',
+ f:['レバー','赤身肉','あさり','小松菜'],t:'動物性のヘム鉄は吸収がよい。植物性の非ヘム鉄はビタミンCと一緒に摂ると吸収が上がる'},
+{i:'zn',n:'亜鉛',k:'あえん',c:'ミネラル',s:'微量',lv:1,
+ w:'タンパク質の合成、味覚の維持、免疫、性ホルモンの合成、傷の治癒',d:'味覚障害、皮膚炎、脱毛、免疫低下',e:'銅の吸収阻害、吐き気',
+ f:['牡蠣','牛赤身肉','レバー','カシューナッツ'],t:'発汗で失われるため、トレーニング者は不足しやすい'},
+{i:'cu',n:'銅',k:'どう',c:'ミネラル',s:'微量',lv:3,
+ w:'鉄の利用を助ける、抗酸化酵素の構成、結合組織の形成',d:'貧血、骨の異常',e:'まれ。肝障害',
+ f:['レバー','ナッツ','ココア','いか'],t:'亜鉛サプリの長期高用量摂取で不足することがある'},
+{i:'mn',n:'マンガン',k:'まんがん',c:'ミネラル',s:'微量',lv:3,
+ w:'骨の形成、糖質と脂質の代謝酵素の構成',d:'骨の発育不全（まれ）',e:'神経症状（産業的な曝露）',
+ f:['玄米','大豆','のり','茶'],t:'植物性食品に多く、通常の食事では不足しにくい'},
+{i:'i',n:'ヨウ素',k:'ようそ',c:'ミネラル',s:'微量',lv:2,
+ w:'甲状腺ホルモンの材料として代謝を調整する',d:'甲状腺腫、代謝の低下',e:'過剰でも甲状腺機能の低下が起こる',
+ f:['昆布','わかめ','ひじき','魚介'],t:'海藻をよく食べる日本では過剰にも注意が必要'},
+{i:'se',n:'セレン',k:'せれん',c:'ミネラル',s:'微量',lv:3,
+ w:'抗酸化酵素（グルタチオンペルオキシダーゼ）の構成成分',d:'心筋障害、筋力低下',e:'脱毛、爪の変形、胃腸障害',
+ f:['かつお','まぐろ','卵','ブラジルナッツ'],t:'必要量と過剰量の幅が狭いミネラル'},
+{i:'cr',n:'クロム',k:'くろむ',c:'ミネラル',s:'微量',lv:3,
+ w:'インスリンの働きを助け、糖代謝に関わる',d:'耐糖能の低下（まれ）',e:'通常の食品では報告が少ない',
+ f:['あおのり','ひじき','肉','全粒穀物'],t:'サプリでの減量効果を示す明確な根拠はない'},
+{i:'mo',n:'モリブデン',k:'もりぶでん',c:'ミネラル',s:'微量',lv:3,
+ w:'尿酸の生成など、酵素の補因子として働く',d:'非常にまれ',e:'通常の食事では報告が少ない',
+ f:['大豆','納豆','レバー','穀類'],t:'豆類に多く、日本人の摂取量は比較的多い'}
+];
+
+/* ============================================================
+   2. 用語・概念データ
+   ============================================================ */
+const T=[
+{i:'atp',n:'ATP-CP系',k:'えーてぃーぴーしーぴーけい',c:'エネルギー代謝',lv:2,d:'8秒前後の最大強度の運動を支える、酸素を使わない即時のエネルギー供給機構'},
+{i:'glyco',n:'解糖系',k:'かいとうけい',c:'エネルギー代謝',lv:2,d:'糖質を分解してエネルギーを取り出す経路。30秒〜2分程度の高強度運動を主に支える'},
+{i:'aero',n:'有酸素系',k:'ゆうさんそけい',c:'エネルギー代謝',lv:2,d:'酸素を使って糖質と脂質からエネルギーを作る機構。長時間の運動と安静時の主役'},
+{i:'gng',n:'糖新生',k:'とうしんせい',c:'エネルギー代謝',lv:3,d:'アミノ酸や乳酸、グリセロールから肝臓でブドウ糖を作り出す働き'},
+{i:'glycogen',n:'グリコーゲン',k:'ぐりこーげん',c:'エネルギー代謝',lv:2,d:'糖質の貯蔵形態。肝臓では血糖の維持に、筋肉では運動時のエネルギーに使われる'},
+{i:'insulin',n:'インスリン',k:'いんすりん',c:'ホルモン',lv:2,d:'血糖を下げ、糖とアミノ酸の細胞への取り込みを促す同化ホルモン'},
+{i:'glucagon',n:'グルカゴン',k:'ぐるかごん',c:'ホルモン',lv:3,d:'血糖が下がったときに肝グリコーゲンの分解と糖新生を促して血糖を上げるホルモン'},
+{i:'gi',n:'GI値',k:'じーあいち',c:'食品の指標',lv:2,d:'その食品が食後血糖をどれだけ速く上げるかを示す指標'},
+{i:'gl',n:'GL値',k:'じーえるち',c:'食品の指標',lv:3,d:'GI値に実際に食べる量の糖質量をかけ合わせ、現実的な血糖への影響を表した指標'},
+{i:'ketone',n:'ケトン体',k:'けとんたい',c:'エネルギー代謝',lv:3,d:'糖質が不足したときに肝臓で脂肪酸から作られ、脳などのエネルギー源になる物質'},
+{i:'nbal',n:'窒素出納',k:'ちっそすいとう',c:'タンパク質',lv:3,d:'摂取した窒素と排泄された窒素の差。プラスなら体タンパクが増えている状態'},
+{i:'aascore',n:'アミノ酸スコア',k:'あみのさんすこあ',c:'タンパク質',lv:2,d:'必須アミノ酸のバランスから、そのタンパク質の質を評価した指標'},
+{i:'mps',n:'筋タンパク合成',k:'きんたんぱくごうせい',c:'タンパク質',lv:2,d:'筋肉のタンパク質が新しく作られる反応。分解を上回ると筋量が増える'},
+{i:'leu',n:'ロイシン閾値',k:'ろいしんいきち',c:'タンパク質',lv:3,d:'筋タンパク合成のスイッチが入るのに必要なロイシン量。1食あたり約2〜3gが目安'},
+{i:'bmr',n:'基礎代謝量',k:'きそたいしゃりょう',c:'エネルギー収支',lv:1,d:'覚醒した安静状態で、生命維持のために最低限必要なエネルギー量'},
+{i:'tdee',n:'総消費エネルギー量',k:'そうしょうひえねるぎーりょう',c:'エネルギー収支',lv:1,d:'基礎代謝、活動、食事による熱産生を合計した1日の消費エネルギー'},
+{i:'dit',n:'食事誘発性熱産生',k:'しょくじゆうはつせいねっさんせい',c:'エネルギー収支',lv:2,d:'食事の消化吸収で消費されるエネルギー。タンパク質でとくに大きい'},
+{i:'neat',n:'NEAT',k:'にーと',c:'エネルギー収支',lv:2,d:'運動以外の日常動作で消費されるエネルギー。減量中に無意識に減りやすい'},
+{i:'lbm',n:'除脂肪体重',k:'じょしぼうたいじゅう',c:'身体組成',lv:1,d:'体重から体脂肪量を引いた重量。筋肉、骨、内臓、水分の合計'},
+{i:'bf',n:'体脂肪率',k:'たいしぼうりつ',c:'身体組成',lv:1,d:'体重に占める体脂肪の割合。測定方法によって値がぶれやすい'},
+{i:'lea',n:'低エネルギー可用性',k:'ていえねるぎーかようせい',c:'リスク管理',lv:3,d:'運動で消費した分を差し引いた残りのエネルギーが不足し、月経異常や骨密度低下を招く状態'},
+{i:'triad',n:'女性アスリートの三主徴',k:'じょせいあすりーとのさんしゅちょう',c:'リスク管理',lv:3,d:'エネルギー不足、月経異常、骨密度低下が連鎖して起こる状態'},
+{i:'sarco',n:'サルコペニア',k:'さるこぺにあ',c:'リスク管理',lv:2,d:'加齢にともなって筋肉量と筋力が低下した状態'},
+{i:'frail',n:'フレイル',k:'ふれいる',c:'リスク管理',lv:2,d:'加齢により心身の予備能力が低下し、介護が必要になりやすい中間的な状態'},
+{i:'dri',n:'日本人の食事摂取基準',k:'にほんじんのしょくじせっしゅきじゅん',c:'基準と制度',lv:2,d:'健康な人を対象に、エネルギーと栄養素の摂取量の基準を国が示したもの。5年ごとに改定'},
+{i:'rda',n:'推奨量',k:'すいしょうりょう',c:'基準と制度',lv:3,d:'ほとんどの人（97〜98%）が必要量を満たすと推定される摂取量'},
+{i:'ul',n:'耐容上限量',k:'たいようじょうげんりょう',c:'基準と制度',lv:3,d:'これを超えると健康被害のリスクが高まるとされる上限の摂取量'},
+{i:'dg',n:'目標量',k:'もくひょうりょう',c:'基準と制度',lv:3,d:'生活習慣病の予防のために、当面目標とすべき摂取量の範囲'},
+{i:'tokuho',n:'特定保健用食品',k:'とくていほけんようしょくひん',c:'基準と制度',lv:2,d:'国が有効性と安全性を個別に審査し、保健の用途の表示を許可した食品'},
+{i:'kinousei',n:'機能性表示食品',k:'きのうせいひょうじしょくひん',c:'基準と制度',lv:2,d:'事業者の責任で科学的根拠を消費者庁に届け出て機能を表示する食品。国の個別審査はない'},
+{i:'eiyoukinou',n:'栄養機能食品',k:'えいようきのうしょくひん',c:'基準と制度',lv:3,d:'決められた栄養成分が基準量含まれていれば、届出なしで機能を表示できる食品'},
+{i:'pfc',n:'PFCバランス',k:'ぴーえふしーばらんす',c:'食事設計',lv:1,d:'タンパク質・脂質・糖質が総エネルギーに占める割合の配分'},
+{i:'refeed',n:'リフィード',k:'りふぃーど',c:'食事設計',lv:3,d:'減量中に糖質を中心に一時的に摂取量を増やし、代謝やホルモンの低下を戻す手法'},
+{i:'dietbreak',n:'ダイエットブレイク',k:'だいえっとぶれいく',c:'食事設計',lv:3,d:'減量を数週間中断して維持カロリーに戻し、心身の回復を図る期間'},
+{i:'carbload',n:'カーボローディング',k:'かーぼろーでぃんぐ',c:'食事設計',lv:3,d:'持久系競技の前に糖質摂取を増やし、筋グリコーゲンを高める方法'},
+{i:'plate',n:'主食・主菜・副菜',k:'しゅしょく・しゅさい・ふくさい',c:'食事設計',lv:1,d:'エネルギー源、タンパク質源、ビタミンとミネラル源をそろえる日本の食事の組み立て方'},
+{i:'density',n:'栄養素密度',k:'えいようそみつど',c:'食事設計',lv:2,d:'同じエネルギー量あたりに含まれる栄養素の多さ。減量中ほど重要になる'},
+{i:'recall',n:'食事記録法',k:'しょくじきろくほう',c:'指導実務',lv:2,d:'食べたものを記録してもらい、現状を把握する方法。写真記録は負担が少なく続きやすい'},
+{i:'behavior',n:'行動変容',k:'こうどうへんよう',c:'指導実務',lv:2,d:'知識を与えるだけでなく、実際の行動が変わるよう段階的に支援する考え方'},
+{i:'scope',n:'業務範囲',k:'ぎょうむはんい',c:'指導実務',lv:1,d:'トレーナーが行えるのは健康な人への一般的な栄養の情報提供まで。疾患の治療を目的とした食事指導は医師と管理栄養士の領域'},
+{i:'whey',n:'ホエイプロテイン',k:'ほえいぷろていん',c:'サプリメント',lv:1,d:'牛乳由来で吸収が速く、ロイシンを多く含むタンパク質'},
+{i:'casein',n:'カゼインプロテイン',k:'かぜいんぷろていん',c:'サプリメント',lv:2,d:'牛乳由来で胃の中でゲル化し、ゆっくり吸収されるタンパク質'},
+{i:'soy',n:'ソイプロテイン',k:'そいぷろていん',c:'サプリメント',lv:2,d:'大豆由来で吸収がゆるやか。乳製品が合わない人の選択肢になる'},
+{i:'creatine',n:'クレアチン',k:'くれあちん',c:'サプリメント',lv:2,d:'筋内のクレアチンリン酸を増やし、高強度の反復パフォーマンスを高めるサプリメント'},
+{i:'caffeine',n:'カフェイン',k:'かふぇいん',c:'サプリメント',lv:2,d:'中枢神経を刺激し、主観的な疲労感を下げて運動パフォーマンスを高める成分'},
+{i:'doping',n:'アンチドーピング認証',k:'あんちどーぴんぐにんしょう',c:'サプリメント',lv:3,d:'製品に禁止物質の混入がないかを第三者機関が検査し認証する仕組み'}
+];
+
+/* ============================================================
+   3. 実務・数値・シナリオ問題（手書き）
+   lv:1〜3 / c:分野 / q:問題 / a:正答 / o:誤答3つ / x:解説
+   ============================================================ */
+const Q=[
+/* ---- レベル1：新人が最初に押さえる ---- */
+{lv:1,c:'数値の基本',k:1,q:'糖質1gあたりのエネルギーは？',a:'4kcal',o:['7kcal','9kcal','2kcal'],x:'糖質とタンパク質が4kcal、脂質が9kcal、アルコールが7kcal'},
+{lv:1,c:'数値の基本',k:1,q:'脂質1gあたりのエネルギーは？',a:'9kcal',o:['4kcal','7kcal','12kcal'],x:'脂質だけが9kcalと突出して高い。少量でもカロリーが大きく動く'},
+{lv:1,c:'数値の基本',k:1,q:'タンパク質1gあたりのエネルギーは？',a:'4kcal',o:['9kcal','7kcal','5kcal'],x:'糖質と同じ4kcal'},
+{lv:1,c:'数値の基本',k:1,q:'アルコール1gあたりのエネルギーは？',a:'7kcal',o:['4kcal','9kcal','0kcal'],x:'栄養素としての必要性はないが、エネルギーは糖質より高い'},
+{lv:1,c:'エネルギー収支',k:1,q:'体重を減らすために必要な基本条件は？',a:'消費エネルギーが摂取エネルギーを上回ること',o:['糖質を完全に抜くこと','夜9時以降に食べないこと','運動量を毎日増やし続けること'],x:'方法は色々あるが、最終的にはエネルギー収支がマイナスであることが条件になる'},
+{lv:1,c:'エネルギー収支',k:1,q:'基礎代謝量の説明として正しいのは？',a:'覚醒した安静状態で生命維持に最低限必要なエネルギー量',o:['1日に運動で消費するエネルギー量','睡眠中に消費するエネルギー量','食事で消費されるエネルギー量'],x:'総消費エネルギーのうち、およそ6割を占める'},
+{lv:1,c:'タンパク質',k:1,q:'トレーニングをしている人のタンパク質摂取量の目安は？',a:'体重1kgあたり1.6〜2.2g',o:['体重1kgあたり0.5〜0.8g','体重1kgあたり3.5〜4.0g','体重1kgあたり5g以上'],x:'一般成人は約1.0g/kg。トレーニング者はその1.6〜2.2倍が目安'},
+{lv:1,c:'タンパク質',k:1,q:'タンパク質を多く含む食品の組み合わせとして適切なのは？',a:'鶏むね肉、卵、納豆',o:['バナナ、白米、さつまいも','アボカド、オリーブオイル、ナッツ','レタス、きゅうり、トマト'],x:'他の選択肢はそれぞれ糖質源、脂質源、ビタミン・ミネラル源が中心'},
+{lv:1,c:'食事設計',k:1,q:'一般的な食事の組み立てとして推奨される形は？',a:'主食・主菜・副菜をそろえる',o:['主食だけで済ませる','主菜だけを増やす','副菜だけにする'],x:'エネルギー源、タンパク質源、ビタミン・ミネラル源が自然にそろう'},
+{lv:1,c:'水分',k:1,q:'成人の体に占める水分の割合として最も近いのは？',a:'約60%',o:['約20%','約40%','約85%'],x:'成人男性で約60%。体重の2%の脱水でパフォーマンスが落ち始める'},
+{lv:1,c:'業務範囲',k:1,m:1,q:'糖尿病の治療中だと申告した新規クライアントへの対応として適切なのは？',a:'主治医の指示を確認し、治療目的の食事指導は行わない',o:['糖質制限の献立を作成して渡す','薬を減らせるよう食事量を指示する','血糖値の測定結果をもとに食事を決める'],x:'疾患の治療を目的とした食事指導は医師と管理栄養士の領域。トレーナーは一般的な情報提供と運動指導の範囲にとどめる'},
+{lv:1,c:'業務範囲',k:1,m:1,q:'トレーナーが行ってよい栄養の関わりとして適切なのは？',a:'健康な人への一般的な栄養情報の提供と食習慣の相談',o:['サプリメントによる病気の改善の説明','検査数値をもとにした治療食の作成','医薬品の代わりになる食品の提案'],x:'診断・治療にあたる行為は業務範囲外。境界を越えないことが信頼につながる'},
+{lv:1,c:'サプリメント',k:1,m:1,q:'プロテインパウダーの位置づけとして正しいのは？',a:'食事で不足するタンパク質を補う食品',o:['飲むだけで筋肉が増える薬','医薬品に分類される製品','食事の代わりになる完全栄養食'],x:'あくまで食品。まず食事で足りているかを確認するのが先'},
+{lv:1,c:'ビタミン・ミネラル',k:1,m:1,q:'ビタミンのうち、摂りすぎが体内に蓄積しやすいのは？',a:'脂溶性ビタミン',o:['水溶性ビタミン','すべてのビタミン','どちらも蓄積しない'],x:'A・D・E・Kの脂溶性は体内に蓄えられるため、サプリでの過剰に注意が必要'},
+{lv:1,c:'食事設計',k:1,q:'減量中に最初に見直すべきポイントとして適切なのは？',a:'総エネルギー量と食事の記録',o:['食べる順番だけ','サプリメントの種類','食事の回数だけ'],x:'細かい技術より、まず現状把握と総量。記録をとらないと修正できない'},
+
+/* ---- レベル2：現場で使う ---- */
+{lv:2,c:'数値の基本',k:1,q:'体脂肪1kgを減らすのに必要とされるエネルギー収支のマイナスは？',a:'約7200kcal',o:['約1000kcal','約3600kcal','約15000kcal'],x:'体脂肪組織は水分なども含むため、脂肪1gあたり約7.2kcalで計算される'},
+{lv:2,c:'減量設計',k:1,m:1,q:'安全に続けやすい減量ペースの目安は？',a:'体重の0.5〜1%／週',o:['体重の3〜4%／週','体重の5%／週','体重の0.05%／週'],x:'60kgなら週0.3〜0.6kg程度。速すぎると除脂肪量の損失が大きくなる'},
+{lv:2,c:'減量設計',q:'体重70kgのクライアントが週0.7kgの減量を目指す場合、1日あたりのエネルギー収支の目安は？',a:'約700kcalのマイナス',o:['約200kcalのマイナス','約1500kcalのマイナス','約350kcalのマイナス'],x:'0.7kg×7200kcal÷7日＝約720kcal／日'},
+{lv:2,c:'増量設計',q:'除脂肪量を増やすための増量ペースの目安は？',a:'体重の0.25〜0.5%／週',o:['体重の2〜3%／週','体重の5%／週','増やさず維持のまま'],x:'速すぎる増量は体脂肪の増加割合が高くなる。1日あたり+200〜500kcalが目安'},
+{lv:2,c:'タンパク質',k:1,q:'1回の食事で筋タンパク合成を十分に高めるタンパク質量の目安は？',a:'20〜40g',o:['5〜10g','60〜80g','100g以上'],x:'体格や食品によって幅はあるが、1食20〜40gを3〜5回に分けるのが実務的'},
+{lv:2,c:'タンパク質',q:'ホエイプロテインの特徴として正しいのは？',a:'吸収が速く、ロイシンを多く含む',o:['吸収がゆっくりで就寝前向き','植物由来で乳糖を含まない','脂質が主成分である'],x:'ゆっくり吸収されるのはカゼイン。植物由来はソイやピー'},
+{lv:2,c:'脂質',q:'総エネルギーに占める脂質の目標量は？',a:'20〜30%',o:['5〜10%','40〜50%','60%以上'],x:'極端に落とすとホルモン分泌や脂溶性ビタミンの吸収に影響する'},
+{lv:2,c:'食事設計',q:'GI値が示すものは？',a:'食後血糖の上がりやすさ',o:['食品のカロリーの高さ','タンパク質の質','食品に含まれる脂質の量'],x:'実際の量を加味した指標がGL値'},
+{lv:2,c:'水分',k:1,q:'運動中の水分補給量の一般的な目安は？',a:'1時間あたり0.4〜0.8L',o:['1時間あたり0.05L','1時間あたり2〜3L','喉が渇くまで摂らない'],x:'発汗量には個人差が大きい。運動前後の体重差で調整するのが確実'},
+{lv:2,c:'水分',q:'運動後、発汗で減った体重1kgに対する水分補給の目安は？',a:'約1.5L',o:['約0.3L','約1.0L','約3.0L'],x:'尿として排泄される分を見込んで、減少量より多めに補給する'},
+{lv:2,c:'ビタミン・ミネラル',k:1,q:'非ヘム鉄の吸収を高める組み合わせは？',a:'ビタミンCを含む食品と一緒に摂る',o:['濃いお茶と一緒に摂る','カルシウムサプリと同時に摂る','空腹時に単独で摂る'],x:'お茶のタンニンや過剰なカルシウムは吸収を妨げる'},
+{lv:2,c:'ビタミン・ミネラル',q:'糖質の摂取量が多い人でとくに必要量が増えるビタミンは？',a:'ビタミンB1',o:['ビタミンB6','ビタミンK','ビタミンE'],x:'B1は糖代謝の補酵素。B6はタンパク質摂取量に応じて必要量が増える'},
+{lv:2,c:'サプリメント',q:'クレアチンの一般的な摂取方法として適切なのは？',a:'1日3〜5gを継続して摂る',o:['トレーニング直前に20gだけ摂る','週に1回まとめて摂る','運動をしない日は摂らない'],x:'速く飽和させたい場合は1日20gを5〜7日に分けて摂るローディングもある'},
+{lv:2,c:'サプリメント',q:'カフェインの運動パフォーマンス目的での使用量の目安は？',a:'体重1kgあたり3〜6mgを運動の約60分前',o:['体重1kgあたり20mgを運動直後','体重1kgあたり0.1mgを毎食後','量は問わず就寝前'],x:'夕方以降の摂取は睡眠の質を下げ、回復に悪影響が出やすい'},
+{lv:2,c:'指導実務',k:1,q:'食事記録をつけてもらう際の最初の依頼として現実的なのは？',a:'まず数日分、食べたものを写真で撮ってもらう',o:['全食品の重量をグラム単位で毎日記録してもらう','記録は不要とし口頭の申告だけで判断する','1か月分まとめて後から思い出してもらう'],x:'精度より継続。負担が大きいと記録自体が途切れる'},
+{lv:2,c:'指導実務',k:1,q:'減量が2週間停滞したクライアントへの最初の確認として適切なのは？',a:'記録の漏れと実際の摂取量、体重測定条件を確認する',o:['すぐに摂取カロリーを500kcal下げる','有酸素運動を毎日2時間追加する','代謝が落ちたと説明して終える'],x:'停滞の多くは記録漏れや測定条件のばらつき。まず事実確認から'},
+{lv:2,c:'リスク管理',q:'完全菜食（ヴィーガン）の人がとくに不足しやすい栄養素は？',a:'ビタミンB12',o:['ビタミンC','カリウム','食物繊維'],x:'B12は動物性食品にほぼ限られる。鉄・亜鉛・n-3系も不足しやすい'},
+{lv:2,c:'リスク管理',k:1,q:'月経のある女性で不足しやすく、持久力低下の原因になりやすいミネラルは？',a:'鉄',o:['ナトリウム','リン','マンガン'],x:'月経による損失に加え、発汗でも失われる'},
+{lv:2,c:'制度',q:'機能性表示食品の説明として正しいのは？',a:'事業者の責任で科学的根拠を届け出て機能を表示する食品',o:['国が個別に審査して許可した食品','医薬品として承認された食品','表示に一切の根拠が不要な食品'],x:'国が個別審査するのは特定保健用食品（トクホ）'},
+{lv:2,c:'食事設計',q:'減量中に「栄養素密度」を意識する理由は？',a:'エネルギーを抑えながら必要な栄養素を確保するため',o:['満腹感を下げて食事量を減らすため','脂質を完全に排除するため','食事回数を1日1回にするため'],x:'総量が減るぶん、同じカロリーでより多くの栄養素が摂れる食品を選ぶ必要がある'},
+
+/* ---- レベル3：判断が問われる ---- */
+{lv:3,c:'ケース対応',q:'体重52kgの女性が「1か月で8kg落としたい」と希望している。最初の対応として最も適切なのは？',a:'目標の背景と期限を聞き、達成可能なペースと期待できる見た目の変化をすり合わせる',o:['希望どおり1日800kcalの食事プランを作る','不可能だと伝えて話を終える','まずサプリメントでの減量を提案する'],x:'週0.5〜1%なら1か月で約1〜2kg。否定でも追従でもなく、目的を聞いて現実的な合意に落とすのが実務'},
+{lv:3,c:'ケース対応',k:1,m:1,q:'減量中のクライアントが「生理が3か月止まっている」と話した。適切な対応は？',a:'減量を一旦ゆるめ、婦人科の受診をすすめる',o:['よくあることとして減量を続ける','カロリーをさらに下げて体脂肪を落とす','サプリメントでホルモンを補う'],x:'低エネルギー可用性は月経異常と骨密度低下につながる。医療につなぐ判断が必要'},
+{lv:3,c:'ケース対応',q:'75歳のクライアントの筋量維持を目的とした食事の考え方として適切なのは？',a:'1食あたりのタンパク質を確保し、1日1.0〜1.2g/kg以上を目安にする',o:['タンパク質は腎臓に悪いため控える','1日1食にまとめて摂る','糖質をゼロにして脂質中心にする'],x:'高齢者は同化抵抗性があり、若年者より1食あたり多めのタンパク質が必要になる。腎疾患がある場合は医師の指示が優先'},
+{lv:3,c:'ケース対応',q:'競技者から市販のサプリメントについて相談された。助言として適切なのは？',a:'第三者機関のアンチドーピング認証を受けた製品を選ぶよう伝える',o:['海外製の方が効果が高いとすすめる','成分表示があれば問題ないと伝える','競技団体に確認せず個人の判断に任せる'],x:'表示されていない禁止物質の混入がありうる。認証製品と競技団体への確認が基本'},
+{lv:3,c:'ケース対応',q:'「夜遅く食べると太る」と相談された場合の説明として最も適切なのは？',a:'時間そのものより、1日の総エネルギー量と夜間に食べる量や内容の影響が大きい',o:['22時以降の摂取はすべて体脂肪になる','時間帯は体重に一切影響しない','夜は代謝が止まるため消化されない'],x:'遅い時間に食べる人は総摂取量が多くなりやすい、という行動面の要因が実態に近い'},
+{lv:3,c:'ケース対応',q:'トレーニング後30分以内にプロテインを飲まないと効果がない、と質問された。説明として適切なのは？',a:'1日の総タンパク質量と分配の方が重要で、直後にこだわる必要は大きくない',o:['30分を過ぎると筋肉は増えない','タイミングだけで筋肥大が決まる','空腹時のみ吸収される'],x:'食事の間隔が空きすぎる場合には直後の摂取が有効になるが、最優先は総量'},
+{lv:3,c:'減量設計',q:'減量が長期化し、疲労感と停滞が続くクライアントへの選択肢として適切なのは？',a:'数週間、維持カロリーに戻すダイエットブレイクを挟む',o:['さらに500kcal下げて打開する','有酸素を毎日3時間に増やす','水分摂取を制限して体重を落とす'],x:'代謝適応とNEAT低下、心理的疲弊への対処。リフィードも選択肢になる'},
+{lv:3,c:'減量設計',q:'減量中に除脂肪量の損失を最小限にする組み合わせとして最も適切なのは？',a:'緩やかな赤字＋十分なタンパク質＋筋力トレーニングの継続',o:['大幅な赤字＋有酸素運動のみ','糖質完全カット＋断食','タンパク質を減らして総量だけ守る'],x:'この3点セットが除脂肪量を守る基本。どれが欠けても損失が大きくなる'},
+{lv:3,c:'エネルギー代謝',q:'高強度の運動を30秒〜2分続けるとき、主に働くエネルギー供給機構は？',a:'解糖系',o:['ATP-CP系','有酸素系','糖新生'],x:'8秒前後まではATP-CP系、それ以降は解糖系、さらに長くなると有酸素系が主役になる'},
+{lv:3,c:'エネルギー代謝',q:'糖新生の説明として正しいのは？',a:'アミノ酸や乳酸などから肝臓でブドウ糖を作り出す働き',o:['糖質を筋肉に貯蔵する働き','脂肪をブドウ糖に大量変換する働き','小腸で糖を吸収する働き'],x:'糖質が不足すると体タンパクが材料として使われるため、減量中のタンパク質確保が重要になる'},
+{lv:3,c:'制度',q:'食事摂取基準の「耐容上限量」が意味するものは？',a:'これを超えると健康被害のリスクが高まる上限の摂取量',o:['ほとんどの人の必要量を満たす量','生活習慣病予防のための目標範囲','平均的な必要量の推定値'],x:'サプリメントを扱うときにもっとも意識すべき指標'},
+{lv:3,c:'業務範囲',k:1,m:1,q:'クライアントから「この症状はどの病気ですか」と聞かれたときの対応は？',a:'判断はせず、医療機関の受診をすすめる',o:['一般的な知識の範囲で病名を推測して伝える','ネットの情報を調べて病名を伝える','様子を見るよう指示する'],x:'病名の推測は診断にあたる。線を引いたうえで受診につなぐ'},
+{lv:3,c:'指導実務',q:'知識を伝えても行動が変わらないクライアントへの対応として適切なのは？',a:'実行できる最小の行動を1つに絞って合意し、次回に確認する',o:['知識をさらに詳しく説明し直す','意志の問題だと伝える','一気に食事を全面的に変える'],x:'情報量ではなく、実行可能性と振り返りの仕組みが行動を変える'},
+{lv:3,c:'リスク管理',k:1,m:1,q:'クライアントが極端な食事制限と体重への強いこだわりを示している。適切な対応は？',a:'数値目標の追求を控え、専門の医療機関への相談をすすめる',o:['本人の意欲を尊重してさらに制限を厳しくする','体脂肪率の測定頻度を増やして管理する','食事内容を毎食報告させて監視する'],x:'摂食に関する問題が疑われる場合は、トレーナーの範囲を超える。医療につなぐ判断が優先される'},
+{lv:3,c:'食事設計',q:'持久系競技の前にカーボローディングを行う目的は？',a:'筋グリコーゲンの貯蔵量を高めて後半の失速を防ぐため',o:['体脂肪を増やして保温するため','タンパク質の吸収を高めるため','試合前の体重を落とすため',],x:'90分を超える持久系で効果が期待できる。短時間・高強度の競技では必要性が低い'}
+];
+
+/* ============================================================
+   拡張1：用語（講義水準）
+   ============================================================ */
+T.push(
+/* --- エネルギー代謝 --- */
+{i:'phospho',n:'ホスファゲン機構',k:'ほすふぁげんきこう',c:'エネルギー代謝',lv:3,d:'筋内のATPとクレアチンリン酸で、10秒前後までの最大努力を支える供給系。酸素も解糖も必要としない'},
+{i:'fastgly',n:'速い解糖',k:'はやいかいとう',c:'エネルギー代謝',lv:3,d:'ピルビン酸を乳酸に変えて素早くATPを得る経路。30秒〜2分の高強度を支える'},
+{i:'slowgly',n:'遅い解糖',k:'おそいかいとう',c:'エネルギー代謝',lv:3,d:'ピルビン酸をミトコンドリアへ送り、酸化系で処理する経路。ATPの取り分は多いが速度は遅い'},
+{i:'lactate',n:'乳酸',k:'にゅうさん',c:'エネルギー代謝',lv:2,d:'解糖の副産物だが疲労の原因物質ではなく、心筋や他の筋・肝臓に運ばれて燃料や糖の材料として使われる'},
+{i:'lt',n:'乳酸性作業閾値',k:'にゅうさんせいさぎょういきち',c:'エネルギー代謝',lv:3,d:'血中乳酸が急に増え始める運動強度。持久的な能力の指標として使われる'},
+{i:'rer',n:'呼吸交換比',k:'こきゅうこうかんひ',c:'エネルギー代謝',lv:3,d:'吐いた二酸化炭素と吸った酸素の比。0.7に近いほど脂質、1.0に近いほど糖質を使っている'},
+{i:'crossover',n:'クロスオーバー概念',k:'くろすおーばーがいねん',c:'エネルギー代謝',lv:3,d:'運動強度が上がるほど、燃料の主役が脂質から糖質へ入れ替わっていくという考え方'},
+{i:'epoc',n:'EPOC',k:'いーぴーおーしー',c:'エネルギー代謝',lv:3,d:'運動後も酸素消費が高いまま続く現象。高強度ほど大きいが、1回の総量はふつう数十kcal程度'},
+{i:'mets',n:'METs',k:'めっつ',c:'エネルギー代謝',lv:2,d:'安静時を1としたときの活動強度の倍率。消費エネルギーの概算に使う'},
+{i:'betaox',n:'β酸化',k:'べーたさんか',c:'エネルギー代謝',lv:3,d:'脂肪酸をミトコンドリアで切り分け、アセチルCoAを作り出す過程'},
+{i:'tca',n:'クエン酸回路',k:'くえんさんかいろ',c:'エネルギー代謝',lv:3,d:'アセチルCoAを処理して電子伝達系へ渡す、有酸素的な代謝の中心となる回路'},
+{i:'etc',n:'電子伝達系',k:'でんしでんたつけい',c:'エネルギー代謝',lv:3,d:'酸素を最終的な受け取り手として、大量のATPを作り出すミトコンドリア内の仕組み'},
+{i:'cori',n:'コリ回路',k:'こりかいろ',c:'エネルギー代謝',lv:3,d:'筋で生じた乳酸を肝臓でブドウ糖に戻し、再び筋へ送り返す循環'},
+{i:'hsl',n:'ホルモン感受性リパーゼ',k:'ほるもんかんじゅせいりぱーぜ',c:'エネルギー代謝',lv:3,d:'体脂肪を分解して脂肪酸を血中へ出す酵素。インスリンが高いと働きが抑えられる'},
+{i:'lpl',n:'リポタンパクリパーゼ',k:'りぽたんぱくりぱーぜ',c:'エネルギー代謝',lv:3,d:'血中の中性脂肪を分解し、脂肪組織や筋への取り込みを助ける酵素'},
+{i:'mtor',n:'mTOR',k:'えむとーる',c:'エネルギー代謝',lv:3,d:'ロイシンや機械的刺激で活性化し、筋タンパク合成のスイッチとして働く経路'},
+{i:'ampk',n:'AMPK',k:'えーえむぴーけー',c:'エネルギー代謝',lv:3,d:'エネルギーが不足すると活性化し、持久的な適応を促す一方で合成系を抑える方向に働く'},
+
+/* --- ホルモン --- */
+{i:'cortisol',n:'コルチゾール',k:'こるちぞーる',c:'ホルモン',lv:2,d:'ストレスや低血糖で分泌され、糖新生を促し体タンパクの分解に傾ける副腎皮質ホルモン'},
+{i:'gh',n:'成長ホルモン',k:'せいちょうほるもん',c:'ホルモン',lv:3,d:'深い睡眠中に多く出て、組織の修復や脂肪分解に関わるホルモン'},
+{i:'testo',n:'テストステロン',k:'てすとすてろん',c:'ホルモン',lv:3,d:'筋タンパクの合成を高める代表的な同化ホルモン。極端な低脂質や低エネルギーで下がりやすい'},
+{i:'leptin',n:'レプチン',k:'れぷちん',c:'ホルモン',lv:3,d:'脂肪組織から出て満腹感を伝えるホルモン。減量が続くと低下し、食欲が強くなる'},
+{i:'ghrelin',n:'グレリン',k:'ぐれりん',c:'ホルモン',lv:3,d:'胃から出て空腹感を伝えるホルモン。減量中や睡眠不足で増える'},
+{i:'thyroid',n:'甲状腺ホルモン',k:'こうじょうせんほるもん',c:'ホルモン',lv:3,d:'全身の代謝速度を決めるホルモン。長期のエネルギー不足で活性型が下がることがある'},
+
+/* --- エネルギー収支 --- */
+{i:'msj',n:'ミフリン・セントジョール式',k:'みふりんせんとじょーるしき',c:'エネルギー収支',lv:2,d:'体重・身長・年齢から安静時代謝量を推定する式。現在もっとも広く使われる推定式のひとつ'},
+{i:'pal',n:'身体活動レベル',k:'しんたいかつどうれべる',c:'エネルギー収支',lv:2,d:'1日の総消費量が基礎代謝の何倍かを表す係数。おおむね1.4〜2.0の範囲に収まる'},
+{i:'adaptive',n:'代謝適応',k:'たいしゃてきおう',c:'エネルギー収支',lv:3,d:'減量が続くと、体重減少から予測される以上に消費エネルギーが下がる現象'},
+{i:'underreport',n:'過少申告',k:'かしょうしんこく',c:'エネルギー収支',lv:2,d:'食事記録の申告量が実際より少なくなる傾向。悪意ではなく無自覚に起こる'},
+
+/* --- たんぱく質 --- */
+{i:'mpb',n:'筋タンパク分解',k:'きんたんぱくぶんかい',c:'タンパク質',lv:3,d:'筋のタンパク質が壊される反応。合成がこれを上回っている間だけ筋量が増える'},
+{i:'netbal',n:'正味タンパク質バランス',k:'しょうみたんぱくしつばらんす',c:'タンパク質',lv:3,d:'合成から分解を引いた差。食事と筋トレはどちらもこの差をプラスに傾ける'},
+{i:'diaas',n:'DIAAS',k:'でぃあーす',c:'タンパク質',lv:3,d:'消化性まで考慮してタンパク質の質を評価する新しい指標。PDCAASより実態に近いとされる'},
+{i:'pdcaas',n:'PDCAAS',k:'ぴーでぃーかす',c:'タンパク質',lv:3,d:'アミノ酸組成と消化率からタンパク質の質を評価する指標。上限が1.0で頭打ちになる弱点がある'},
+{i:'anaresist',n:'同化抵抗性',k:'どうかていこうせい',c:'タンパク質',lv:3,d:'加齢や不活動によって、同じ量のたんぱく質を摂っても筋合成が起きにくくなる状態'},
+{i:'presleep',n:'就寝前のたんぱく質',k:'しゅうしんまえのたんぱくしつ',c:'タンパク質',lv:3,d:'寝る前に消化の遅いたんぱく質を摂ると、睡眠中の合成を支えられるという考え方'},
+{i:'window',n:'アナボリックウィンドウ',k:'あなぼりっくうぃんどう',c:'タンパク質',lv:2,d:'運動直後だけ効果が高いとされた時間帯。現在は1日の総量と分配のほうが重要とされる'},
+{i:'turnover',n:'タンパク質代謝回転',k:'たんぱくしつたいしゃかいてん',c:'タンパク質',lv:3,d:'体のタンパク質が絶えず作られ壊されている流れ。毎日の摂取が必要な理由'},
+
+/* --- 食事設計 --- */
+{i:'supercomp',n:'グリコーゲン超回復',k:'ぐりこーげんちょうかいふく',c:'食事設計',lv:3,d:'枯渇後に高糖質を入れると、通常より多くグリコーゲンを蓄えられる現象'},
+{i:'multitrans',n:'複数輸送体の利用',k:'ふくすうゆそうたいのりよう',c:'食事設計',lv:3,d:'ブドウ糖と果糖を組み合わせると吸収経路が分かれ、1時間あたりの糖質利用量を増やせる考え方'},
+{i:'mouthrinse',n:'糖質の口すすぎ',k:'とうしつのくちすすぎ',c:'食事設計',lv:3,d:'糖質液で口をすすぐだけでも、1時間程度の運動なら出力が保たれることがある現象'},
+{i:'recovcho',n:'運動後の糖質補給',k:'うんどうごのとうしつほきゅう',c:'食事設計',lv:3,d:'次の運動まで時間がないときに、グリコーゲンを急いで戻すための摂取'},
+{i:'timing',n:'栄養摂取タイミング',k:'えいようせっしゅたいみんぐ',c:'食事設計',lv:2,d:'いつ食べるかの設計。総量が満たされていることが前提で、そのうえで効き方を調整する要素'},
+{i:'ea',n:'エネルギー可用性',k:'えねるぎーかようせい',c:'食事設計',lv:3,d:'摂取エネルギーから運動消費を引き、除脂肪体重あたりで表した値。30kcal/kg除脂肪体重を下回ると不調が出やすい'},
+{i:'recomp',n:'体組成の同時改善',k:'たいそせいのどうじかいぜん',c:'食事設計',lv:3,d:'体脂肪を減らしながら筋量を増やすこと。初心者や再開者、体脂肪が多い人で起こりやすい'},
+{i:'reverse',n:'リバースダイエット',k:'りばーすだいえっと',c:'食事設計',lv:3,d:'減量後に少しずつ摂取量を戻し、急な体重の揺り戻しを避ける進め方'},
+{i:'watercut',n:'急速減量',k:'きゅうそくげんりょう',c:'食事設計',lv:3,d:'計量前に水分や食事を絞って体重を落とす方法。脱水と熱中症、パフォーマンス低下の危険がある'},
+{i:'handport',n:'手ばかり法',k:'てばかりほう',c:'食事設計',lv:2,d:'手のひらや握りこぶしを目安に量を決める方法。計量せずに現場で使える'},
+
+/* --- 身体組成 --- */
+{i:'dxa',n:'DXA法',k:'でぃーえっくすえーほう',c:'身体組成',lv:3,d:'2種類のエックス線で骨・脂肪・除脂肪を分けて測る方法。基準として扱われることが多い'},
+{i:'bia',n:'生体電気インピーダンス法',k:'せいたいでんきいんぴーだんすほう',c:'身体組成',lv:2,d:'体に微弱な電流を流して体脂肪率を推定する方法。体内の水分量で値が動きやすい'},
+{i:'skinfold',n:'皮下脂肪厚法',k:'ひかしぼうこうほう',c:'身体組成',lv:3,d:'キャリパーで数カ所をつまんで体脂肪率を推定する方法。測る人の技術差が出る'},
+{i:'peakbone',n:'最大骨量',k:'さいだいこつりょう',c:'身体組成',lv:3,d:'一生のうちで骨量が最も多くなる時期の値。20代までにどれだけ蓄えたかが後年に効く'},
+
+/* --- リスク管理 --- */
+{i:'reds',n:'RED-S',k:'れっずえす',c:'リスク管理',lv:3,d:'エネルギー不足によって、骨・内分泌・免疫・精神など全身の機能が損なわれる状態。性別を問わず起こる'},
+{i:'hypona',n:'低ナトリウム血症',k:'ていなとりうむけっしょう',c:'リスク管理',lv:3,d:'長時間の運動中に水だけを大量に飲むと起こりうる、血中ナトリウムが薄まった状態'},
+{i:'ferritin',n:'フェリチン',k:'ふぇりちん',c:'リスク管理',lv:3,d:'体内の貯蔵鉄を反映する指標。ヘモグロビンが正常でもこれが低いことがある'},
+{i:'hepcidin',n:'ヘプシジン',k:'へぷしじん',c:'リスク管理',lv:3,d:'炎症や激しい運動のあとに増え、鉄の吸収を一時的に抑えるホルモン'},
+{i:'hemolysis',n:'運動性溶血',k:'うんどうせいようけつ',c:'リスク管理',lv:3,d:'着地の衝撃などで赤血球が壊れ、鉄の損失につながる現象'},
+
+/* --- サプリメント --- */
+{i:'balanine',n:'β-アラニン',k:'べーたあらにん',c:'サプリメント',lv:3,d:'筋内のカルノシンを増やし、1〜4分続く高強度の運動での緩衝能を高める成分'},
+{i:'bicarb',n:'重炭酸ナトリウム',k:'じゅうたんさんなとりうむ',c:'サプリメント',lv:3,d:'血液側の緩衝能を高め、1〜7分の高強度運動を支える。胃腸の不快感が出やすい'},
+{i:'nitrate',n:'硝酸塩',k:'しょうさんえん',c:'サプリメント',lv:3,d:'ビートルートなどに含まれ、一酸化窒素を介して運動の効率を上げるとされる成分'},
+{i:'hmb',n:'HMB',k:'えいちえむびー',c:'サプリメント',lv:3,d:'ロイシンの代謝物。訓練を積んだ人での上乗せ効果は限定的とされる'},
+{i:'citrulline',n:'シトルリン',k:'しとるりん',c:'サプリメント',lv:3,d:'一酸化窒素の材料になり、反復回数の増加が報告されている成分'},
+{i:'antiox',n:'高用量の抗酸化サプリ',k:'こうようりょうのこうさんかさぷり',c:'サプリメント',lv:3,d:'ビタミンCやEを大量に摂ると、かえってトレーニングの適応を鈍らせる可能性が指摘されている'},
+{i:'thirdparty',n:'第三者認証',k:'だいさんしゃにんしょう',c:'サプリメント',lv:2,d:'製品に禁止物質が混入していないかを外部機関が検査する仕組み。競技者には必須の確認事項'},
+{i:'ergogenic',n:'エルゴジェニックエイド',k:'えるごじぇにっくえいど',c:'サプリメント',lv:3,d:'運動能力の向上を目的として使われる手段の総称'},
+{i:'placebo',n:'プラセボ効果',k:'ぷらせぼこうか',c:'サプリメント',lv:2,d:'有効成分がなくても、効くと信じることで実際に成績が変わる現象'},
+
+/* --- 指導実務 --- */
+{i:'mi',n:'動機づけ面接',k:'どうきづけめんせつ',c:'指導実務',lv:3,d:'説得するのではなく、本人の中にある変わりたい理由を引き出す対話の進め方'},
+{i:'smart',n:'SMARTな目標設定',k:'すまーとなもくひょうせってい',c:'指導実務',lv:2,d:'具体的・測定可能・達成可能・関連性・期限、の5つを満たす形で目標を立てる考え方'},
+{i:'ttm',n:'行動変容ステージ',k:'こうどうへんようすてーじ',c:'指導実務',lv:3,d:'無関心・関心・準備・実行・維持の5段階。段階に合わない助言は届かない'},
+{i:'selfeff',n:'自己効力感',k:'じここうりょくかん',c:'指導実務',lv:2,d:'自分にはできるという見込み。小さな成功体験を積むことで高まる'},
+{i:'rapport',n:'ラポール',k:'らぽーる',c:'指導実務',lv:2,d:'相手が率直に話せる信頼関係。正確な食事情報を得る前提になる'},
+{i:'openq',n:'開かれた質問',k:'ひらかれたしつもん',c:'指導実務',lv:2,d:'はい・いいえで終わらない聞き方。食習慣の実態を引き出すのに向く'},
+
+/* --- 基準と制度 --- */
+{i:'ear',n:'推定平均必要量',k:'すいていへいきんひつようりょう',c:'基準と制度',lv:3,d:'半数の人が必要量を満たすと推定される摂取量。推奨量の計算のもとになる'},
+{i:'ai',n:'目安量',k:'めやすりょう',c:'基準と制度',lv:3,d:'必要量を算定できないときに、不足が出ないと考えられる量として示される値'},
+{i:'chews',n:'咀嚼と満腹感',k:'そしゃくとまんぷくかん',c:'食事設計',lv:2,d:'よく噛んでゆっくり食べると満腹の合図が間に合い、総量が抑えられやすくなること'},
+
+/* --- 水分 --- */
+{i:'sweatrate',n:'発汗率',k:'はっかんりつ',c:'水分',lv:3,d:'運動前後の体重差に飲水量を足し、時間で割って求める1時間あたりの汗の量'},
+{i:'urinecolor',n:'尿の色による判定',k:'にょうのいろによるはんてい',c:'水分',lv:2,d:'濃い黄色なら水分不足を疑う簡易な目安。サプリや食品で色が変わる点には注意'},
+{i:'euhydration',n:'適水分状態',k:'てきすいぶんじょうたい',c:'水分',lv:3,d:'体水分が過不足のない状態。運動開始時にこの状態にしておくことが前提になる'}
+);
+
+
+/* ============================================================
+   拡張2：実務・計算・ケース問題（講義水準）
+   ============================================================ */
+Q.push(
+/* ===== 数値と計算 ===== */
+{lv:2,c:'エネルギー収支',q:'ミフリン・セントジョール式で男性の安静時代謝量を求める式は？',a:'10×体重kg ＋ 6.25×身長cm − 5×年齢 ＋ 5',o:['10×体重kg ＋ 6.25×身長cm − 5×年齢 − 161','66 ＋ 13.7×体重kg ＋ 5×身長cm','体重kg × 24 × 1.5'],x:'女性は最後が −161 になる。推定式なので実測との誤差は前提として扱う'},
+{lv:2,c:'エネルギー収支',q:'身体活動レベル（PAL）が示すものは？',a:'総消費エネルギーが基礎代謝の何倍かを表す係数',o:['1日に摂るべきたんぱく質の倍率','運動強度を安静時の何倍かで表した値','体脂肪率から求める補正値'],x:'おおむね1.4〜2.0。安静時の何倍かを表すMETsとは別の指標'},
+{lv:2,c:'エネルギー収支',q:'METsから消費エネルギーを概算する式は？',a:'METs × 体重kg × 時間h × 1.05',o:['METs × 体重kg ÷ 時間h','METs × 身長cm × 1.05','METs × 年齢 × 時間h'],x:'6METsの運動を60kgの人が1時間なら約378kcal。ただし安静時消費を含んだ値になる'},
+{lv:2,c:'エネルギー収支',q:'食事誘発性熱産生がもっとも大きい栄養素は？',a:'たんぱく質（摂取エネルギーの約20〜30%）',o:['糖質（約20〜30%）','脂質（約20〜30%）','アルコール（ほぼ0%）'],x:'糖質は約5〜10%、脂質は0〜3%。高たんぱくの食事が有利とされる理由のひとつ'},
+{lv:3,c:'エネルギー収支',q:'体重80kg・身長175cm・40歳の男性の安静時代謝量は、ミフリン・セントジョール式でおよそいくらか？',a:'約1690kcal',o:['約1200kcal','約2100kcal','約2600kcal'],x:'10×80＋6.25×175−5×40＋5＝800＋1093.75−200＋5＝約1699kcal'},
+{lv:3,c:'エネルギー収支',q:'減量が進むにつれ、体重減少から予測されるより消費が下がる現象を何というか？',a:'代謝適応',o:['EPOC','食事誘発性熱産生','クロスオーバー現象'],x:'基礎代謝の低下に加え、NEATの減少と運動効率の向上が重なって起こる'},
+{lv:2,c:'エネルギー収支',k:1,q:'食事記録の申告量が実際より少なくなる傾向を何というか？',a:'過少申告',o:['代謝適応','プラセボ効果','同化抵抗性'],x:'悪意ではなく無自覚に起こる。記録が正しい前提で計算を進めないことが実務の要点'},
+
+/* ===== エネルギー代謝 ===== */
+{lv:3,c:'エネルギー代謝',q:'10秒以内の最大努力を主に支えるエネルギー供給機構は？',a:'ホスファゲン機構',o:['速い解糖','酸化系','コリ回路'],x:'筋内のATPとクレアチンリン酸を使う。クレアチンサプリが効く理屈もここにある'},
+{lv:3,c:'エネルギー代謝',q:'乳酸についての説明として正しいのは？',a:'他の筋や心臓、肝臓へ運ばれて燃料や糖の材料になる',o:['筋肉痛の直接の原因物質である','運動をやめても数日間ためこまれる','脂質からしか作られない'],x:'疲労物質という古い理解は改められている。運ばれて再利用される'},
+{lv:3,c:'エネルギー代謝',q:'呼吸交換比（RER）が1.0に近いとき、主に使われている燃料は？',a:'糖質',o:['脂質','たんぱく質','ケトン体'],x:'0.7に近いほど脂質。運動強度が上がるほど1.0へ寄っていく'},
+{lv:3,c:'エネルギー代謝',q:'クロスオーバー概念が説明していることは？',a:'運動強度が上がるにつれ、燃料の主役が脂質から糖質へ移ること',o:['運動時間が延びるほど糖質依存が強まること','食後に脂肪合成が始まること','体重が一定を超えると代謝が変わること'],x:'「脂肪燃焼ゾーン」の話は、この概念を単純化しすぎた説明になっている'},
+{lv:3,c:'エネルギー代謝',q:'EPOC（運動後過剰酸素消費）についての現実的な理解は？',a:'高強度ほど大きいが、1回あたりの上乗せはふつう数十kcal程度',o:['1回の運動で数百kcalが追加で消費される','有酸素運動でもっとも大きくなる','摂取量を無視できるほど大きい'],x:'期待させすぎない説明が必要。運動そのものの消費と総摂取量のほうがはるかに大きい'},
+{lv:3,c:'エネルギー代謝',q:'コリ回路の説明として正しいのは？',a:'筋で生じた乳酸を肝臓でブドウ糖に戻し、再び筋へ送る循環',o:['脂肪酸をケトン体に変える経路','アミノ酸を尿素にする経路','糖質を脂肪に変える経路'],x:'糖新生の一部として働く。肝臓側でエネルギーを使う点が重要'},
+{lv:3,c:'エネルギー代謝',q:'ホルモン感受性リパーゼの働きが抑えられるのはどんなときか？',a:'インスリンが高いとき',o:['空腹が長く続いたとき','アドレナリンが出たとき','コルチゾールが上がったとき'],x:'食後は脂肪分解が抑えられ、蓄積側に傾く。ただし1日の総収支が優先する'},
+{lv:3,c:'エネルギー代謝',q:'mTORを活性化させる主な要因の組み合わせは？',a:'ロイシンなどのアミノ酸と、筋への機械的な刺激',o:['空腹と有酸素運動','睡眠不足とストレス','高脂肪食と安静'],x:'AMPKはこれと逆に、エネルギー不足で活性化して合成系を抑える方向に働く'},
+{lv:3,c:'エネルギー代謝',q:'筋グリコーゲンと肝グリコーゲンの貯蔵量の目安は？',a:'筋に約300〜400g、肝に約100g',o:['筋に約100g、肝に約300g','どちらも約50g','筋に約1000g、肝に約500g'],x:'肝グリコーゲンは血糖の維持に、筋グリコーゲンはその筋自身の運動に使われる'},
+
+/* ===== たんぱく質 ===== */
+{lv:3,c:'タンパク質',q:'減量中に除脂肪量を守るためのたんぱく質量として、しばしば推奨される範囲は？',a:'除脂肪体重1kgあたり2.3〜3.1g',o:['除脂肪体重1kgあたり0.8〜1.0g','体重1kgあたり0.5g','体重1kgあたり4.0g以上'],x:'赤字が深いほど、また体脂肪が少ないほど上限側に寄せる。体重ではなく除脂肪体重で考える'},
+{lv:3,c:'タンパク質',q:'1回の食事あたりのたんぱく質量の目安として、体重を基準にした表し方は？',a:'体重1kgあたり約0.4g',o:['体重1kgあたり約0.1g','体重1kgあたり約1.5g','体重1kgあたり約3.0g'],x:'70kgなら1食約28g。これを1日4回で約1.6g/kgに届く'},
+{lv:3,c:'タンパク質',q:'就寝前のたんぱく質摂取で選ばれることが多いのは？',a:'消化の遅いカゼインを30〜40g',o:['吸収の速いホエイを5g','糖質のみ','BCAAのみ'],x:'睡眠中の数時間にわたってアミノ酸を供給する狙い。1日の総量が満たされている前提'},
+{lv:3,c:'タンパク質',q:'DIAASがPDCAASより優れているとされる点は？',a:'消化吸収率を回腸末端で評価し、1.0で頭打ちにしない',o:['計算が簡単である','植物性を高く評価する','アミノ酸組成を無視できる'],x:'PDCAASは1.0で切り捨てるため、質の高いたんぱく質の差が見えなくなる'},
+{lv:3,c:'タンパク質',q:'高齢者で同じ量のたんぱく質でも筋合成が起きにくくなる現象は？',a:'同化抵抗性',o:['代謝適応','窒素出納の悪化','タンパク質代謝回転の停止'],x:'このため1食あたりの量を若年者より多めにとる設計になる'},
+{lv:2,c:'タンパク質',q:'「運動後30分以内」というアナボリックウィンドウの現在の位置づけは？',a:'1日の総量と分配のほうが重要で、直後の厳密さは以前ほど重視されない',o:['30分を過ぎると効果が完全に消える','タイミングのみで筋肥大が決まる','空腹時のみ有効になる'],x:'ただし空腹で長時間トレーニングした場合など、直後の摂取が有効な場面は残る'},
+{lv:3,c:'タンパク質',q:'BCAA単体ではなくEAAや食事のたんぱく質が推奨される理由は？',a:'必須アミノ酸が9種そろわないと合成を続けられないため',o:['BCAAは吸収されないため','BCAAにロイシンが含まれないため','BCAAはカロリーが高すぎるため'],x:'ロイシンはスイッチを入れるが、建材が足りなければ工事は進まない'},
+
+/* ===== 糖質 ===== */
+{lv:3,c:'食事設計',q:'60分以内の運動中の糖質摂取について、一般的に言われることは？',a:'ふつう必要なく、口をすすぐだけでも出力が保たれることがある',o:['1時間あたり90gが必要','必ず60g以上摂らなければならない','水分だけは避けるべき'],x:'口腔内の受容体が中枢に働くと考えられている。長時間になるほど実際の摂取が必要になる'},
+{lv:3,c:'食事設計',q:'2.5時間を超える持久運動で、1時間あたりの糖質摂取量を90gまで高められるのはなぜか？',a:'ブドウ糖と果糖で吸収の輸送体が分かれるため',o:['胃の容量が増えるため','インスリンが出なくなるため','脂質の利用が止まるため'],x:'ブドウ糖単独では1時間あたり約60gで頭打ちになる。2対1程度の比率がよく使われる'},
+{lv:3,c:'食事設計',q:'次の運動まで時間がないときの、運動後の糖質補給量の目安は？',a:'体重1kgあたり1.0〜1.2gを1時間ごとに、4時間程度',o:['体重1kgあたり0.1gを1回だけ','体重1kgあたり5gを一度に','糖質は避けてたんぱく質のみ'],x:'翌日まで時間があるなら、1日の総量が満たせていればここまで急ぐ必要はない'},
+{lv:3,c:'食事設計',q:'高強度のトレーニングを毎日行う人の1日の糖質量の目安は？',a:'体重1kgあたり8〜12g',o:['体重1kgあたり1〜2g','体重1kgあたり3〜4g','体重1kgあたり20g以上'],x:'一般的な活動量なら5〜7g/kg程度。競技と練習量で大きく変わる'},
+{lv:3,c:'食事設計',q:'グリコーゲン超回復の説明として正しいのは？',a:'枯渇させたあとに高糖質を入れると、通常より多く蓄えられる現象',o:['糖質を抜き続けると筋量が増える現象','脂質からグリコーゲンが作られる現象','運動中に自然に回復する現象'],x:'90分を超える持久系で意味を持つ。短時間の競技では必要性が薄い'},
+{lv:2,c:'食品の指標',q:'GI値とGL値の違いとして正しいのは？',a:'GLは実際に食べる量の糖質量を加味している',o:['GLは脂質の量を示す','GIのほうが新しい指標である','どちらも同じ意味である'],x:'GIが高くても一度に食べる量が少なければ血糖への影響は小さい'},
+
+/* ===== 脂質 ===== */
+{lv:3,c:'脂質',q:'脂質を総エネルギーの20%未満まで落としたときに懸念されることは？',a:'性ホルモンの低下と脂溶性ビタミンの吸収低下',o:['筋グリコーゲンの枯渇','たんぱく質の吸収低下','水分の保持過剰'],x:'減量中でも下限を守る。落とすなら糖質側と総量で調整する'},
+{lv:3,c:'脂質の種類',q:'EPAとDHAを多く含む食品の組み合わせは？',a:'さば、いわし、さけ',o:['えごま油、くるみ、亜麻仁','大豆油、コーン油、ごま油','バター、牛脂、生クリーム'],x:'えごま油などに含まれるのはα-リノレン酸で、体内での変換効率は高くない'},
+{lv:3,c:'脂質の種類',q:'飽和脂肪酸の目標量として示されている水準は？',a:'総エネルギーの7%以下',o:['総エネルギーの20%以下','総エネルギーの1%未満','上限は設けられていない'],x:'トランス脂肪酸はWHOが総エネルギーの1%未満を推奨している'},
+
+/* ===== 水分 ===== */
+{lv:3,c:'水分',q:'発汗率の求め方として正しいのは？',a:'（運動前体重 − 運動後体重 ＋ 飲水量）を運動時間で割る',o:['運動後体重を運動時間で割る','飲水量だけを運動時間で割る','体重を体脂肪率で割る'],x:'排尿があった場合はその分も差し引く。1人ずつ実測すると指示が具体的になる'},
+{lv:3,c:'水分',q:'運動開始の約4時間前に推奨される水分摂取量の目安は？',a:'体重1kgあたり5〜7mL',o:['体重1kgあたり50mL','体重1kgあたり0.5mL','摂らないほうがよい'],x:'尿の色が濃ければ追加する。開始時に適水分状態にしておくことが前提になる'},
+{lv:3,c:'リスク管理',k:1,m:1,q:'長時間の運動中に水だけを大量に飲んだときに起こりうる状態は？',a:'低ナトリウム血症',o:['高血糖','鉄欠乏性貧血','高カリウム血症'],x:'頭痛や吐き気、ひどいと意識障害。汗を多くかく場面では塩分も一緒に補う'},
+{lv:2,c:'水分',q:'尿の色による水分状態の判定で注意すべきことは？',a:'サプリメントや食品で色が変わることがある',o:['色は水分状態と無関係である','朝いちばんの尿は判定に使えない','色が薄いほど脱水が強い'],x:'ビタミンB2などで濃い黄色になる。あくまで簡易な目安として使う'},
+
+/* ===== ビタミン・ミネラル ===== */
+{lv:3,c:'リスク管理',q:'ヘモグロビンが正常でも鉄の不足を疑うために見る指標は？',a:'フェリチン',o:['ヘマトクリット','アルブミン','クレアチニン'],x:'貯蔵鉄が減っている段階では貧血の数値に出ないことがある。ただし判断は医療側の領域'},
+{lv:3,c:'リスク管理',q:'激しい運動のあと、鉄の吸収が一時的に下がる原因とされるホルモンは？',a:'ヘプシジン',o:['レプチン','グレリン','グルカゴン'],x:'炎症反応とともに増える。鉄を摂るタイミングを運動直後から外す考え方につながる'},
+{lv:3,c:'ビタミン・ミネラル',q:'高用量の抗酸化サプリメントについて指摘されている問題は？',a:'トレーニングによる適応を鈍らせる可能性がある',o:['吸収されずに無駄になるだけである','筋肉痛を強くする','たんぱく質の吸収を妨げる'],x:'運動で生じる酸化ストレスそのものが適応の signal になっているという考え方'},
+{lv:2,c:'ビタミン・ミネラル',q:'カルシウムの吸収を高めるために必要な栄養素は？',a:'ビタミンD',o:['ビタミンK','ビタミンC','ビタミンB12'],x:'ビタミンKは骨のタンパク質を活性化する側で働く。両方そろって骨に効く'},
+{lv:3,c:'身体組成',q:'最大骨量（ピークボーンマス）についての説明として正しいのは？',a:'20代までにどれだけ蓄えたかが、その後の骨密度の出発点になる',o:['50代以降に最大になる','食事では変わらない','男性にしか当てはまらない'],x:'成長期のカルシウム、ビタミンD、運動、そして十分なエネルギーが効いてくる'},
+{lv:2,c:'ビタミン・ミネラル',q:'非ヘム鉄の吸収を妨げるものの組み合わせは？',a:'濃いお茶やコーヒーのタンニン、過剰なカルシウム',o:['ビタミンC、肉に含まれる成分','クエン酸、酢','たんぱく質全般'],x:'食事のタイミングをずらすだけでも吸収は変わる'},
+
+/* ===== 身体組成 ===== */
+{lv:2,c:'身体組成',k:1,q:'体組成計（BIA）の値がぶれる主な原因は？',a:'体内の水分量の変動',o:['室温の変化','測定する曜日','体重計の色'],x:'食事、飲水、発汗、入浴、月経周期で動く。条件をそろえて同じ時間に測る'},
+{lv:3,c:'身体組成',q:'体組成の測定を基準として扱われることが多い方法は？',a:'DXA法',o:['BIA法','手首の周囲径','BMIの計算'],x:'ただしDXAも装置や条件で差が出る。どの方法でも同じ機器で継続して測ることが実務では大事'},
+{lv:3,c:'身体組成',q:'体脂肪を減らしながら筋量を増やす「体組成の同時改善」が起こりやすいのは？',a:'トレーニング初心者、再開者、体脂肪が多い人',o:['競技歴が長く体脂肪が少ない人','高齢で活動量が少ない人だけ','誰でも同じように起こる'],x:'条件が外れるほど難しくなる。期待値の設定が指導の要になる'},
+{lv:2,c:'身体組成',q:'体重が変わらないのに見た目が変わったクライアントへの説明として適切なのは？',a:'体脂肪と筋量が入れ替わっている可能性を、測定値と写真で示す',o:['体重が変わらないなら何も変わっていないと伝える','体重計が壊れていると説明する','測定をやめるようすすめる'],x:'体重だけを指標にしないための準備を、最初の面談でしておく'},
+
+/* ===== サプリメント ===== */
+{lv:3,c:'サプリメント',q:'β-アラニンの一般的な摂取量と効果が出るまでの期間は？',a:'1日3.2〜6.4gを、2〜4週間以上続ける',o:['1日0.5gを3日間','1日20gを1回だけ','運動直前に10g'],x:'筋内カルノシンを増やすのが目的なので、即効性はない。ピリピリする感覚が出ることがある'},
+{lv:3,c:'サプリメント',q:'β-アラニンが効果を発揮しやすい運動時間の目安は？',a:'おおむね1〜4分続く高強度の運動',o:['10秒以内の最大努力','3時間を超える持久運動','安静時の代謝'],x:'緩衝能を高める作用なので、酸性に傾く時間帯のある運動で効く'},
+{lv:3,c:'サプリメント',q:'重炭酸ナトリウムの摂取量と注意点の組み合わせは？',a:'体重1kgあたり0.2〜0.4gを60〜180分前、胃腸の不快感に注意',o:['体重1kgあたり5gを直前、副作用はない','1日1gを毎日、下痢に注意','運動後に摂る、効果は睡眠に出る'],x:'本番前に必ず練習で試す。合わない人が一定数いる'},
+{lv:3,c:'サプリメント',q:'硝酸塩（ビートルートなど）の摂取タイミングの目安は？',a:'運動の2〜3時間前',o:['運動の直前','運動の直後','就寝前'],x:'一酸化窒素を介して働くとされる。抗菌性のうがい薬が効果を弱める可能性が指摘されている'},
+{lv:3,c:'サプリメント',q:'クレアチンのローディングを行う場合の一般的な方法は？',a:'体重1kgあたり0.3gを5〜7日、その後3〜5g/日で維持',o:['1日30gを1か月続ける','週に1回20g','運動直前のみ10g'],x:'ローディングをせず3〜5g/日を続けても、3〜4週間で同じ水準に達する'},
+{lv:2,c:'サプリメント',q:'HMBについて現在言われていることは？',a:'訓練を積んだ人での上乗せ効果は限定的',o:['クレアチンより確実に効く','初心者には効かない','禁止物質に指定されている'],x:'優先順位としては食事、プロテイン、クレアチンのあとになる'},
+{lv:3,c:'サプリメント',q:'競技者にサプリメントをすすめるとき、必ず確認すべきことは？',a:'第三者機関の認証と、所属団体のルール',o:['価格が安いかどうか','海外製かどうか','味の好み'],x:'表示されていない禁止物質の混入が実際に起きている。認証は混入リスクを下げる手段'},
+{lv:2,c:'サプリメント',q:'プラセボ効果を踏まえたサプリメントの説明として適切なのは？',a:'効果の一部は期待によるものでありうると、正直に伝える',o:['効果が出ると断言して期待を高める','一切効かないと伝える','説明せずに使わせる'],x:'過剰な期待は、効かなかったときに指導全体の信用を落とす'},
+
+/* ===== 対象別 ===== */
+{lv:3,c:'リスク管理',q:'エネルギー可用性が低い状態の目安としてよく挙げられる値は？',a:'除脂肪体重1kgあたり30kcalを下回る',o:['体重1kgあたり50kcalを下回る','総摂取が2000kcalを下回る','体脂肪率が20%を下回る'],x:'摂取から運動消費を引いた残り。月経異常や骨密度低下、内分泌の乱れにつながる'},
+{lv:3,c:'リスク管理',q:'RED-Sについての説明として正しいのは？',a:'エネルギー不足により骨・内分泌・免疫など全身の機能が損なわれる状態で、性別を問わず起こる',o:['女性のみに起こる月経異常のこと','短期間の減量では起こらない','体脂肪率が高い人に起こる'],x:'女性アスリートの三主徴を、男性も含む形に広げた枠組み'},
+{lv:3,c:'ケース対応',q:'成長期のクライアントに対する栄養の考え方として適切なのは？',a:'成長に必要な分を確保したうえで、極端な制限を避ける',o:['成人と同じ基準で減量を進める','体重を落とすことを最優先にする','たんぱく質だけを増やす'],x:'骨量と身長が伸びる時期にエネルギーを削ると、取り返しがつかない影響が出うる'},
+{lv:3,c:'ケース対応',q:'完全菜食のクライアントに対して、とくに確認すべき栄養素の組み合わせは？',a:'ビタミンB12、鉄、亜鉛、カルシウム、n-3系脂肪酸',o:['ビタミンC、カリウム、食物繊維','ナトリウム、糖質、飽和脂肪酸','ビタミンA、リン、銅'],x:'たんぱく質は量と種類の組み合わせで確保できるが、B12は食品からの確保が難しい'},
+{lv:3,c:'ケース対応',q:'階級制競技の急速減量について、トレーナーの立場として適切なのは？',a:'脱水による危険を説明し、計画的な減量とチームの医療側との連携をすすめる',o:['短期間で確実に落ちる方法を指示する','サウナと水抜きの手順を教える','本人の判断にすべて任せる'],x:'熱中症、腎障害、パフォーマンス低下の危険がある。指導者が主導して行う領域ではない'},
+{lv:3,c:'ケース対応',q:'月経周期に伴う体重変動について、クライアントへの説明として適切なのは？',a:'水分量の変動で1〜2kg動くことがあり、同じ時期どうしで比べるのがよいと伝える',o:['周期は体重に影響しないと伝える','変動した週は絶食をすすめる','体脂肪が増えたと判断する'],x:'測定日を固定し、週平均で見る習慣をつけると振り回されにくい'},
+
+/* ===== 指導実務 ===== */
+{lv:3,c:'指導実務',q:'動機づけ面接の考え方として正しいのは？',a:'説得するのではなく、本人の中にある変わりたい理由を引き出す',o:['正しい知識を繰り返し伝えて納得させる','できていない点を明確に指摘する','目標を代わりに決めてあげる'],x:'正論をぶつけるほど抵抗が強まることが知られている'},
+{lv:2,c:'指導実務',k:1,q:'SMARTな目標設定に含まれない要素は？',a:'他人との比較',o:['具体的であること','測定できること','期限があること'],x:'達成可能であること、本人の目的と関連していることも要素に入る'},
+{lv:3,c:'指導実務',q:'行動変容ステージが「無関心期」のクライアントへの対応として適切なのは？',a:'具体的な方法より、本人が気になっていることを聞く',o:['詳細な食事プランをすぐ渡す','毎日の記録を義務づける','数値目標を設定させる'],x:'段階に合わない助言は届かないどころか、関係を悪くする'},
+{lv:2,c:'指導実務',q:'食習慣の実態を引き出すのに向いている聞き方は？',a:'「ふだんの平日は、朝から順にどんな流れですか」',o:['「間食はしていませんか」','「野菜は食べていますよね」','「甘いものは控えていますか」'],x:'はい・いいえで答えられる聞き方や、望ましい答えを示唆する聞き方は実態を隠す'},
+{lv:2,c:'指導実務',k:1,q:'計量せずに現場で量を伝える方法として使われるのは？',a:'手ばかり法',o:['GI法','窒素出納法','DXA法'],x:'手のひら1枚ぶんのたんぱく質、握りこぶし1つぶんの野菜、といった伝え方'},
+{lv:3,c:'指導実務',q:'クライアントが指示どおりにできなかったと報告したとき、最初にとるべき対応は？',a:'できなかった状況を具体的に聞き、実行可能な水準まで下げる',o:['意志の強さの問題だと伝える','同じ内容をもう一度指示する','記録の提出を義務づける'],x:'守れない計画は計画のほうに問題がある。ハードルを下げて成功体験を作る'},
+{lv:3,c:'指導実務',q:'自己効力感を高めるうえでもっとも効果的とされるのは？',a:'小さくても実際にできた経験を積み重ねること',o:['詳しい知識を伝えること','厳しい目標を設定すること','失敗を強く指摘すること'],x:'できた事実を本人に言語化してもらうと定着しやすい'},
+
+/* ===== 制度・業務範囲 ===== */
+{lv:3,c:'基準と制度',q:'食事摂取基準の「推定平均必要量」の意味は？',a:'半数の人が必要量を満たすと推定される摂取量',o:['ほとんどの人が満たす量','健康被害が出ない上限','生活習慣病予防のための範囲'],x:'推奨量はこれをもとに算出される。目安量は必要量を算定できないときに使われる'},
+{lv:2,c:'基準と制度',q:'特定保健用食品（トクホ）と機能性表示食品の違いは？',a:'トクホは国が個別に審査し、機能性表示食品は事業者が届け出る',o:['どちらも国が個別に審査する','どちらも届出だけでよい','機能性表示食品は医薬品である'],x:'栄養機能食品は、決められた成分が基準量入っていれば届出なしで表示できる'},
+{lv:3,c:'業務範囲',k:1,m:1,q:'クライアントの血液検査の結果を見せられたとき、トレーナーとして適切な対応は？',a:'数値の解釈や指導は行わず、主治医や管理栄養士に相談するようすすめる',o:['基準値と照らして食事を指示する','ネットで調べて説明する','問題ないと判断して運動を継続する'],x:'検査結果にもとづく判断は医療の領域。踏み込まないことが本人を守る'},
+{lv:3,c:'業務範囲',k:1,m:1,q:'サプリメントについて「この症状が治ります」と説明することの問題は？',a:'医薬品的な効能を示す表示にあたり、法令に触れるおそれがある',o:['価格が上がってしまう','クライアントが飽きてしまう','特に問題はない'],x:'食品に医薬品的な効能効果をうたうことは認められていない'},
+{lv:2,c:'業務範囲',k:1,m:1,q:'管理栄養士とトレーナーの役割分担として正しいのは？',a:'疾患を持つ人への治療目的の栄養管理は管理栄養士や医師が担う',o:['健康な人への情報提供も管理栄養士のみが行える','トレーナーも診断ができる','資格があれば区別は不要'],x:'健康な人への一般的な情報提供と食習慣の相談は、トレーナーの範囲に含まれる'},
+
+/* ===== 講義・説明のしかた ===== */
+{lv:3,c:'指導実務',q:'「糖質制限は効果がありますか」と聞かれたときの答え方として適切なのは？',a:'続けられるかどうかで決まる面が大きく、同じカロリーなら差は小さいと伝える',o:['もっとも効果的な方法だと断言する','まったく効果がないと否定する','医学的に危険だと伝える'],x:'短期は水分の分だけ体重が動く。長期の結果は継続率で決まるという説明が誠実'},
+{lv:3,c:'指導実務',q:'「プロテインは腎臓に悪いのでは」と聞かれたときの答え方として適切なのは？',a:'腎機能が正常な人で害を示す明確な根拠はないが、腎疾患がある場合は医師の指示が優先と伝える',o:['絶対に問題ないと断言する','やめたほうがよいと伝える','病院に行く必要はないと伝える'],x:'一般論と個別事情を分けて話すのが、この手の質問の基本形'},
+{lv:3,c:'指導実務',q:'「同じ量を食べているのに太った」という訴えへの対応として適切なのは？',a:'記録と測定条件を一緒に確認し、活動量の変化も含めて事実を洗い出す',o:['代謝が落ちたと説明して終える','すぐに摂取量を大きく減らす','体質だと伝える'],x:'本人の主観と実測がずれていることが多い。否定せずに事実を並べる'},
+{lv:3,c:'指導実務',q:'栄養の講義を組み立てるときの順序として適切なのは？',a:'総エネルギー収支 → 三大栄養素の配分 → 食事の質とタイミング → サプリメント',o:['サプリメント → タイミング → 総量','ビタミン → ミネラル → 総量','個別のケース → 一般論'],x:'影響の大きい順に扱う。細部から入ると、聞き手が優先順位を取り違える'},
+{lv:3,c:'指導実務',q:'受講者に数値を伝えるときの扱い方として適切なのは？',a:'幅と前提条件をつけて示し、個人差があることを明言する',o:['ひとつの数値だけを断定的に示す','数値は出さず感覚だけで説明する','出典を伏せて権威づける'],x:'基準値は集団に対する目安で、個人への処方箋ではない'},
+{lv:2,c:'指導実務',k:1,q:'クライアントに「結局、何から始めればいいですか」と聞かれたときの答え方として適切なのは？',a:'総量の把握と、いま一番崩れている習慣をひとつだけ選んで示す',o:['すべてを一度に変えるよう伝える','サプリメントから始めるよう伝える','特に必要はないと伝える'],x:'変えるものを絞るほど実行率が上がる。次回に一緒に振り返るところまで設計する'},
+
+/* ===== 総合ケース ===== */
+{lv:3,c:'ケース対応',q:'体重70kg・体脂肪率20%の男性が、除脂肪量を守りながら減量する場合のたんぱく質量の目安は？',a:'1日およそ130〜175g',o:['1日およそ50g','1日およそ250g','1日およそ300g'],x:'除脂肪体重は56kg。2.3〜3.1g/kg除脂肪体重で約129〜174g'},
+{lv:3,c:'ケース対応',q:'体重60kgの持久系選手が、3時間のレース中に目指す糖質摂取量の上限の目安は？',a:'1時間あたり最大90g程度',o:['1時間あたり最大20g','1時間あたり最大200g','摂らないほうがよい'],x:'ブドウ糖と果糖を組み合わせる前提。胃腸が慣れていないと不調が出るので事前に練習する'},
+{lv:3,c:'ケース対応',q:'週3回のトレーニングを続ける50代女性の相談。優先度がもっとも高いのは？',a:'たんぱく質量とカルシウム・ビタミンDの確保',o:['クレアチンの導入','糖質の完全カット','抗酸化サプリの追加'],x:'筋量と骨量の維持が中心課題になる年代。まず食事で満たすところから'},
+{lv:3,c:'ケース対応',q:'夜勤があるクライアントの食事設計で、まず確認すべきことは？',a:'勤務のサイクルに対して、食事と睡眠がどう並んでいるか',o:['サプリメントの種類','体脂肪率の推移だけ','食事のGI値'],x:'一般的な「1日3食」の型が当てはまらない。生活の形に合わせて配分を組む'},
+{lv:3,c:'ケース対応',q:'増量期に「食べても体重が増えない」と相談された場合、最初に確認することは？',a:'実際の摂取量を数日ぶん記録してもらい、想定との差を見る',o:['すぐにウエイトゲイナーを追加する','トレーニング量を倍にする','体質だと説明する'],x:'食べているつもりで足りていないことが大半。液体で足すのは確認のあと'},
+{lv:2,c:'ケース対応',q:'「野菜から食べると痩せますか」と聞かれたときの答えとして適切なのは？',a:'血糖の上がり方は穏やかになるが、総量が変わらなければ体重への効果は限定的',o:['順番だけで確実に痩せる','まったく意味がない','野菜は最後に食べるべき'],x:'満腹感が早く来て総量が減るなら、間接的には効く。そこまで含めて説明する'}
+);
+
+
+/* ============================================================
+   4. 食材アイコンと 給食トレーの区分
+   ============================================================ */
+const ICON={
+ carb:'🍚',fiber:'🌾',fat:'🧈',sfa:'🥓',n3:'🐟',n6:'🌻',trans:'🍟',chol:'🥚',
+ prot:'🍖',eaa:'🍗',bcaa:'⚡',water:'💧',alc:'🍺',
+ vA:'🥕',vD:'☀️',vE:'🌰',vK:'🥬',vB1:'🐖',vB2:'🍳',niac:'🐟',vB6:'🍌',vB12:'🐚',fol:'🥦',pan:'🥑',bio:'🍄',vC:'🍋',
+ na:'🧂',k:'🍠',ca:'🥛',mg:'🌿',p:'🦴',fe:'🩸',zn:'🦪',cu:'🔩',mn:'⚙️',i:'🌊',se:'🛡️',cr:'🍬',mo:'🫘',
+ atp:'💥',glyco:'🔥',aero:'🫁',gng:'🔄',glycogen:'🔋',insulin:'🔑',glucagon:'📈',gi:'📊',gl:'📐',ketone:'🕯️',
+ nbal:'⚖️',aascore:'🏅',mps:'🧱',leu:'🔓',bmr:'🕯️',tdee:'🔥',dit:'♨️',neat:'🚶',lbm:'💪',bf:'📏',
+ lea:'🪫',triad:'🌙',sarco:'🧓',frail:'🍂',dri:'📜',rda:'📗',ul:'⛔',dg:'🎯',
+ tokuho:'🏛️',kinousei:'📝',eiyoukinou:'🏷️',pfc:'🍱',refeed:'🍞',dietbreak:'⏸️',carbload:'🏃',plate:'🍛',density:'💎',
+ recall:'📷',behavior:'🧭',scope:'🚧',whey:'🥤',casein:'🌙',soy:'🌱',creatine:'🗿',caffeine:'☕',doping:'✅'
+};
+const GROUPS={
+ g1:{label:'エネルギー源と三大栄養素',emo:'🍚',lead:'体を動かし、つくる材料',cats:['三大栄養素','脂質の種類','タンパク質の種類','タンパク質','数値の基本','脂質']},
+ g2:{label:'ビタミンとミネラル',emo:'🥕',lead:'少しでも欠けると止まる',cats:['ビタミン','ミネラル','ビタミン・ミネラル']},
+ g3:{label:'代謝と身体組成',emo:'🔥',lead:'エネルギーの流れと測り方',cats:['エネルギー代謝','ホルモン','身体組成','エネルギー収支','その他','水分']},
+ g4:{label:'食事設計と体重管理',emo:'🍱',lead:'減量・増量・対象別の設計',cats:['食事設計','食品の指標','減量設計','増量設計','ケース対応']},
+ g5:{label:'サプリメント',emo:'🥤',lead:'補助の使いどころ',cats:['サプリメント']},
+ g6:{label:'指導実務と制度',emo:'📋',lead:'伝え方・線引き・制度',cats:['指導実務','基準と制度','制度','リスク管理','業務範囲']}
+};
+const groupOf=c=>{for(const k in GROUPS)if(GROUPS[k].cats.includes(c))return k;return 'g3';};
+
+/* ============================================================
+   5. 授業（黒板つきの読み物）
+   ============================================================ */
+const CK='#16302E',CK2='#07827E',CK3='#B33A2E',DIM='rgba(22,48,46,.34)';
+const CH=[
+{i:'energy',emo:'🍚',t:'エネルギーの三本柱',sub:'まずここだけ体に入れる',g:'g1',rel:['carb','fat','prot','alc'],
+ cap:'ごはん・おかず・あぶら。1gあたりの重さがちがう',
+ svg:`<svg viewBox="0 0 320 150" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="14" y="26" width="292" height="104" rx="14" fill="none" stroke="${DIM}" stroke-width="2.9"/>
+  <g fill="none" stroke="${CK}" stroke-width="2.9">
+   <path d="M44 96c0-13 12-20 26-20s26 7 26 20z"/><path d="M38 96h64"/>
+   <path d="M136 92h56a8 8 0 01-8 10h-40a8 8 0 01-8-10z"/><path d="M148 92c4-14 22-14 26 0"/>
+   <ellipse cx="248" cy="94" rx="26" ry="11"/><path d="M240 84c4-8 12-8 16 0"/></g>
+  <g fill="${CK2}" font-size="20.7" font-weight="700" text-anchor="middle" font-family="sans-serif">
+   <text x="70" y="124">4</text><text x="164" y="124">4</text><text x="248" y="124">9</text></g>
+  <g fill="${CK}" font-size="12.8" text-anchor="middle" font-family="sans-serif">
+   <text x="70" y="66">ごはん</text><text x="164" y="66">おかず</text><text x="248" y="66">あぶら</text></g>
+  <text x="160" y="18" fill="${CK3}" font-size="14" text-anchor="middle" font-family="sans-serif">1g あたり なんkcal ?</text></svg>`,
+ body:[
+  {h:'順番をまちがえない',p:'体重が動くかどうかは、1日の合計エネルギーで決まる。配分の話は、その合計の中でどんな体を作るかという次の段階。順番を逆にすると、食材をいくら変えても結果が出ない。'},
+  {h:'1gの重さがちがう',p:'あぶらだけが9kcalで、他の倍以上ある。大さじ1の油は約110kcalで、ごはん小盛り1杯に近い。減量の相談でまず脂質の量を見るのはこのため。'},
+  {h:'見落とされる7kcal',p:'アルコールは栄養素として必要ないのに7kcalある。しかも食事記録から最も漏れやすい。停滞しているクライアントには必ず確認する。'}],
+ facts:[['糖質','4 kcal/g'],['たんぱく質','4 kcal/g'],['脂質','9 kcal/g'],['アルコール','7 kcal/g']],
+ key:'あぶらだけが9kcal。量は少なくても合計を動かす。'},
+
+{i:'balance',emo:'⚖️',t:'食べた分と使った分',sub:'消費の中身を知る',g:'g3',rel:['bmr','tdee','neat','dit'],
+ cap:'使う側の6割は、寝ていても減っていく分',
+ svg:`<svg viewBox="0 0 320 150" stroke-linecap="round" stroke-linejoin="round">
+  <g fill="none" stroke="${CK}" stroke-width="2.9"><path d="M160 22v84M118 38h84"/>
+   <path d="M160 106l-18 20h36z"/><path d="M118 38l-24 28h48z"/><path d="M202 38l-24 28h48z"/></g>
+  <circle cx="160" cy="22" r="4.5" fill="${CK2}"/>
+  <g fill="${CK}" font-size="13.4" text-anchor="middle" font-family="sans-serif"><text x="118" y="84">食べた分</text><text x="202" y="84">使った分</text></g>
+  <g font-family="sans-serif" font-size="12.2"><rect x="14" y="96" width="13" height="9" fill="${CK2}"/><text x="32" y="104" fill="${CK}">基礎代謝 6割</text>
+   <rect x="14" y="112" width="13" height="9" fill="${CK3}"/><text x="32" y="120" fill="${CK}">活動 3割</text>
+   <rect x="14" y="128" width="13" height="9" fill="${CK}"/><text x="32" y="136" fill="${CK}">食事 1割</text></g>
+  <text x="252" y="128" fill="${CK3}" font-size="14.6" text-anchor="middle" font-family="sans-serif">1kg = 7200kcal</text></svg>`,
+ body:[
+  {h:'6割は寝ていても減る',p:'1日に使うエネルギーの大部分は基礎代謝で、その大きさはほぼ除脂肪量で決まる。筋量を守ることが、長期的に食べられる量を守ることになる。'},
+  {h:'NEATが静かに落ちる',p:'減量中は、意識しないまま歩数が減り、姿勢が崩れ、家事の動きが小さくなる。メニューは同じなのに消費が落ちる。代謝が落ちたと言う前に、ここを確認する。'},
+  {h:'必要な赤字を数字にする',p:'体脂肪1kgは約7200kcal。週0.5kg落とすなら1日およそ500kcalの赤字。この計算ができると、目標と期限が現実的かどうかをその場で判断できる。'}],
+ facts:[['基礎代謝','使う分の約60%'],['活動','約30%'],['食事誘発性熱産生','約10%'],['体脂肪1kg','約7200kcal']],
+ key:'体重が動かないときは、赤字ができていないか、記録が実態とちがう。'},
+
+{i:'cut',emo:'🍲',t:'減量のこんだて',sub:'落とすものをまちがえない',g:'g4',rel:['lbm','dietbreak','refeed','density'],
+ cap:'週に体重の0.5〜1%。急ぐと筋肉から持っていかれる',
+ svg:`<svg viewBox="0 0 320 150" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 34h284M18 34v96h284" fill="none" stroke="${DIM}" stroke-width="2.9"/>
+  <path d="M30 48C74 48 70 82 112 82s44 26 92 26 68-14 88-14" fill="none" stroke="${CK}" stroke-width="3"/>
+  <g fill="${CK2}"><circle cx="30" cy="48" r="4"/><circle cx="112" cy="82" r="4"/><circle cx="204" cy="108" r="4"/><circle cx="292" cy="94" r="4"/></g>
+  <g fill="${CK}" font-size="12.2" text-anchor="middle" font-family="sans-serif">
+   <text x="34" y="64">開始</text><text x="112" y="72">順調</text><text x="204" y="124">停滞</text><text x="288" y="84">再開</text></g>
+  <path d="M188 96l-10-10M178 96l10-10" stroke="${CK3}" stroke-width="2.9"/>
+  <text x="160" y="24" fill="${CK3}" font-size="14" text-anchor="middle" font-family="sans-serif">まずは記録の見直しから</text></svg>`,
+ body:[
+  {h:'ペースを先に決める',p:'続けられる範囲は体重の0.5〜1%／週。60kgなら週300〜600g。それを超える希望が出たときは、否定でも追従でもなく、達成できるペースと見た目の変化をすり合わせる。'},
+  {h:'守るものは三つ',p:'ゆるやかな赤字、十分なたんぱく質、筋力トレーニングの継続。この三点がそろっているときだけ、落ちるものが体脂肪に寄る。どれか欠けると筋肉から先に持っていかれる。'},
+  {h:'止まったときの手順',p:'①記録の抜けを確認 ②測定条件（時間・服装・タイミング）をそろえる ③NEATの低下を疑う ④必要ならダイエットブレイク。いきなりカロリーを下げるのは最後の手段で、たいていは①で終わる。'}],
+ facts:[['減量ペース','体重の0.5〜1%/週'],['増量ペース','体重の0.25〜0.5%/週'],['体脂肪1kg','約7200kcal'],['増量の上乗せ','1日 +200〜500kcal']],
+ key:'停滞を代謝のせいにする前に、事実の確認から入る。'},
+
+{i:'protein',emo:'🍖',t:'たんぱく質の盛りつけ',sub:'1日の合計と、1食ごとの山',g:'g1',rel:['prot','eaa','bcaa','mps','leu'],
+ cap:'まとめ盛りより、4回に分けて盛る',
+ svg:`<svg viewBox="0 0 320 150" stroke-linecap="round" stroke-linejoin="round">
+  <g fill="none" stroke="${CK}" stroke-width="3.2">
+   <rect x="36" y="98" width="50" height="20" rx="4"/><rect x="96" y="98" width="50" height="20" rx="4"/>
+   <rect x="156" y="98" width="50" height="20" rx="4"/><rect x="216" y="98" width="50" height="20" rx="4"/>
+   <rect x="66" y="76" width="50" height="20" rx="4"/><rect x="126" y="76" width="50" height="20" rx="4"/><rect x="186" y="76" width="50" height="20" rx="4"/>
+   <rect x="96" y="54" width="50" height="20" rx="4"/><rect x="156" y="54" width="50" height="20" rx="4"/></g>
+  <path d="M24 124h274" stroke="${CK2}" stroke-width="3"/>
+  <g fill="${CK}" font-size="12.8" text-anchor="middle" font-family="sans-serif">
+   <text x="61" y="140">朝</text><text x="121" y="140">昼</text><text x="181" y="140">間食</text><text x="241" y="140">夜</text></g>
+  <text x="160" y="38" fill="${CK3}" font-size="14" text-anchor="middle" font-family="sans-serif">1食 20〜40g を積みあげる</text></svg>`,
+ body:[
+  {h:'1日の量',p:'トレーニングをしている人で体重1kgあたり1.6〜2.2g。一般成人の約1.0g/kgの倍前後になる。体重60kgなら約100〜130g。'},
+  {h:'1食の量',p:'20〜40gを3〜5回に分ける。1回に100g入れても、そのぶん合成が増えるわけではない。分けること自体に意味がある。'},
+  {h:'質という条件',p:'必須アミノ酸9種がそろっていることが前提で、そのうちロイシンがスイッチになる。1食あたり2〜3gが目安。BCAAだけでは材料がそろわないため、EAAか食事のたんぱく質が基本になる。'},
+  {h:'高齢の方は多めに',p:'同じ量を摂っても反応が鈍くなる。1日1.0〜1.2g/kg以上を確保し、1食あたりも若い人より多めにとる。腎疾患がある場合は医師の指示が優先。'}],
+ facts:[['1日','体重×1.6〜2.2g'],['1食','20〜40g'],['ロイシン','1食 2〜3g'],['高齢者','1日 1.0〜1.2g/kg以上']],
+ key:'合計だけでも、タイミングだけでも足りない。両方そろって効く。'},
+
+{i:'micro',emo:'🥕',t:'ビタミンとミネラルの表',sub:'四つのマスで覚える',g:'g2',rel:['vA','vD','fe','zn','mg'],
+ cap:'脂溶性はたまる、水溶性はぬける',
+ svg:`<svg viewBox="0 0 320 150" stroke-linecap="round">
+  <g fill="none" stroke="${CK}" stroke-width="3.2"><rect x="22" y="18" width="276" height="112" rx="6"/><path d="M160 18v112M22 74h276"/></g>
+  <g fill="${CK2}" font-size="17.1" font-weight="700" text-anchor="middle" font-family="sans-serif">
+   <text x="91" y="44">脂溶性 4</text><text x="229" y="44">水溶性 9</text><text x="91" y="100">多量 5</text><text x="229" y="100">微量 8</text></g>
+  <g fill="${CK}" font-size="12.2" text-anchor="middle" font-family="sans-serif">
+   <text x="91" y="62">A・D・E・K</text><text x="229" y="62">B群8 ＋ C</text>
+   <text x="91" y="118">Na K Ca Mg P</text><text x="229" y="118">鉄 亜鉛 銅 ほか</text></g>
+  <g fill="${CK3}" font-size="12.2" font-family="sans-serif"><text x="24" y="14">ビタミン</text><text x="24" y="146">ミネラル</text></g></svg>`,
+ body:[
+  {h:'たまるか、ぬけるか',p:'脂溶性ビタミン（A・D・E・K）は体に蓄えられるため、サプリでの摂りすぎに注意する。水溶性は余った分が出ていくかわりに、毎日入れ続ける必要がある。注意する向きが逆になる。'},
+  {h:'トレーニングする人が落としやすいもの',p:'鉄、亜鉛、マグネシウム、ビタミンD。汗で失われる、月経で失われる、日に当たらない、と理由がそれぞれはっきりしている。心当たりのある相手には、まず食品で補う提案から入る。'},
+  {h:'吸収は組み合わせで変わる',p:'植物性の非ヘム鉄はビタミンCで吸収が上がり、濃いお茶のタンニンで下がる。カルシウムはビタミンDがないと入らない。単体で足すより、組み合わせを整えるほうが早い。'}],
+ facts:[['脂溶性ビタミン','A・D・E・K の4種'],['水溶性ビタミン','B群8種 ＋ C'],['多量ミネラル','5種'],['微量ミネラル','8種']],
+ key:'脂溶性はたまる、水溶性はぬける。気をつける向きが逆。'},
+
+{i:'water',emo:'💧',t:'水とうと電解質',sub:'量は体重計で決める',g:'g3',rel:['water','na','k'],
+ cap:'のどの渇きは、遅れてやってくる',
+ svg:`<svg viewBox="0 0 320 150" stroke-linecap="round" stroke-linejoin="round">
+  <g fill="none" stroke="${CK}" stroke-width="2.9"><rect x="128" y="36" width="64" height="94" rx="12"/><rect x="149" y="22" width="22" height="16" rx="4"/>
+   <path d="M128 86h64"/></g>
+  <path d="M132 86h56v34a10 10 0 01-10 10h-36a10 10 0 01-10-10z" fill="${CK3}" opacity=".35"/>
+  <g fill="none" stroke="${CK2}" stroke-width="2.9"><path d="M64 52c7 11 13 15 13 22a13 13 0 01-26 0c0-7 6-11 13-22z"/>
+   <path d="M256 66c6 9 11 13 11 19a11 11 0 01-22 0c0-6 5-10 11-19z"/></g>
+  <g fill="${CK}" font-size="12.8" text-anchor="middle" font-family="sans-serif"><text x="64" y="96">汗</text><text x="256" y="104">尿</text></g>
+  <text x="160" y="16" fill="${CK3}" font-size="14" text-anchor="middle" font-family="sans-serif">体の約60%は水</text></svg>`,
+ body:[
+  {h:'2%で落ちはじめる',p:'体重の2%の脱水でパフォーマンスが落ちる。60kgなら1.2kg。夏場の1時間のセッションで十分届く量で、本人はまだ少し喉が渇いた程度にしか感じていない。'},
+  {h:'運動中の目安',p:'1時間あたり0.4〜0.8L。ただし汗の量の個人差は大きいので、運動の前後で体重差を一度測って、その人の実測から決めるのが確実。'},
+  {h:'水だけでは戻らない',p:'減った体重1kgあたり約1.5Lを、尿として出る分を見込んで補う。大量の汗をかいたあとに水だけを入れると血中のナトリウムが薄まるため、塩分も一緒に摂る。'}],
+ facts:[['体の水分','体重の約60%'],['落ちる入口','2%の脱水'],['運動中','0.4〜0.8 L/時'],['運動後','減った1kgに1.5L']],
+ key:'のどの渇きは遅れて来る。量は感覚でなく体重計で決める。'},
+
+{i:'supp',emo:'🥤',t:'サプリメントの順番',sub:'土台が先、補助はあと',g:'g5',rel:['whey','creatine','caffeine','doping','ul'],
+ cap:'食事・睡眠・練習の上にのせるもの',
+ svg:`<svg viewBox="0 0 320 150" stroke-linecap="round" stroke-linejoin="round">
+  <g fill="none" stroke="${CK}" stroke-width="3.2">
+   <rect x="46" y="76" width="52" height="52" rx="8"/><rect x="61" y="64" width="22" height="13" rx="4"/>
+   <rect x="134" y="62" width="52" height="66" rx="8"/><rect x="149" y="50" width="22" height="13" rx="4"/>
+   <rect x="222" y="90" width="52" height="38" rx="8"/><rect x="237" y="78" width="22" height="13" rx="4"/></g>
+  <g fill="${CK}" font-size="12.8" text-anchor="middle" font-family="sans-serif">
+   <text x="72" y="144">プロテイン</text><text x="160" y="144">クレアチン</text><text x="248" y="144">カフェイン</text></g>
+  <path d="M18 40h284" stroke="${CK2}" stroke-width="2.2" stroke-dasharray="6 6"/>
+  <text x="160" y="28" fill="${CK3}" font-size="14" text-anchor="middle" font-family="sans-serif">この線から下が土台</text></svg>`,
+ body:[
+  {h:'順番を崩さない',p:'食事、睡眠、トレーニングが先。土台が崩れている相手にサプリの話をしても結果は出ないし、出ないことでこちらの信用が減る。'},
+  {h:'根拠が厚いもの',p:'プロテインは不足分の補い、クレアチンは高強度の反復（1日3〜5g）、カフェインは主観的な疲労の低下（体重1kgあたり3〜6mgを約60分前）。夕方以降のカフェインは睡眠を削り、回復を落とす。'},
+  {h:'上限と混入',p:'耐容上限量を超える提案はしない。とくに脂溶性ビタミンとミネラル。競技者には第三者機関のアンチドーピング認証を受けた製品をすすめ、所属団体への確認も必ず添える。'}],
+ facts:[['クレアチン','1日 3〜5g'],['カフェイン','3〜6mg/kg・60分前'],['判断の基準','耐容上限量'],['競技者','第三者認証を確認']],
+ key:'足りないものを補う道具であって、増やす魔法ではない。'},
+
+{i:'scope',emo:'🚧',t:'ここから先は保健室',sub:'線を引き、つなぐ',g:'g6',rel:['scope','lea','triad','tokuho'],
+ cap:'断るのではなく、渡す',
+ svg:`<svg viewBox="0 0 320 150" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 122h124" stroke="${CK}" stroke-width="3.2"/>
+  <path d="M180 122h124" stroke="${DIM}" stroke-width="3" stroke-dasharray="8 7"/>
+  <g fill="none" stroke="${CK3}" stroke-width="3"><path d="M150 122V54"/><rect x="104" y="26" width="92" height="30" rx="6"/></g>
+  <text x="150" y="46" fill="${CK3}" font-size="15.9" font-weight="700" text-anchor="middle" font-family="sans-serif">この先 医療</text>
+  <g fill="${CK}" font-size="12.8" text-anchor="middle" font-family="sans-serif">
+   <text x="74" y="142">トレーナー</text><text x="242" y="142">医師・管理栄養士</text></g>
+  <path d="M206 108l8 8 16-17" fill="none" stroke="${CK2}" stroke-width="3.2"/></svg>`,
+ body:[
+  {h:'線の位置',p:'扱えるのは、健康な人への一般的な栄養情報の提供と、食習慣の相談まで。病名の判断、治療を目的とした食事指導、薬に関する助言は範囲外になる。'},
+  {h:'引き返す合図',p:'疾患の治療中である、月経が3か月以上止まっている、極端な制限と体重への強いこだわりがある、検査数値をもとに相談される。このどれかが出たら、その場で進めない。'},
+  {h:'つなぎ方',p:'断るのではなく、渡す。ここから先は医師と管理栄養士の領域だと伝えたうえで、運動の側でできることを具体的に示す。線を引くことは、関係を切ることではない。'}],
+ facts:[['扱える範囲','健康な人への一般情報'],['範囲外','診断・治療食・服薬']],
+ key:'線を引けることが、信頼を落とさない唯一の方法。'}
+];
+
+
+/* ============================================================
+   拡張3：授業の深掘り・講義ノート・追加の時間
+   ============================================================ */
+/* --- 既存の時間に節を足す --- */
+const MORE={
+ energy:[
+  {h:'配分は総量の中の話',p:'PFCの比率をいじっても、総エネルギーが同じなら体重の動きはほとんど変わらない。比率が効いてくるのは、体組成の中身、満腹感、そして続けやすさ。この順番で説明すると、相手が優先順位を取り違えない。'},
+  {h:'食事誘発性熱産生の差',p:'食べたものを処理するのにもエネルギーがいる。たんぱく質は摂った分の20〜30%、糖質は5〜10%、脂質は0〜3%。高たんぱくの食事が減量で有利とされる理由のひとつが、この差にある。'}],
+ balance:[
+  {h:'推定式はあくまで出発点',p:'ミフリン・セントジョール式は、男性なら「10×体重kg＋6.25×身長cm−5×年齢＋5」、女性はこの最後が−161。ここに身体活動レベル1.4〜2.0を掛けて総消費を出す。ただし個人差は±10〜15%あるので、2週間の体重推移で必ず補正する。'},
+  {h:'EPOCに期待しすぎない',p:'運動後も代謝が高いままという話はよく使われるが、1回あたりの上乗せはふつう数十kcal程度。説明に使うなら「おまけ」として扱い、総摂取量と運動そのものの消費を主語にする。'}],
+ cut:[
+  {h:'代謝適応という現象',p:'減量が続くと、体重の減少から計算されるより消費が下がる。基礎代謝の低下に、NEATの減少と動作効率の向上が重なる。これは故障ではなく正常な反応なので、責める材料にしない。'},
+  {h:'戻し方まで設計する',p:'目標体重に着いた日が終わりではない。減量後に一気に戻すと、下がった代謝のまま摂取だけ増えて揺り戻しが起きる。週ごとに少しずつ摂取量を戻していく進め方を、減量に入る前から合意しておく。'}],
+ protein:[
+  {h:'減量中は除脂肪体重で考える',p:'赤字が深いほど、また体脂肪が少ないほど必要量は上がる。除脂肪体重1kgあたり2.3〜3.1gという幅がよく使われる。体重70kg・体脂肪率20%なら除脂肪56kg、およそ130〜175gが目安になる。'},
+  {h:'質をどう見るか',p:'アミノ酸スコアは組成だけを見る。PDCAASは消化率を加えるが1.0で頭打ちになる。DIAASはそこを改め、実態に近い評価とされる。現場では「動物性はおおむね高い、植物性は組み合わせる」で足りる。'},
+  {h:'寝る前という選択肢',p:'消化の遅いカゼインを寝る前に30〜40g入れると、睡眠中の数時間にアミノ酸を供給できる。1日の総量が足りている前提での上積みであって、総量の代わりにはならない。'}],
+ micro:[
+  {h:'鉄でつまずく理由',p:'月経による損失に加え、着地の衝撃で赤血球が壊れる運動性溶血、激しい運動後にヘプシジンが増えて吸収が落ちること、が重なる。ヘモグロビンが正常でもフェリチンが低いことがあるが、そこから先の判断は医療の領域になる。'},
+  {h:'抗酸化サプリの落とし穴',p:'ビタミンCやEを高用量で摂ると、かえってトレーニングの適応を鈍らせる可能性が指摘されている。運動で生じる酸化ストレスそのものが、体に適応せよという合図になっているという見方による。'}],
+ water:[
+  {h:'発汗率を実測する',p:'（運動前の体重 − 運動後の体重 ＋ 飲んだ量）を運動時間で割ると、1時間あたりの発汗量が出る。排尿があればその分を引く。一度測っておくと、その人への指示が「こまめに」から具体的な数字に変わる。'},
+  {h:'開始時点をそろえる',p:'運動の約4時間前に体重1kgあたり5〜7mLを目安に摂り、尿の色が濃ければ足す。走り出す前に整っていない状態から始めると、途中でどれだけ飲んでも追いつかない。'}],
+ supp:[
+  {h:'根拠の厚さで段を分ける',p:'比較的しっかりした根拠があるのはクレアチン、カフェイン、β-アラニン、重炭酸ナトリウム、硝酸塩あたり。プロテインは食事の補いという位置づけ。HMBは訓練者での上乗せが限定的とされる。段を分けて説明すると、相手が自分で選べるようになる。'},
+  {h:'量と時間の基本',p:'β-アラニンは1日3.2〜6.4gを2〜4週間以上、効果は1〜4分続く高強度で出やすい。重炭酸ナトリウムは体重1kgあたり0.2〜0.4gを60〜180分前、胃腸の不快感に注意。硝酸塩は運動の2〜3時間前。どれも本番前に必ず試しておく。'}],
+ scope:[
+  {h:'言ってはいけない形',p:'食品について「この症状が治る」「薬の代わりになる」という説明は、医薬品的な効能を示す表示にあたり、法令に触れるおそれがある。効果を伝えるなら、一般的な栄養の働きとして話す。'},
+  {h:'つなぐ先を用意しておく',p:'線を引くだけでは相手が宙に浮く。連携できる医療機関や管理栄養士を事前に把握しておき、「ここから先は◯◯へ」と具体的に渡せるようにしておく。それができて初めて、線引きが親切になる。'}]
+};
+CH.forEach(c=>{if(MORE[c.i])c.body.push(...MORE[c.i]);});
+
+/* --- 追加の時間 --- */
+const CKA='#16302E',CKB='#07827E',CKC='#B33A2E',CKD='rgba(22,48,46,.34)';
+CH.push(
+{i:'atp',emo:'⚡',t:'ATPをつくる三つの道',sub:'時間で主役が入れ替わる',g:'g3',rel:['atp','glyco','aero','creatine','lactate'],
+ cap:'秒単位で主役が移る。どれかが止まるのではなく重なって働く',
+ svg:`<svg viewBox="0 0 320 150" stroke-linecap="round"><g fill="none" stroke="${CKD}" stroke-width="2"><path d="M26 118h270M26 118V22"/></g>
+  <path d="M26 34C56 34 62 96 96 104" fill="none" stroke="${CKC}" stroke-width="3"/>
+  <path d="M26 96C70 66 104 52 150 58s70 40 110 44" fill="none" stroke="${CKB}" stroke-width="3"/>
+  <path d="M26 112C90 110 150 78 296 50" fill="none" stroke="${CKA}" stroke-width="3"/>
+  <g font-size="12" font-family="sans-serif">
+   <text x="44" y="30" fill="${CKC}">ホスファゲン</text><text x="120" y="48" fill="${CKB}">解糖</text><text x="228" y="98" fill="${CKA}">酸化系</text></g>
+  <g font-size="11" fill="${CKA}" font-family="sans-serif" text-anchor="middle">
+   <text x="60" y="136">10秒</text><text x="150" y="136">2分</text><text x="250" y="136">それ以上</text></g></svg>`,
+ body:[
+  {h:'三つが同時に動いている',p:'ATPを作る道は三つある。筋内のATPとクレアチンリン酸を使うホスファゲン機構、糖を素早く分解する解糖、酸素を使う酸化系。切り替わるというより、どれが主役かが時間とともに移っていく。'},
+  {h:'10秒・2分・それ以上',p:'最大努力なら10秒前後まではホスファゲン機構が支える。30秒から2分の高強度は解糖が主役。それを超えると酸化系が中心になる。クレアチンが効くのは一段目、β-アラニンが効くのは二段目、という対応で覚えると使える。'},
+  {h:'乳酸の濡れ衣',p:'解糖で生じる乳酸は疲労の原因物質ではない。心筋や他の筋に運ばれて燃料になり、肝臓ではコリ回路を通ってブドウ糖に戻る。筋肉痛の原因でもない。ここは講義で必ず訂正しておきたい点。'},
+  {h:'強度が上がると糖に寄る',p:'呼吸交換比が0.7に近いほど脂質、1.0に近いほど糖質を使っている。強度が上がるほど糖質側へ寄っていく。いわゆる脂肪燃焼ゾーンの話は、この現象を単純化しすぎた説明になっている。'}],
+ facts:[['ホスファゲン','〜10秒'],['解糖','30秒〜2分'],['酸化系','2分以降'],['筋グリコーゲン','約300〜400g']],
+ key:'三つは切り替わるのではなく、重なりながら主役が移る。'},
+
+{i:'cho',emo:'🍞',t:'糖質を置く場所',sub:'前・中・後で役割が違う',g:'g4',rel:['carb','glycogen','supercomp','multitrans','recovcho'],
+ cap:'運動時間で必要量が変わる。60分までは足さなくてよい',
+ svg:`<svg viewBox="0 0 320 150" stroke-linecap="round"><g fill="none" stroke="${CKD}" stroke-width="2"><path d="M22 116h276"/></g>
+  <g fill="none" stroke="${CKB}" stroke-width="3"><rect x="34" y="84" width="62" height="32" rx="6"/><rect x="128" y="60" width="62" height="56" rx="6"/><rect x="222" y="34" width="62" height="82" rx="6"/></g>
+  <g font-size="12" fill="${CKA}" font-family="sans-serif" text-anchor="middle" font-weight="700">
+   <text x="65" y="105">0g</text><text x="159" y="94">30〜60g</text><text x="253" y="80">最大90g</text></g>
+  <g font-size="11" fill="${CKA}" font-family="sans-serif" text-anchor="middle">
+   <text x="65" y="134">〜60分</text><text x="159" y="134">1〜2.5時間</text><text x="253" y="134">2.5時間〜</text></g>
+  <text x="160" y="22" fill="${CKC}" font-size="11.5" font-family="sans-serif" text-anchor="middle">1時間あたりの糖質</text></svg>`,
+ body:[
+  {h:'前：何を満たしておくか',p:'必要なのは筋と肝のグリコーゲンが埋まっていること。前日までの総量で決まる話であって、直前の一皿で挽回できるものではない。直前に食べるなら、消化の負担が軽いものを選ぶ。'},
+  {h:'中：時間で必要量が変わる',p:'60分以内なら、ふつう摂取は要らない。糖質液で口をすすぐだけでも出力が保たれることがある。1〜2.5時間なら1時間あたり30〜60g。2.5時間を超えると最大90gまで引き上げられるが、これはブドウ糖と果糖で吸収の輸送体が分かれることを利用した数字で、ブドウ糖だけなら約60gで頭打ちになる。'},
+  {h:'後：急ぐ必要があるかどうか',p:'次の運動まで時間がないときだけ、体重1kgあたり1.0〜1.2gを1時間ごとに4時間ほど入れる。翌日まで空くなら、1日の総量が足りていればここまで急ぐ必要はない。'},
+  {h:'1日の総量',p:'一般的な活動量なら体重1kgあたり5〜7g、高強度の練習を毎日こなすなら8〜12g。減量中はここを削ることになるが、削りすぎると練習の質が落ちて本末転倒になる。'}],
+ facts:[['〜60分','摂取は不要'],['1〜2.5時間','30〜60g/時'],['2.5時間〜','最大90g/時'],['運動後（急ぐ場合）','1.0〜1.2g/kg/時']],
+ key:'運動が60分までなら、中に足す糖質のことは考えなくていい。'},
+
+{i:'iron',emo:'🩸',t:'鉄とビタミンD',sub:'現場でいちばん詰まる二つ',g:'g2',rel:['fe','vD','ferritin','hepcidin','hemolysis'],
+ cap:'不足の理由がはっきりしている。だから先回りできる',
+ svg:`<svg viewBox="0 0 320 150" stroke-linecap="round" stroke-linejoin="round">
+  <g fill="none" stroke="${CKC}" stroke-width="3"><path d="M78 34c14 20 24 28 24 40a24 24 0 01-48 0c0-12 10-20 24-40z"/></g>
+  <g fill="none" stroke="${CKB}" stroke-width="3"><circle cx="242" cy="62" r="20"/>
+   <path d="M242 30v-10M242 104v-10M210 62h-10M284 62h-10M219 39l-7-7M272 92l-7-7M265 39l7-7M212 92l7-7"/></g>
+  <g font-size="12" fill="${CKA}" font-family="sans-serif" text-anchor="middle" font-weight="700">
+   <text x="78" y="120">鉄</text><text x="242" y="120">ビタミンD</text></g>
+  <g font-size="10.5" fill="${CKA}" font-family="sans-serif" text-anchor="middle">
+   <text x="78" y="138">月経・発汗・溶血</text><text x="242" y="138">日照・屋内練習</text></g></svg>`,
+ body:[
+  {h:'鉄が減る三つの経路',p:'月経による損失、汗からの損失、そして着地の衝撃で赤血球が壊れる運動性溶血。さらに激しい運動のあとはヘプシジンが増えて吸収が一時的に落ちる。減る理由がはっきりしているぶん、先回りできる。'},
+  {h:'ヘモグロビンだけでは見えない',p:'貯蔵鉄が減っている段階では、貧血の数値に出ないことがある。フェリチンという指標がそこを映すが、数値の解釈と治療の判断は医療の領域。トレーナーがやるのは、心当たりのある相手に受診をすすめることと、食事で補う提案まで。'},
+  {h:'吸収を上げる食べ方',p:'動物性のヘム鉄は吸収がよい。植物性の非ヘム鉄はビタミンCと一緒に摂ると上がり、濃いお茶やコーヒーのタンニン、過剰なカルシウムで下がる。摂るタイミングをずらすだけでも変わる。'},
+  {h:'ビタミンDは生活で決まる',p:'食事から摂れる量は限られ、皮膚での合成が大きな割合を占める。屋内練習が中心で日焼け対策をしている人ほど不足しやすい。目安量は1日8.5μg。魚ときのこ、そして日光が実務的な選択肢になる。'}],
+ facts:[['鉄（月経あり女性）','推奨量 10.5mg/日'],['ビタミンD','目安量 8.5μg/日'],['吸収を上げる','ビタミンCと一緒に'],['吸収を下げる','タンニン・過剰なカルシウム']],
+ key:'不足の理由が言えるなら、起きる前に手を打てる。'},
+
+{i:'evidence',emo:'🥤',t:'サプリを段で見る',sub:'根拠の厚さで並べ替える',g:'g5',rel:['creatine','caffeine','balanine','bicarb','nitrate','hmb','thirdparty'],
+ cap:'上から順に、根拠が厚いもの',
+ svg:`<svg viewBox="0 0 320 150" stroke-linecap="round"><g fill="none" stroke="${CKB}" stroke-width="3">
+  <rect x="86" y="26" width="148" height="28" rx="6"/><rect x="62" y="62" width="196" height="28" rx="6"/><rect x="38" y="98" width="244" height="28" rx="6"/></g>
+  <g font-size="12" fill="${CKA}" font-family="sans-serif" text-anchor="middle" font-weight="700">
+   <text x="160" y="45">クレアチン・カフェイン</text>
+   <text x="160" y="81">β-アラニン・重炭酸・硝酸塩</text>
+   <text x="160" y="117">プロテイン＝食事の補い</text></g></svg>`,
+ body:[
+  {h:'順番は変えない',p:'食事、睡眠、トレーニング。この土台が崩れている相手にサプリの話をしても結果は出ないし、出ないことでこちらの信用が落ちる。話す順番そのものが指導になっている。'},
+  {h:'根拠が厚いもの',p:'クレアチンは1日3〜5gの継続で高強度の反復に効く。急ぐなら体重1kgあたり0.3gを5〜7日のローディングもあるが、続ければ3〜4週間で同じ水準に届く。カフェインは体重1kgあたり3〜6mgを約60分前。夕方以降は睡眠を削って回復を落とすので、時間帯を必ずセットで伝える。'},
+  {h:'場面が限られるもの',p:'β-アラニンは1日3.2〜6.4gを2〜4週間以上、1〜4分続く高強度で効く。重炭酸ナトリウムは体重1kgあたり0.2〜0.4gを60〜180分前で、胃腸の不快感が出る人がいる。硝酸塩は運動の2〜3時間前。どれも本番でいきなり試さない。'},
+  {h:'上限と混入',p:'耐容上限量を超える提案はしない。とくに脂溶性ビタミンとミネラル。競技者には第三者機関の認証を受けた製品をすすめ、所属団体への確認も必ず添える。表示されていない禁止物質の混入は実際に起きている。'}],
+ facts:[['クレアチン','3〜5g/日'],['カフェイン','3〜6mg/kg・60分前'],['β-アラニン','3.2〜6.4g/日・2〜4週'],['重炭酸','0.2〜0.4g/kg・60〜180分前']],
+ key:'効くかどうかの前に、その人の土台が立っているかを見る。'},
+
+{i:'measure',emo:'📏',t:'体組成をどう測るか',sub:'数字より、条件をそろえること',g:'g3',rel:['bia','dxa','skinfold','lbm','bf'],
+ cap:'同じ機械・同じ時間・同じ条件。比べられる形にする',
+ svg:`<svg viewBox="0 0 320 150" stroke-linecap="round"><g fill="none" stroke="${CKD}" stroke-width="2"><path d="M26 122h272"/></g>
+  <g fill="none" stroke="${CKB}" stroke-width="3"><rect x="40" y="52" width="58" height="70" rx="8"/><rect x="132" y="38" width="58" height="84" rx="8"/><rect x="224" y="68" width="58" height="54" rx="8"/></g>
+  <g font-size="11.5" fill="${CKA}" font-family="sans-serif" text-anchor="middle" font-weight="700">
+   <text x="69" y="140">BIA</text><text x="161" y="140">DXA</text><text x="253" y="140">皮下脂肪厚</text></g>
+  <g font-size="10.5" fill="${CKC}" font-family="sans-serif" text-anchor="middle">
+   <text x="69" y="92">水分でぶれる</text><text x="161" y="82">基準に近い</text><text x="253" y="98">技術差が出る</text></g></svg>`,
+ body:[
+  {h:'どれも推定値',p:'BIAは体に微弱な電流を流して推定する方法で、体内の水分量で値が動く。食事、飲水、発汗、入浴、月経周期で変わる。DXAは基準として扱われることが多いが、これも装置や条件で差が出る。皮下脂肪厚法は測る人の技術差が出る。'},
+  {h:'条件をそろえるほうが先',p:'絶対値の正確さより、同じ機械で同じ時間、同じ条件で測り続けることのほうが実務では効く。朝の起床後、排尿後、食事前。この三つを決めるだけで比較できる数字になる。'},
+  {h:'体重だけを指標にしない準備',p:'体脂肪が減って筋量が増えれば、体重は動かないまま見た目が変わる。この可能性を最初の面談で伝えておくと、途中で体重が止まったときに話が崩れない。写真と周囲径を併用する。'},
+  {h:'同時改善が起きる条件',p:'体脂肪を減らしながら筋量を増やせるのは、トレーニング初心者、再開者、体脂肪が多い人。競技歴が長く体脂肪が少ない人ほど難しくなる。期待値をどこに置くかを、条件から先に決める。'}],
+ facts:[['測定の原則','同じ機械・時間・条件'],['BIAがぶれる要因','体内の水分量'],['併用したいもの','写真と周囲径']],
+ key:'測り方をそろえていない数字は、増えても減っても読めない。'},
+
+{i:'talk',emo:'🗣️',t:'伝え方と行動変容',sub:'知識ではなく行動が変わる形に',g:'g6',rel:['mi','smart','ttm','selfeff','recall','behavior'],
+ cap:'説得するほど抵抗が強くなる。引き出す側に回る',
+ svg:`<svg viewBox="0 0 320 150" stroke-linecap="round" stroke-linejoin="round">
+  <g fill="none" stroke="${CKB}" stroke-width="3">
+   <path d="M34 36h104a8 8 0 018 8v34a8 8 0 01-8 8H70l-20 18V86h-16a8 8 0 01-8-8V44a8 8 0 018-8z"/>
+   <path d="M286 62H182a8 8 0 00-8 8v34a8 8 0 008 8h68l20 18v-18h16a8 8 0 008-8V70a8 8 0 00-8-8z"/></g>
+  <g font-size="11.5" fill="${CKA}" font-family="sans-serif" text-anchor="middle">
+   <text x="86" y="64">どうしたいですか</text><text x="234" y="92">本当は…</text></g></svg>`,
+ body:[
+  {h:'正論は届きにくい',p:'正しい知識を繰り返し伝えるほど、相手の抵抗が強まることが知られている。動機づけ面接の考え方では、説得ではなく、本人の中にすでにある変わりたい理由を引き出す側に回る。'},
+  {h:'段階に合わせる',p:'行動変容には無関心・関心・準備・実行・維持という段階がある。無関心の人に詳しい食事プランを渡しても使われない。まず気になっていることを聞くところから始める。'},
+  {h:'聞き方で情報が変わる',p:'「間食はしていませんか」と聞けば、していないという答えが返ってくる。「ふだんの平日を、朝から順に教えてください」と聞けば実態が出る。開かれた質問と、望ましい答えを示唆しない言い方。'},
+  {h:'変えるのはひとつだけ',p:'守れない計画は、計画のほうに問題がある。実行できる最小の行動をひとつに絞って合意し、次回に一緒に振り返る。できた事実を本人に言葉にしてもらうと、自己効力感が積み上がる。'}],
+ facts:[['聞き方','開かれた質問'],['目標','SMARTで立てる'],['変える数','まずひとつ']],
+ key:'知識の量ではなく、実行できる形と振り返りの仕組みが行動を変える。'},
+
+{i:'people',emo:'👥',t:'対象別の設計',sub:'同じ数字を当てない',g:'g4',rel:['sarco','triad','reds','lea','anaresist','vB12'],
+ cap:'年代と条件で、守るべきものが入れ替わる',
+ svg:`<svg viewBox="0 0 320 150" stroke-linecap="round" stroke-linejoin="round">
+  <g fill="none" stroke="${CKB}" stroke-width="3">
+   <circle cx="62" cy="48" r="14"/><path d="M42 106c0-14 9-24 20-24s20 10 20 24"/>
+   <circle cx="160" cy="48" r="14"/><path d="M140 106c0-14 9-24 20-24s20 10 20 24"/>
+   <circle cx="258" cy="48" r="14"/><path d="M238 106c0-14 9-24 20-24s20 10 20 24"/></g>
+  <g font-size="11" fill="${CKA}" font-family="sans-serif" text-anchor="middle">
+   <text x="62" y="128">成長期</text><text x="160" y="128">女性</text><text x="258" y="128">高齢者</text></g>
+  <g font-size="10" fill="${CKC}" font-family="sans-serif" text-anchor="middle">
+   <text x="62" y="142">削らない</text><text x="160" y="142">鉄とエネルギー</text><text x="258" y="142">1食あたりを多く</text></g></svg>`,
+ body:[
+  {h:'成長期は削らない',p:'骨量と身長が伸びる時期にエネルギーを削ると、取り返しのつかない影響が出うる。減量を希望されても、成長に必要な分を確保したうえで、極端な制限を避ける設計にする。最大骨量は20代までにどれだけ蓄えたかで決まる。'},
+  {h:'女性で見るべきもの',p:'鉄の損失とエネルギー不足。エネルギー可用性が除脂肪体重1kgあたり30kcalを下回ると、月経異常や骨密度低下につながる。月経が3か月以上止まっているという話が出たら、そこで進めずに受診をすすめる。'},
+  {h:'高齢者は1食あたりを多く',p:'同じ量を摂っても筋合成が起きにくくなる同化抵抗性がある。1日1.0〜1.2g/kg以上を確保し、1食あたりも若い人より多めにする。腎疾患がある場合は医師の指示が優先。'},
+  {h:'菜食の人に確認すること',p:'ビタミンB12、鉄、亜鉛、カルシウム、n-3系脂肪酸。とくにB12は動物性食品にほぼ限られるため、食品からの確保が難しい。たんぱく質は量と種類の組み合わせで足りる。'}],
+ facts:[['エネルギー可用性の目安','30kcal/kg除脂肪体重'],['高齢者のたんぱく質','1.0〜1.2g/kg以上'],['菜食で要注意','ビタミンB12']],
+ key:'年代と条件で、優先して守るものが入れ替わる。'},
+
+{i:'lecture',emo:'🎤',t:'講義の組み立て方',sub:'影響の大きい順に話す',g:'g6',rel:['tdee','pfc','timing','scope','placebo'],
+ cap:'総量 → 配分 → 質とタイミング → サプリメント',
+ svg:`<svg viewBox="0 0 320 150" stroke-linecap="round"><g fill="none" stroke="${CKB}" stroke-width="3">
+  <path d="M30 118L160 26l130 92z"/><path d="M84 80h152M120 52h80"/></g>
+  <g font-size="11" fill="${CKA}" font-family="sans-serif" text-anchor="middle">
+   <text x="160" y="44">サプリ</text><text x="160" y="72">質・タイミング</text><text x="160" y="100">配分</text><text x="160" y="132">総エネルギー量</text></g></svg>`,
+ body:[
+  {h:'順番が理解を決める',p:'総エネルギー収支、三大栄養素の配分、食事の質とタイミング、最後にサプリメント。影響の大きい順に扱う。細部から入ると、聞き手が優先順位を取り違えたまま持ち帰ってしまう。'},
+  {h:'数値は幅と前提で出す',p:'基準値は集団に対する目安であって、個人への処方箋ではない。「体重1kgあたり1.6〜2.2g」のように幅で示し、どういう人を想定した数字かを添える。ひとつの数値を断定的に出すと、当てはまらない人を切り捨てることになる。'},
+  {h:'よくある誤解を先に置く',p:'夜遅く食べると太る、糖質制限がいちばん効く、プロテインは腎臓に悪い、運動後30分を逃すと意味がない。この四つはほぼ必ず出る。質疑で受けるより、講義の中で先に扱ったほうが時間が読める。'},
+  {h:'できることの線を示して終える',p:'最後に、自分たちが扱える範囲と、医療へつなぐ場面を明示する。線を引く話で締めると、受講者が現場で困ったときの判断基準として残る。'}],
+ facts:[['話す順番','総量 → 配分 → 質 → サプリ'],['数値の出し方','幅と前提をつける'],['締め方','扱える範囲を明示する']],
+ key:'影響の大きい順に話し、扱える範囲を示して終える。'}
+);
+
+/* --- 講義ノート（指導のポイントと、よくある質問） --- */
+const TEACH={
+ energy:{p:['4・4・9・7という数字は、紙に書かせると定着が違う','「まず総量、次に中身」の順番を最初に固定してから先へ進む'],
+   q:[['カロリーを見なくても痩せますか','見なくても結果が出る人はいます。ただしそれは、無意識に総量が減っているからです。止まったときに何を動かすか分からなくなるので、最初だけは把握しておくことをすすめます']]},
+ balance:{p:['推定式は「出発点で、2週間の体重推移で補正する」まで必ずセットで言う','EPOCや代謝アップを売り文句にしない'],
+   q:[['基礎代謝を上げれば痩せますか','筋量を増やせば上がりますが、1kg増えても1日13kcal程度です。痩せる主因は総量の管理で、筋量は後々食べられる量を守るための投資と説明します']]},
+ cut:{p:['ペースの合意を最初に取る。ここを飛ばすと後で必ずもめる','停滞の対応手順を紙で渡しておく'],
+   q:[['1か月で10kg落とせますか','体重にもよりますが、健康に落とせる範囲を超えます。落ちた分の多くが水分と筋肉になり、戻りやすい体になります。週に体重の0.5〜1%で計算し直しましょう']]},
+ protein:{p:['体重ではなく除脂肪体重で考える場面を区別して教える','「1日の合計」と「1食の山」を必ず両方言う'],
+   q:[['プロテインは腎臓に悪いですか','腎機能が正常な人で害を示す明確な根拠はありません。ただし腎疾患がある場合は医師の指示が優先です']]},
+ micro:{p:['脂溶性と水溶性で「注意する向きが逆」という1点に絞る','サプリの話は耐容上限量とセットで'],
+   q:[['マルチビタミンは飲んだほうがいいですか','食事が偏っている時期の保険としては選択肢になります。ただし上限量を超える製品もあるので、成分表を一緒に見るところからです']]},
+ water:{p:['「こまめに」ではなく実測した数字で指示する','水だけ大量は危険という点を必ず入れる'],
+   q:[['運動中に水を飲むと動きが重くなりませんか','一度に大量だと重く感じます。15〜20分ごとに少量ずつに分けると、体重の減少を抑えながら不快感も避けられます']]},
+ supp:{p:['土台の順番を言ってからでないと、サプリの話に入らない','量と時間を必ずセットで伝える'],
+   q:[['何から始めればいいですか','食事でたんぱく質が足りていないならプロテイン、足りているならクレアチンです。その前に睡眠時間を確認させてください']]},
+ scope:{p:['線を引く話は、必ずつなぎ先とセットで話す','「治る」という言葉を使わない訓練をその場でやる'],
+   q:[['病院に行くほどではないと言われたら','判断はこちらではできない、と正直に伝えます。そのうえで運動の側でできることを具体的に示せば、突き放したことにはなりません']]},
+ atp:{p:['三つが「切り替わる」ではなく「重なる」と言い直す','乳酸の濡れ衣はここで必ず晴らす'],
+   q:[['脂肪燃焼ゾーンで運動したほうがいいですか','その強度は脂質の割合が高いだけで、総消費は高強度のほうが大きくなります。続けられる強度を選ぶほうが結果につながります']]},
+ cho:{p:['60分までは要らない、という結論を先に出す','90g/時は複数輸送体の話とセットでないと誤解される'],
+   q:[['運動中にスポーツドリンクは必要ですか','1時間以内なら水で足ります。それを超える、または汗を大量にかく場面では糖質と塩分の入ったものに切り替えます']]},
+ iron:{p:['減る理由を三つ言えるようにさせる','数値の解釈は医療の領域だと明示する'],
+   q:[['サプリで鉄を摂ってもいいですか','過剰摂取の害があるので、自己判断での高用量は避けます。まず食事と、心当たりがあるなら受診です']]},
+ evidence:{p:['段で示す。個別の商品名には踏み込まない','本番前に試す、を全部の項目に付ける'],
+   q:[['高いサプリほど効きますか','価格と根拠は別です。第三者認証があるか、量が有効域に入っているか。この二つで見ます']]},
+ measure:{p:['条件をそろえる三点（起床後・排尿後・食事前）を復唱させる','体重以外の指標を最初の面談で用意させる'],
+   q:[['体組成計の数字が毎日違います','体内の水分量で動きます。条件をそろえて、日々ではなく週の平均で見てください']]},
+ talk:{p:['ロールプレイを1回入れる。聞き方の違いは体感しないと入らない','「変えるのはひとつ」を持ち帰らせる'],
+   q:[['やる気のない人にはどうしますか','やる気を出させようとするより、何が引っかかっているかを聞きます。段階に合わない助言は届きません']]},
+ people:{p:['年代ごとに「守るもの」を一語で言わせる','成長期と月経の話は、線引きとセットで'],
+   q:[['中学生の子に減量させたいと親から相談されたら','成長期であることを伝えたうえで、体重ではなく食習慣と活動量の話に置き換えます。必要なら医療につなぎます']]},
+ lecture:{p:['話す順番を板書して、そこへ戻りながら進める','最後は必ず線引きで締める'],
+   q:[['質問に答えられなかったらどうしますか','分からないと言って、調べて次回に返すのがいちばん信用されます。その場の推測が、いちばん危険です']]}
+};
+CH.forEach(c=>{if(TEACH[c.i])c.teach=TEACH[c.i];});
+
+/* --- 参考にした資料 --- */
+const REFS=[
+ 'NSCA『ストレングストレーニング＆コンディショニング』『パーソナルトレーナーのための基礎知識』',
+ '国際スポーツ栄養学会（ISSN）のポジションスタンド（たんぱく質、クレアチン、栄養摂取タイミング、カフェインほか）',
+ 'ACSM／AND／DCの合同声明「Nutrition and Athletic Performance」',
+ 'IOCのコンセンサス声明（サプリメント、RED-S）',
+ '厚生労働省「日本人の食事摂取基準」',
+ '消費者庁「保健機能食品制度」',
+ 'WHO のガイドライン（トランス脂肪酸、糖類、ナトリウム）'
+];
+
+
+/* ============================================================
+   拡張4：「基礎」段階（現場に出る前に越える最低ライン）
+   ============================================================ */
+/* 図鑑のうち、新人がまず押さえる項目 */
+const CORE_N=['carb','fiber','fat','prot','eaa','water','alc','vA','vD','vC','vB1','na','k','ca','fe','zn'];
+const CORE_T=['bmr','tdee','lbm','bf','pfc','plate','density','scope','whey','creatine','recall','behavior',
+              'sarco','dri','tokuho','kinousei','insulin','glycogen','mps','dit','neat','smart','selfeff',
+              'thirdparty','handport','underreport','urinecolor','openq','rapport','ttm'];
+const CORE_ID=new Set();
+CORE_N.forEach(id=>['w','f','c','d'].forEach(t=>CORE_ID.add('n:'+id+':'+t)));
+CORE_T.forEach(id=>CORE_ID.add('t:'+id+':n'));
+const isCoreEntry=e=>e.kind==='n'?CORE_N.includes(e.i):CORE_T.includes(e.i);
+
+/* 授業のうち、現場に出る前に必ず通す回 */
+['energy','balance','cut','protein','water','supp','scope'].forEach(id=>{
+  const c=CH.find(x=>x.i===id);if(c)c.core=1;
+});
+
+
+/* ============================================================
+   6. 道具
+   ============================================================ */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function fnv(str){let h=0x811c9dc5;for(let i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,0x01000193)>>>0;}return h>>>0;}
+function seeded(seed){let a=seed>>>0;return()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function pick(arr,n,rnd){const c=arr.slice(),out=[];while(out.length<n&&c.length)out.push(c.splice(Math.floor(rnd()*c.length),1)[0]);return out;}
+function shuffle(arr,rnd){const c=arr.slice();for(let i=c.length-1;i>0;i--){const j=Math.floor(rnd()*(i+1));[c[i],c[j]]=[c[j],c[i]];}return c;}
+function b64e(s){const b=new TextEncoder().encode(s);let r='';for(let i=0;i<b.length;i++)r+=String.fromCharCode(b[i]);return btoa(r);}
+function b64d(s){const bin=atob(s),a=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)a[i]=bin.charCodeAt(i);return new TextDecoder().decode(a);}
+function code(str){const a=fnv('CHART-NUT|'+str).toString(16).toUpperCase().padStart(8,'0');const b=(fnv(str.split('').reverse().join(''))%65536).toString(16).toUpperCase().padStart(4,'0');return a+'-'+b;}
+function fmtDate(ts){const d=new Date(ts),p=n=>String(n).padStart(2,'0');return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+' '+p(d.getHours())+':'+p(d.getMinutes());}
+function ruby(n,k){return S.furi&&k?'<ruby>'+esc(n)+'<rt>'+esc(k)+'</rt></ruby>':esc(n);}
+const stars=lv=>'★'.repeat(lv)+'☆'.repeat(3-lv);
+const iconOf=e=>ICON[e.i]||'🍽️';
+const today=()=>{const d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();};
+
+/* ============================================================
+   7. 問題づくり
+   ============================================================ */
+const POOL=[],BYID={};
+function addQ(id,lv,cat,q,a,wrongs,x){
+  const w=wrongs.filter(v=>v&&v!==a);
+  if(w.length<3)return;
+  const item={id,lv:Math.min(3,lv),cat,g:groupOf(cat),q,a,o:w.slice(0,3),x};
+  POOL.push(item);BYID[id]=item;
+}
+const vague=v=>/^[—通常非常報告]/.test(v);
+function others(list,self,key){            // 誤答は同じ分類から。少なければ同じ区分→全体へ広げる
+  let p=list.filter(e=>e.i!==self.i&&e.c===self.c);
+  if(p.length<3)p=list.filter(e=>e.i!==self.i&&groupOf(e.c)===groupOf(self.c));
+  if(p.length<3)p=list.filter(e=>e.i!==self.i);
+  return p.map(e=>e[key]);
+}
+function buildPool(){
+  N.forEach(e=>{
+    const rnd=seeded(fnv(e.i));
+    addQ('n:'+e.i+':w',e.lv,e.c,'次のはたらきをするのはどれ？<br>「'+e.w+'」',e.n,pick(others(N,e,'n'),3,rnd),e.n+'：'+e.w);
+    if(!vague(e.d))
+      addQ('n:'+e.i+':d',e.lv+1,e.c,e.n+'が足りないと起こりやすいのは？',e.d,pick(others(N,e,'d').filter(v=>!vague(v)),3,rnd),e.n+'の不足：'+e.d+(e.t?'／'+e.t:''));
+    addQ('n:'+e.i+':f',e.lv,e.c,e.n+'を多く含む食品の組み合わせは？',e.f.join('、'),pick(others(N,e,'f').map(f=>f.join('、')),3,rnd),e.n+'：'+e.f.join('、'));
+    if(!vague(e.e))
+      addQ('n:'+e.i+':e',e.lv+1,e.c,e.n+'を摂りすぎたときに起こりやすいのは？',e.e,pick(others(N,e,'e').filter(v=>!vague(v)),3,rnd),e.n+'の過剰：'+e.e);
+    if(e.c==='ビタミン'||e.c==='ミネラル'){
+      const opp=N.filter(x=>x.c===e.c&&x.s!==e.s).map(x=>x.n);
+      addQ('n:'+e.i+':c',e.lv,e.c,'次のうち'+e.s+'の'+e.c+'はどれ？',e.n,pick(opp,3,rnd),e.n+'は'+e.s+'の'+e.c+'。'+(e.c==='ビタミン'?'脂溶性はA・D・E・Kの4種':'多量ミネラルはナトリウム・カリウム・カルシウム・マグネシウム・リン'));
+    }
+  });
+  T.forEach(e=>{
+    const rnd=seeded(fnv('t'+e.i));
+    let p=T.filter(x=>x.i!==e.i&&x.c===e.c);if(p.length<3)p=T.filter(x=>x.i!==e.i);
+    addQ('t:'+e.i+':n',e.lv,e.c,'次の説明にあたる言葉は？<br>「'+e.d+'」',e.n,pick(p.map(x=>x.n),3,rnd),e.n+'：'+e.d);
+    addQ('t:'+e.i+':d',e.lv,e.c,e.n+'の説明として正しいのは？',e.d,pick(p.map(x=>x.d),3,rnd),e.n+'：'+e.d);
+  });
+  Q.forEach((e,i)=>addQ('q:'+i,e.lv,e.c,e.q,e.a,e.o,e.x));
+}
+buildPool();
+POOL.forEach(p=>{if(CORE_ID.has(p.id))p.core=1;});
+Q.forEach((e,i)=>{const q=BYID['q:'+i];if(!q)return;if(e.k)q.core=1;if(e.m){q.core=1;q.must=1;}});
+const DEX=[...N.map(e=>({...e,kind:'n',key:'n:'+e.i,g:groupOf(e.c)})),...T.map(e=>({...e,kind:'t',key:'t:'+e.i,g:groupOf(e.c)}))];
+const byKey=k=>DEX.find(e=>e.key===k);
+
+/* ============================================================
+   8. 保存
+   ============================================================ */
+const KEY='chart_nutrition_v2';
+const DEF={name:'',furi:true,fs:'m',box:{},hist:[],stat:{},read:{}};
+let S=load();
+function load(){try{const r=localStorage.getItem(KEY)||localStorage.getItem('chart_nutrition_v1');return r?{...DEF,...JSON.parse(r)}:{...DEF};}catch(e){return{...DEF};}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+function applyFs(){const r=document.documentElement;if(r&&r.setAttribute)r.setAttribute('data-fs',S.fs||'m');}
+applyFs();
+const DAY=86400000,INT=[0,1,2,4,8,16];
+function record(id,ok){
+  const b=S.box[id]||{b:1,due:0};
+  b.b=ok?Math.min(5,b.b+1):1;b.due=Date.now()+INT[b.b]*DAY;S.box[id]=b;
+  const st=S.stat[id]||{o:0,n:0};ok?st.o++:st.n++;S.stat[id]=st;
+}
+const dueList=()=>Object.keys(S.box).filter(id=>BYID[id]&&S.box[id].due<=Date.now());
+
+const LV={
+ 1:{g:'基礎',name:'新人研修',desc:'現場に出る前に必ず越える最低ライン',n:20,pass:.9,gate:1},
+ 2:{g:'1年',name:'初級',desc:'現場で最初に必要になる範囲',n:30,pass:.8},
+ 3:{g:'2年',name:'中級',desc:'日常的につかう判断と数値',n:40,pass:.8},
+ 4:{g:'3年',name:'上級',desc:'個別対応・線引き・講義まで',n:40,pass:.8}};
+const STAGES=[1,2,3,4];
+const passOf=lv=>Math.round((LV[lv]?LV[lv].pass:.8)*100);
+/* 基礎は「絶対に落とせない問題」を抜き出した段。以降は難易度どおり */
+const poolOf=st=>st===1?POOL.filter(p=>p.core):POOL.filter(p=>p.lv===st-1);
+const mark=p=>p===null?'—':p>=95?'◎':p>=80?'○':p>=60?'△':'×';
+
+/* ============================================================
+   9. 画面
+   ============================================================ */
+let tab='home',ui={},sess=null;
+const TABS=[['home','🏫','教室'],['dex','🍱','図鑑'],['book','📖','授業'],['train','✏️','テスト'],['rec','📋','通知表']];
+function renderTabs(){
+  $('#tabs').innerHTML=TABS.map(([k,e,l])=>
+   `<button data-tab="${k}" ${tab===k?'aria-current="page"':''}><span class="ic">${e}</span>${l}</button>`).join('');
+}
+function go(t){tab=t;ui={};render();scrollTo(0,0);}
+function render(){applyFs();renderTabs();$('#view').innerHTML=({home:vHome,dex:vDex,book:vBook,train:vTrain,rec:vRec}[tab])();}
+const rule=(e,t)=>`<div class="rule"><span class="re">${e}</span><b>${t}</b></div>`;
+const back=t=>`<button class="back" data-act="back">◀ ${t}</button>`;
+const bestOf=lv=>{const h=S.hist.filter(x=>x.lv===lv&&x.big);return h.length?Math.max(...h.map(x=>x.pct)):null;};
+const clearedOf=l=>{const b=bestOf(l);return b!==null&&b>=passOf(l);};
+function idCard(){
+  const gate=clearedOf(1);
+  const top=[4,3,2,1].find(clearedOf);
+  return `<div class="idcard"><div class="between">
+    <div><div class="lb">がくせいしょう</div>
+      <div class="nm ${S.name?'':'empty'}" id="idnm">${S.name?esc(S.name):'名前 未記入'}</div></div>
+    <span class="pill ${gate?'g':'gray'}">${gate?'現場OK':'研修中'}</span></div>
+    <div class="grades">${STAGES.map(l=>{const b=bestOf(l);
+      return `<div><b>${b===null?'—':b}</b><span>${LV[l].g}</span></div>`;}).join('')}</div>
+    <div class="small" style="margin-top:8px">${top?'到達：'+LV[top].g+'（'+LV[top].name+'）':'まずは基礎テストで'+passOf(1)+'点'}</div></div>`;
+}
+function nameCard(){
+  return `<div class="card"><h2 style="font-size:1em">🪪 名前</h2>
+    <div class="small" style="margin-top:4px">修了証に印字されます。検証コードの計算にも使うので、発行したあとは変えないでください。</div>
+    <div class="field"><label>氏名（20文字まで）</label>
+      <input type="text" data-rec="name" id="nmi" maxlength="20" value="${esc(S.name)}">
+      <div class="ex"><b>記入例</b>飯泉 友裕</div></div>
+    <div id="nmst">${nameStatus()}</div></div>`;
+}
+
+/* ---------- 教室 ---------- */
+function vHome(){
+  const due=dueList().length,readN=Object.keys(S.read).length;
+  const m=DEX[fnv(today())%DEX.length];
+  let h=idCard()+`<div style="height:12px"></div>`+nameCard();
+  h+=`<div class="card" style="margin-top:12px"><div class="between">
+    <div class="row"><span class="emo">📝</span><div><h2 class="ttl" style="font-size:1.0em">きょうの宿題</h2>
+    <div class="small">${due?'まちがえた問題ほど早く戻ってくる':'出ている宿題はありません'}</div></div></div>
+    <span class="pill ${due?'':'gray'}">${due}問</span></div>
+    <div style="margin-top:12px"><button class="btn" data-act="rev" ${due?'':'disabled'}>宿題をやる（最大20問）</button></div></div>`;
+  h+=rule('🍎','今日の一項目')+`<button class="entry" data-dk="${m.key}" style="margin-top:0">
+    <span class="emoplate">${iconOf(m)}</span>
+    <span style="flex:1"><span class="n">${ruby(m.n,m.k)}</span><br>
+    <span class="small">${esc((m.kind==='n'?m.w:m.d).slice(0,46))}…</span></span><span class="stars">▶</span></button>`;
+  h+=rule('🎒','きょうやること')+`<div class="grid2">
+    <button class="cell" data-act="gotob"><span class="e">📚</span><span class="n">授業を受ける</span><span class="c">全${CH.length}時間／受けた${readN}</span></button>
+    <button class="cell" data-act="gotod"><span class="e">🍱</span><span class="n">図鑑を引く</span><span class="c">${DEX.length}項目</span></button>
+    <button class="cell" data-mini="1"><span class="e">✏️</span><span class="n">小テスト</span><span class="c">基礎・10問</span></button>
+    <button class="cell" data-act="gotot"><span class="e">🔰</span><span class="n">基礎テスト</span><span class="c">20問・${passOf(1)}点で現場OK</span></button>
+  </div>`;
+  h+=rule('👓','見やすさ')+`<div class="card">
+    <div class="grid2">
+      <div class="field" style="margin-top:0"><label>文字の大きさ</label><select data-set="fs">
+        <option value="s" ${S.fs==='s'?'selected':''}>小さめ</option>
+        <option value="m" ${(S.fs||'m')==='m'?'selected':''}>ふつう</option>
+        <option value="l" ${S.fs==='l'?'selected':''}>大きめ</option>
+        <option value="xl" ${S.fs==='xl'?'selected':''}>特大</option></select></div>
+      <div class="field" style="margin-top:0"><label>ふりがな</label><select data-dex="furi">
+        <option value="1" ${S.furi?'selected':''}>つける</option>
+        <option value="0" ${!S.furi?'selected':''}>つけない</option></select></div></div>
+    <div class="small" style="margin-top:9px">画面全体の文字がこの設定で変わります。端末に保存されます。</div></div>`;
+  h+=`<div class="sec"><div class="notice"><b>📌 職員室からのお知らせ</b>
+    ここで習うのは、健康な人への一般的な栄養の話です。病気の治療を目的とした食事指導、病名の判断、薬についての助言はトレーナーの仕事の範囲外になります。あてはまる相談は医師・管理栄養士につないでください。</div></div>`;
+  h+=`<div class="sec small" style="text-align:center">🍚 食材と栄養素 ${N.length}　📖 用語 ${T.length}　📚 授業 ${CH.length}時間　✏️ 問題 ${POOL.length}問</div>`;
+  return h;
+}
+
+/* ---------- 図鑑（給食トレー） ---------- */
+function vDex(){
+  if(ui.dkey)return dexDetail(byKey(ui.dkey));
+  const kw=(ui.dkw||'').trim();
+  if(kw)return dexList(DEX.filter(e=>(e.n+e.k+(e.w||'')+(e.d||'')+(e.f||[]).join('')).includes(kw)),'🔍 「'+kw+'」で探した結果',true);
+  if(ui.dcore)return dexList(DEX.filter(isCoreEntry),'🔰 基礎の項目',true);
+  if(ui.dg)return dexList(DEX.filter(e=>e.g===ui.dg),GROUPS[ui.dg].emo+' '+GROUPS[ui.dg].label,false);
+  let h=`<div class="card"><div class="row"><span class="emo">🍱</span>
+    <div><h2 class="ttl" style="font-size:1.03em">食材と栄養素の図鑑</h2>
+    <div class="small">全${DEX.length}項目。分類から選ぶか、言葉で探す。</div></div></div>
+    <div class="field"><input type="text" data-dex="kw" value="" placeholder="🔍 鉄、ロイシン、貧血 …"></div>
+    <div class="field"><label>ふりがな</label><select data-dex="furi">
+      <option value="1" ${S.furi?'selected':''}>つける</option><option value="0" ${!S.furi?'selected':''}>つけない</option></select></div>
+    <div class="field"><button class="btn ghost slim" data-act="dcore">🔰 基礎の項目だけを見る（${DEX.filter(isCoreEntry).length}件）</button></div></div>`;
+  h+=rule('🍱','分類から引く')+`<div class="shelf"><div class="cells">`+Object.keys(GROUPS).map(k=>{
+    const c=DEX.filter(e=>e.g===k).length;
+    return `<button class="cell" data-dg="${k}"><span class="num">${c}</span><span class="e">${GROUPS[k].emo}</span>
+      <span class="n">${GROUPS[k].label}</span><span class="c">${GROUPS[k].lead}</span></button>`;}).join('')+`</div></div>`;
+  return h;
+}
+function dexList(list,title,isSearch){
+  let h=back(isSearch?'図鑑にもどる':'分類にもどる')+`<h2 class="ttl" style="font-size:1.09em">${title}</h2><div class="small">${list.length}項目</div>`;
+  if(!list.length)return h+`<div class="sec small">見つかりませんでした。別の言葉で探してみてください。</div>`;
+  [...new Set(list.map(e=>e.kind==='n'?e.s:e.c))].forEach(s=>{
+    h+=`<div class="subhead">${esc(s)}</div>`;
+    h+=list.filter(e=>(e.kind==='n'?e.s:e.c)===s).map(e=>`<button class="entry" data-dk="${e.key}">
+      <span class="emoplate" style="width:1.7em;height:1.7em;font-size:1.3em">${iconOf(e)}</span>
+      <span style="flex:1"><span class="n">${ruby(e.n,e.k)}</span>${isCoreEntry(e)?' <span class="badge core">基礎</span>':''}<br><span class="small">${esc((e.kind==='n'?e.w:e.d).slice(0,30))}…</span></span>
+      <span class="stars">${stars(e.lv)}</span></button>`).join('');
+  });
+  return h;
+}
+function dexDetail(e){
+  if(!e)return vDex();
+  const qids=POOL.filter(p=>p.id.startsWith(e.key+':')).map(p=>p.id);
+  let h=back('一覧にもどる')+`<div class="card">
+    <div class="row"><span class="emoplate" style="width:1.85em;height:1.85em;font-size:2em">${iconOf(e)}</span>
+      <div style="flex:1"><h2 class="ttl" style="font-size:1.27em">${ruby(e.n,e.k)}</h2>
+      <div class="stars">${stars(e.lv)} <span class="small">むずかしさ ${e.lv}</span></div></div></div>
+    <div style="margin-top:10px">${isCoreEntry(e)?'<span class="badge core" style="margin-right:6px">🔰 基礎</span>':''}<span class="plate">${GROUPS[e.g].emo} ${GROUPS[e.g].label}</span>
+      <span class="plate" style="margin-left:6px">${esc(e.kind==='n'?e.c+'／'+e.s:e.c)}</span></div>
+    <div class="hr"></div>`;
+  if(e.kind==='n'){
+    h+=`<dl class="dl">
+      <dt>💪</dt><dd><b>はたらき</b>${esc(e.w)}</dd>
+      <dt>😵</dt><dd><b>足りないと</b>${esc(e.d)}</dd>
+      <dt>⚠️</dt><dd><b>摂りすぎると</b>${esc(e.e)}</dd>
+      <dt>📌</dt><dd><b>おぼえておく</b>${esc(e.t)}</dd></dl>
+      ${rule('🍴','これに入っている')}<div>${e.f.map(f=>`<span class="chip">🍴 ${esc(f)}</span>`).join('')}</div>`;
+  }else h+=`<dl class="dl"><dt>📖</dt><dd><b>意味</b>${esc(e.d)}</dd></dl>`;
+  h+=`</div>`;
+  const ch=CH.filter(c=>c.rel.includes(e.i));
+  if(ch.length)h+=rule('📚','この授業で出てくる')+ch.map(c=>`<button class="entry" data-ch="${c.i}">
+    <span class="emoplate" style="width:1.7em;height:1.7em;font-size:1.3em">${c.emo}</span>
+    <span style="flex:1"><span class="small">${CH.indexOf(c)+1}時間目</span><br><span class="n">${esc(c.t)}</span></span><span class="stars">▶</span></button>`).join('');
+  if(qids.length>=2)h+=`<div class="sec"><button class="btn ghost" data-ids="${qids.join(',')}" data-label="${esc(e.n)}の確認">✏️ この項目だけで確かめる（${qids.length}問）</button></div>`;
+  return h;
+}
+
+/* ---------- 授業（時間割） ---------- */
+function vBook(){
+  if(ui.ch){
+    const c=CH.find(x=>x.i===ui.ch);
+    if(c){
+      S.read[c.i]=1;save();
+      const i=CH.indexOf(c);
+      let h=back('時間割にもどる')+`<div class="card lesson">
+        <div class="row"><span class="emoplate" style="width:1.85em;height:1.85em;font-size:1.9em">${c.emo}</span>
+          <div style="flex:1"><span class="pill">${i+1}時間目</span>
+          <h2 style="font-size:1.21em;margin-top:5px">${esc(c.t)}</h2>
+          <div class="small">${esc(c.sub)}${c.core?' ・<b style="color:var(--tifD)">基礎必修</b>':''}</div></div></div>
+        <div class="board">${c.svg}<div class="cap">${esc(c.cap)}</div></div>
+        ${c.body.map((b,k)=>`<h3>${['🍚','🍖','🥕','🥛'][k%4]} ${esc(b.h)}</h3><p>${esc(b.p)}</p>`).join('')}
+        ${c.facts?`<div class="facts">${c.facts.map(f=>`<div class="fact"><b>${esc(f[0])}</b><span>${esc(f[1])}</span></div>`).join('')}</div>`:''}
+        <div class="key"><em>🔖 この時間のまとめ</em>${esc(c.key)}</div></div>`;
+      if(c.teach){
+        h+=rule('🎤','講義ノート')+`<div class="card">
+          <div class="small" style="font-weight:800;color:var(--ink)">教える側が押さえる点</div>
+          <ul class="pts">${c.teach.p.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>
+          <div class="small" style="font-weight:800;color:var(--ink);margin-top:15px">よく出る質問と、答え方</div>
+          ${c.teach.q.map(qa=>`<div class="faq"><div class="q">Q. ${esc(qa[0])}</div><div class="a">${esc(qa[1])}</div></div>`).join('')}
+        </div>`;
+      }
+      const rel=c.rel.map(id=>DEX.find(e=>e.i===id)).filter(Boolean);
+      if(rel.length)h+=rule('🍱','図鑑で引く')+`<div>${rel.map(e=>`<button class="chip" data-dk="${e.key}">${iconOf(e)} ${esc(e.n)}</button>`).join('')}</div>`;
+      h+=`<div class="sec"><button class="btn green" data-gq="${c.g}" data-label="${esc(c.t)}の確認">✏️ この時間の確認テスト（8問）</button></div>`;
+      h+=`<div class="sec grid2">
+        ${i>0?`<button class="btn ghost slim" data-ch="${CH[i-1].i}">◀ ${i}時間目</button>`:'<span></span>'}
+        ${i<CH.length-1?`<button class="btn ghost slim" data-ch="${CH[i+1].i}">${i+2}時間目 ▶</button>`:'<span></span>'}</div>`;
+      return h;
+    }
+  }
+  let h=`<div class="card"><div class="row"><span class="emo">📖</span>
+    <div><h2 style="font-size:1.03em">時間割</h2>
+    <div class="small">図つきの読み物。テストの前に、まずここを通す。</div></div></div></div>`;
+  h+=rule('🔔','全'+CH.length+'時間')+`<table class="tt"><tbody>`+CH.map((c,i)=>`<tr data-ch="${c.i}">
+    <td class="h">${i+1}時間目</td><td class="e">${c.emo}</td>
+    <td><b>${esc(c.t)}</b>${c.core?' <span class="badge core">基礎</span>':''}<div class="d">${esc(c.sub)}</div></td>
+    <td class="ck">${S.read[c.i]?'🍳':'▶'}</td></tr>`).join('')+`</tbody></table>
+    <div class="small" style="margin-top:9px">🍳 は受けたことのある回。<b>基礎</b>の${CH.filter(c=>c.core).length}回は、現場に出る前に必ず通す。</div>`;
+  h+=rule('📚','この教材が拠りどころにしているもの')+`<div class="card">
+    <ul class="refs">${REFS.map(r=>`<li>${esc(r)}</li>`).join('')}</ul>
+    <div class="small" style="margin-top:11px">内容はこれらの標準的な知識体系をもとに、CHART向けに書き起こしたものです。原文の引用はしていません。数値は改定で変わることがあるため、最新版での確認をおすすめします。</div></div>`;
+  return h;
+}
+
+/* ---------- テスト ---------- */
+function vTrain(){
+  const due=dueList().length;
+  const lv=ui.tlv||1,g=ui.tg||'all',mode=ui.tmode||'mini',fb=ui.tfb||'each';
+  const avail=poolOf(lv).filter(p=>g==='all'||mode==='big'||p.g===g).length;
+  let h=`<div class="card"><div class="between">
+    <div class="row"><span class="emo">📝</span><div><h2 class="ttl" style="font-size:1.0em">宿題（復習）</h2>
+    <div class="small">正解するほど間隔がのびる（1→2→4→8→16日）</div></div></div>
+    <span class="pill ${due?'':'gray'}">${due}問</span></div>
+    <div style="margin-top:12px"><button class="btn ${due?'':'ghost'}" data-act="rev" ${due?'':'disabled'}>${due?'宿題をやる':'きょうの分は終わっています'}</button></div></div>`;
+  h+=rule('✏️','テストの用意')+`<div class="card">
+    <div class="field" style="margin-top:0"><label>段階</label><select data-t="lv">
+      ${STAGES.map(l=>`<option value="${l}" ${lv===l?'selected':''}>${LV[l].g}（${LV[l].name}）｜${LV[l].desc}</option>`).join('')}</select></div>
+    <div class="field"><label>種類</label><select data-t="mode">
+      <option value="mini" ${mode==='mini'?'selected':''}>小テスト（10問）</option>
+      <option value="big" ${mode==='big'?'selected':''}>${lv===1?'基礎テスト':'期末テスト'}（${LV[lv].n}問・${passOf(lv)}点で合格）</option></select></div>
+    <div class="field"><label>出るところ</label><select data-t="g" ${mode==='big'?'disabled':''}>
+      <option value="all">ぜんぶ</option>
+      ${Object.keys(GROUPS).map(k=>`<option value="${k}" ${g===k?'selected':''}>${GROUPS[k].emo} ${GROUPS[k].label}</option>`).join('')}</select>
+      ${mode==='big'?'<div class="small" style="margin-top:6px">6分類から均等に出ます。</div>':''}</div>
+    <div class="field"><label>答え合わせ</label><select data-t="fb">
+      <option value="each" ${fb==='each'?'selected':''}>1問ごとにする</option>
+      <option value="end" ${fb==='end'?'selected':''}>最後にまとめてする</option></select></div>
+    <div class="field"><button class="btn" data-act="start">${mode==='big'?(lv===1?'🔰 基礎テストを受ける':'🏆 '+LV[lv].g+'の期末テストを受ける'):'✏️ 小テストを受ける'}</button></div>
+    <div class="small" style="margin-top:8px">この条件で出せる問題：${avail}問</div></div>`;
+  if(mode==='big'&&lv===1)h+=`<div class="sec"><div class="notice" style="border-color:var(--green)"><b style="color:var(--green)">🔰 基礎テストについて</b>
+    現場に出る前に越える最低ラインです。安全に関わる線引きを含むので、合格は${passOf(1)}点（${Math.ceil(LV[1].n*LV[1].pass)}/${LV[1].n}問）と高めにしています。合格すると学生証が「現場OK」になり、検証コード付きの修了証を発行できます。</div></div>`;
+  return h;
+}
+
+
+/* ============================================================
+   10. 出題
+   ============================================================ */
+function balanced(pool,n,rnd){
+  const by={};pool.forEach(p=>{(by[p.g]=by[p.g]||[]).push(p);});
+  const keys=shuffle(Object.keys(by),rnd);keys.forEach(k=>by[k]=shuffle(by[k],rnd));
+  const out=[];let moved=true;
+  while(out.length<n&&moved){moved=false;
+    for(const k of keys){if(out.length>=n)break;if(by[k].length){out.push(by[k].shift());moved=true;}}}
+  return shuffle(out,rnd);
+}
+function begin(qs,opt){
+  if(!qs.length){alert('この条件では問題がありません。出るところを広げてください。');return;}
+  sess={qs,i:0,ans:[],lv:opt.lv||0,big:!!opt.big,fb:opt.fb||'each',label:opt.label,review:!!opt.review,t0:Date.now()};
+  tab='quiz';renderQuiz();scrollTo(0,0);
+}
+function startQuiz(lv,g,mode,fb){
+  const pool=poolOf(lv).filter(p=>g==='all'||mode==='big'||p.g===g);
+  if(!pool.length){alert('この条件では問題がありません。出るところを広げてください。');return;}
+  const n=mode==='big'?Math.min(LV[lv].n,pool.length):Math.min(10,pool.length);
+  const rnd=seeded(Date.now()>>>0);
+  let qs;
+  if(mode==='big'&&lv===1){                 // 基礎テストは線引き系を必ず含める
+    const must=pick(pool.filter(p=>p.must),Math.min(6,pool.filter(p=>p.must).length),rnd);
+    const ids=new Set(must.map(p=>p.id));
+    qs=shuffle(must.concat(balanced(pool.filter(p=>!ids.has(p.id)),n-must.length,rnd)),rnd);
+  }else qs=(g==='all'||mode==='big')?balanced(pool,n,rnd):shuffle(pool,rnd).slice(0,n);
+  begin(qs,{lv,big:mode==='big',fb,label:LV[lv].g+(mode==='big'?(lv===1?' テスト':' 期末テスト'):' 小テスト')});
+}
+const startIds=(ids,label)=>begin(shuffle(ids.map(i=>BYID[i]).filter(Boolean),seeded(Date.now()>>>0)),{label,fb:'each',review:true});
+const startGroup=(g,label)=>begin(shuffle(POOL.filter(p=>p.g===g),seeded(Date.now()>>>0)).slice(0,8),{label,fb:'each',review:true});
+function startReview(){
+  const ids=dueList();if(!ids.length)return;
+  begin(shuffle(ids,seeded(Date.now()>>>0)).slice(0,20).map(i=>BYID[i]),{label:'宿題',fb:'each',review:true});
+}
+function renderQuiz(){
+  renderTabs();
+  const s=sess,q=s.qs[s.i];
+  if(!q)return renderResult();
+  const opts=(s.opts&&s.opts.qid===q.id)?s.opts.list:shuffle([q.a,...q.o],seeded(fnv(q.id+'|'+s.i)));
+  s.opts={qid:q.id,list:opts};
+  const picked=s.picked,pct=Math.round(s.i/s.qs.length*100);
+  let h=`<div class="between"><span class="qnum">✏️ ${esc(s.label)}　${s.i+1} / ${s.qs.length}問目</span>
+    <button class="small" data-act="quit" style="font-weight:700">やめる</button></div>
+    <div class="gauge" style="margin:8px 0 15px"><i style="width:${pct}%"></i></div>
+    <div class="card"><div class="qtext">${q.q}</div>`;
+  h+=opts.map((o,k)=>{
+    let cls='opt';
+    if(picked!==undefined&&s.fb==='each'){if(o===q.a)cls+=' ok';else if(o===picked)cls+=' ng';}
+    return `<button class="${cls}" data-pick="${k}" ${picked!==undefined?'disabled':''}><span class="mk">${k+1}</span>${esc(o)}</button>`;
+  }).join('');
+  if(picked!==undefined){
+    if(s.fb==='each'){
+      const ok=picked===q.a;
+      h+=`<div class="exp"><div class="verdict ${ok?'vok':'vng'}">${ok?'⭕️ せいかい':'❌ ざんねん'}</div>
+        <div style="margin-top:6px">${esc(q.x)}</div>
+        <div class="small" style="margin-top:8px">${GROUPS[q.g].emo} ${esc(q.cat)}</div></div>`;
+    }
+    h+=`<div style="margin-top:14px"><button class="btn" data-act="next">${s.i+1===s.qs.length?'結果を見る':'つぎの問題へ'}</button></div>`;
+  }
+  $('#view').innerHTML=h+`</div>`;
+}
+const MARU=`<svg class="maru" viewBox="0 0 170 120" aria-hidden="true"><g fill="none" stroke="var(--green)" stroke-width="4" stroke-linecap="round" opacity=".8">
+  <ellipse cx="85" cy="60" rx="58" ry="44"/><ellipse cx="85" cy="60" rx="46" ry="33" opacity=".65"/>
+  <path d="M85 8c7 9 20 9 24 2M85 8C78 17 65 17 61 10M141 44c-9 5-12 17-6 24M29 44c9 5 12 17 6 24M60 110c4-9 17-11 24-5M110 110c-4-9-17-11-24-5"/></g></svg>`;
+
+/* ---------- 振り返りの部品 ---------- */
+const barHtml=p=>`<div class="bar"><i class="${p<50?'low':p<80?'mid':''}" style="width:${Math.max(p,2)}%"></i></div>`;
+const fmtMin=ms=>{const s=Math.round(ms/1000);return s<60?s+'秒':Math.floor(s/60)+'分'+String(s%60).padStart(2,'0')+'秒';};
+const dexKeyFor=q=>{const m=q.id.match(/^([nt]:[^:]+):/);return m?m[1]:null;};
+function chapterFor(q){
+  const m=q.id.match(/^[nt]:([^:]+):/);
+  if(m){const c=CH.find(c=>c.rel.includes(m[1]));if(c)return c;}
+  return CH.find(c=>c.g===q.g)||null;
+}
+function groupStats(){
+  const a={};Object.keys(S.stat).forEach(id=>{const q=BYID[id];if(!q)return;
+    const g=a[q.g]=a[q.g]||{o:0,n:0};g.o+=S.stat[id].o;g.n+=S.stat[id].n;});
+  return a;
+}
+
+function renderResult(){
+  const s=sess,total=s.qs.length,score=s.ans.filter(a=>a.ok).length;
+  const need=s.lv?passOf(s.lv):80;
+  const pct=Math.round(score/total*100),pass=pct>=need,ts=Date.now();
+  if(!s.saved){
+    s.saved=true;
+    s.elapsed=Date.now()-(s.t0||Date.now());
+    s.prev=S.hist.find(x=>x.label===s.label)||null;
+    s.ts=ts;
+    if(!s.review){S.hist.unshift({ts,lv:s.lv,big:s.big,label:s.label,score,total,pct,pass:s.big?pass:null});S.hist=S.hist.slice(0,60);save();}
+  }
+  const diff=s.prev?pct-s.prev.pct:null;
+  const by={};s.ans.forEach(a=>{const g=by[a.q.g]=by[a.q.g]||{o:0,n:0};a.ok?g.o++:g.n++;});
+
+  let h=`<div class="card"><div class="answer">
+    <div class="small">${esc(s.label)}　答案</div>
+    ${pass&&s.big?MARU:''}
+    <div class="big ${(!s.big||pass)?'':'ng'}">${pct}<span style="font-size:.4em">点</span></div>
+    <div class="small">${total}問中 ${score}問せいかい</div>
+    ${s.big?`<div class="hanko ${pass?'':'ng'}">${pass?(s.lv===1?'現 場 O K':'よくできました'):'もう一度'}</div>`:''}
+  </div>
+  <div class="statline">
+    <div><b>${mark(pct)}</b><span>評価</span></div>
+    <div><b>${fmtMin(s.elapsed||0)}</b><span>所要時間</span></div>
+    <div><b>${diff===null?'—':(diff>0?'+'+diff:diff)}</b><span>前回との差</span></div>
+  </div>
+  ${s.big?`<div class="small" style="margin-top:11px">${pass?(s.lv===1?'基礎クリア。現場に出る前の最低ラインを満たしています。':LV[s.lv].g+'（'+LV[s.lv].name+'）の基準を満たしています。'):'合格は'+need+'点以上。まちがえた問題は宿題に入りました。'}</div>`:''}
+  </div>`;
+
+  if(Object.keys(by).length>1){
+    h+=rule('📊','分野ごとの出来')+`<div class="card">`+Object.keys(by).map(g=>{
+      const t=by[g].o+by[g].n,p=Math.round(by[g].o/t*100);
+      return `<div class="barrow"><div class="lb"><span>${GROUPS[g].emo} ${GROUPS[g].label}</span><em>${by[g].o}/${t}問</em></div>${barHtml(p)}</div>`;
+    }).join('')+`</div>`;
+  }
+
+  const wrong=s.ans.filter(a=>!a.ok);
+  if(wrong.length){
+    h+=rule('🔁','復習するところ '+wrong.length+'問')+wrong.map(a=>{
+      const dk=dexKeyFor(a.q),ent=dk?byKey(dk):null,ch=chapterFor(a.q);
+      return `<div class="wrongcard">
+        <div style="font-weight:800;line-height:1.6">${a.q.q}</div>
+        <div class="ansrow">
+          <span class="x">✕</span><span class="t ng">${esc(a.picked)}</span>
+          <span class="o">○</span><span class="t ok">${esc(a.q.a)}</span></div>
+        <div class="exp" style="margin-top:12px">${esc(a.q.x)}</div>
+        <div class="jump">
+          ${ent?`<button data-dk="${ent.key}">${iconOf(ent)} 図鑑で見る</button>`:''}
+          ${ch?`<button data-ch="${ch.i}">📖 ${esc(ch.t)}</button>`:''}
+        </div></div>`;
+    }).join('');
+    h+=`<div class="sec"><button class="btn ghost" data-ids="${wrong.map(a=>a.q.id).join(',')}" data-label="まちがい直し">🔁 まちがえた${wrong.length}問だけやり直す</button></div>`;
+  }else h+=`<div class="sec small" style="text-align:center">🍀 全問せいかい。次の宿題まで間隔があきます。</div>`;
+
+  if(s.big&&pass){
+    h+=`<div class="sec"><button class="btn green" data-act="issue" data-ts="${s.ts}" ${S.name?'':'disabled'}>🎓 修了証を発行する</button>
+      <div class="small" style="margin-top:8px">${S.name?'検証コード付きのテキストを作ります。':'先に通知表タブで名前を記入してください。'}</div></div>`;
+  }
+  h+=`<div class="sec grid2"><button class="btn ghost slim" data-act="retry">同じ条件でもう一度</button><button class="btn ghost slim" data-act="home">教室にもどる</button></div>`;
+  $('#view').innerHTML=h;
+}
+
+/* ---------- 通知表 ---------- */
+function nameStatus(){
+  const issued=S.hist.some(e=>e.big&&e.pass);
+  if(!S.name)return `<div class="warnline">⚠️ 未記入のままだと、修了証に「氏名未記入」と入ります</div>`;
+  return `<div class="okline">✓ 「${esc(S.name)}」で保存しました</div>`+
+    (issued?`<div class="warnline">⚠️ すでに合格記録があります。名前を変えると、発行ずみの修了証は照合できなくなります</div>`:'');
+}
+function vRec(){
+  const hf=ui.hf||'all';
+  let h=idCard();
+
+  h+=`<div style="height:12px"></div>`+nameCard();
+
+  h+=rule('🏅','成績表')+`<div class="gradetable">`+STAGES.map(l=>{
+    const b=bestOf(l),okd=clearedOf(l);
+    return `<div class="graderow"><span class="y">${l===1?'🔰 ':''}${LV[l].g}</span>
+      ${barHtml(b===null?0:b)}<span class="sc">${b===null?'—':b}</span>
+      <span class="mk" style="color:var(--${okd?'green':'ink2'})">${okd?'合':'—'}</span></div>`;
+  }).join('')+`</div>
+  <div class="small" style="margin-top:8px">各段階のテストの最高点。基礎は${passOf(1)}点、それ以降は${passOf(2)}点で合格。</div>`;
+
+  const gs=groupStats(),keys=Object.keys(gs).filter(k=>gs[k].o+gs[k].n>=3)
+    .sort((a,b)=>gs[a].o/(gs[a].o+gs[a].n)-gs[b].o/(gs[b].o+gs[b].n));
+  h+=rule('📊','分野ごとの正答率')+`<div class="card">`;
+  if(!keys.length)h+=`<div class="small">まだ集計できるだけの記録がありません。テストを受けると、苦手な分野から順に並びます。</div>`;
+  else{
+    h+=keys.map(g=>{
+      const t=gs[g].o+gs[g].n,p=Math.round(gs[g].o/t*100);
+      return `<div class="barrow"><div class="lb"><span>${GROUPS[g].emo} ${GROUPS[g].label}</span><em>${p}%・${t}問</em></div>${barHtml(p)}</div>`;
+    }).join('');
+    h+=`<div class="small" style="margin-top:11px">上にあるものほど苦手。まずそこの授業を読み直すのが早い。</div>`;
+    h+=`<div class="field"><button class="btn ghost slim" data-gq="${keys[0]}" data-label="${esc(GROUPS[keys[0]].label)}の確認">✏️ いちばん苦手な「${GROUPS[keys[0]].label}」を8問やる</button></div>`;
+  }
+  h+=`</div>`;
+
+  const learned=Object.keys(S.box).length,fixed=Object.values(S.box).filter(x=>x.b===5).length;
+  h+=`<div class="card"><div class="statline" style="margin-top:0">
+    <div><b>${learned}</b><span>解いた問題</span></div>
+    <div><b>${fixed}</b><span>定着ずみ</span></div>
+    <div><b>${POOL.length}</b><span>全問題</span></div></div></div>`;
+
+  const list=S.hist.filter(e=>hf==='all'||(hf==='big'?e.big:!e.big));
+  h+=rule('🗒️','受けた記録')+`<div class="card">
+    <div class="field" style="margin-top:0"><label>表示する記録</label><select data-set="hf">
+      <option value="all" ${hf==='all'?'selected':''}>すべて（${S.hist.length}件）</option>
+      <option value="big" ${hf==='big'?'selected':''}>期末テストのみ</option>
+      <option value="mini" ${hf==='mini'?'selected':''}>小テストのみ</option></select></div>
+    <div class="hr"></div>`;
+  if(!list.length)h+=`<div class="small">該当する記録がありません。</div>`;
+  else h+=list.slice(0,20).map(e=>`<div class="hist">
+      <div><div style="font-weight:800">${esc(e.label)}</div><div class="small">${fmtDate(e.ts)}</div></div>
+      <div style="text-align:right"><div style="font-weight:800">${e.pct}点 ${mark(e.pct)}</div>
+      ${e.big?`<span class="badge ${e.pass?'p':'f'}">${e.pass?'合格':'不合格'}</span>`:'<span class="badge f">練習</span>'}</div></div>`).join('');
+  h+=`</div>`;
+
+  const last=S.hist.find(e=>e.big&&e.pass);
+  h+=rule('🎓','修了証')+`<div class="card">`;
+  if(!last)h+=`<div class="small">まだ合格した期末テストがありません。80点以上で発行できます。</div>`;
+  else{
+    h+=`<div class="small">${esc(last.label)}・${last.pct}点（${fmtDate(last.ts)}）の合格記録から発行します。</div>
+      <div class="field"><button class="btn green" data-act="issue" data-ts="${last.ts}" ${S.name?'':'disabled'}>🎓 修了証を発行する</button></div>
+      ${S.name?'':'<div class="warnline">⚠️ 先に上の欄に名前を記入してください</div>'}`;
+  }
+  if(ui.issued)h+=`<div class="hr"></div>
+    <div class="small" style="margin-bottom:8px">そのままコピーしてLINEやメールに貼れます。</div>
+    <textarea readonly id="issued">${esc(ui.issued)}</textarea>
+    <div class="field"><button class="btn slim" data-act="copy">コピーする</button></div>`;
+  h+=`</div>`;
+
+  h+=rule('🔎','修了証の照合')+`<div class="card">
+    <div class="small">受け取ったテキストを貼ると、書き換えられていないか確認できます。</div>
+    <div class="field"><textarea data-rec="verify" placeholder="受け取ったテキストをここに貼り付け">${esc(ui.vtext||'')}</textarea></div>
+    <button class="btn ghost slim" data-act="verify">照合する</button>
+    ${ui.vres?`<div class="exp" style="margin-top:12px"><span class="verdict ${ui.vok?'vok':'vng'}">${ui.vok?'⭕️ 一致しました':'❌ 一致しません'}</span><div style="margin-top:6px">${esc(ui.vres)}</div></div>`:''}</div>`;
+
+  h+=rule('💾','持ち出しと持ち込み')+`<div class="card">
+    <div class="small">進み具合はこの端末の中だけに残ります。機種変更の前に書き出してください。</div>
+    <div class="grid2" style="margin-top:12px"><button class="btn ghost slim" data-act="export">書き出す</button><button class="btn ghost slim" data-act="importopen">読み込む</button></div>
+    ${ui.exp?`<div class="field"><textarea readonly id="expbox">${esc(ui.exp)}</textarea><button class="btn slim" data-act="copyexp" style="margin-top:8px">コピーする</button></div>`:''}
+    ${ui.impopen?`<div class="field"><textarea data-rec="imp" placeholder="NUT2で始まるテキストを貼り付け">${esc(ui.imptext||'')}</textarea><button class="btn slim" data-act="import" style="margin-top:8px">この内容で上書きする</button></div>`:''}</div>`;
+  h+=`<div class="sec"><button class="btn ghost slim" data-act="reset" style="color:var(--red);border-color:var(--red)">学習データを初期化する</button></div>`;
+  return h;
+}
+
+function issueText(ts){
+  const e=S.hist.find(x=>x.ts===ts);if(!e)return '';
+  const name=S.name||'（氏名未記入）',date=fmtDate(e.ts);
+  return ['CHART 栄養学学校 修了証','氏名：'+name,'試験：'+e.label,
+    '得点：'+e.score+'/'+e.total+'（'+e.pct+'点）','判定：'+(e.pass?'合格':'不合格'),'日時：'+date,
+    '検証コード：'+code(`${name}|${e.label}|${e.score}/${e.total}|${date}`)].join('\n');
+}
+function verifyText(t){
+  const g=re=>{const m=t.match(re);return m?m[1].trim():null;};
+  const name=g(/氏名：(.+)/),label=g(/試験：(.+)/),sc=t.match(/得点：\s*(\d+)\/(\d+)/),date=g(/日時：(.+)/),cd=g(/検証コード：(.+)/);
+  if(!name||!label||!sc||!date||!cd)return{ok:false,msg:'必要な行が読み取れません。テキスト全体をそのまま貼り付けてください。'};
+  return code(`${name}|${label}|${sc[1]}/${sc[2]}|${date}`)===cd
+    ?{ok:true,msg:`${name}／${label}／${sc[1]}/${sc[2]}／${date}　の内容で発行された修了証です。`}
+    :{ok:false,msg:'内容と検証コードが合いません。書き換えられているか、発行したときの氏名がちがいます。'};
+}
+
+/* ============================================================
+   11. 操作
+   ============================================================ */
+document.addEventListener('click',e=>{
+  const t=e.target.closest('[data-ch],button');if(!t)return;const d=t.dataset;
+  if(d.tab){if(tab==='quiz'&&sess&&!sess.saved&&sess.ans.length&&!confirm('テストをやめますか？'))return;sess=null;go(d.tab);return;}
+  if(d.act==='back'){if(ui.dkey){const x=byKey(ui.dkey);ui.dkey=null;if(!ui.dkw&&!ui.dg&&!ui.dcore)ui.dg=x?x.g:null;}
+    else if(ui.dkw)ui.dkw='';else if(ui.dcore)ui.dcore=0;else if(ui.dg)ui.dg=null;else if(ui.ch)ui.ch=null;
+    render();scrollTo(0,0);return;}
+  if(d.act==='rev'){startReview();return;}
+  if(d.act==='dcore'){ui={dcore:1};tab='dex';render();scrollTo(0,0);return;}
+  if(d.act==='gotob'){go('book');return;}
+  if(d.act==='gotod'){go('dex');return;}
+  if(d.act==='gotot'){tab='train';ui={tmode:'big',tlv:1};render();scrollTo(0,0);return;}
+  if(d.act==='home'){sess=null;go('home');return;}
+  if(d.dg){ui.dg=d.dg;ui.dkey=null;render();scrollTo(0,0);return;}
+  if(d.dk){tab='dex';ui={dkey:d.dk};render();scrollTo(0,0);return;}
+  if(d.ch){tab='book';ui={ch:d.ch};render();scrollTo(0,0);return;}
+  if(d.ids){startIds(d.ids.split(','),d.label);return;}
+  if(d.gq){startGroup(d.gq,d.label);return;}
+  if(d.mini){startQuiz(+d.mini,'all','mini','each');return;}
+  if(d.act==='start'){startQuiz(ui.tlv||1,ui.tg||'all',ui.tmode||'mini',ui.tfb||'each');return;}
+  if(d.pick!==undefined){
+    const s=sess;if(s.picked!==undefined)return;
+    const q=s.qs[s.i],picked=s.opts.list[+d.pick],ok=picked===q.a;
+    s.picked=picked;s.ans.push({q,picked,ok});record(q.id,ok);save();renderQuiz();return;}
+  if(d.act==='next'){sess.i++;sess.picked=undefined;sess.opts=null;
+    if(sess.i>=sess.qs.length)renderResult();else{renderQuiz();scrollTo(0,0);}return;}
+  if(d.act==='quit'){if(confirm('やめて結果を見ますか？')){if(sess.ans.length)renderResult();else{sess=null;go('home');}}return;}
+  if(d.act==='retry'){if(sess.lv)startQuiz(sess.lv,'all',sess.big?'big':'mini',sess.fb);else startIds(sess.qs.map(q=>q.id),sess.label);return;}
+  if(d.act==='issue'){ui={issued:issueText(+d.ts)};tab='rec';render();scrollTo(0,0);return;}
+  if(d.act==='copy'||d.act==='copyexp'){
+    const el=document.getElementById(d.act==='copy'?'issued':'expbox');
+    el.select();el.setSelectionRange(0,99999);
+    try{navigator.clipboard?navigator.clipboard.writeText(el.value):document.execCommand('copy');
+      t.textContent='コピーしました';setTimeout(()=>t.textContent='コピーする',1600);}catch(err){document.execCommand('copy');}
+    return;}
+  if(d.act==='verify'){const r=verifyText(ui.vtext||'');ui.vok=r.ok;ui.vres=r.msg;render();return;}
+  if(d.act==='export'){const j=JSON.stringify(S);ui.exp='NUT2:'+b64e(j)+':'+fnv(j).toString(16).toUpperCase();render();return;}
+  if(d.act==='importopen'){ui.impopen=!ui.impopen;render();return;}
+  if(d.act==='import'){
+    const m=(ui.imptext||'').trim().match(/^NUT2:([A-Za-z0-9+/=]+):([0-9A-F]+)$/);
+    if(!m){alert('NUT2形式のテキストではありません。');return;}
+    try{const json=b64d(m[1]);
+      if(fnv(json).toString(16).toUpperCase()!==m[2]){alert('データが壊れています。コピーし直してください。');return;}
+      if(!confirm('いまの学習データを上書きします。よろしいですか？'))return;
+      S={...DEF,...JSON.parse(json)};save();ui={};render();alert('読み込みました。');
+    }catch(err){alert('読み込めませんでした。');}return;}
+  if(d.act==='reset'){if(confirm('すべての記録を消します。元に戻せません。')){S={...DEF};save();ui={};render();}return;}
+});
+document.addEventListener('change',e=>{const d=e.target.dataset;
+  if(d.set==='fs'){S.fs=e.target.value;save();applyFs();render();}
+  if(d.set==='hf'){ui.hf=e.target.value;render();}
+  if(d.dex==='furi'){S.furi=e.target.value==='1';save();render();}
+  if(d.t==='lv'){ui.tlv=+e.target.value;render();}
+  if(d.t==='mode'){ui.tmode=e.target.value;render();}
+  if(d.t==='g')ui.tg=e.target.value;
+  if(d.t==='fb')ui.tfb=e.target.value;
+});
+document.addEventListener('input',e=>{const d=e.target.dataset;
+  if(d.dex==='kw'){ui.dkw=e.target.value;clearTimeout(ui.tm);
+    ui.tm=setTimeout(()=>{const v=ui.dkw;render();const el=document.querySelector('[data-dex="kw"]');
+      if(el){el.value=v;el.focus();el.setSelectionRange(v.length,v.length);}},300);}
+  if(d.rec==='name'){S.name=e.target.value.slice(0,20);save();
+    const n=document.getElementById('idnm');
+    if(n){n.textContent=S.name||'名前 未記入';n.className='nm'+(S.name?'':' empty');}
+    const st=document.getElementById('nmst');
+    if(st)st.innerHTML=nameStatus();}
+  if(d.rec==='verify')ui.vtext=e.target.value;
+  if(d.rec==='imp')ui.imptext=e.target.value;
+});
+render();
+</script>
+</body>
+</html>
