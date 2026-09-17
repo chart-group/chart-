@@ -342,6 +342,8 @@ rt{font-size:.5em;font-weight:400;letter-spacing:0;color:var(--bone2);opacity:.9
 .lvcard.on{border-color:var(--ochre-d)}
 .lvhead{display:flex;align-items:baseline;gap:9px;margin-bottom:2px}
 .lvname{font-family:var(--jpd);font-size:17px;font-weight:700}
+.lvsub{font-size:12px;color:var(--ochre);letter-spacing:.06em;margin:1px 0 6px}
+.ok-badge{font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:var(--sage);border:1px solid var(--sage-d);border-radius:999px;padding:2px 7px;margin-left:8px;vertical-align:middle}
 .lvname .st{font-family:var(--disp);font-style:italic;font-size:12px;color:var(--ochre);margin-left:6px}
 .lvdesc{font-size:12.5px;color:var(--bone);line-height:1.7;margin-bottom:9px}
 .lvmeta{margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--bone2);white-space:nowrap}
@@ -2188,8 +2190,8 @@ function simScore(a,b){
 }
 const _kj=s=>new Set((String(s).match(/[\u4E00-\u9FFF]/g)||[]));
 function ovK(a,b){const A=_kj(a);let n=0;_kj(b).forEach(c=>{if(A.has(c))n++});return n}
-/* 選択肢どうしを似せる度合い。初級は似せず消去法を効かせ、上級は極限まで似せる */
-const HOMO_LV={1:0,2:3,3:7};
+/* 選択肢どうしを似せる度合い。ファーストは似せず消去法を効かせ、フォースは極限まで似せる */
+const HOMO_LV={1:0,2:3,3:7,4:10};
 function cands(m,valOf,ban,lv){
  const _v=lv||LVL, W=(LV[_v]||LV[2]).sim, HOMO=HOMO_LV[_v]!==undefined?HOMO_LV[_v]:3;
  const L=valOf?valOf(m).length:0, OT=valOf?ovK(m.n,valOf(m)):0;
@@ -2197,9 +2199,11 @@ function cands(m,valOf,ban,lv){
   .map(x=>({x,s:simScore(m,x)*W-(valOf?Math.abs(valOf(x).length-L)/6:0)
     -(valOf?Math.abs(ovK(m.n,valOf(x))-OT)*3:0)
     +(valOf?ovK(valOf(m),valOf(x))*HOMO:0)+Math.random()*1.2}))
-  .sort((a,b)=>b.s-a.s).slice(0,12).map(o=>o.x);
+  .sort((a,b)=>b.s-a.s).slice(0,16).map(o=>o.x);
 }
-function fourOpts(ans,list,valOf){
+const OPTN=()=>((LV[LVL]||LV[2]).opt||4);
+function nOpts(ans,list,valOf,N){
+ N=N||4;
  if(!list||!list.length) list=[];
  // list arrives ranked by anatomical similarity; keep that order dominant and
  // use length only to break near-ties, so a knee question never offers an arm muscle
@@ -2207,8 +2211,13 @@ function fourOpts(ans,list,valOf){
  list.forEach((x,r)=>{const v=valOf(x); if(!seen.has(v)){seen.add(v);
    cand.push({v,k:r+Math.abs(v.length-ans.length)*0.35+Math.random()*0.8})}});
  cand.sort((a,b)=>a.k-b.k);
- const out=[ans,...cand.slice(0,3).map(o=>o.v)];
- while(out.length<4){const f=pick(M,1)[0], v=valOf(f); if(!out.includes(v))out.push(v)}
+ const out=[ans,...cand.slice(0,N-1).map(o=>o.v)];
+ let g=0;
+ while(out.length<N&&g++<80){                       // 足りなければ元の候補列から補う
+  const f=pick(list.length?list:M,1)[0];
+  let v; try{ v=valOf(f) }catch(e){ continue }
+  if(v&&!out.includes(v))out.push(v);
+ }
  return shuffle(out);
 }
 
@@ -2218,13 +2227,28 @@ const BASIC=["胸鎖乳突筋","三角筋","棘下筋","大円筋","僧帽筋","
  "脊柱起立筋","腹直筋","外腹斜筋","上腕二頭筋","上腕三頭筋","腕橈骨筋","前腕屈筋群","前腕伸筋群",
  "大殿筋","中殿筋","腸腰筋","大腿筋膜張筋","内転筋群","大腿直筋","内側広筋","外側広筋",
  "大腿二頭筋","半腱様筋","縫工筋","腓腹筋","ヒラメ筋","前脛骨筋","腓骨筋群","横隔膜","腹横筋"];
+/* 段位。問われ方・範囲・誤答の紛らわしさ・選択肢の数の4つで難度を上げる */
 const LV={
- 1:{n:"初級",d:"名前を言われて答える",kinds:["origin","insert","nerve"],
-    pool:()=>M.filter(m=>BASIC.includes(m.n)), sim:-6, lm:0, tq:0, pass:80, s:10, l:30},
- 2:{n:"中級",d:"所見から筋を同定する",kinds:["origin","insert","nerve","action","reverse"],
-    pool:()=>M, sim:6, lm:.2, tq:0, pass:80, s:10, l:40},
- 3:{n:"上級",d:"臨床像から絞り込む",kinds:KINDS,
-    pool:()=>M, sim:9, lm:.2, tq:.15, pass:85, s:10, l:50}
+ 1:{n:"ファースト",sub:"現場デビュー",rn:"I",
+    d:"名前を言われて、起始・停止・支配神経を答える",
+    scope:"表層でさわれる主要筋 34",
+    kinds:["origin","insert","nerve"], pool:()=>M.filter(m=>BASIC.includes(m.n)),
+    sim:-6, lm:0, tq:0, tm:0, opt:4, pass:80, s:10, l:30},
+ 2:{n:"セカンド",sub:"一人で担当を持つ",rn:"II",
+    d:"作用や起始停止から、筋そのものを同定する",
+    scope:"全66筋 ＋ 骨のランドマーク",
+    kinds:["origin","insert","nerve","action","reverse"], pool:()=>M,
+    sim:6, lm:.15, tq:0, tm:0, opt:4, pass:80, s:10, l:40},
+ 3:{n:"サード",sub:"指導の質を上げる",rn:"III",
+    d:"臨床所見から、原因となる筋を絞り込む",
+    scope:"全66筋 ＋ 骨17 ＋ 腱・靭帯25",
+    kinds:KINDS, pool:()=>M,
+    sim:9, lm:.2, tq:.15, tm:0, opt:4, pass:85, s:10, l:50},
+ 4:{n:"フォース",sub:"教える側に回る",rn:"IV",
+    d:"5択・最も紛らわしい選択肢から選び抜く",
+    scope:"全範囲 ＋ 付着部の名前の由来",
+    kinds:KINDS, pool:()=>M,
+    sim:13, lm:.2, tq:.15, tm:.12, opt:5, pass:90, s:15, l:60}
 };
 let LVL=1, QZ_LV=1;
 const LMS=[]; BONES.forEach(b=>b.lm.forEach(l=>LMS.push({b:b.n,n:l.n,m:l.m,a:l.a})));
@@ -2235,22 +2259,32 @@ function makeLMQ(){
  if(wantBone) pool=LMS.filter(l=>!l.b.split(/[（）・]/).some(w=>w.length>1&&l.n.includes(w)));
  const L=pick(pool.length?pool:LMS,1)[0];
  if(wantBone&&pool.length){
-  const opts=fourOpts(L.b, shuffle(BONES.filter(b=>b.n!==L.b)), b=>b.n);
+  const opts=nOpts(L.b, shuffle(BONES.filter(b=>b.n!==L.b)), b=>b.n, OPTN());
   return {m:L.b,kd:"骨のランドマーク",q:"「"+L.n+"」はどの骨のランドマーク？",sub:"",ans:L.b,opts};
  }
  const A=/^—/.test(L.a)?pick(LMA,1)[0]:L;
  const others=shuffle(LMA.filter(x=>x.a!==A.a&&x.n!==A.n));
- const opts=fourOpts(A.a, others, x=>x.a);
+ const opts=nOpts(A.a, others, x=>x.a, OPTN());
  return {m:A.b,kd:"付着部",q:"「"+A.n+"」に付くのは？",sub:A.m,ans:A.a,opts};
 }
 
+function makeTermQ(){
+ const t=pick(TERMS,1)[0];
+ const useM=Math.random()<0.55;
+ if(useM){
+  const opts=nOpts(CUT(t.m,44), shuffle(TERMS.filter(x=>x.t!==t.t)), x=>CUT(x.m,44), OPTN());
+  return {m:t.t,kd:"用語の意味",q:"「"+t.t+"」が示すのは？",sub:"",ans:CUT(t.m,44),opts};
+ }
+ const opts=nOpts(t.t, shuffle(TERMS.filter(x=>x.t!==t.t)), x=>x.t, OPTN());
+ return {m:t.t,kd:"用語の同定",q:"この説明にあたる用語は？",sub:CUT(t.m,52),ans:t.t,opts};
+}
 function makeTQ(){
  const t=pick(TENDONS,1)[0];
  const useFn=Math.random()<0.5;
  const V=x=>CUT(useFn?x.fn:x.cl,44);
  const others=shuffle(TENDONS.filter(x=>x.n!==t.n&&x.st===t.st))
    .concat(shuffle(TENDONS.filter(x=>x.n!==t.n&&x.st!==t.st)));
- const opts=fourOpts(t.n, others, x=>x.n);
+ const opts=nOpts(t.n, others, x=>x.n, OPTN());
  return {m:t.n, kd:useFn?"腱・靭帯の役割":"腱・靭帯の障害",
    q:useFn?"次の役割をもつ構造は？":"次の障害が起こる構造は？", sub:V(t), ans:t.n, opts};
 }
@@ -2263,27 +2297,27 @@ function makeQ(m,pool,forced,lv){
   kd=k==="origin"?"起始":k==="insert"?"停止":"支配神経";
   q=m.n+"の"+kd+"は？";
   const V=x=>CUT(x[f]); ans=V(m);
-  opts=fourOpts(ans,cands(m,V,null,lv),V);
-  if(new Set(opts).size<4) opts=fourOpts(m[f],cands(m,x=>x[f],null,lv),x=>x[f]), ans=m[f];
+  opts=nOpts(ans,cands(m,V,null,lv),V,OPTN());
+  if(new Set(opts).size<4) opts=nOpts(m[f],cands(m,x=>x[f],null,lv,OPTN()),x=>x[f]), ans=m[f];
  }
  else if(k==="action"){kd="作用";
   const shown=pick(m.a,Math.min(2,m.a.length));
   sub="・"+shown.join("\n・"); ans=m.n; q="この作用をもつ筋は？";
   const ban=x=>x.a.some(a=>shown.some(s=>s.includes(a)||a.includes(s)));
-  opts=fourOpts(m.n,cands(m,x=>x.n,ban,lv),x=>x.n);
+  opts=nOpts(m.n,cands(m,x=>x.n,ban,lv),x=>x.n,OPTN());
  }
  else if(k==="reverse"){kd="起始停止から同定";q="この起始・停止をもつ筋は？";
   sub="起始："+CUT(m.o,40)+"\n停止："+CUT(m.i,40); ans=m.n;
-  opts=fourOpts(m.n,cands(m,x=>x.n,null,lv),x=>x.n);
+  opts=nOpts(m.n,cands(m,x=>x.n,null,lv),x=>x.n,OPTN());
  }
  else if(k==="trouble"){kd="臨床";q="次の所見に最も関与する筋は？";sub=m.p;ans=m.n;
   const tok=m.p.split(/[、。・（）]/).filter(t=>t.length>=3);
   const ban=x=>tok.some(t=>x.p.includes(t));
-  opts=fourOpts(m.n,cands(m,x=>x.n,ban,lv),x=>x.n);
+  opts=nOpts(m.n,cands(m,x=>x.n,ban,lv),x=>x.n,OPTN());
  }
  else {kd="セルフケア";q=m.n+"のセルフケアとして適切なのは？";
   const V=x=>FIRST(x.c); ans=V(m);
-  opts=fourOpts(ans,cands(m,x=>FIRST(x.c),null,lv),V);
+  opts=nOpts(ans,cands(m,x=>FIRST(x.c),null,lv),V,OPTN());
  }
  return {m:m.n,kd,q,sub,ans,opts};
 }
@@ -2326,13 +2360,21 @@ function buildQuiz(list,count,title,lv){
  if(!small&&count>=10&&cfg.lm){                       // 骨のランドマーク
   const n=Math.max(2,Math.round(count*cfg.lm)), slots=shuffle([...qs.keys()]).slice(0,n), seen=new Set();
   slots.forEach(i=>{let q,t=0; do{q=makeLMQ();t++}while(seen.has(q.q)&&t<10);
-   seen.add(q.q); if(q.opts.length===4&&!seenQ.has(q.q+"|"+(q.sub||""))){qs[i]=q;seenQ.add(q.q+"|"+(q.sub||""))}});
+   seen.add(q.q); if(q.opts.length===cfg.opt&&!seenQ.has(q.q+"|"+(q.sub||""))){qs[i]=q;seenQ.add(q.q+"|"+(q.sub||""))}});
  }
- if(!small&&count>=10&&cfg.tq){                       // 腱・靭帯（上級のみ）
+ if(!small&&count>=10&&cfg.tm){                       // 用語（フォースのみ）
+  const n=Math.max(2,Math.round(count*cfg.tm)), free=qs.map((q,i)=>i)
+    .filter(i=>!["骨のランドマーク","付着部"].includes(qs[i].kd));
+  const slots=shuffle(free).slice(0,n), seen=new Set();
+  slots.forEach(i=>{let q,t=0; do{q=makeTermQ();t++}while(seen.has(q.q+q.sub)&&t<10);
+   seen.add(q.q+q.sub);
+   if(q.opts.length===cfg.opt&&!seenQ.has(q.q+"|"+(q.sub||""))){qs[i]=q;seenQ.add(q.q+"|"+(q.sub||""))}});
+ }
+ if(!small&&count>=10&&cfg.tq){                       // 腱・靭帯（サード以上）
   const n=Math.max(2,Math.round(count*cfg.tq)), used=qs.map((q,i)=>i).filter(i=>qs[i].kd!=="骨のランドマーク"&&qs[i].kd!=="付着部");
   const slots=shuffle(used).slice(0,n), seen=new Set();
   slots.forEach(i=>{let q,t=0; do{q=makeTQ();t++}while(seen.has(q.sub)&&t<10);
-   seen.add(q.sub); if(q.opts.length===4&&!seenQ.has(q.q+"|"+(q.sub||""))){qs[i]=q;seenQ.add(q.q+"|"+(q.sub||""))}});
+   seen.add(q.sub); if(q.opts.length===cfg.opt&&!seenQ.has(q.q+"|"+(q.sub||""))){qs[i]=q;seenQ.add(q.q+"|"+(q.sub||""))}});
  }
  QZ_LV=LVL;
  QZ={title,qs,i:0,ok:0,combo:0,best:0,log:[],locked:false};
@@ -2414,12 +2456,15 @@ function vHome(){
    <div class="rvlg">${bc.map((c,i)=>`<span><b style="background:${["#C4383F","#D9764A","#D9A441","#8FA85E","#5FA37E"][i]}"></b>${["1日","3日","7日","16日","35日"][i]} ${c}</span>`).join("")}</div>
    ${due.length?`<button class="btn pri" data-act="rev">${rb("復習をはじめる")}　<span style="font-family:var(--mono);font-size:11px;opacity:.8">${Math.min(20,due.length)} 問</span></button>`
      :`<div class="rvdone">${rb("今日の復習は終わりました")}</div>`}</div>`})()}
- <div class="sec-head"><h2>${rb("テストに挑む")}</h2><span class="eyebrow">3 levels</span></div>
- ${[1,2,3].map(v=>{const L=LV[v], bs=(ST.lv||{})["s"+v]||0, bl=(ST.lv||{})["l"+v]||0;
-  return `<div class="lvcard${bs>=L.pass&&bl>=L.pass?" on":""}">
-   <div class="lvhead"><div class="lvname">${rb(L.n)}<span class="st">${["I","II","III"][v-1]}</span></div>
-    <div class="lvmeta">${rb("合格")} ${L.pass}%</div></div>
-   <div class="lvdesc">${rb(L.d)}　／　${rb("範囲")} ${L.pool().length}${rb("部位")}${v===3?" ＋ "+rb("骨")+"・"+rb("腱"):""}</div>
+ <div class="sec-head"><h2>${rb("テストに挑む")}</h2><span class="eyebrow">4 ranks</span></div>
+ ${[1,2,3,4].map(v=>{const L=LV[v], bs=(ST.lv||{})["s"+v]||0, bl=(ST.lv||{})["l"+v]||0;
+  const cleared=bl>=L.pass;
+  return `<div class="lvcard${cleared?" on":""}">
+   <div class="lvhead"><div class="lvname">${rb(L.n)}<span class="st">${L.rn}</span>
+     ${cleared?`<span class="ok-badge">${rb("合格済")}</span>`:""}</div>
+    <div class="lvmeta">${rb("合格")} ${L.pass}%${L.opt>4?" ／ "+L.opt+rb("択"):""}</div></div>
+   <div class="lvsub">${rb(L.sub)}</div>
+   <div class="lvdesc">${rb(L.d)}<br><span style="color:var(--bone2)">${rb("範囲")}　${rb(L.scope)}</span></div>
    <div class="lvbtns">
     <button data-act="lv" data-v="${v}" data-k="s">${rb("小テスト")}<small>${L.s} 問${bs?" ／ 最高 ":""}${bs?`<b>${bs}%</b>`:""}</small></button>
     <button data-act="lv" data-v="${v}" data-k="l">${rb("大テスト")}<small>${L.l} 問${bl?" ／ 最高 ":""}${bl?`<b>${bl}%</b>`:""}</small></button>
@@ -2601,7 +2646,7 @@ function vQuiz(){
   <div class="qtext">${rb(q.q)}</div>
   ${q.sub?`<div class="qsub">${rb(q.sub)}</div>`:""}
   <div class="opts" id="opts">${q.opts.map((o,i)=>
-   `<button class="opt" data-o="${i}"><span class="ok">${["i","ii","iii","iv"][i]}</span><span>${esc(o)}</span></button>`).join("")}</div>
+   `<button class="opt" data-o="${i}"><span class="ok">${["i","ii","iii","iv","v"][i]}</span><span>${esc(o)}</span></button>`).join("")}</div>
   <div id="feed"></div>
  </section>`;
 }
@@ -2654,7 +2699,8 @@ function resultText(){
  const code=stamp([QZ.key||"free",n,ok,when.slice(0,10)]);
  const L=[];
  L.push(LINE,"CHART解剖学　受験結果",LINE);
- L.push("級　　　"+(lv?lv.n+"（範囲 "+lv.pool().length+"部位）":QZ.title));
+ L.push("段位　　"+(lv?lv.n+"（"+lv.sub+"）":QZ.title));
+ if(lv)L.push("範囲　　"+lv.scope);
  L.push("種別　　"+kind+"　"+n+"問");
  L.push("得点　　"+ok+" / "+n+"　（"+pct+"%）");
  L.push("判定　　"+(need?(passed?"◎ 合格":"× 不合格")+"　合格ライン "+need+"%":"—"));
@@ -2795,6 +2841,21 @@ function answer(idx){
   else if(i===idx)b.classList.add("wrong");
  });
  const m=byName(q.m), bo=byBone(q.m), td=byTend(q.m);
+ const tm=TERMS.find(x=>x.t===q.m);
+ const nextBtn=`<div class="btnrow"><button class="btn ${ok?"gold":"pri"}" data-act="next">${QZ.i+1<QZ.qs.length?"次の問題 →":"結果を見る →"}</button></div>`;
+ if(tm){
+  $("#feed").innerHTML=`<div class="feed ${ok?"ok":"ng"}">
+   <div class="fh">${rb(ok?"正解":"不正解")}　${rb(tm.t)}</div>
+   <div class="ft"><b>${rb("意味")}</b> ${rb(tm.m)}<br><b>${rb("例")}</b> ${rb(tm.ex)}<br><b>${rb("なぜ")}</b> ${rb(tm.why)}</div>
+   ${nextBtn}</div>`;
+  $("#feed").scrollIntoView({behavior:"smooth",block:"nearest"}); return;
+ }
+ if(!m&&!bo&&!td){                                   // 未知の対象でも止まらない
+  $("#feed").innerHTML=`<div class="feed ${ok?"ok":"ng"}">
+   <div class="fh">${rb(ok?"正解":"不正解")}</div>
+   <div class="ft"><b>${rb("正解")}</b> ${rb(q.ans)}</div>${nextBtn}</div>`;
+  $("#feed").scrollIntoView({behavior:"smooth",block:"nearest"}); return;
+ }
  if(td){
   $("#feed").innerHTML=`<div class="feed ${ok?"ok":"ng"}">
    <div class="fh">${rb(ok?"正解":"不正解")}　${rb(td.n)}</div>
@@ -2879,7 +2940,7 @@ document.addEventListener("input",e=>{
 });
 document.addEventListener("keydown",e=>{
  if(e.key==="Enter"||e.key===" "){const f=document.activeElement;if(f&&f.classList.contains("reg")){e.preventDefault();f.click()}}
- if(VIEW.name==="quiz"&&!QZ.locked&&["1","2","3","4"].includes(e.key)){const b=document.querySelector(`.opt[data-o="${+e.key-1}"]`);if(b)b.click()}
+ if(VIEW.name==="quiz"&&!QZ.locked&&["1","2","3","4","5"].includes(e.key)){const b=document.querySelector(`.opt[data-o="${+e.key-1}"]`);if(b)b.click()}
 });
 $("#back").addEventListener("click",back);
 const sheet=$("#sheet");
