@@ -95,6 +95,8 @@ input[type=text]:focus,textarea:focus,select:focus{border-color:var(--tif)}
 select{background-image:linear-gradient(45deg,transparent 50%,var(--tifD) 50%),linear-gradient(135deg,var(--tifD) 50%,transparent 50%);
   background-position:calc(100% - 19px) 50%,calc(100% - 13px) 50%;background-size:7px 7px,7px 7px;background-repeat:no-repeat;padding-right:38px}
 textarea{min-height:104px;font-size:.8em;line-height:1.6;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.fixedval{background:var(--pale);border:2px solid var(--tifL);border-radius:12px;padding:13px;
+  font-weight:800;text-align:center;color:var(--tifD)}
 .ex{margin-top:7px;background:var(--pale);border-left:4px solid var(--tifL);border-radius:0 8px 8px 0;
   padding:7px 11px;font-size:.78em;color:var(--ink2)}
 .ex b{color:var(--tifD);font-weight:800;margin-right:8px;font-size:.92em}
@@ -164,7 +166,7 @@ ruby rt{font-size:.46em;color:var(--ink2);font-weight:400}
 
 /* ===== テスト ===== */
 .qnum{font-size:.82em;color:var(--ink);font-weight:800}
-.qtext{font-size:1.14em;font-weight:800;line-height:1.68;margin:8px 0 16px}
+.qtext{font-size:1.04em;font-weight:800;line-height:1.62;margin:4px 0 13px}
 .gauge{height:12px;background:var(--pale);border:1.5px solid var(--line);border-radius:999px;overflow:hidden}
 .gauge i{display:block;height:100%;background:var(--tif)}
 .opt{display:block;width:100%;text-align:left;background:var(--card);border:2px solid var(--line);border-radius:12px;
@@ -176,6 +178,9 @@ ruby rt{font-size:.46em;color:var(--ink2);font-weight:400}
 .opt.ng{border-color:var(--red);background:var(--card2)}
 .opt.ng .mk{background:var(--red);color:#fff;border-color:var(--red)}
 .exp{margin-top:15px;background:var(--card2);border:2px solid var(--line);border-radius:12px;padding:14px;font-size:.92em}
+.exp.inline{margin-top:8px;margin-bottom:4px;border-color:var(--tif);background:var(--pale);
+  box-shadow:0 2px 0 var(--line)}
+.exp.inline .btn{box-shadow:0 3px 0 rgba(4,80,77,.3)}
 .verdict{font-weight:800;font-size:1.04em}
 .vok{color:var(--green)} .vng{color:var(--red)}
 
@@ -216,7 +221,9 @@ ruby rt{font-size:.46em;color:var(--ink2);font-weight:400}
 .graderow .sc{font-size:1.35em;font-weight:800;min-width:2.6em;text-align:right}
 .graderow .mk{font-size:1.2em;font-weight:800;width:1.3em;text-align:center}
 .graderow .bar{flex:1}
-.hist{display:flex;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1.5px solid var(--line);font-size:.9em}
+button.hist{width:100%;text-align:left;background:none}
+.hist{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:13px 2px;
+  border-bottom:1.5px solid var(--line);font-size:.9em;color:var(--ink)}
 .hist:last-child{border-bottom:none}
 .badge{display:inline-block;font-size:.72em;font-weight:800;border-radius:999px;padding:1px 9px}
 .badge.p{background:var(--green);color:#fff} .badge.f{background:var(--pale);color:var(--ink2)}
@@ -744,7 +751,7 @@ const ICON={
  recall:'📷',behavior:'🧭',scope:'🚧',whey:'🥤',casein:'🌙',soy:'🌱',creatine:'🗿',caffeine:'☕',doping:'✅'
 };
 const GROUPS={
- g1:{label:'エネルギー源と三大栄養素',emo:'🍚',lead:'体を動かし、つくる材料',cats:['三大栄養素','脂質の種類','タンパク質の種類','タンパク質','数値の基本','脂質']},
+ g1:{label:'エネルギー源と三大栄養素',emo:'🍚',lead:'体を動かし、つくる材料',cats:['三大栄養素','脂質の種類','タンパク質の種類','タンパク質','数値の基本','脂質','食品の目安']},
  g2:{label:'ビタミンとミネラル',emo:'🥕',lead:'少しでも欠けると止まる',cats:['ビタミン','ミネラル','ビタミン・ミネラル']},
  g3:{label:'代謝と身体組成',emo:'🔥',lead:'エネルギーの流れと測り方',cats:['エネルギー代謝','ホルモン','身体組成','エネルギー収支','その他','水分']},
  g4:{label:'食事設計と体重管理',emo:'🍱',lead:'減量・増量・対象別の設計',cats:['食事設計','食品の指標','減量設計','増量設計','ケース対応']},
@@ -1144,6 +1151,195 @@ const isCoreEntry=e=>e.kind==='n'?CORE_N.includes(e.i):CORE_T.includes(e.i);
 
 
 /* ============================================================
+   拡張5：現場に出る前の「実物」と「口に出す言葉」
+   ============================================================ */
+/* --- 食品の目安（手に取るものに直す） --- */
+const FOOD=[
+{c:'肉',n:'鶏むね肉（皮なし）',u:'100g',p:23,k:110},
+{c:'肉',n:'鶏ささみ',u:'100g',p:23,k:98},
+{c:'肉',n:'鶏もも肉（皮なし）',u:'100g',p:19,k:113},
+{c:'肉',n:'鶏もも肉（皮つき）',u:'100g',p:17,k:190},
+{c:'肉',n:'豚ロース',u:'100g',p:19,k:248},
+{c:'肉',n:'豚ヒレ',u:'100g',p:22,k:118},
+{c:'肉',n:'牛もも赤身',u:'100g',p:21,k:130},
+{c:'肉',n:'牛バラ',u:'100g',p:13,k:381},
+{c:'肉',n:'合いびき肉',u:'100g',p:18,k:250},
+{c:'肉',n:'ロースハム',u:'2枚 40g',p:7,k:78},
+{c:'肉',n:'サラダチキン',u:'1個 110g',p:24,k:115},
+{c:'魚',n:'さけ（生）',u:'1切れ 80g',p:18,k:106},
+{c:'魚',n:'さば（生）',u:'1切れ 80g',p:16,k:169},
+{c:'魚',n:'さば水煮缶',u:'1缶 190g',p:38,k:340},
+{c:'魚',n:'ツナ水煮缶',u:'1缶 70g',p:11,k:50},
+{c:'魚',n:'まぐろ赤身',u:'刺身5切れ 80g',p:21,k:100},
+{c:'魚',n:'ぶり',u:'1切れ 80g',p:17,k:178},
+{c:'魚',n:'しらす干し',u:'大さじ2 15g',p:4,k:17},
+{c:'卵・乳',n:'卵',u:'1個 60g',p:7,k:85},
+{c:'卵・乳',n:'牛乳',u:'コップ1杯 200ml',p:7,k:134},
+{c:'卵・乳',n:'ギリシャヨーグルト',u:'1個 100g',p:10,k:65},
+{c:'卵・乳',n:'プレーンヨーグルト',u:'1個 100g',p:4,k:62},
+{c:'卵・乳',n:'プロセスチーズ',u:'1個 18g',p:4,k:57},
+{c:'豆',n:'木綿豆腐',u:'半丁 150g',p:10,k:110},
+{c:'豆',n:'納豆',u:'1パック 45g',p:7,k:88},
+{c:'豆',n:'豆乳（無調整）',u:'コップ1杯 200ml',p:7,k:92},
+{c:'豆',n:'枝豆（さや無し）',u:'50g',p:6,k:63},
+{c:'主食',n:'白ごはん',u:'茶碗1杯 150g',p:4,k:234},
+{c:'主食',n:'白ごはん（小盛り）',u:'100g',p:3,k:156},
+{c:'主食',n:'食パン',u:'6枚切り1枚 60g',p:5,k:149},
+{c:'主食',n:'うどん（ゆで）',u:'1玉 230g',p:6,k:220},
+{c:'主食',n:'パスタ（ゆで）',u:'1人前 250g',p:13,k:373},
+{c:'主食',n:'さつまいも',u:'中1本 200g',p:2,k:258},
+{c:'主食',n:'オートミール',u:'30g',p:4,k:105},
+{c:'サプリ',n:'ホエイプロテイン',u:'1杯 30g',p:24,k:120},
+{c:'その他',n:'アーモンド',u:'20粒 20g',p:4,k:120},
+{c:'その他',n:'ブロッコリー（ゆで）',u:'100g',p:4,k:30},
+{c:'その他',n:'アボカド',u:'半個 70g',p:1,k:125},
+{c:'その他',n:'唐揚げ',u:'3個 90g',p:15,k:265},
+{c:'その他',n:'菓子パン（あんぱん）',u:'1個 100g',p:7,k:266}
+];
+
+/* --- そのまま口に出す返し方 --- */
+Q.push(
+{lv:1,k:1,c:'指導実務',q:'「プロテインって飲んだほうがいいですか」と聞かれた。最初に返す一言として適切なのは？',
+ a:'「今の食事でたんぱく質がどれくらい取れてるか、先に見てもいいですか」',
+ o:['「はい、飲んだほうがいいです」','「飲まなくても大丈夫ですよ」','「人によりますね」'],
+ x:'足りているかを見ないと答えが出ない。相手の状況を聞く側に回る一言が、いちばん外さない'},
+{lv:1,k:1,c:'指導実務',q:'「夜遅く食べると太りますか」への返しとして適切なのは？',
+ a:'「時間そのものより、1日の合計が多くなりやすいのが理由です。夜に何をどれくらい食べてるか見てみましょう」',
+ o:['「はい、22時以降は脂肪になります」','「関係ないので気にしなくて大丈夫です」','「夜は代謝が落ちるので太ります」'],
+ x:'否定も肯定もせず、本当の理由に置き換えて、次の行動につなげる'},
+{lv:1,k:1,c:'指導実務',q:'「糖質制限したほうが早く痩せますか」への返しとして適切なのは？',
+ a:'「最初の1〜2週は水分が抜けて速く落ちます。ただ続けられるかで最後は決まるので、どこまでならできそうか一緒に決めましょう」',
+ o:['「はい、いちばん効果的です」','「体に悪いのでやめてください」','「糖質は関係ありません」'],
+ x:'速く落ちて見える理由を説明したうえで、続けられるかに話を移す'},
+{lv:1,k:1,c:'指導実務',q:'「サプリは何から始めればいいですか」への返しとして適切なのは？',
+ a:'「食事でたんぱく質が足りてないならプロテイン、足りてるならクレアチンです。その前に、睡眠は取れてますか」',
+ o:['「とりあえず全部そろえましょう」','「サプリは必要ないです」','「高いものほど効きます」'],
+ x:'順番を示して、土台の確認に戻す。ここで睡眠を聞けると指導の幅が変わる'},
+{lv:1,k:1,c:'指導実務',q:'「体重が全然減りません」と言われた。最初に返す一言は？',
+ a:'「直近3日、食べたものを写真で見せてもらえますか」',
+ o:['「食べすぎではないですか」','「代謝が落ちてるかもしれません」','「もっと運動を増やしましょう」'],
+ x:'原因を推測する前に事実を見る。写真なら相手の負担も少ない'},
+{lv:1,k:1,c:'指導実務',q:'「プロテインは腎臓に悪いと聞きました」への返しとして適切なのは？',
+ a:'「腎臓が健康な方で問題を示す根拠は出ていません。ただ腎臓の病気がある場合は主治医の指示が優先です」',
+ o:['「まったく問題ないので気にしないでください」','「たしかに悪いのでやめましょう」','「病院に行く必要はありません」'],
+ x:'一般論と個別事情を分けて言う。この形はどの健康不安にも使える'},
+{lv:1,k:1,c:'指導実務',q:'「運動後30分以内に飲まないと意味ないですよね」への返しは？',
+ a:'「1日の合計と、3〜4回に分けることのほうが効いてきます。直後にこだわりすぎなくて大丈夫です」',
+ o:['「はい、30分を過ぎたら無駄になります」','「タイミングは一切関係ありません」','「朝だけ飲めば十分です」'],
+ x:'古い説を否定しつつ、代わりに守るべきことを渡す'},
+{lv:1,k:1,c:'指導実務',q:'「一日一食にしたら痩せますか」への返しは？',
+ a:'「合計が減れば落ちますが、筋肉も一緒に落ちやすくなります。回数を減らすより、まず総量を見ませんか」',
+ o:['「はい、効果的な方法です」','「絶対にやめてください」','「食事回数は体重に影響しません」'],
+ x:'頭ごなしに止めない。リスクを一つ挙げて、代わりの入口を示す'},
+{lv:1,k:1,c:'指導実務',q:'「あまり食べていないのに太るんです」への返しは？',
+ a:'「飲み物と、調味料と、つまんだものも書き出してみましょう。ここが抜けていることが多いです」',
+ o:['「そんなはずはありません」','「体質ですね」','「もっと減らしましょう」'],
+ x:'本人は嘘をついていない。記録から漏れやすい場所を具体的に指す'},
+{lv:1,k:1,c:'指導実務',q:'「この食べ物は体にいいですか」と単品について聞かれたときの返しは？',
+ a:'「単品というより、1日の中でどう組み合わさるかで決まります。その日の他の食事も教えてください」',
+ o:['「はい、スーパーフードです」','「それは食べないでください」','「特に意味はありません」'],
+ x:'単品の良し悪しに乗らない。全体に話を戻すのが栄養指導の基本の形'},
+{lv:2,k:1,c:'指導実務',q:'「外食が多くて無理です」と言われたときの返しは？',
+ a:'「外食のままで大丈夫です。定食を選ぶ、主菜を魚か鶏にする、この2つから始めませんか」',
+ o:['「自炊しないと結果は出ません」','「では諦めましょう」','「外食のカロリーを全部調べてください」'],
+ x:'生活を変えさせない。今の形の中でできる2つに絞る'},
+{lv:2,k:1,c:'指導実務',q:'「お酒はやめなきゃだめですか」への返しは？',
+ a:'「やめなくて大丈夫です。量と、つまみの中身を決めましょう」',
+ o:['「はい、完全にやめてください」','「好きなだけ飲んで大丈夫です」','「お酒はカロリーゼロなので問題ありません」'],
+ x:'禁止すると隠れる。管理できる形にして持ち帰らせる'},
+{lv:2,k:1,c:'指導実務',q:'「停滞してるのでもっと減らしたほうがいいですか」への返しは？',
+ a:'「減らす前に、記録の抜けと測り方をそろえて2週間見ましょう。それでも動かなければ調整します」',
+ o:['「はい、あと500kcal減らしましょう」','「体質なので仕方ありません」','「有酸素を毎日やりましょう」'],
+ x:'すぐ削らない。手順があることを示すと相手も落ち着く'},
+{lv:2,k:1,c:'指導実務',q:'クライアントが「最近、生理が来てないんです」と話した。返し方として適切なのは？',
+ a:'「それは体からの合図なので、減量は一度ゆるめます。婦人科で見てもらってください」',
+ o:['「よくあることなので続けましょう」','「体脂肪が落ちた証拠ですね」','「サプリで整えましょう」'],
+ x:'その場で止めて、医療へ渡す。判断を保留しない場面'},
+{lv:2,k:1,c:'指導実務',q:'「健康診断で血糖値を指摘されました。どう食べればいいですか」への返しは？',
+ a:'「治療に関わる食事の指導は私の範囲外なので、主治医か管理栄養士へお願いします。運動の側でできることは一緒にやりましょう」',
+ o:['「では糖質を半分にしましょう」','「大した数値ではないので大丈夫です」','「この食事法で下がりますよ」'],
+ x:'断るのではなく渡す。そのうえで自分の担当範囲を必ず添える'},
+
+/* --- 次に何を聞くか --- */
+{lv:1,k:1,c:'指導実務',q:'「朝は忙しくて食べられません」と言われた。次に聞くこととして適切なのは？',
+ a:'「朝はどんな流れですか。家を出るまでにどれくらい時間がありますか」',
+ o:['「朝食は食べたほうがいいですよ」','「なぜ食べないんですか」','「では昼を増やしましょう」'],
+ x:'指示の前に生活の形を見る。時間が5分なのか30分なのかで出せる案が変わる'},
+{lv:1,k:1,c:'指導実務',q:'食習慣を聞くときの言い方として適切なのは？',
+ a:'「ふだんの平日を、朝から順に教えてください」',
+ o:['「間食はしていませんか」','「野菜は食べていますよね」','「甘いものは控えていますか」'],
+ x:'はい・いいえで終わる聞き方と、望ましい答えを示す聞き方は、どちらも実態を隠す'},
+{lv:1,k:1,c:'指導実務',q:'「甘いものがやめられません」と言われた。次に聞くこととして適切なのは？',
+ a:'「どんなときに食べたくなりますか。時間帯や場面を教えてください」',
+ o:['「意志の問題ですね」','「では完全にやめましょう」','「代わりにこれを食べてください」'],
+ x:'いつ・どこで・なぜが分かると、打ち手が具体的になる。習慣は場面とセットで起きる'},
+{lv:1,k:1,c:'指導実務',q:'初回の面談で最初に確認すべきこととして適切なのは？',
+ a:'治療中の病気、飲んでいる薬、アレルギーの有無',
+ o:['好きな食べ物','理想の体重','今使っているサプリ'],
+ x:'ここを飛ばすと、そのあと出す提案すべてが危なくなる'},
+{lv:2,k:1,c:'指導実務',q:'食事記録の写真を見て、まず確認することとして適切なのは？',
+ a:'飲み物と調味料が写っているか',
+ o:['盛りつけがきれいかどうか','写真の枚数','食器の種類'],
+ x:'記録から最も漏れるのが、飲み物、油、砂糖、そしてつまみ食い'},
+{lv:2,k:1,c:'指導実務',q:'目標を決めるときの聞き方として適切なのは？',
+ a:'「いつまでに、どうなっていたいですか。その理由も教えてください」',
+ o:['「何キロ落としますか」','「がんばれますか」','「目標は5キロでいいですね」'],
+ x:'期限と理由が分かると、無理なペースを現実的な合意に変えやすくなる'},
+{lv:2,k:1,c:'指導実務',q:'次の来店までに何をしてもらうか決めるとき、適切なのは？',
+ a:'できることを1つだけ決めて、次回に一緒に振り返ると伝える',
+ o:['守るべきことを5つ渡す','食事をすべて指定する','特に決めない'],
+ x:'守れない量を渡すと、守れなかったことのほうが記憶に残って続かなくなる'}
+);
+
+/* --- 追加の授業2回 --- */
+const CKA2='#16302E',CKB2='#07827E',CKC2='#B33A2E';
+CH.push(
+{i:'gram',emo:'🍗',t:'グラムを食べ物に直す',sub:'数字のままでは誰も動けない',g:'g1',core:1,rel:['prot','whey','handport','plate'],
+ cap:'たんぱく質20gは、手のひら1枚ぶん',
+ svg:`<svg viewBox="0 0 320 150" stroke-linecap="round" stroke-linejoin="round">
+  <g fill="none" stroke="${CKB2}" stroke-width="3">
+   <path d="M40 92c0-16 14-26 30-26s30 10 30 26-14 24-30 24-30-8-30-24z"/>
+   <ellipse cx="180" cy="92" rx="30" ry="22"/><path d="M162 78c6-10 30-10 36 0"/>
+   <rect x="252" y="66" width="44" height="52" rx="8"/><path d="M262 58h24v8h-24z"/></g>
+  <g font-size="13" fill="${CKA2}" font-weight="700" text-anchor="middle" font-family="sans-serif">
+   <text x="70" y="136">鶏むね100g</text><text x="180" y="136">さば1切れ</text><text x="274" y="136">プロテイン1杯</text></g>
+  <g font-size="14" fill="${CKC2}" font-weight="700" text-anchor="middle" font-family="sans-serif">
+   <text x="70" y="98">23g</text><text x="180" y="98">16g</text><text x="274" y="98">24g</text></g></svg>`,
+ body:[
+  {h:'数字は一度、皿に戻す',p:'「1日130g」と言われても、何を買えばいいかは分からない。正しいことを言っても、食べ物に直せていなければ相手は動けない。図鑑の早見表を開いて、よく出る食品のたんぱく質量をそのまま覚えてしまうのが早い。'},
+  {h:'手ばかりで足りる',p:'手のひら1枚ぶんの肉や魚で、たんぱく質はおよそ20g前後。握りこぶし1つが野菜、指の先が油。計量器を渡すより、この言い方のほうが続く。'},
+  {h:'足りないときの足し方',p:'卵1個で7g、納豆1パックで7g、牛乳コップ1杯で7g、ギリシャヨーグルト1個で10g、サラダチキン1個で24g、プロテイン1杯で24g。ここから2つ足せば、たいていの不足は埋まる。'},
+  {h:'落とし穴になる食品',p:'同じ鶏もも肉でも皮つきなら190kcal、皮なしなら113kcal。牛バラは100gで381kcalあってたんぱく質は13g。「肉を食べています」の中身で結果が変わるので、部位まで聞く。'}],
+ facts:[['手のひら1枚','たんぱく質 約20g'],['卵・納豆・牛乳','各 約7g'],['サラダチキン','約24g'],['プロテイン1杯','約24g']],
+ key:'グラムのままでは伝わらない。皿と手に直して渡す。'},
+
+{i:'reply',emo:'💬',t:'そのまま言える返し方',sub:'知っていることと、言えることは別',g:'g6',core:1,rel:['scope','behavior','openq','mi'],
+ cap:'型は3つ。聞き返す／理由に置き換える／渡す',
+ svg:`<svg viewBox="0 0 320 150" stroke-linecap="round" stroke-linejoin="round">
+  <g fill="none" stroke="${CKB2}" stroke-width="3">
+   <path d="M26 30h120a8 8 0 018 8v26a8 8 0 01-8 8H60l-18 16V72H26a8 8 0 01-8-8V38a8 8 0 018-8z"/>
+   <path d="M294 80H174a8 8 0 00-8 8v26a8 8 0 008 8h86l18 16v-16h16a8 8 0 008-8V88a8 8 0 00-8-8z"/></g>
+  <g font-size="12" fill="${CKA2}" text-anchor="middle" font-family="sans-serif">
+   <text x="84" y="56">◯◯ってどうですか</text><text x="234" y="106">まず、〜を教えてください</text></g></svg>`,
+ body:[
+  {h:'型1：聞き返す',p:'「プロテインは飲んだほうがいいですか」に、いきなり答えない。「今の食事でどれくらい取れているか、先に見てもいいですか」。相手の状況が分からないうちは、どんな答えも当たらない。'},
+  {h:'型2：理由に置き換える',p:'「夜食べると太りますか」に、はい・いいえで答えない。「時間そのものより、夜は合計が多くなりやすいからです」。俗説を否定せず、本当の理由に置き換えると、相手の面子も潰れない。'},
+  {h:'型3：渡す',p:'病気、薬、検査数値の話が出たら、その場で止める。「治療に関わる食事の指導は私の範囲外です」と言い切ったうえで、「運動の側でできることは一緒にやりましょう」を必ず付ける。断るのではなく渡す。'},
+  {h:'言ってはいけない3つ',p:'「治ります」「絶対に」「◯◯だけで痩せます」。この3つを口にしなければ、大きく踏み外すことはない。効果を伝えるときは、一般的な栄養の働きとして話す。'}],
+ facts:[['型1','聞き返す'],['型2','理由に置き換える'],['型3','線を引いて渡す'],['禁句','治る・絶対・これだけ']],
+ key:'答えを出す前に、聞き返せるかどうかで差がつく。'}
+);
+
+/* --- 新しい2回の講義ノート --- */
+CH.find(c=>c.i==='gram').teach={
+ p:['グラムを言ったら、必ずその場で食べ物に直して見せる','部位で変わる食品（鶏もも・牛バラ）は、必ず部位まで聞く'],
+ q:[['1日130gって、そんなに食べられません','1食30gちょっとです。朝に卵2個と納豆、昼に鶏むね100g、夜に魚1切れ、これで届きます。足りない日はプロテイン1杯で24g足せます']]};
+CH.find(c=>c.i==='reply').teach={
+ p:['答えを出す前に、聞き返せるかどうか。ここが分かれ目','「治る」「絶対」「これだけで」は口にしない'],
+ q:[['その場で分からないことを聞かれたら','分からないと言って、調べて次回に返すのがいちばん信用されます。その場の推測が、いちばん危険です']]};
+
+
+/* ============================================================
    6. 道具
    ============================================================ */
 const $=s=>document.querySelector(s);
@@ -1209,13 +1405,35 @@ const byKey=k=>DEX.find(e=>e.key===k);
 /* ============================================================
    8. 保存
    ============================================================ */
-const KEY='chart_nutrition_v2';
-const DEF={name:'',furi:true,fs:'m',box:{},hist:[],stat:{},read:{}};
-let S=load();
-function load(){try{const r=localStorage.getItem(KEY)||localStorage.getItem('chart_nutrition_v1');return r?{...DEF,...JSON.parse(r)}:{...DEF};}catch(e){return{...DEF};}}
-function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+/* ---- 保存：利用者ごとに分けて、この端末の中に置く ---- */
+const IDX='chart_nut_index',ACT='chart_nut_active',PRE='chart_nut_u_';
+const DEF={name:'',furi:true,fs:'m',auto:'ok',bk:0};
+/* 空の記録を毎回つくり直す。使い回すと、利用者どうしで記録が混ざる */
+const blank=n=>({...DEF,name:n||'',box:{},hist:[],stat:{},read:{}});
+const ls={get(k){try{return localStorage.getItem(k);}catch(e){return null;}},
+          set(k,v){try{localStorage.setItem(k,v);return 1;}catch(e){return 0;}},
+          del(k){try{localStorage.removeItem(k);}catch(e){}}};
+let USERS=(()=>{try{return JSON.parse(ls.get(IDX))||[];}catch(e){return [];}})();
+let UID=null,S=blank();
+const saveIndex=()=>ls.set(IDX,JSON.stringify(USERS));
+function loadUser(id){try{const r=ls.get(PRE+id);return r?{...blank(),...JSON.parse(r)}:blank();}catch(e){return blank();}}
+function save(){
+  if(!UID)return;
+  ls.set(PRE+UID,JSON.stringify(S));
+  const u=USERS.find(x=>x.id===UID);
+  if(u){u.name=S.name;u.t=Date.now();saveIndex();}
+}
 function applyFs(){const r=document.documentElement;if(r&&r.setAttribute)r.setAttribute('data-fs',S.fs||'m');}
-applyFs();
+function login(id){UID=id;S=loadUser(id);ls.set(ACT,id);applyFs();}
+function newUser(name){
+  const id='u'+Date.now().toString(36)+Math.floor(Math.random()*997);
+  USERS.push({id,name:name||'（名前未設定）',t:Date.now()});saveIndex();
+  UID=id;S=blank(name);save();ls.set(ACT,id);applyFs();
+  return id;
+}
+function logout(){UID=null;S=blank();ls.del(ACT);tab='login';ui={};HIST=[];render();scrollTo(0,0);}
+function delUser(id){USERS=USERS.filter(x=>x.id!==id);saveIndex();ls.del(PRE+id);if(UID===id)logout();}
+const daysSince=ts=>ts?Math.floor((Date.now()-ts)/86400000):null;
 const DAY=86400000,INT=[0,1,2,4,8,16];
 function record(id,ok){
   const b=S.box[id]||{b:1,due:0};
@@ -1225,8 +1443,8 @@ function record(id,ok){
 const dueList=()=>Object.keys(S.box).filter(id=>BYID[id]&&S.box[id].due<=Date.now());
 
 const LV={
- 1:{g:'ファースト',name:'基礎',desc:'現場に出る前に必ず越える最低ライン',n:20,pass:.9,gate:1,
-    body:'絶対に落とせない問題だけを全範囲から抜き出した段。線引きの判断を必ず含む'},
+ 1:{g:'ファースト',name:'基礎',desc:'現場に出る前に必ず越える最低ライン',n:25,pass:.85,gate:1,mustAll:1,
+    body:'線引き・実物への換算・返し方を必ず含む25問。線引きの問題は1問も落とせない'},
  2:{g:'セカンド',name:'初級',desc:'基本の全域。日々の指導で使う土台',n:30,pass:.8,
     body:'基礎に、栄養素と用語の基本をひととおり足した範囲'},
  3:{g:'サード',name:'中級',desc:'数値と現場判断。7割が新しい範囲',n:40,pass:.8,
@@ -1245,14 +1463,14 @@ const mark=p=>p===null?'—':p>=95?'◎':p>=80?'○':p>=60?'△':'×';
    9. 画面
    ============================================================ */
 let tab='home',ui={},sess=null,HIST=[];
-const WHERE={home:'教室',dex:'図鑑',book:'授業',train:'テスト',rec:'通知表',quiz:'テスト中'};
+const WHERE={home:'教室',dex:'図鑑',book:'授業',train:'テスト',rec:'通知表',quiz:'テスト中',hist:'過去の結果',login:'ログイン'};
 function snap(){const u={};for(const k in ui)if(k!=='tm')u[k]=ui[k];return{tab,ui:u};}
-function pushNav(){HIST.push(snap());if(HIST.length>40)HIST.shift();}
+function pushNav(){if(tab==='quiz'||tab==='login')return;HIST.push(snap());if(HIST.length>40)HIST.shift();}
 function navBack(){
-  if(HIST.length){const s=HIST.pop();tab=s.tab;ui=s.ui;}
-  else if(tab!=='home'){tab='home';ui={};}
-  else return;
-  render();scrollTo(0,0);
+  while(HIST.length){const s=HIST.pop();
+    if(s.tab==='quiz'||s.tab==='login')continue;      // テスト中とログインには戻さない
+    tab=s.tab;ui=s.ui;render();scrollTo(0,0);return;}
+  if(tab!=='home'){tab='home';ui={};render();scrollTo(0,0);}
 }
 function navBar(){
   const root=!HIST.length&&tab==='home';
@@ -1261,13 +1479,18 @@ function navBar(){
 }
 const TABS=[['home','🏫','教室'],['dex','🍱','図鑑'],['book','📖','授業'],['train','✏️','テスト'],['rec','📋','通知表']];
 function renderTabs(){
+  if(tab==='login'){$('#tabs').innerHTML='';return;}
   $('#tabs').innerHTML=TABS.map(([k,e,l])=>
    `<button data-tab="${k}" ${tab===k?'aria-current="page"':''}><span class="ic">${e}</span>${l}</button>`).join('');
 }
 function go(t){if(t!==tab||Object.keys(ui).length)pushNav();tab=t;ui={};render();scrollTo(0,0);}
-function render(){applyFs();renderTabs();$('#view').innerHTML=navBar()+({home:vHome,dex:vDex,book:vBook,train:vTrain,rec:vRec}[tab])();}
+const VIEWS={home:vHome,dex:vDex,book:vBook,train:vTrain,rec:vRec,hist:vHist,login:vLogin};
+function render(){
+  applyFs();renderTabs();
+  const f=VIEWS[tab]||vHome;
+  $('#view').innerHTML=(tab==='login'?'':navBar())+f();
+}
 const rule=(e,t)=>`<div class="rule"><span class="re">${e}</span><b>${t}</b></div>`;
-const back=t=>'';
 const bestOf=lv=>{const h=S.hist.filter(x=>x.lv===lv&&x.big);return h.length?Math.max(...h.map(x=>x.pct)):null;};
 const clearedOf=l=>{const b=bestOf(l);return b!==null&&b>=passOf(l);};
 function idCard(){
@@ -1282,19 +1505,55 @@ function idCard(){
     <div class="small" style="margin-top:8px">${top?'到達：'+LV[top].g+'（'+LV[top].name+'）':'まずは基礎テストで'+passOf(1)+'点'}</div></div>`;
 }
 function nameCard(){
-  return `<div class="card"><h2 style="font-size:1em">🪪 名前</h2>
-    <div class="small" style="margin-top:4px">修了証に印字されます。検証コードの計算にも使うので、発行したあとは変えないでください。</div>
+  return `<div class="card"><h2 style="font-size:1em">🪪 ${S.name?'名前を直す':'名前を入れる'}</h2>
+    <div class="small" style="margin-top:4px">提出テキストに印字されます。検証コードの計算にも使うので、提出したあとは変えないでください。</div>
     <div class="field"><label>氏名（20文字まで）</label>
       <input type="text" data-rec="name" id="nmi" maxlength="20" value="${esc(S.name)}">
       <div class="ex"><b>記入例</b>飯泉 友裕</div></div>
+    <div class="grid2" style="margin-top:13px">
+      <button class="btn" data-act="savename">この名前で確定する</button>
+      ${S.name?'<button class="btn ghost" data-act="cancelname">やめる</button>':'<span></span>'}</div>
     <div id="nmst">${nameStatus()}</div></div>`;
+}
+
+/* ---------- ログイン ---------- */
+function vLogin(){
+  let h=`<div class="card" style="text-align:center;padding:22px 16px">
+    <div style="font-size:2.4em;line-height:1">🍎</div>
+    <h2 style="font-size:1.15em;margin-top:8px">CHART 栄養学学校</h2>
+    <div class="small" style="margin-top:6px">続きから始めるか、新しく始めてください</div></div>`;
+  if(USERS.length){
+    h+=rule('👤','この端末に残っている記録');
+    h+=USERS.slice().sort((a,b)=>b.t-a.t).map(u=>{
+      const d=daysSince(u.t);
+      return `<button class="entry" data-login="${u.id}">
+        <span class="emoplate">🪪</span>
+        <span style="flex:1"><span class="n">${esc(u.name||'（名前未設定）')}</span><br>
+        <span class="small">最後に使ったのは ${d===0?'今日':d+'日前'}</span></span>
+        <span class="stars">▶</span></button>`;}).join('');
+  }
+  h+=rule('✨','はじめて使う')+`<div class="card">
+    <div class="field" style="margin-top:0"><label>氏名（20文字まで）</label>
+      <input type="text" data-login="newname" id="newnm" maxlength="20" value="${esc(ui.newname||'')}">
+      <div class="ex"><b>記入例</b>飯泉 友裕</div></div>
+    <div class="field"><button class="btn" data-act="newuser">この名前ではじめる</button></div></div>`;
+  h+=rule('📥','引き継ぎコードから戻す')+`<div class="card">
+    <div class="small">前の端末や、消えてしまう前に控えたコードを貼ると、そのまま続きから始められます。</div>
+    <div class="field"><textarea data-login="code" placeholder="NUT3で始まるコードを貼り付け">${esc(ui.code||'')}</textarea></div>
+    <div class="field"><button class="btn ghost" data-act="restore">このコードで復元する</button></div></div>`;
+  h+=`<div class="sec"><div class="notice"><b>⚠️ 記録はこの端末の中だけに保存されます</b>
+    サーバーには送られません。端末を変えたとき、ブラウザの履歴やデータを消したとき、しばらく開かなかったときに消えることがあります。
+    通知表の「引き継ぎコード」を control+C でコピーして、LINEの自分宛やメモに貼っておいてください。それがあれば、いつでもここから戻せます。</div></div>`;
+  return h;
 }
 
 /* ---------- 教室 ---------- */
 function vHome(){
   const due=dueList().length,readN=Object.keys(S.read).length;
   const m=DEX[fnv(today())%DEX.length];
-  let h=idCard()+`<div style="height:12px"></div>`+nameCard();
+  let h=idCard();
+  if(!S.name||ui.editname)h+=`<div style="height:12px"></div>`+nameCard();
+  else h+=`<div class="field"><button class="btn ghost slim" data-act="editname">✏️ 名前を直す</button></div>`;
   h+=`<div class="card" style="margin-top:12px"><div class="between">
     <div class="row"><span class="emo">📝</span><div><h2 class="ttl" style="font-size:1.0em">きょうの宿題</h2>
     <div class="small">${due?'まちがえた問題ほど早く戻ってくる':'出ている宿題はありません'}</div></div></div>
@@ -1306,12 +1565,21 @@ function vHome(){
     <span class="small">${esc((m.kind==='n'?m.w:m.d).slice(0,46))}…</span></span><span class="stars">▶</span></button>`;
   h+=rule('🎒','きょうやること')+`<div class="grid2">
     <button class="cell" data-act="gotob"><span class="e">📚</span><span class="n">授業を受ける</span><span class="c">全${CH.length}時間／受けた${readN}</span></button>
-    <button class="cell" data-act="gotod"><span class="e">🍱</span><span class="n">図鑑を引く</span><span class="c">${DEX.length}項目</span></button>
+    <button class="cell" data-act="dfood"><span class="e">🍗</span><span class="n">食品の早見表</span><span class="c">${FOOD.length}品・グラムを皿に直す</span></button>
     <button class="cell" data-mini="1"><span class="e">✏️</span><span class="n">小テスト</span><span class="c">ファースト・10問</span></button>
     <button class="cell" data-act="gotot"><span class="e">🔰</span><span class="n">昇級テスト</span><span class="c">ファースト 20問・${passOf(1)}点</span></button>
   </div>`;
-  h+=rule('👓','見やすさ')+`<div class="card">
-    <div class="grid2">
+  const bd=daysSince(S.bk);
+  if(S.hist.length&&(bd===null||bd>=14))
+    h+=`<div class="sec"><div class="notice" style="border-color:var(--amber)"><b style="color:var(--amber)">📥 引き継ぎコードを控えてください</b>
+      ${bd===null?'まだ一度も控えていません。':bd+'日、控えていません。'}この記録は端末の中だけにあります。通知表の下にあるコードをコピーして、LINEの自分宛かメモに貼っておいてください。
+      <div style="margin-top:9px"><button class="btn slim" data-act="gotobk">通知表のコードを見る</button></div></div></div>`;
+  h+=rule('👓','使いかた')+`<div class="card">
+    <div class="field" style="margin-top:0"><label>次の問題へ</label><select data-set="auto">
+      <option value="ok" ${(S.auto||'ok')==='ok'?'selected':''}>正解なら自動で進む</option>
+      <option value="all" ${S.auto==='all'?'selected':''}>いつも自動で進む</option>
+      <option value="off" ${S.auto==='off'?'selected':''}>自分で「次へ」を押す</option></select></div>
+    <div class="grid2" style="margin-top:13px">
       <div class="field" style="margin-top:0"><label>文字の大きさ</label><select data-set="fs">
         <option value="s" ${S.fs==='s'?'selected':''}>小さめ</option>
         <option value="m" ${(S.fs||'m')==='m'?'selected':''}>ふつう</option>
@@ -1332,23 +1600,46 @@ function vDex(){
   if(ui.dkey)return dexDetail(byKey(ui.dkey));
   const kw=(ui.dkw||'').trim();
   if(kw)return dexList(DEX.filter(e=>(e.n+e.k+(e.w||'')+(e.d||'')+(e.f||[]).join('')).includes(kw)),'🔍 「'+kw+'」で探した結果',true);
+  if(ui.dfood)return vFood();
   if(ui.dcore)return dexList(DEX.filter(isCoreEntry),'🔰 基礎の項目',true);
   if(ui.dg)return dexList(DEX.filter(e=>e.g===ui.dg),GROUPS[ui.dg].emo+' '+GROUPS[ui.dg].label,false);
   let h=`<div class="card"><div class="row"><span class="emo">🍱</span>
     <div><h2 class="ttl" style="font-size:1.03em">食材と栄養素の図鑑</h2>
     <div class="small">全${DEX.length}項目。分類から選ぶか、言葉で探す。</div></div></div>
     <div class="field"><input type="text" data-dex="kw" value="" placeholder="🔍 鉄、ロイシン、貧血 …"></div>
-    <div class="field"><label>ふりがな</label><select data-dex="furi">
-      <option value="1" ${S.furi?'selected':''}>つける</option><option value="0" ${!S.furi?'selected':''}>つけない</option></select></div>
-    <div class="field"><button class="btn ghost slim" data-act="dcore">🔰 基礎の項目だけを見る（${DEX.filter(isCoreEntry).length}件）</button></div></div>`;
+    <div class="grid2" style="margin-top:13px">
+      <button class="btn ghost slim" data-act="dcore">🔰 基礎だけ（${DEX.filter(isCoreEntry).length}件）</button>
+      <button class="btn ghost slim" data-act="dfood">🍗 食品の早見表</button></div></div>`;
   h+=rule('🍱','分類から引く')+`<div class="shelf"><div class="cells">`+Object.keys(GROUPS).map(k=>{
     const c=DEX.filter(e=>e.g===k).length;
     return `<button class="cell" data-dg="${k}"><span class="num">${c}</span><span class="e">${GROUPS[k].emo}</span>
       <span class="n">${GROUPS[k].label}</span><span class="c">${GROUPS[k].lead}</span></button>`;}).join('')+`</div></div>`;
   return h;
 }
+function vFood(){
+  const cats=[...new Set(FOOD.map(f=>f.c))];
+  let h=`<div class="card"><div class="row"><span class="emo">🍗</span>
+    <div><h2 style="font-size:1.03em">食品の早見表</h2>
+    <div class="small">グラムを、手に取るものに直すための表。たんぱく質の量で並べてある。</div></div></div>
+    <div class="facts" style="margin-top:14px">
+      <div class="fact"><b>手のひら1枚ぶん</b><span>たんぱく質 約20g</span></div>
+      <div class="fact"><b>卵・納豆・牛乳</b><span>それぞれ 約7g</span></div>
+      <div class="fact"><b>サラダチキン1個</b><span>約24g</span></div>
+      <div class="fact"><b>プロテイン1杯</b><span>約24g</span></div></div></div>`;
+  cats.forEach(c=>{
+    h+=`<div class="subhead">${esc(c)}</div><table class="tt"><tbody>`;
+    FOOD.filter(f=>f.c===c).sort((a,b)=>b.p-a.p).forEach(f=>{
+      h+=`<tr><td><b>${esc(f.n)}</b><div class="d">${esc(f.u)}</div></td>
+        <td style="text-align:right;width:5.4em"><b style="color:var(--tifD)">${f.p}g</b><div class="d">たんぱく質</div></td>
+        <td style="text-align:right;width:5em"><b>${f.k}</b><div class="d">kcal</div></td></tr>`;});
+    h+=`</tbody></table>`;});
+  h+=`<div class="sec small">数値は日本食品標準成分表をもとにした概数です。同じ食品でも部位や調理で変わるので、目安として使ってください。</div>`;
+  const ids=POOL.filter(p=>p.cat==='食品の目安').map(p=>p.id);
+  h+=`<div class="sec"><button class="btn" data-ids="${ids.slice(0,12).join(',')}" data-label="早見表の確認">✏️ 早見表から12問やる</button></div>`;
+  return h;
+}
 function dexList(list,title,isSearch){
-  let h=back(isSearch?'図鑑にもどる':'分類にもどる')+`<h2 class="ttl" style="font-size:1.09em">${title}</h2><div class="small">${list.length}項目</div>`;
+  let h=`<h2 style="font-size:1.09em">${title}</h2><div class="small">${list.length}項目</div>`;
   if(!list.length)return h+`<div class="sec small">見つかりませんでした。別の言葉で探してみてください。</div>`;
   [...new Set(list.map(e=>e.kind==='n'?e.s:e.c))].forEach(s=>{
     h+=`<div class="subhead">${esc(s)}</div>`;
@@ -1362,7 +1653,7 @@ function dexList(list,title,isSearch){
 function dexDetail(e){
   if(!e)return vDex();
   const qids=POOL.filter(p=>p.id.startsWith(e.key+':')).map(p=>p.id);
-  let h=back('一覧にもどる')+`<div class="card">
+  let h=`<div class="card">
     <div class="row"><span class="emoplate" style="width:1.85em;height:1.85em;font-size:2em">${iconOf(e)}</span>
       <div style="flex:1"><h2 class="ttl" style="font-size:1.27em">${ruby(e.n,e.k)}</h2>
       <div class="stars">${stars(e.lv)} <span class="small">むずかしさ ${e.lv}</span></div></div></div>
@@ -1393,7 +1684,7 @@ function vBook(){
     if(c){
       S.read[c.i]=1;save();
       const i=CH.indexOf(c);
-      let h=back('時間割にもどる')+`<div class="card lesson">
+      let h=`<div class="card lesson">
         <div class="row"><span class="emoplate" style="width:1.85em;height:1.85em;font-size:1.9em">${c.emo}</span>
           <div style="flex:1"><span class="pill">${i+1}時間目</span>
           <h2 style="font-size:1.21em;margin-top:5px">${esc(c.t)}</h2>
@@ -1438,11 +1729,10 @@ function vTrain(){
   const due=dueList().length;
   const lv=ui.tlv||1,g=ui.tg||'all',mode=ui.tmode||'mini',fb=ui.tfb||'each';
   const avail=poolOf(lv).filter(p=>g==='all'||mode==='big'||p.g===g).length;
-  let h=`<div class="card"><div class="between">
-    <div class="row"><span class="emo">📝</span><div><h2 class="ttl" style="font-size:1.0em">宿題（復習）</h2>
-    <div class="small">正解するほど間隔がのびる（1→2→4→8→16日）</div></div></div>
-    <span class="pill ${due?'':'gray'}">${due}問</span></div>
-    <div style="margin-top:12px"><button class="btn ${due?'':'ghost'}" data-act="rev" ${due?'':'disabled'}>${due?'宿題をやる':'きょうの分は終わっています'}</button></div></div>`;
+  let h='';
+  if(due)h+=`<div class="card"><div class="between">
+    <div class="small" style="font-weight:800;color:var(--ink)">📝 きょうの宿題が ${due}問あります</div>
+    <button class="btn slim" data-act="rev" style="width:auto;padding:9px 16px">やる</button></div></div>`;
   h+=rule('✏️','テストの用意')+`<div class="card">
     <div class="field" style="margin-top:0"><label>段階（昇級）</label><select data-t="lv">
       ${STAGES.map(l=>`<option value="${l}" ${lv===l?'selected':''}>${LV[l].g}（${LV[l].name}）｜${LV[l].desc}</option>`).join('')}</select>
@@ -1450,10 +1740,16 @@ function vTrain(){
     <div class="field"><label>種類</label><select data-t="mode">
       <option value="mini" ${mode==='mini'?'selected':''}>小テスト（10問）</option>
       <option value="big" ${mode==='big'?'selected':''}>${LV[lv].g}昇級テスト（${LV[lv].n}問・${passOf(lv)}点で合格）</option></select></div>
-    <div class="field"><label>出るところ</label><select data-t="g" ${mode==='big'?'disabled':''}>
-      <option value="all">ぜんぶ</option>
-      ${Object.keys(GROUPS).map(k=>`<option value="${k}" ${g===k?'selected':''}>${GROUPS[k].emo} ${GROUPS[k].label}</option>`).join('')}</select>
-      ${mode==='big'?'<div class="small" style="margin-top:6px">6分類から均等に出ます。</div>':''}</div>
+    <div class="field"><label>出るところ</label>
+      ${mode==='big'
+        ? `<div class="fixedval">6分類すべて</div>
+           <div class="small" style="margin-top:7px">昇級テストは範囲を絞れません。${lv===1
+             ?'線引き6問・実物への換算4問・返し方4問を必ず含んだうえで、残りを6分類から均等に出します。'
+             :'6分類から均等に出します。'}</div>`
+        : `<select data-t="g">
+             <option value="all" ${g==='all'?'selected':''}>ぜんぶ</option>
+             ${Object.keys(GROUPS).map(k=>`<option value="${k}" ${g===k?'selected':''}>${GROUPS[k].emo} ${GROUPS[k].label}</option>`).join('')}
+           </select>`}</div>
     <div class="field"><label>答え合わせ</label><select data-t="fb">
       <option value="each" ${fb==='each'?'selected':''}>1問ごとにする</option>
       <option value="end" ${fb==='end'?'selected':''}>最後にまとめてする</option></select></div>
@@ -1461,10 +1757,30 @@ function vTrain(){
     <div class="small" style="margin-top:8px">この条件で出せる問題：${avail}問</div></div>`;
   if(mode==='big')h+=`<div class="sec"><div class="notice" style="border-color:var(--${lv===1?'green':'tif'})">
     <b style="color:var(--${lv===1?'green':'tifD'})">${lv===1?'🔰':'🏆'} ${LV[lv].g}（${LV[lv].name}）について</b>
-    ${lv===1?'現場に出る前に越える最低ラインです。安全に関わる線引きを必ず含むので、合格は'+passOf(1)+'点（'+Math.ceil(LV[1].n*LV[1].pass)+'/'+LV[1].n+'問）と高めにしています。合格すると学生証が「現場OK」になります。':esc(LV[lv].body)+'。合格は'+passOf(lv)+'点（'+Math.ceil(LV[lv].n*LV[lv].pass)+'/'+LV[lv].n+'問）です。'}
+    ${lv===1?'現場に出る前に越える最低ラインです。合格の条件は2つあります。<b>①'+passOf(1)+'点以上（'+Math.ceil(LV[1].n*LV[1].pass)+'/'+LV[1].n+'問）</b>と、<b>②線引きの問題を1問も落とさないこと</b>。線引きは毎回6問出ます。合格すると学生証が「現場OK」になります。':esc(LV[lv].body)+'。合格は'+passOf(lv)+'点（'+Math.ceil(LV[lv].n*LV[lv].pass)+'/'+LV[lv].n+'問）です。'}
     結果は終わったあとにコピーして提出できます。</div></div>`;
   return h;
 }
+
+/* --- 早見表から問題をつくる --- */
+function buildFoodQ(){
+  const rnd=seeded(20260916);
+  const pool=FOOD.filter(f=>f.p>=3);
+  pool.forEach((f,idx)=>{
+    const others=pool.filter(x=>x.n!==f.n&&Math.abs(x.p-f.p)>=4).map(x=>x.p);
+    const uniq=[...new Set(others)];
+    const w=pick(uniq,3,rnd).map(v=>'約'+v+'g');
+    addQ('f:'+idx+':p',1,'食品の目安','【'+f.n+' '+f.u+'】に含まれるたんぱく質はおよそ？','約'+f.p+'g',w,
+      f.n+'（'+f.u+'）＝たんぱく質 約'+f.p+'g／'+f.k+'kcal');
+  });
+  const hi=pool.filter(f=>f.p>=17),lo=FOOD.filter(f=>f.p<=5);
+  hi.forEach((f,idx)=>{
+    addQ('f:'+idx+':t',1,'食品の目安','たんぱく質を20g前後まとめて足したいとき、1品で足りるのはどれ？',f.n+'（'+f.u+'）',
+      pick(lo.map(x=>x.n+'（'+x.u+'）'),3,rnd),f.n+'（'+f.u+'）で約'+f.p+'g。手のひら1枚ぶんの肉や魚が、たんぱく質20g前後の目安になる');
+  });
+}
+buildFoodQ();
+POOL.forEach(p=>{if(p.cat==='食品の目安')p.core=1;});
 
 
 /* ============================================================
@@ -1484,13 +1800,16 @@ function begin(qs,opt){
   tab='quiz';renderQuiz();scrollTo(0,0);
 }
 function buildExam(rank,n,rnd,big){
-  if(rank===1){                              // ファースト：線引きを必ず6問入れる
+  if(rank===1){                   // ファースト：線引き6・実物4・返し方4を必ず入れてから残りを均等に
     const pool=POOL.filter(p=>p.core);
     if(!big)return balanced(pool,n,rnd);
-    const ma=pool.filter(p=>p.must);
-    const must=pick(ma,Math.min(6,ma.length),rnd);
-    const ids=new Set(must.map(p=>p.id));
-    return shuffle(must.concat(balanced(pool.filter(p=>!ids.has(p.id)),n-must.length,rnd)),rnd);
+    const used=new Set(),out=[];
+    const take=(f,k)=>pick(pool.filter(p=>f(p)&&!used.has(p.id)),k,rnd).forEach(p=>{out.push(p);used.add(p.id);});
+    take(p=>p.must,6);
+    take(p=>p.cat==='食品の目安',4);
+    take(p=>p.g==='g6'&&!p.must,4);
+    balanced(pool.filter(p=>!used.has(p.id)),n-out.length,rnd).forEach(p=>out.push(p));
+    return shuffle(out,rnd);
   }
   if(rank===2)return balanced(POOL.filter(p=>p.core||p.lv===1),n,rnd);
   const main=POOL.filter(p=>p.lv===rank-1);            // サード以上：新しい層を7割
@@ -1501,6 +1820,7 @@ function buildExam(rank,n,rnd,big){
 }
 function startQuiz(lv,g,mode,fb){
   const big=mode==='big';
+  if(big)g='all';                      // 昇級テストは範囲を絞れない
   const n=big?LV[lv].n:10;
   const rnd=seeded(Date.now()>>>0);
   let qs;
@@ -1518,6 +1838,12 @@ function startReview(){
   const ids=dueList();if(!ids.length)return;
   begin(shuffle(ids,seeded(Date.now()>>>0)).slice(0,20).map(i=>BYID[i]),{label:'宿題',fb:'each',review:true});
 }
+function nextQ(){
+  if(!sess)return;clearTimeout(sess.tmr);
+  if(sess.picked===undefined)return;
+  sess.i++;sess.picked=undefined;sess.opts=null;
+  if(sess.i>=sess.qs.length)renderResult();else{renderQuiz();scrollTo(0,0);}
+}
 function renderQuiz(){
   renderTabs();
   const s=sess,q=s.qs[s.i];
@@ -1525,25 +1851,31 @@ function renderQuiz(){
   const opts=(s.opts&&s.opts.qid===q.id)?s.opts.list:shuffle([q.a,...q.o],seeded(fnv(q.id+'|'+s.i)));
   s.opts={qid:q.id,list:opts};
   const picked=s.picked,pct=Math.round(s.i/s.qs.length*100);
+  const ok=picked!==undefined&&picked===q.a,last=s.i+1===s.qs.length;
   let h=`<div class="between"><span class="qnum">✏️ ${esc(s.label)}　${s.i+1} / ${s.qs.length}問目</span>
-    <button class="small" data-act="quit" style="font-weight:700">やめる</button></div>
-    <div class="gauge" style="margin:8px 0 15px"><i style="width:${pct}%"></i></div>
+    <button class="small" data-act="quit" style="font-weight:800">やめる</button></div>
+    <div class="gauge" style="margin:8px 0 13px"><i style="width:${pct}%"></i></div>
     <div class="card"><div class="qtext">${q.q}</div>`;
-  h+=opts.map((o,k)=>{
+  opts.forEach((o,k)=>{
     let cls='opt';
     if(picked!==undefined&&s.fb==='each'){if(o===q.a)cls+=' ok';else if(o===picked)cls+=' ng';}
-    return `<button class="${cls}" data-pick="${k}" ${picked!==undefined?'disabled':''}><span class="mk">${k+1}</span>${esc(o)}</button>`;
-  }).join('');
-  if(picked!==undefined){
-    if(s.fb==='each'){
-      const ok=picked===q.a;
-      h+=`<div class="exp"><div class="verdict ${ok?'vok':'vng'}">${ok?'⭕️ せいかい':'❌ ざんねん'}</div>
+    h+=`<button class="${cls}" data-pick="${k}" ${picked!==undefined?'disabled':''}><span class="mk">${k+1}</span>${esc(o)}</button>`;
+    if(picked!==undefined&&s.fb==='each'&&o===picked)      // 解説は押した選択肢のすぐ下に出す
+      h+=`<div class="exp inline"><div class="verdict ${ok?'vok':'vng'}">${ok?'⭕️ せいかい':'❌ ざんねん'}</div>
         <div style="margin-top:6px">${esc(q.x)}</div>
-        <div class="small" style="margin-top:8px">${GROUPS[q.g].emo} ${esc(q.cat)}</div></div>`;
-    }
-    h+=`<div style="margin-top:14px"><button class="btn" data-act="next">${s.i+1===s.qs.length?'結果を見る':'つぎの問題へ'}</button></div>`;
-  }
+        <div class="small" style="margin-top:8px">${GROUPS[q.g].emo} ${esc(q.cat)}</div>
+        <button class="btn" data-act="next" style="margin-top:12px">${last?'結果を見る':'次の問題へ →'}</button></div>`;
+  });
+  if(picked!==undefined&&s.fb!=='each')
+    h+=`<div style="margin-top:14px"><button class="btn" data-act="next">${last?'結果を見る':'次の問題へ →'}</button></div>`;
   $('#view').innerHTML=navBar()+h+`</div>`;
+  clearTimeout(s.tmr);s.tmr=null;
+  if(picked!==undefined){                                  // 自動で次へ
+    const a=S.auto||'ok';
+    if(s.fb!=='each'&&a!=='off')s.tmr=setTimeout(nextQ,400);
+    else if(a==='all')s.tmr=setTimeout(nextQ,ok?900:2400);
+    else if(a==='ok'&&ok)s.tmr=setTimeout(nextQ,900);
+  }
 }
 const MARU=`<svg class="maru" viewBox="0 0 170 120" aria-hidden="true"><g fill="none" stroke="var(--green)" stroke-width="4" stroke-linecap="round" opacity=".8">
   <ellipse cx="85" cy="60" rx="58" ry="44"/><ellipse cx="85" cy="60" rx="46" ry="33" opacity=".65"/>
@@ -1567,13 +1899,19 @@ function groupStats(){
 function renderResult(){
   const s=sess,total=s.qs.length,score=s.ans.filter(a=>a.ok).length;
   const need=s.lv?passOf(s.lv):80;
-  const pct=Math.round(score/total*100),pass=pct>=need,ts=Date.now();
+  const pct=Math.round(score/total*100),ts=Date.now();
+  const mq=s.ans.filter(a=>a.q.must),mn=mq.filter(a=>!a.ok).length;   // 線引きの問題の取りこぼし
+  const gateNG=s.big&&s.lv===1&&LV[1].mustAll&&mq.length&&mn>0;
+  const pass=pct>=need&&!gateNG;
   if(!s.saved){
     s.saved=true;
     s.elapsed=Date.now()-(s.t0||Date.now());
     s.prev=S.hist.find(x=>x.label===s.label)||null;
     s.ts=ts;
-    if(!s.review){S.hist.unshift({ts,lv:s.lv,big:s.big,label:s.label,score,total,pct,pass:s.big?pass:null});S.hist=S.hist.slice(0,60);save();}
+    const gb={};s.ans.forEach(a=>{const g=gb[a.q.g]=gb[a.q.g]||[0,0];a.ok?g[0]++:g[1]++;});
+    const wr=s.ans.filter(a=>!a.ok).slice(0,60).map(a=>({i:a.q.id,p:String(a.picked).slice(0,70)}));
+    s.entry={ts,lv:s.lv,big:s.big,label:s.label,score,total,pct,pass:s.big?pass:null,need,el:s.elapsed,gb,wr,mq:mq.length,mn};
+    if(!s.review){S.hist.unshift(s.entry);S.hist=S.hist.slice(0,60);save();}
   }
   const diff=s.prev?pct-s.prev.pct:null;
   const by={};s.ans.forEach(a=>{const g=by[a.q.g]=by[a.q.g]||{o:0,n:0};a.ok?g.o++:g.n++;});
@@ -1590,7 +1928,8 @@ function renderResult(){
     <div><b>${fmtMin(s.elapsed||0)}</b><span>所要時間</span></div>
     <div><b>${diff===null?'—':(diff>0?'+'+diff:diff)}</b><span>前回との差</span></div>
   </div>
-  ${s.big?`<div class="small" style="margin-top:11px">${pass?(s.lv===1?'基礎クリア。現場に出る前の最低ラインを満たしています。':LV[s.lv].g+'（'+LV[s.lv].name+'）の基準を満たしています。'):'合格は'+need+'点以上。まちがえた問題は宿題に入りました。'}</div>`:''}
+  ${s.big&&s.lv===1&&mq.length?`<div class="${mn?'warnline':'okline'}" style="text-align:center">${mn?'⚠️ 線引きの問題を'+mn+'問まちがえました。ここは1問も落とせません':'✓ 線引きの問題 '+mq.length+'問すべて正解'}</div>`:''}
+  ${s.big?`<div class="small" style="margin-top:11px">${pass?(s.lv===1?'基礎クリア。現場に出る前の最低ラインを満たしています。':LV[s.lv].g+'（'+LV[s.lv].name+'）の基準を満たしています。'):(gateNG?'点数は届いていますが、線引きの問題を落としているため不合格です。ここは現場で事故につながる部分なので、全問正解が条件になっています。':'合格は'+need+'点以上。まちがえた問題は宿題に入りました。')}</div>`:''}
   </div>`;
 
   if(Object.keys(by).length>1){
@@ -1618,43 +1957,136 @@ function renderResult(){
     h+=`<div class="sec"><button class="btn ghost" data-ids="${wrong.map(a=>a.q.id).join(',')}" data-label="まちがい直し">🔁 まちがえた${wrong.length}問だけやり直す</button></div>`;
   }else h+=`<div class="sec small" style="text-align:center">🍀 全問せいかい。次の宿題まで間隔があきます。</div>`;
 
-  if(s.big&&pass){
-    h+=`<div class="sec"><button class="btn green" data-act="issue" data-ts="${s.ts}" ${S.name?'':'disabled'}>🎓 修了証を発行する</button>
-      <div class="small" style="margin-top:8px">${S.name?'検証コード付きのテキストを作ります。':'先に通知表タブで名前を記入してください。'}</div></div>`;
-  }
   if(!s.review){
-    const txt=submitText(s,score,total,pct,pass,need);
+    const txt=histText(s.entry);
     h+=rule('📤','結果の提出')+`<div class="card">
       <div class="small">このテキストをコピーして、LINEかメールで提出してください。${S.name?'':'<b style="color:var(--amber)">氏名が未記入です。教室の画面で名前を入れてから作り直してください。</b>'}</div>
       <textarea readonly id="subbox" style="min-height:190px;margin-top:10px">${esc(txt)}</textarea>
-      <div class="field"><button class="btn" data-act="copysub">📋 結果をコピーする</button></div></div>`;
+      <div class="field"><button class="btn" data-act="copysub">📋 結果をコピーする</button></div>
+      <div class="small" style="margin-top:8px">このテキストは通知表の「過去の結果」からいつでも出し直せます。</div></div>`;
   }
-  h+=`<div class="sec grid2"><button class="btn ghost slim" data-act="retry">同じ条件でもう一度</button><button class="btn ghost slim" data-act="home">教室にもどる</button></div>`;
+  h+=`<div class="sec grid2"><button class="btn ghost slim" data-act="retry">同じ条件でもう一度</button><button class="btn ghost slim" data-act="gohome">教室にもどる</button></div>`;
   $('#view').innerHTML=navBar()+h;
 }
 
-function submitText(s,score,total,pct,pass,need){
-  const name=S.name||'（氏名未記入）',date=fmtDate(s.ts);
-  const by={};s.ans.forEach(a=>{const g=by[a.q.g]=by[a.q.g]||{o:0,n:0};a.ok?g.o++:g.n++;});
-  const wrong=s.ans.filter(a=>!a.ok);
+/* ---- 引き継ぎコード：問題IDを番号に置き換えて短くする ---- */
+const QIDX={};POOL.forEach((p,i)=>{QIDX[p.id]=i;});
+const CVER='N3.'+POOL.length;
+function packState(){
+  const H=t=>Math.round(t/3600000),M=t=>Math.round(t/60000);   // 受験日時は分まで残す（検証コードが変わらないように）
+  const o={v:CVER,n:S.name,f:S.furi?1:0,z:S.fs||'m',a:S.auto||'ok',k:S.bk?H(S.bk):0,
+    r:Object.keys(S.read).map(k=>CH.findIndex(c=>c.i===k)).filter(i=>i>=0).join(','),
+    b:Object.keys(S.box).map(id=>QIDX[id]===undefined?'':QIDX[id]+'.'+S.box[id].b+'.'+H(S.box[id].due)).filter(Boolean).join(','),
+    t:Object.keys(S.stat).map(id=>QIDX[id]===undefined?'':QIDX[id]+'.'+S.stat[id].o+'.'+S.stat[id].n).filter(Boolean).join(','),
+    h:S.hist.map(e=>[M(e.ts),e.lv||0,e.big?1:0,e.label,e.score,e.total,e.pct,e.pass===null||e.pass===undefined?2:(e.pass?1:0),
+      e.need||0,e.el?Math.max(1,Math.round(e.el/1000)):0,e.mq||0,e.mn||0,
+      e.gb?Object.keys(e.gb).map(g=>g+'.'+e.gb[g][0]+'.'+e.gb[g][1]).join(','):'',
+      (e.wr||[]).map(w=>(QIDX[w.i]===undefined?-1:QIDX[w.i])+'~'+String(w.p||'').slice(0,40)).join('|')])};
+  return JSON.stringify(o);
+}
+function unpackState(json){
+  const o=JSON.parse(json),H=v=>v*3600000,M=v=>v*60000,S2=blank(o.n||'');
+  S2.furi=o.f!==0;S2.fs=o.z||'m';S2.auto=o.a||'ok';S2.bk=o.k?H(o.k):0;
+  (o.r||'').split(',').filter(Boolean).forEach(i=>{const c=CH[+i];if(c)S2.read[c.i]=1;});
+  const same=o.v===CVER;                       // 問題の数が変わっていたら、宿題の進みだけ引き継がない
+  if(same){
+    (o.b||'').split(',').filter(Boolean).forEach(s=>{const[i,bx,du]=s.split('.');
+      const id=POOL[+i]&&POOL[+i].id;if(id)S2.box[id]={b:+bx,due:H(+du)};});
+    (o.t||'').split(',').filter(Boolean).forEach(s=>{const[i,ok,ng]=s.split('.');
+      const id=POOL[+i]&&POOL[+i].id;if(id)S2.stat[id]={o:+ok,n:+ng};});
+  }
+  S2.hist=(o.h||[]).map(a=>{const e={ts:M(a[0]),lv:a[1],big:!!a[2],label:a[3],score:a[4],total:a[5],pct:a[6],
+      pass:a[7]===2?null:a[7]===1,need:a[8]||0,el:(a[9]||0)*1000,mq:a[10]||0,mn:a[11]||0,gb:{},wr:[]};
+    (a[12]||'').split(',').filter(Boolean).forEach(s=>{const[g,ok,ng]=s.split('.');e.gb[g]=[+ok,+ng];});
+    (a[13]||'').split('|').filter(Boolean).forEach(s=>{const k=s.indexOf('~'),i=+s.slice(0,k);
+      if(POOL[i])e.wr.push({i:POOL[i].id,p:s.slice(k+1)});});
+    return e;});
+  return {S2,same};
+}
+const makeCode=()=>{const j=packState();return 'NUT3:'+b64e(j)+':'+fnv(j).toString(16).toUpperCase();};
+function readCode(txt){
+  const t=(txt||'').trim();
+  let m=t.match(/^NUT3:([A-Za-z0-9+/=]+):([0-9A-F]+)$/);
+  if(m){const j=b64d(m[1]);
+    if(fnv(j).toString(16).toUpperCase()!==m[2])return {err:'こわれ'};
+    try{return unpackState(j);}catch(e){return {err:'よめない'};}}
+  m=t.match(/^NUT2:([A-Za-z0-9+/=]+):([0-9A-F]+)$/);   // 前のつくりのコードも受け取る
+  if(m){const j=b64d(m[1]);
+    if(fnv(j).toString(16).toUpperCase()!==m[2])return {err:'こわれ'};
+    try{return {S2:{...blank(),...JSON.parse(j)},same:true};}catch(e){return {err:'よめない'};}}
+  return {err:'形式'};
+}
+
+function histText(e){
+  const name=S.name||'（氏名未記入）',date=fmtDate(e.ts);
   const L=['CHART 栄養学学校　テスト結果',
     '氏名：'+name,
-    '試験：'+s.label,
-    '得点：'+score+'/'+total+'（'+pct+'点）',
-    '判定：'+(pass?'合格':'不合格')+'（合格ライン '+need+'点）',
+    '試験：'+e.label,
+    '得点：'+e.score+'/'+e.total+'（'+e.pct+'点）',
+    '判定：'+(e.pass===null||e.pass===undefined?'—（練習）':(e.pass?'合格':'不合格'))+(e.need?'（合格ライン '+e.need+'点）':''),
+    ...(e.mq?['線引きの問題：'+e.mq+'問中 '+(e.mq-(e.mn||0))+'問正解'+((e.mn||0)?'　← 1問も落とせない区分':'')]:[]),
     '日時：'+date,
-    '検証コード：'+code(`${name}|${s.label}|${score}/${total}|${date}`),
-    '',
-    '── 分野ごとの正答率 ──'];
-  Object.keys(by).forEach(g=>{const t=by[g].o+by[g].n;
-    L.push('・'+GROUPS[g].label+'　'+Math.round(by[g].o/t*100)+'%（'+by[g].o+'/'+t+'）');});
-  L.push('');
-  L.push('── まちがえた問題 '+wrong.length+'問 ──');
-  if(!wrong.length)L.push('・なし');
-  else wrong.forEach((a,i)=>L.push((i+1)+'. '+a.q.q.replace(/<br>/g,' ').replace(/<[^>]+>/g,'')+'\n　 正解：'+a.q.a));
+    '検証コード：'+code(`${name}|${e.label}|${e.score}/${e.total}|${date}`)];
+  if(e.el)L.push('所要時間：'+fmtMin(e.el));
+  if(e.gb){L.push('');L.push('── 分野ごとの正答率 ──');
+    Object.keys(e.gb).forEach(g=>{const o=e.gb[g][0],n=e.gb[g][1],t=o+n;
+      L.push('・'+(GROUPS[g]?GROUPS[g].label:g)+'　'+Math.round(o/t*100)+'%（'+o+'/'+t+'）');});}
+  const wr=e.wr||[];
+  L.push('');L.push('── まちがえた問題 '+wr.length+'問 ──');
+  if(!wr.length)L.push('・なし');
+  else wr.forEach((w,i)=>{const q=BYID[w.i];
+    L.push((i+1)+'. '+(q?q.q.replace(/<br>/g,' ').replace(/<[^>]+>/g,''):'（問題データなし）'));
+    if(w.p)L.push('　 選んだ答え：'+w.p);
+    if(q)L.push('　 正解：'+q.a);});
   L.push('');
   L.push('※ 氏名・試験・得点・日時を書き換えると、検証コードと合わなくなります');
   return L.join('\n');
+}
+
+/* ---------- 過去の結果 ---------- */
+function vHist(){
+  const e=S.hist.find(x=>x.ts===ui.hts);
+  if(!e)return vRec();
+  const txt=histText(e);
+  let h=`<div class="card"><div class="answer">
+    <div class="small">${esc(e.label)}</div>
+    <div class="big ${e.pass===false?'ng':''}">${e.pct}<span style="font-size:.4em">点</span></div>
+    <div class="small">${e.total}問中 ${e.score}問せいかい　${fmtDate(e.ts)}</div>
+    ${e.big?`<div class="hanko ${e.pass?'':'ng'}">${e.pass?(e.lv===1?'現 場 O K':'合 格'):'不 合 格'}</div>`:''}
+  </div>
+  <div class="statline">
+    <div><b>${mark(e.pct)}</b><span>評価</span></div>
+    <div><b>${e.el?fmtMin(e.el):'—'}</b><span>所要時間</span></div>
+    <div><b>${e.need||'—'}</b><span>合格ライン</span></div>
+  </div></div>`;
+  if(e.gb&&Object.keys(e.gb).length>1){
+    h+=rule('📊','分野ごとの出来')+`<div class="card">`+Object.keys(e.gb).map(g=>{
+      const o=e.gb[g][0],n=e.gb[g][1],t=o+n,p=Math.round(o/t*100);
+      return `<div class="barrow"><div class="lb"><span>${GROUPS[g]?GROUPS[g].emo+' '+GROUPS[g].label:g}</span><em>${o}/${t}問</em></div>${barHtml(p)}</div>`;
+    }).join('')+`</div>`;
+  }
+  const wr=e.wr||[];
+  if(wr.length){
+    h+=rule('🔁','まちがえたところ '+wr.length+'問')+wr.map(w=>{
+      const q=BYID[w.i];if(!q)return '';
+      const dk=dexKeyFor(q),ent=dk?byKey(dk):null,ch=chapterFor(q);
+      return `<div class="wrongcard">
+        <div style="font-weight:800;line-height:1.6">${q.q}</div>
+        <div class="ansrow">
+          <span class="x">✕</span><span class="t ng">${esc(w.p||'—')}</span>
+          <span class="o">○</span><span class="t ok">${esc(q.a)}</span></div>
+        <div class="exp" style="margin-top:12px">${esc(q.x)}</div>
+        <div class="jump">
+          ${ent?`<button data-dk="${ent.key}">${iconOf(ent)} 図鑑で見る</button>`:''}
+          ${ch?`<button data-ch="${ch.i}">📖 ${esc(ch.t)}</button>`:''}
+        </div></div>`;}).join('');
+    h+=`<div class="sec"><button class="btn ghost" data-ids="${wr.map(w=>w.i).join(',')}" data-label="まちがい直し">🔁 この${wr.length}問をやり直す</button></div>`;
+  }else h+=`<div class="sec small" style="text-align:center">🍀 全問せいかいでした。</div>`;
+  h+=rule('📤','提出用テキスト')+`<div class="card">
+    <div class="small">コピーしてLINEかメールで提出してください。</div>
+    <textarea readonly id="subbox" style="min-height:190px;margin-top:10px">${esc(txt)}</textarea>
+    <div class="field"><button class="btn" data-act="copysub">📋 この結果をコピーする</button></div></div>`;
+  return h;
 }
 
 /* ---------- 通知表 ---------- */
@@ -1666,84 +2098,66 @@ function nameStatus(){
 }
 function vRec(){
   const hf=ui.hf||'all';
-  let h=idCard();
-
-  h+=`<div style="height:12px"></div>`+nameCard();
-
-  h+=rule('🏅','成績表')+`<div class="gradetable">`+STAGES.map(l=>{
+  let h=rule('🏅','成績表')+`<div class="gradetable">`+STAGES.map(l=>{
     const b=bestOf(l),okd=clearedOf(l);
     return `<div class="graderow"><span class="y">${l===1?'🔰':'🏆'} ${LV[l].g}</span>
       ${barHtml(b===null?0:b)}<span class="sc">${b===null?'—':b}</span>
       <span class="mk" style="color:var(--${okd?'green':'ink2'})">${okd?'合':'—'}</span></div>`;
   }).join('')+`</div>
-  <div class="small" style="margin-top:8px">昇級テストの最高点。ファーストは${passOf(1)}点、セカンド以降は${passOf(2)}点で合格。</div>`;
+  <div class="small" style="margin-top:8px">ファーストは${passOf(1)}点かつ線引き全問正解、セカンド以降は${passOf(2)}点で合格。</div>
+  <div class="field"><button class="btn ghost slim" data-act="report">📤 到達状況をまとめて出す</button></div>
+  ${ui.report?`<div class="card" style="margin-top:11px"><textarea readonly id="repbox" style="min-height:170px">${esc(ui.report)}</textarea>
+    <div class="field"><button class="btn slim" data-act="copyrep">コピーする</button></div></div>`:''}`;
 
   const gs=groupStats(),keys=Object.keys(gs).filter(k=>gs[k].o+gs[k].n>=3)
     .sort((a,b)=>gs[a].o/(gs[a].o+gs[a].n)-gs[b].o/(gs[b].o+gs[b].n));
   h+=rule('📊','分野ごとの正答率')+`<div class="card">`;
   if(!keys.length)h+=`<div class="small">まだ集計できるだけの記録がありません。テストを受けると、苦手な分野から順に並びます。</div>`;
   else{
-    h+=keys.map(g=>{
-      const t=gs[g].o+gs[g].n,p=Math.round(gs[g].o/t*100);
-      return `<div class="barrow"><div class="lb"><span>${GROUPS[g].emo} ${GROUPS[g].label}</span><em>${p}%・${t}問</em></div>${barHtml(p)}</div>`;
-    }).join('');
-    h+=`<div class="small" style="margin-top:11px">上にあるものほど苦手。まずそこの授業を読み直すのが早い。</div>`;
-    h+=`<div class="field"><button class="btn ghost slim" data-gq="${keys[0]}" data-label="${esc(GROUPS[keys[0]].label)}の確認">✏️ いちばん苦手な「${GROUPS[keys[0]].label}」を8問やる</button></div>`;
+    h+=keys.map(g=>{const t=gs[g].o+gs[g].n,p=Math.round(gs[g].o/t*100);
+      return `<div class="barrow"><div class="lb"><span>${GROUPS[g].emo} ${GROUPS[g].label}</span><em>${p}%・${t}問</em></div>${barHtml(p)}</div>`;}).join('');
+    h+=`<div class="small" style="margin-top:11px">上にあるものほど苦手。まずそこの授業を読み直すのが早い。</div>
+      <div class="field"><button class="btn ghost slim" data-gq="${keys[0]}" data-label="${esc(GROUPS[keys[0]].label)}の確認">✏️ いちばん苦手な「${GROUPS[keys[0]].label}」を8問やる</button></div>`;
   }
   h+=`</div>`;
-
-  const learned=Object.keys(S.box).length,fixed=Object.values(S.box).filter(x=>x.b===5).length;
-  h+=`<div class="card"><div class="statline" style="margin-top:0">
-    <div><b>${learned}</b><span>解いた問題</span></div>
-    <div><b>${fixed}</b><span>定着ずみ</span></div>
-    <div><b>${POOL.length}</b><span>全問題</span></div></div></div>`;
 
   const list=S.hist.filter(e=>hf==='all'||(hf==='big'?e.big:!e.big));
   h+=rule('🗒️','受けた記録')+`<div class="card">
     <div class="field" style="margin-top:0"><label>表示する記録</label><select data-set="hf">
       <option value="all" ${hf==='all'?'selected':''}>すべて（${S.hist.length}件）</option>
-      <option value="big" ${hf==='big'?'selected':''}>期末テストのみ</option>
+      <option value="big" ${hf==='big'?'selected':''}>昇級テストのみ</option>
       <option value="mini" ${hf==='mini'?'selected':''}>小テストのみ</option></select></div>
     <div class="hr"></div>`;
   if(!list.length)h+=`<div class="small">該当する記録がありません。</div>`;
-  else h+=list.slice(0,20).map(e=>`<div class="hist">
-      <div><div style="font-weight:800">${esc(e.label)}</div><div class="small">${fmtDate(e.ts)}</div></div>
+  else h+=list.slice(0,20).map(e=>`<button class="hist" data-hts="${e.ts}">
+      <div><div style="font-weight:800">${esc(e.label)} ▶</div><div class="small">${fmtDate(e.ts)}</div></div>
       <div style="text-align:right"><div style="font-weight:800">${e.pct}点 ${mark(e.pct)}</div>
-      ${e.big?`<span class="badge ${e.pass?'p':'f'}">${e.pass?'合格':'不合格'}</span>`:'<span class="badge f">練習</span>'}</div></div>`).join('');
+      ${e.big?`<span class="badge ${e.pass?'p':'f'}">${e.pass?'合格':'不合格'}</span>`:'<span class="badge f">練習</span>'}</div></button>`).join('')
+    +`<div class="small" style="margin-top:10px">行をタップすると、そのときの結果と提出用テキストが出せます。</div>`;
   h+=`</div>`;
 
-  h+=rule('📤','これまでの記録を提出')+`<div class="card">
-    <div class="small">4段階の到達状況をまとめたテキストを作ります。定期面談のときにそのまま送れます。</div>
-    <div class="field"><button class="btn ghost slim" data-act="report">📋 記録をまとめる</button></div>
-    ${ui.report?`<textarea readonly id="repbox" style="min-height:170px">${esc(ui.report)}</textarea>
-      <div class="field"><button class="btn slim" data-act="copyrep">コピーする</button></div>`:''}</div>`;
-
-  const last=S.hist.find(e=>e.big&&e.pass);
-  h+=rule('🎓','修了証')+`<div class="card">`;
-  if(!last)h+=`<div class="small">まだ合格した期末テストがありません。80点以上で発行できます。</div>`;
-  else{
-    h+=`<div class="small">${esc(last.label)}・${last.pct}点（${fmtDate(last.ts)}）の合格記録から発行します。</div>
-      <div class="field"><button class="btn green" data-act="issue" data-ts="${last.ts}" ${S.name?'':'disabled'}>🎓 修了証を発行する</button></div>
-      ${S.name?'':'<div class="warnline">⚠️ 先に上の欄に名前を記入してください</div>'}`;
-  }
-  if(ui.issued)h+=`<div class="hr"></div>
-    <div class="small" style="margin-bottom:8px">そのままコピーしてLINEやメールに貼れます。</div>
-    <textarea readonly id="issued">${esc(ui.issued)}</textarea>
-    <div class="field"><button class="btn slim" data-act="copy">コピーする</button></div>`;
-  h+=`</div>`;
-
-  h+=rule('🔎','修了証の照合')+`<div class="card">
-    <div class="small">受け取ったテキストを貼ると、書き換えられていないか確認できます。</div>
+  const bd=daysSince(S.bk);
+  h+=rule('⚙️','この端末のこと')+`<div class="card" id="bkcard">
+    <h2 style="font-size:1em">📥 引き継ぎコード</h2>
+    <div class="small" style="margin-top:4px">記録はこの端末の中だけにあります。端末を変えたときや消えたときは、このコードから戻せます。
+    <b>コピーしてLINEの自分宛かメモに貼っておいてください。</b></div>
+    <div class="${bd===null?'warnline':'okline'}" style="margin-top:8px">${bd===null?'⚠️ まだ一度も控えていません':'✓ '+(bd===0?'今日':bd+'日前')+'に控えました'}</div>
+    <div class="grid2" style="margin-top:12px"><button class="btn ghost slim" data-act="export">コードを出す</button><button class="btn ghost slim" data-act="importopen">コードで戻す</button></div>
+    ${ui.exp?`<div class="field"><textarea readonly id="expbox">${esc(ui.exp)}</textarea><button class="btn slim" data-act="copyexp" style="margin-top:8px">コピーする</button></div>`:''}
+    ${ui.impopen?`<div class="field"><textarea data-rec="imp" placeholder="NUT3で始まるコードを貼り付け">${esc(ui.imptext||'')}</textarea><button class="btn slim" data-act="import" style="margin-top:8px">この内容で上書きする</button></div>`:''}
+    <div class="hr"></div>
+    <h2 style="font-size:1em">🔎 提出テキストの照合</h2>
+    <div class="small" style="margin-top:4px">受け取ったテキストを貼ると、書き換えられていないか確認できます。</div>
     <div class="field"><textarea data-rec="verify" placeholder="受け取ったテキストをここに貼り付け">${esc(ui.vtext||'')}</textarea></div>
     <button class="btn ghost slim" data-act="verify">照合する</button>
-    ${ui.vres?`<div class="exp" style="margin-top:12px"><span class="verdict ${ui.vok?'vok':'vng'}">${ui.vok?'⭕️ 一致しました':'❌ 一致しません'}</span><div style="margin-top:6px">${esc(ui.vres)}</div></div>`:''}</div>`;
-
-  h+=rule('💾','持ち出しと持ち込み')+`<div class="card">
-    <div class="small">進み具合はこの端末の中だけに残ります。機種変更の前に書き出してください。</div>
-    <div class="grid2" style="margin-top:12px"><button class="btn ghost slim" data-act="export">書き出す</button><button class="btn ghost slim" data-act="importopen">読み込む</button></div>
-    ${ui.exp?`<div class="field"><textarea readonly id="expbox">${esc(ui.exp)}</textarea><button class="btn slim" data-act="copyexp" style="margin-top:8px">コピーする</button></div>`:''}
-    ${ui.impopen?`<div class="field"><textarea data-rec="imp" placeholder="NUT2で始まるテキストを貼り付け">${esc(ui.imptext||'')}</textarea><button class="btn slim" data-act="import" style="margin-top:8px">この内容で上書きする</button></div>`:''}</div>`;
-  h+=`<div class="sec"><button class="btn ghost slim" data-act="reset" style="color:var(--red);border-color:var(--red)">学習データを初期化する</button></div>`;
+    ${ui.vres?`<div class="exp" style="margin-top:12px"><span class="verdict ${ui.vok?'vok':'vng'}">${ui.vok?'⭕️ 一致しました':'❌ 一致しません'}</span><div style="margin-top:6px">${esc(ui.vres)}</div></div>`:''}
+    <div class="hr"></div>
+    <h2 style="font-size:1em">👤 利用者</h2>
+    <div class="small" style="margin-top:4px">いま使っているのは <b>${esc(S.name||'（名前未設定）')}</b> の記録です。端末を共有するときは切り替えてください。</div>
+    <div class="grid2" style="margin-top:12px">
+      <button class="btn ghost slim" data-act="logout">切り替える</button>
+      <button class="btn ghost slim" data-act="reset" style="color:var(--red);border-color:var(--red)">記録を初期化</button></div>
+  </div>`;
   return h;
 }
 
@@ -1775,13 +2189,6 @@ function reportText(){
     hs.forEach(e=>L.push('・'+fmtDate(e.ts)+'　'+e.label+'　'+e.pct+'点　'+(e.pass?'合格':'不合格')));}
   return L.join('\n');
 }
-function issueText(ts){
-  const e=S.hist.find(x=>x.ts===ts);if(!e)return '';
-  const name=S.name||'（氏名未記入）',date=fmtDate(e.ts);
-  return ['CHART 栄養学学校 修了証','氏名：'+name,'試験：'+e.label,
-    '得点：'+e.score+'/'+e.total+'（'+e.pct+'点）','判定：'+(e.pass?'合格':'不合格'),'日時：'+date,
-    '検証コード：'+code(`${name}|${e.label}|${e.score}/${e.total}|${date}`)].join('\n');
-}
 function verifyText(t){
   const g=re=>{const m=t.match(re);return m?m[1].trim():null;};
   const name=g(/氏名：(.+)/),label=g(/試験：(.+)/),sc=t.match(/得点：\s*(\d+)\/(\d+)/),date=g(/日時：(.+)/),cd=g(/検証コード：(.+)/);
@@ -1798,11 +2205,38 @@ document.addEventListener('click',e=>{
   const t=e.target.closest('[data-ch],button');if(!t)return;const d=t.dataset;
   if(d.tab){if(tab==='quiz'&&sess&&!sess.saved&&sess.ans.length&&!confirm('テストをやめますか？'))return;sess=null;go(d.tab);return;}
   if(d.act==='navback'||d.act==='back'){
-    if(tab==='quiz'&&sess&&!sess.saved&&sess.ans.length&&!confirm('テストを中断してもどりますか？'))return;
+    clearTimeout(sess&&sess.tmr);
+    if(tab==='quiz'&&sess&&!sess.saved&&sess.ans.length&&!confirm('テストを中断してもどりますか？')){renderQuiz();return;}
     if(tab==='quiz')sess=null;
     navBack();return;}
+  if(d.login&&d.login!=='newname'&&d.login!=='code'){login(d.login);tab='home';ui={};HIST=[];render();scrollTo(0,0);return;}
+  if(d.act==='newuser'){
+    const nm=(ui.newname||'').trim();
+    if(!nm){alert('名前を入れてください。');return;}
+    newUser(nm);tab='home';ui={};HIST=[];render();scrollTo(0,0);return;}
+  if(d.act==='restore'){
+    const r=readCode(ui.code);
+    if(r.err==='形式'){alert('NUT3またはNUT2で始まるコードを貼り付けてください。');return;}
+    if(r.err){alert('コードが読み取れませんでした。全文をコピーし直してください。');return;}
+    newUser(r.S2.name||'（名前未設定）');
+    S=r.S2;S.bk=Date.now();save();
+    tab='home';ui={};HIST=[];render();scrollTo(0,0);
+    alert(r.same?'復元しました。続きから使えます。':'復元しました。問題の数が変わっているため、宿題の進み具合だけ引き継いでいません。');
+    return;}
+  if(d.act==='logout'){if(confirm('利用者を切り替えます。この端末の記録は残ります。'))logout();return;}
+  if(d.act==='gohome'){clearTimeout(sess&&sess.tmr);sess=null;tab='home';ui={};render();scrollTo(0,0);return;}
+  if(d.act==='gotobk'){pushNav();tab='rec';ui={exp:makeCode()};S.bk=Date.now();save();render();scrollTo(0,0);return;}
+  if(d.hts){pushNav();tab='hist';ui={hts:+d.hts};render();scrollTo(0,0);return;}
+  if(d.act==='editname'){ui.editname=1;render();scrollTo(0,0);return;}
+  if(d.act==='cancelname'){ui.editname=0;render();scrollTo(0,0);return;}
+  if(d.act==='savename'){
+    const el=document.getElementById('nmi');
+    const v=String(el&&el.value?el.value:(ui.nd||'')).trim().slice(0,20);
+    if(!v){alert('名前を入れてください。');return;}
+    S.name=v;save();ui={};render();scrollTo(0,0);return;}
   if(d.act==='rev'){startReview();return;}
   if(d.act==='dcore'){pushNav();ui={dcore:1};tab='dex';render();scrollTo(0,0);return;}
+  if(d.act==='dfood'){pushNav();ui={dfood:1};tab='dex';render();scrollTo(0,0);return;}
   if(d.act==='gotob'){go('book');return;}
   if(d.act==='gotod'){go('dex');return;}
   if(d.act==='gotot'){pushNav();tab='train';ui={tmode:'big',tlv:1};render();scrollTo(0,0);return;}
@@ -1813,19 +2247,21 @@ document.addEventListener('click',e=>{
   if(d.ids){startIds(d.ids.split(','),d.label);return;}
   if(d.gq){startGroup(d.gq,d.label);return;}
   if(d.mini){startQuiz(+d.mini,'all','mini','each');return;}
-  if(d.act==='start'){startQuiz(ui.tlv||1,ui.tg||'all',ui.tmode||'mini',ui.tfb||'each');return;}
+  if(d.act==='start'){const md=ui.tmode||'mini';
+    startQuiz(ui.tlv||1,md==='big'?'all':(ui.tg||'all'),md,ui.tfb||'each');return;}
   if(d.pick!==undefined){
     const s=sess;if(s.picked!==undefined)return;
     const q=s.qs[s.i],picked=s.opts.list[+d.pick],ok=picked===q.a;
     s.picked=picked;s.ans.push({q,picked,ok});record(q.id,ok);save();renderQuiz();return;}
-  if(d.act==='next'){sess.i++;sess.picked=undefined;sess.opts=null;
-    if(sess.i>=sess.qs.length)renderResult();else{renderQuiz();scrollTo(0,0);}return;}
-  if(d.act==='quit'){if(confirm('やめて結果を見ますか？')){if(sess.ans.length)renderResult();else{sess=null;go('home');}}return;}
+  if(d.act==='next'){nextQ();return;}
+  if(d.act==='quit'){clearTimeout(sess&&sess.tmr);
+    if(confirm('やめて結果を見ますか？')){if(sess.ans.length)renderResult();else{sess=null;tab='home';ui={};render();scrollTo(0,0);}}
+    else renderQuiz();
+    return;}
   if(d.act==='retry'){if(sess.lv)startQuiz(sess.lv,'all',sess.big?'big':'mini',sess.fb);else startIds(sess.qs.map(q=>q.id),sess.label);return;}
-  if(d.act==='issue'){pushNav();ui={issued:issueText(+d.ts)};tab='rec';render();scrollTo(0,0);return;}
   if(d.act==='report'){ui.report=reportText();render();return;}
-  if(d.act==='copy'||d.act==='copyexp'||d.act==='copysub'||d.act==='copyrep'){
-    const el=document.getElementById({copy:'issued',copyexp:'expbox',copysub:'subbox',copyrep:'repbox'}[d.act]);
+  if(d.act==='copyexp'||d.act==='copysub'||d.act==='copyrep'){
+    const el=document.getElementById({copyexp:'expbox',copysub:'subbox',copyrep:'repbox'}[d.act]);
     if(!el)return;
     const label=t.textContent;
     try{el.focus();el.select();el.setSelectionRange(0,99999);}catch(e){}
@@ -1838,24 +2274,25 @@ document.addEventListener('click',e=>{
     setTimeout(()=>{t.textContent=label;},1800);
     return;}
   if(d.act==='verify'){const r=verifyText(ui.vtext||'');ui.vok=r.ok;ui.vres=r.msg;render();return;}
-  if(d.act==='export'){const j=JSON.stringify(S);ui.exp='NUT2:'+b64e(j)+':'+fnv(j).toString(16).toUpperCase();render();return;}
+  if(d.act==='export'){ui.exp=makeCode();S.bk=Date.now();save();render();return;}
   if(d.act==='importopen'){ui.impopen=!ui.impopen;render();return;}
   if(d.act==='import'){
-    const m=(ui.imptext||'').trim().match(/^NUT2:([A-Za-z0-9+/=]+):([0-9A-F]+)$/);
-    if(!m){alert('NUT2形式のテキストではありません。');return;}
-    try{const json=b64d(m[1]);
-      if(fnv(json).toString(16).toUpperCase()!==m[2]){alert('データが壊れています。コピーし直してください。');return;}
-      if(!confirm('いまの学習データを上書きします。よろしいですか？'))return;
-      S={...DEF,...JSON.parse(json)};save();ui={};render();alert('読み込みました。');
-    }catch(err){alert('読み込めませんでした。');}return;}
-  if(d.act==='reset'){if(confirm('すべての記録を消します。元に戻せません。')){S={...DEF};save();ui={};render();}return;}
+    const r=readCode(ui.imptext);
+    if(r.err==='形式'){alert('NUT3またはNUT2で始まるコードを貼り付けてください。');return;}
+    if(r.err){alert('コードが読み取れませんでした。全文をコピーし直してください。');return;}
+    if(!confirm('いまの記録を上書きします。よろしいですか？'))return;
+    S=r.S2;S.bk=Date.now();save();ui={};render();
+    alert(r.same?'読み込みました。':'読み込みました。問題の数が変わっているため、宿題の進み具合だけ引き継いでいません。');
+    return;}
+  if(d.act==='reset'){if(confirm('この利用者の記録をすべて消します。元に戻せません。')){const n=S.name;S=blank(n);save();ui={};render();}return;}
 });
 document.addEventListener('change',e=>{const d=e.target.dataset;
   if(d.set==='fs'){S.fs=e.target.value;save();applyFs();render();}
+  if(d.set==='auto'){S.auto=e.target.value;save();render();}
   if(d.set==='hf'){ui.hf=e.target.value;render();}
   if(d.dex==='furi'){S.furi=e.target.value==='1';save();render();}
   if(d.t==='lv'){ui.tlv=+e.target.value;render();}
-  if(d.t==='mode'){ui.tmode=e.target.value;render();}
+  if(d.t==='mode'){ui.tmode=e.target.value;if(ui.tmode==='big')ui.tg='all';render();}
   if(d.t==='g')ui.tg=e.target.value;
   if(d.t==='fb')ui.tfb=e.target.value;
 });
@@ -1863,15 +2300,27 @@ document.addEventListener('input',e=>{const d=e.target.dataset;
   if(d.dex==='kw'){ui.dkw=e.target.value;clearTimeout(ui.tm);
     ui.tm=setTimeout(()=>{const v=ui.dkw;render();const el=document.querySelector('[data-dex="kw"]');
       if(el){el.value=v;el.focus();el.setSelectionRange(v.length,v.length);}},300);}
-  if(d.rec==='name'){S.name=e.target.value.slice(0,20);save();
-    const n=document.getElementById('idnm');
-    if(n){n.textContent=S.name||'名前 未記入';n.className='nm'+(S.name?'':' empty');}
-    const st=document.getElementById('nmst');
-    if(st)st.innerHTML=nameStatus();}
+  if(d.rec==='name')ui.nd=e.target.value.slice(0,20);   // 確定を押すまで反映しない
   if(d.rec==='verify')ui.vtext=e.target.value;
   if(d.rec==='imp')ui.imptext=e.target.value;
+  if(d.login==='newname')ui.newname=e.target.value;
+  if(d.login==='code')ui.code=e.target.value;
 });
-render();
+/* ---- 起動 ---- */
+(function boot(){
+  try{                                   // 前のつくりの記録があれば、利用者として取り込む
+    const old=ls.get('chart_nutrition_v2')||ls.get('chart_nutrition_v1');
+    if(old&&!USERS.length){
+      const d=JSON.parse(old),id='u'+Date.now().toString(36);
+      USERS.push({id,name:d.name||'（名前未設定）',t:Date.now()});saveIndex();
+      ls.set(PRE+id,JSON.stringify({...blank(),...d}));
+    }
+  }catch(e){}
+  const a=ls.get(ACT);
+  if(a&&USERS.find(x=>x.id===a)){login(a);tab='home';}
+  else tab='login';
+  render();
+})();
 </script>
 </body>
 </html>
