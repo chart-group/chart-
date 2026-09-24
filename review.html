@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="パーソナルジムCHARTの店舗を選んで、Googleにご感想をお寄せください。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="CHART 口コミ・レビュー">
+<meta property="og:description" content="通っている店舗を選んで、Googleにご感想をお寄せください。">
+<meta name="theme-color" content="#F3F9FD">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}img{max-width:100%}</style>
+<title>CHART 口コミ・レビュー</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&family=Caveat:wght@500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&text=CHARTFINDYOUW%20&display=swap">
+<style>
+  :root{
+    --ground:#F3F9FD;
+    --blob:#E2F1FB;
+    --blob-2:#EAF5FC;
+    --line:#CFE6F4;
+    --edge:#8CCAE7;
+    --chip:#E7F3FB;
+    --card:#FFFFFF;
+    --blue:#0877AA;
+    --blue-press:#06628C;
+    --blue-deep:#0B5E92;
+    --off:#C4DAE7;
+    --ink:#0E1B26;
+    --text:#2D4555;
+    --muted:#587383;
+    --hint:#6E8796;
+    --script:#9FD0EA;
+    --gutter:16px;
+    --font-jp:"M PLUS Rounded 1c","Hiragino Maru Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic","Meiryo",sans-serif;
+    --font-script:"Caveat","Segoe Script","Bradley Hand",cursive;
+    --font-brand:"Montserrat","Avenir Next","Helvetica Neue",Arial,sans-serif;
+    color-scheme:light;
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    background:
+      radial-gradient(440px 300px at 100% 0, var(--blob) 0, rgba(226,241,251,0) 72%),
+      radial-gradient(380px 320px at 0 64%, var(--blob-2) 0, rgba(234,245,252,0) 72%),
+      var(--ground);
+    color:var(--text);
+    font-family:var(--font-jp);
+    font-weight:500;
+    font-size:15px;
+    line-height:1.7;
+  }
+  [hidden]{display:none !important}
+  .sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+  .page{position:relative;max-width:520px;margin-inline:auto;padding-inline:var(--gutter);padding-block:14px 40px;display:flex;flex-direction:column;gap:18px}
+  .wm{position:absolute;top:-84px;left:-72px;width:200px;height:200px;color:var(--blue);opacity:.05;pointer-events:none}
+  .lead,.help li,.empty-title,.empty-sub{word-break:keep-all;overflow-wrap:anywhere}
+
+  /* ブランド */
+  .brand{position:relative;margin:0;display:flex;align-items:center;gap:9px;color:var(--ink)}
+  .brand-mark{width:30px;height:30px;color:var(--blue);flex:none}
+  .brand-word{font-family:var(--font-brand);font-weight:600;font-size:19px;letter-spacing:.16em;line-height:1}
+  .brand-sub{font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.06em;line-height:1.2;padding-left:10px;border-left:1px solid var(--line)}
+
+  /* 見出し（リッチメニューのタイルと同じ組み方） */
+  .hero{position:relative;display:flex;flex-direction:column;gap:10px;padding-top:22px}
+  .hero-script{position:absolute;right:2px;top:-4px;font-family:var(--font-script);font-weight:500;font-size:34px;line-height:1;color:var(--script);transform:rotate(-8deg);pointer-events:none}
+  .hero h1{margin:0;font-size:28px;line-height:1.3;font-weight:800;color:var(--ink);letter-spacing:.02em;text-wrap:balance}
+  .rule{display:block;width:44px;height:4px;border-radius:4px;background:var(--blue)}
+  .lead{margin:0;font-size:14.5px;line-height:1.8;max-width:34em}
+
+  /* 検索 */
+  .search{position:relative;margin:0;display:flex;align-items:center}
+  .search-icon{position:absolute;left:18px;width:20px;height:20px;color:var(--blue);pointer-events:none}
+  .search input{width:100%;height:52px;padding:0 50px 0 48px;border:1.5px solid var(--edge);border-radius:999px;background:var(--card);color:var(--ink);font:inherit;font-size:16px;font-weight:500;box-shadow:0 8px 18px -14px rgba(8,94,140,.55);-webkit-appearance:none;appearance:none}
+  .search input::placeholder{color:var(--hint);opacity:1}
+  .search input:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 4px rgba(8,119,170,.16)}
+  .search input::-webkit-search-cancel-button{-webkit-appearance:none;display:none}
+  .search-clear{position:absolute;right:8px;width:36px;height:36px;border:0;border-radius:50%;background:var(--chip);color:var(--blue-deep);display:grid;place-items:center;cursor:pointer;-webkit-tap-highlight-color:transparent}
+  .search-clear svg{width:16px;height:16px}
+  .status{margin:-8px 0 0;padding-left:20px;font-size:13px;font-weight:700;color:var(--blue-deep)}
+
+  /* 50音インデックス */
+  .kana{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .kana-label{font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.08em}
+  .kana-list{display:flex;flex-wrap:wrap;gap:6px}
+  .kana-btn{width:34px;height:34px;padding:0;border-radius:50%;border:1.5px solid var(--line);background:var(--card);color:var(--blue-deep);font:inherit;font-size:14px;font-weight:800;line-height:1;display:grid;place-items:center;cursor:pointer;transition:background-color .2s,color .2s,border-color .2s;-webkit-tap-highlight-color:transparent}
+  .kana-btn[aria-current="true"]{background:var(--blue);border-color:var(--blue);color:#fff}
+
+  /* スライド */
+  .rail{margin-inline:calc(var(--gutter) * -1);display:flex;flex-direction:column;gap:12px}
+  .track{position:relative;display:flex;gap:12px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;padding-block:6px 18px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .track::-webkit-scrollbar{display:none}
+  .track::before,.track::after{content:"";flex:0 0 calc(8% - 12px)}
+  .track:focus-visible{outline:2px solid var(--blue);outline-offset:-2px;border-radius:14px}
+
+  .store{flex:0 0 84%;scroll-snap-align:center;position:relative;overflow:hidden;display:flex;flex-direction:column;gap:10px;padding:22px 20px 18px;border:1.5px solid var(--edge);border-radius:22px;
+    background:
+      radial-gradient(85% 55% at 0 0, var(--blob) 0, rgba(226,241,251,0) 70%),
+      radial-gradient(70% 45% at 100% 100%, var(--blob-2) 0, rgba(234,245,252,0) 72%),
+      var(--card);
+    box-shadow:0 16px 28px -20px rgba(8,94,140,.6)}
+  .store-en{position:absolute;top:15px;right:18px;font-family:var(--font-script);font-weight:500;font-size:25px;line-height:1;color:var(--script);transform:rotate(-7deg);white-space:nowrap;pointer-events:none}
+  .store-area{align-self:flex-start;margin:0;padding:2px 11px;border-radius:999px;background:var(--chip);color:var(--blue-deep);font-size:12.5px;font-weight:700;letter-spacing:.04em;line-height:1.7}
+  .store-name{margin:4px 0 0;font-size:25px;line-height:1.35;font-weight:800;color:var(--ink);word-break:keep-all;overflow-wrap:anywhere}
+  .store-rule{display:block;width:34px;height:4px;border-radius:4px;background:var(--blue)}
+  .store-meta{margin:2px 0 0;display:grid;grid-template-columns:auto 1fr;gap:6px 12px;font-size:13.5px;line-height:1.6}
+  .store-meta dt{color:var(--muted);font-weight:700;font-size:12px;padding-top:1px;white-space:nowrap}
+  .store-meta dd{margin:0;color:var(--text)}
+  .store-foot{margin-top:auto;padding-top:8px;display:flex;flex-direction:column;gap:8px}
+  .store-note{margin:0;text-align:center;font-size:12px;color:var(--muted)}
+
+  .cta{display:flex;align-items:center;gap:10px;min-height:56px;padding:6px 8px 6px 48px;border-radius:999px;background:var(--blue);color:#fff;text-decoration:none;font-size:16px;font-weight:800;letter-spacing:.02em;line-height:1.3;box-shadow:0 12px 20px -12px rgba(8,119,170,.95);transition:background-color .15s,transform .15s;-webkit-tap-highlight-color:transparent}
+  .cta-label{flex:1;text-align:center}
+  .cta-arrow{flex:0 0 38px;height:38px;border-radius:50%;background:#fff;color:var(--blue);display:grid;place-items:center}
+  .cta-arrow svg{width:18px;height:18px}
+  .cta:hover{background:var(--blue-press)}
+  .cta:active{transform:scale(.98)}
+
+  .pager{display:flex;align-items:center;justify-content:center;gap:18px;padding-inline:var(--gutter)}
+  .nav-btn{width:44px;height:44px;padding:0;border:0;border-radius:50%;background:var(--blue);color:#fff;display:grid;place-items:center;cursor:pointer;box-shadow:0 8px 16px -10px rgba(8,119,170,.9);transition:background-color .15s,transform .15s;-webkit-tap-highlight-color:transparent}
+  .nav-btn svg{width:20px;height:20px}
+  .nav-btn:hover:not(:disabled){background:var(--blue-press)}
+  .nav-btn:active:not(:disabled){transform:scale(.94)}
+  .nav-btn:disabled{background:var(--off);box-shadow:none;cursor:default}
+  .counter{margin:0;min-width:88px;text-align:center;font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums;line-height:1.2}
+  .counter b{font-size:22px;font-weight:800;color:var(--ink)}
+  .hint{margin:-2px 0 0;padding-inline:var(--gutter);text-align:center;font-size:12.5px;color:var(--muted)}
+
+  .empty{display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding:22px 20px;border:1.5px dashed var(--edge);border-radius:22px;background:var(--card)}
+  .empty p{margin:0}
+  .empty-title{font-weight:800;color:var(--ink)}
+  .empty-sub{font-size:13.5px}
+  .btn-sub{margin-top:6px;min-height:44px;padding:0 20px;border:1.5px solid var(--blue);border-radius:999px;background:var(--card);color:var(--blue-deep);font:inherit;font-size:14px;font-weight:800;cursor:pointer}
+
+  .help{padding-top:16px;border-top:1px solid var(--line)}
+  .help h2{margin:0 0 4px;font-size:14px;font-weight:800;color:var(--ink)}
+  .help ul{margin:0;padding-left:1.2em;font-size:13px;line-height:1.75}
+
+  .foot{margin:6px 0 0;display:flex;align-items:center;justify-content:center;gap:8px;color:var(--blue-deep);font-family:var(--font-brand);font-weight:600;font-size:11px;letter-spacing:.24em}
+  .foot svg{width:18px;height:18px;color:var(--blue)}
+
+  .kana-btn:focus-visible,.nav-btn:focus-visible,.search-clear:focus-visible,.btn-sub:focus-visible,.cta:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+
+  @media (min-width:560px){
+    .page{padding-block:28px 48px}
+    .hero h1{font-size:32px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none !important}
+  }
+</style>
+</head>
+<body>
+<div class="page" lang="ja">
+  <svg class="wm" viewBox="0 0 100 100" aria-hidden="true"><path fill="currentColor" d="M94.67 39A46 46 0 1 0 94.67 61L75.75 61A28 28 0 1 1 75.75 39Z"/><path fill="currentColor" d="M63.4 36.6 53.9 53.9 36.6 63.4 46.1 46.1Z"/></svg>
+
+  <p class="brand">
+    <svg class="brand-mark" viewBox="0 0 100 100" aria-hidden="true"><path fill="currentColor" d="M94.67 39A46 46 0 1 0 94.67 61L75.75 61A28 28 0 1 1 75.75 39Z"/><path fill="currentColor" d="M63.4 36.6 53.9 53.9 36.6 63.4 46.1 46.1Z"/><circle cx="50" cy="50" r="2.9" fill="#fff"/></svg>
+    <span class="brand-word">CHART</span>
+    <span class="brand-sub">パーソナルジム</span>
+  </p>
+
+  <header class="hero">
+    <span class="hero-script" aria-hidden="true">Reviews</span>
+    <h1>口コミ・レビュー</h1>
+    <span class="rule" aria-hidden="true"></span>
+    <p class="lead">いつもご利用ありがとうございます。<br>通っている<wbr>店舗を<wbr>選んで、<wbr>Googleに<wbr>ご感想を<wbr>お寄せください。</p>
+  </header>
+
+  <form class="search" id="searchForm" role="search" action="#">
+    <label class="sr" for="q">店舗をさがす</label>
+    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg>
+    <input id="q" name="q" type="search" placeholder="店舗名・駅名・地域名で検索" autocomplete="off" enterkeyhint="search">
+    <button type="button" class="search-clear" id="clear" aria-label="検索をクリア" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  </form>
+  <p class="status" id="status" aria-live="polite" hidden></p>
+
+  <nav class="kana" id="kana" aria-label="よみの頭文字で移動">
+    <span class="kana-label">50音順</span>
+    <div class="kana-list" id="kanaList"></div>
+  </nav>
+
+  <section class="rail" id="rail" aria-roledescription="カルーセル" aria-label="店舗一覧">
+    <div class="track" id="track" tabindex="0"></div>
+    <div class="pager">
+      <button type="button" class="nav-btn" id="prev" aria-label="前の店舗"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <p class="counter"><b id="cur">1</b> / <span id="total">22</span></p>
+      <button type="button" class="nav-btn" id="next" aria-label="次の店舗"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+    </div>
+    <p class="hint">左右にスワイプして店舗を切り替えられます</p>
+  </section>
+
+  <div class="empty" id="empty" hidden>
+    <p class="empty-title">「<span id="emptyQ"></span>」に<wbr>当てはまる店舗が<wbr>見つかりませんでした</p>
+    <p class="empty-sub">駅名や地域名<wbr>（例：練馬、東上線）でも<wbr>探せます。</p>
+    <button type="button" class="btn-sub" id="showAll">すべての店舗を表示</button>
+  </div>
+
+  <section class="help" aria-labelledby="helpTitle">
+    <h2 id="helpTitle">投稿画面が開かないときは</h2>
+    <ul>
+      <li>投稿には<wbr>Googleアカウントへの<wbr>ログインが<wbr>必要です。</li>
+      <li>LINEの画面で<wbr>ログインできない場合は、<wbr>メニューから<wbr>「ブラウザで開く」を<wbr>選んでから<wbr>お試しください。</li>
+    </ul>
+  </section>
+
+  <p class="foot"><svg viewBox="0 0 100 100" aria-hidden="true"><path fill="currentColor" d="M94.67 39A46 46 0 1 0 94.67 61L75.75 61A28 28 0 1 1 75.75 39Z"/><path fill="currentColor" d="M63.4 36.6 53.9 53.9 36.6 63.4 46.1 46.1Z"/></svg>FIND YOUR WAY</p>
+</div>
+
+<script>
+(() => {
+  "use strict";
+
+  /* ============================================================
+     店舗データ
+     ・店舗を増やすときは、この一覧に1行足すだけ（並びは「yomi」で自動的に50音順）
+     ・pid … Google の Place ID。Googleビジネスプロフィールの
+       「クチコミを増やす」で出てくるURLをそのまま貼っても動きます
+     ============================================================ */
+  const STORES = [
+    { name: "牛込柳町/若松河田店",   yomi: "うしごめやなぎちょう",   en: "Ushigome",         area: "新宿区",       station: "都営大江戸線 牛込柳町駅",       addr: "新宿区原町3-9-8 重田ビル1階",                      pid: "ChIJDa3jgQGNGGARBRFbdLDHpNY", kw: "わかまつかわだ 若松河田駅 原町 しんじゅく ushigomeyanagicho wakamatsukawada" },
+    { name: "大山千川店",           yomi: "おおやませんかわ",       en: "Oyama",            area: "板橋区",       station: "東武東上線 大山駅",             addr: "板橋区大谷口上町36-2 ジョイビル1階",                 pid: "ChIJ7fWaqkGTGGARQCJ-22dzxkY", kw: "千川 大谷口 おおやぐち いたばし 東上線 senkawa" },
+    { name: "落合南長崎/新井薬師前店", yomi: "おちあいみなみながさき", en: "Ochiai",           area: "新宿区",       station: "都営大江戸線 落合南長崎駅",     addr: "新宿区西落合2-10-12 地下1階",                      pid: "ChIJ7UXLULLzGGARfC7Wr-Eh7RI", kw: "あらいやくしまえ 新井薬師前駅 西武新宿線 西落合 にしおちあい 哲学堂 てつがくどう しんじゅく nishiochiai araiyakushimae" },
+    { name: "表参道/外苑前店",       yomi: "おもてさんどう",         en: "Omotesando",       area: "港区",         station: "東京メトロ銀座線 外苑前駅",     addr: "港区南青山2-27-22 青山安田ビル7階",                  pid: "ChIJhyLZDmWNGGARsew4kanDmnA", kw: "がいえんまえ 表参道駅 青山一丁目駅 青山 あおやま 南青山 みなと gaienmae aoyama" },
+    { name: "亀有店",               yomi: "かめあり",               en: "Kameari",          area: "葛飾区",       station: "JR常磐線 亀有駅",               addr: "葛飾区亀有3-11-14 山岸ビル1階",                      pid: "ChIJmboFHFKPGGARNsYCSQUz9dg", kw: "かつしか" },
+    { name: "小岩・京成小岩店",      yomi: "こいわ",                 en: "Koiwa",            area: "江戸川区",     station: "京成本線 京成小岩駅",           addr: "江戸川区北小岩2-9-13 井上ビル1階",                   pid: "ChIJI6RaM2OFGGARxNDLkRq7GbQ", kw: "けいせいこいわ 新柴又 北小岩 えどがわ 京成線 keiseikoiwa" },
+    { name: "駒込店",               yomi: "こまごめ",               en: "Komagome",         area: "北区",         station: "JR山手線・南北線 駒込駅",       addr: "北区中里2-16-3 トナミビル102",                       pid: "ChIJ5c8ykmiNGGAR91ZMTD1_LyU", kw: "中里 なかざと きたく" },
+    { name: "鷺ノ宮店",             yomi: "さぎのみや",             en: "Saginomiya",       area: "中野区",       station: "西武新宿線 鷺ノ宮駅",           addr: "中野区鷺宮3-35-2 鳥羽店舗1階",                       pid: "ChIJLQEwbaTtGGAR6Ax9cz1zHO8", kw: "鷺宮 なかの" },
+    { name: "桜台店",               yomi: "さくらだい",             en: "Sakuradai",        area: "練馬区",       station: "西武池袋線 桜台駅",             addr: "練馬区桜台4-12-23 1階",                              pid: "ChIJx0bNj_ftGGARzlqhoo-dt7o", kw: "ねりま" },
+    { name: "千川店",               yomi: "せんかわ",               en: "Senkawa",          area: "豊島区",       station: "有楽町線・副都心線 千川駅",     addr: "豊島区要町3-28-13 モリセイ本館1階",                  pid: "ChIJE09Ob47tGGARpp1rvb_lP8s", kw: "要町 かなめちょう としま 東京メトロ" },
+    { name: "千川ANNEX店",          yomi: "せんかわあねっくす",     en: "Senkawa Annex",    area: "豊島区",       station: "有楽町線・副都心線 千川駅",     addr: "豊島区要町3-11-1 菊信第一ビル3階",                   pid: "ChIJT0EuzYDtGGARKD8VEVltiBA", kw: "アネックス 要町 かなめちょう としま 東京メトロ" },
+    { name: "東武練馬店",           yomi: "とうぶねりま",           en: "Tobu-Nerima",      area: "練馬区",       station: "東武東上線 東武練馬駅",         addr: "練馬区北町2-29-12 HMWR第1ビル1F",                    pid: "ChIJTbyoYnHtGGAR0JkqCbRBAsQ", kw: "北町 きたまち ねりま" },
+    { name: "中板橋店",             yomi: "なかいたばし",           en: "Naka-Itabashi",    area: "板橋区",       station: "東武東上線 中板橋駅",           addr: "板橋区仲町37-6 星ビル1F",                            pid: "ChIJm2prsIiNGGAR_ybi2hrdWus", kw: "仲町 いたばし" },
+    { name: "成増店",               yomi: "なります",               en: "Narimasu",         area: "板橋区",       station: "東武東上線 成増駅",             addr: "板橋区成増3-19-21 1F-2F",                            pid: "ChIJ1R8XLSzrGGARKcCFxvMIvgM", kw: "地下鉄成増 いたばし" },
+    { name: "西馬込店",             yomi: "にしまごめ",             en: "Nishi-Magome",     area: "大田区",       station: "都営浅草線 西馬込駅",           addr: "大田区南馬込5-38-1 1F",                              pid: "ChIJ6dTMsaRhGGARtn2FvGTafsk", kw: "南馬込 おおた" },
+    { name: "旗の台/荏原町店",       yomi: "はたのだい",             en: "Hatanodai",        area: "品川区",       station: "東急池上線・大井町線 旗の台駅", addr: "品川区旗の台4-4-2 グリーンキャピタル旗の台1階東側",   pid: "ChIJBzqIMZeLGGARJNowfA-MXjE", kw: "えばらまち 荏原町駅 しながわ ebaramachi" },
+    { name: "東長崎店",             yomi: "ひがしながさき",         en: "Higashi-Nagasaki", area: "豊島区",       station: "西武池袋線 東長崎駅",           addr: "豊島区南長崎5-29-12 ユートリー55",                   pid: "ChIJ59grOG3tGGARjuu1Tn0rF0U", kw: "南長崎 としま" },
+    { name: "曳舟・東向島店",        yomi: "ひきふね",               en: "Hikifune",         area: "墨田区",       station: "東武スカイツリーライン 曳舟駅", addr: "墨田区東向島2-31-20 1F",                             pid: "ChIJ26XhyguPGGARnrBh6dRSrvk", kw: "ひがしむこうじま 東向島駅 すみだ higashimukojima" },
+    { name: "富士店",               yomi: "ふじ",                   en: "Fuji",             area: "静岡県富士市", station: "岳南電車 吉原本町駅",           addr: "富士市吉原4-8-11 1F",                                pid: "ChIJhfkH5x0rGmARStr0tNkM1wA", kw: "吉原 よしわら 吉原本町 しずおか" },
+    { name: "平和台店",             yomi: "へいわだい",             en: "Heiwadai",         area: "練馬区",       station: "有楽町線・副都心線 平和台駅",   addr: "練馬区北町7-10-9 Kフラット101",                      pid: "ChIJoXPcVDXtGGARH_XpPzEXDnk", kw: "北町 きたまち ねりま 東京メトロ" },
+    { name: "武蔵関店",             yomi: "むさしせき",             en: "Musashi-Seki",     area: "練馬区",       station: "西武新宿線 武蔵関駅",           addr: "練馬区関町北1-23-18 1F",                             pid: "ChIJdwuE2OTvGGARuUd4X64nx3c", kw: "関町 せきまち ねりま" },
+    { name: "目白店",               yomi: "めじろ",                 en: "Mejiro",           area: "豊島区",       station: "JR山手線 目白駅",               addr: "豊島区目白4-19-20 C・MFIIマンション1階",             pid: "ChIJsxG4x4yNGGARZIPWMde8nVs", kw: "池袋 いけぶくろ としま" },
+  ];
+
+  /* ---------- ここから下は仕組み（触らなくてOK） ---------- */
+
+  // LINEの中で開かれたときは、Googleの画面をSafari / Chromeで開く（LINE内ブラウザだとGoogleにログインできないことがあるため）
+  const IN_LINE = /(^|\s)Line\/\d/.test(navigator.userAgent);
+  const reviewUrl = (pid) => {
+    let u = /^https?:\/\//.test(pid) ? pid : "https://search.google.com/local/writereview?placeid=" + encodeURIComponent(pid);
+    if (IN_LINE) u += (u.indexOf("?") === -1 ? "?" : "&") + "openExternalBrowser=1";
+    return u;
+  };
+
+  const norm = (s) => String(s).normalize("NFKC").toLowerCase()
+    .replace(/[ァ-ヶ]/g, (c) => String.fromCharCode(c.charCodeAt(0) - 0x60))
+    .replace(/[\s・･\/\\\-‐－―ー_.,、。()（）]/g, "");
+
+  const ROWS = [["あ",0x3041],["か",0x304B],["さ",0x3055],["た",0x305F],["な",0x306A],["は",0x306F],["ま",0x307E],["や",0x3083],["ら",0x3089],["わ",0x308E]];
+  const rowOf = (yomi) => {
+    const c = norm(yomi).charCodeAt(0);
+    let r = ROWS[0][0];
+    for (const [k, start] of ROWS) if (c >= start) r = k;
+    return r;
+  };
+
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const brk = (s) => esc(s).replace(/([\/・])/g, "$1<wbr>");
+
+  const collator = new Intl.Collator("ja");
+  STORES.sort((a, b) => collator.compare(a.yomi, b.yomi));
+  STORES.forEach((s) => {
+    s.row = rowOf(s.yomi);
+    s.hay = norm([s.name, s.yomi, s.en, s.area, s.station, s.addr, s.kw || ""].join(" "));
+  });
+
+  const $ = (id) => document.getElementById(id);
+  const track = $("track"), input = $("q"), clearBtn = $("clear"), statusEl = $("status");
+  const rail = $("rail"), empty = $("empty"), emptyQ = $("emptyQ");
+  const kanaNav = $("kana"), kanaList = $("kanaList");
+  const curEl = $("cur"), totalEl = $("total"), prevBtn = $("prev"), nextBtn = $("next");
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  const chevron = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>';
+
+  track.innerHTML = STORES.map((s) => `
+    <article class="store" role="group" aria-roledescription="スライド" data-name="${esc(s.name)}">
+      <span class="store-en" aria-hidden="true">${esc(s.en)}</span>
+      <p class="store-area">${esc(s.area)}</p>
+      <h2 class="store-name">${brk(s.name)}</h2>
+      <span class="store-rule" aria-hidden="true"></span>
+      <dl class="store-meta">
+        <dt>最寄駅</dt><dd>${esc(s.station)}</dd>
+        <dt>住所</dt><dd>${esc(s.addr)}</dd>
+      </dl>
+      <div class="store-foot">
+        <a class="cta" href="${esc(reviewUrl(s.pid))}" target="_blank" rel="noopener">
+          <span class="cta-label">Googleで口コミを書く</span>
+          <span class="cta-arrow" aria-hidden="true">${chevron}</span>
+        </a>
+        <p class="store-note">Googleの投稿画面が開きます</p>
+      </div>
+    </article>`).join("");
+
+  const cards = Array.from(track.children);
+  let visible = cards.slice();
+  let cur = 0;
+
+  function update() {
+    curEl.textContent = visible.length ? cur + 1 : 0;
+    totalEl.textContent = visible.length;
+    prevBtn.disabled = cur <= 0;
+    nextBtn.disabled = cur >= visible.length - 1;
+    const row = visible[cur] ? STORES[cards.indexOf(visible[cur])].row : "";
+    kanaList.querySelectorAll(".kana-btn").forEach((b) => b.setAttribute("aria-current", b.dataset.row === row ? "true" : "false"));
+  }
+
+  function goTo(n) {
+    if (!visible.length) return;
+    n = Math.max(0, Math.min(visible.length - 1, n));
+    const c = visible[n];
+    track.scrollTo({ left: c.offsetLeft - (track.clientWidth - c.offsetWidth) / 2, behavior: reduce.matches ? "auto" : "smooth" });
+    cur = n;
+    update();
+  }
+
+  function syncFromScroll() {
+    const mid = track.scrollLeft + track.clientWidth / 2;
+    let best = 0, bestD = Infinity;
+    visible.forEach((c, n) => {
+      const d = Math.abs(c.offsetLeft + c.offsetWidth / 2 - mid);
+      if (d < bestD) { bestD = d; best = n; }
+    });
+    if (best !== cur) { cur = best; update(); }
+  }
+
+  function buildIndex() {
+    const firsts = [];
+    visible.forEach((c, n) => {
+      const r = STORES[cards.indexOf(c)].row;
+      if (!firsts.some((f) => f.row === r)) firsts.push({ row: r, n });
+    });
+    kanaList.innerHTML = firsts.map((f) => `<button type="button" class="kana-btn" data-row="${f.row}" data-n="${f.n}" aria-label="${f.row}行へ移動">${f.row}</button>`).join("");
+    kanaNav.hidden = firsts.length < 2;
+  }
+
+  function applyFilter() {
+    const raw = input.value.trim();
+    const terms = raw.normalize("NFKC").split(/\s+/).map(norm).filter(Boolean);
+    visible = [];
+    cards.forEach((c, i) => {
+      const ok = terms.every((t) => STORES[i].hay.indexOf(t) !== -1);
+      c.hidden = !ok;
+      if (ok) visible.push(c);
+    });
+    visible.forEach((c, n) => c.setAttribute("aria-label", `${n + 1} / ${visible.length}：${c.dataset.name}`));
+    clearBtn.hidden = raw === "";
+    rail.hidden = visible.length === 0;
+    empty.hidden = visible.length !== 0;
+    emptyQ.textContent = raw;
+    if (terms.length && visible.length) {
+      statusEl.textContent = `${visible.length}店舗が見つかりました`;
+      statusEl.hidden = false;
+    } else {
+      statusEl.textContent = "";
+      statusEl.hidden = true;
+    }
+    track.scrollLeft = 0;
+    cur = 0;
+    buildIndex();
+    update();
+  }
+
+  let ticking = false;
+  track.addEventListener("scroll", () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => { ticking = false; syncFromScroll(); });
+  }, { passive: true });
+  window.addEventListener("resize", syncFromScroll);
+
+  track.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowRight") { e.preventDefault(); goTo(cur + 1); }
+    else if (e.key === "ArrowLeft") { e.preventDefault(); goTo(cur - 1); }
+  });
+  prevBtn.addEventListener("click", () => goTo(cur - 1));
+  nextBtn.addEventListener("click", () => goTo(cur + 1));
+  kanaList.addEventListener("click", (e) => {
+    const b = e.target.closest(".kana-btn");
+    if (b) goTo(Number(b.dataset.n));
+  });
+
+  input.addEventListener("input", applyFilter);
+  $("searchForm").addEventListener("submit", (e) => { e.preventDefault(); input.blur(); });
+  clearBtn.addEventListener("click", () => { input.value = ""; applyFilter(); input.focus(); });
+  $("showAll").addEventListener("click", () => { input.value = ""; applyFilter(); });
+
+  applyFilter();
+})();
+</script>
+</body>
+</html>
