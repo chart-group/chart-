@@ -1,0 +1,340 @@
+<!doctype html>
+<!-- CHART会員様限定サービス v2（2026-09-24）：アイコンをカラー化 -->
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CHART会員様限定サービス</title>
+<meta name="description" content="CHART会員様だけの特別コンテンツ">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#F5FAFE">
+<meta property="og:type" content="website">
+<meta property="og:title" content="CHART会員様限定サービス">
+<meta property="og:description" content="会員様だけの特別コンテンツ">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg fill='%231C82C0'%3E%3Cpath d='M95.11 41A46 46 0 1 0 95.11 59H74.39A26 26 0 1 1 74.39 41Z'/%3E%3Cpath d='M63.9 36.1 53.2 53.2 36.1 63.9 46.8 46.8Z'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500&family=M+PLUS+Rounded+1c:wght@500;700;800&family=Montserrat:wght@600;700&family=Noto+Sans+JP:wght@900&display=swap">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#15212C;
+  --ink-2:#526170;
+  --muted:#8C9AA7;
+  --blue:#1C82C0;
+  --blue-2:#2E9BDA;
+  --blue-deep:#13679F;
+  --line:#A9D7EF;
+  --sky:#8FC5E6;
+  --gold:#D9B55E;
+  --jp:"M PLUS Rounded 1c","Hiragino Maru Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif;
+  --jp-heavy:"Noto Sans JP","Hiragino Sans","Hiragino Kaku Gothic ProN",sans-serif;
+  --en:"Montserrat","Helvetica Neue",Arial,sans-serif;
+  --script:"Caveat","Bradley Hand","Segoe Print",cursive;
+  color-scheme:light;
+}
+html{min-height:100%;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{
+  min-height:100vh;
+  font-family:var(--jp);
+  color:var(--ink);
+  background:
+    radial-gradient(75% 40% at 0% 0%,#C6E4F6 0%,rgba(198,228,246,0) 72%),
+    radial-gradient(55% 30% at 108% 30%,#D9EEFA 0%,rgba(217,238,250,0) 70%),
+    radial-gradient(60% 36% at -8% 80%,#D4EBF8 0%,rgba(212,235,248,0) 70%),
+    radial-gradient(55% 28% at 100% 102%,#CFE8F6 0%,rgba(207,232,246,0) 70%),
+    linear-gradient(180deg,#F8FCFE 0%,#EDF6FC 100%);
+  background-color:#EFF7FC;
+  background-repeat:no-repeat;
+  -webkit-font-smoothing:antialiased;
+  -webkit-tap-highlight-color:transparent;
+  overflow-x:hidden;
+}
+.wrap{position:relative;max-width:480px;margin:0 auto;padding:0 20px calc(30px + env(safe-area-inset-bottom))}
+
+/* ロゴ：頭文字の「C」をマークにしたワードマーク */
+.wm{display:inline-block;font-family:var(--en);font-weight:600;letter-spacing:.1em;line-height:1;white-space:nowrap}
+.wm svg{display:inline-block;width:.8em;height:.8em;margin-right:.08em;vertical-align:-.04em}
+
+/* ---------- ヒーロー ---------- */
+.hero{position:relative;padding:60px 0 4px;text-align:center}
+.hero-mark{position:absolute;left:-96px;top:-84px;width:240px;height:240px;color:#fff;opacity:.85;pointer-events:none}
+.hero-script{position:absolute;top:14px;right:2px;pointer-events:none}
+.hero-script>span{display:inline-block;font:500 23px/1.05 var(--script);color:var(--sky);text-align:left;text-indent:.9em;transform:rotate(-8deg)}
+.stage{display:flex;justify-content:center;margin-bottom:30px}
+.tilt{position:relative;display:flex;flex-direction:column;align-items:center;transform:rotate(-6deg)}
+.burst{position:absolute;top:-4px;left:calc(50% - 86px);width:30px;height:42px;color:#1B6E9F}
+.crown{position:relative;z-index:2;width:80px;height:62px;margin-bottom:-17px;filter:drop-shadow(0 6px 6px rgba(150,110,25,.28))}
+.mcard{
+  --w:min(268px,72vw);
+  position:relative;overflow:hidden;
+  width:var(--w);height:calc(var(--w) * .63);
+  border-radius:16px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:13px;
+  background:
+    radial-gradient(120% 90% at 0% 0%,rgba(255,255,255,.13),rgba(255,255,255,0) 55%),
+    linear-gradient(140deg,#3C414A 0%,#272B32 55%,#1B1E23 100%);
+  box-shadow:0 24px 40px -14px rgba(16,28,44,.5),0 8px 16px -8px rgba(16,28,44,.3),inset 0 0 0 1px rgba(255,255,255,.07);
+}
+.mc-wm{position:absolute;right:-34px;bottom:-38px;width:132px;height:132px;color:var(--gold);opacity:.07}
+.mc-brand{position:relative;display:flex;align-items:center;gap:10px}
+.mc-mark{width:34px;height:34px;color:var(--gold)}
+.mc-brand .wm{font-size:21px;color:#F4EFE3}
+.mc-rule{width:74%;height:1px;background:linear-gradient(90deg,rgba(217,181,94,0),#D9B55E 20%,#F3DC97 50%,#D9B55E 80%,rgba(217,181,94,0))}
+.mc-label{
+  font:600 12.5px/1 var(--en);letter-spacing:.3em;padding-left:.3em;
+  background:linear-gradient(90deg,#C29A3F,#F5E2A2 45%,#D6B25A 70%,#B98F37);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.mcard::after{
+  content:"";position:absolute;inset:-20% -60%;
+  background:linear-gradient(105deg,rgba(255,255,255,0) 42%,rgba(255,255,255,.16) 50%,rgba(255,255,255,0) 58%);
+  transform:translateX(-70%);
+  animation:shine 1.8s cubic-bezier(.4,0,.2,1) .9s both;
+}
+h1{font:900 clamp(22px,6.8vw,28px)/1.4 var(--jp-heavy);letter-spacing:.02em}
+h1 span,.intro span,.item-desc span{display:inline-block}
+.bar{display:block;width:46px;height:4px;margin:14px auto 12px;border-radius:2px;background:linear-gradient(90deg,var(--blue-2),var(--blue))}
+.lead{font:700 15px/1.5 var(--jp);color:var(--blue)}
+.intro{margin-top:14px;font:500 12.5px/1.9 var(--jp);color:var(--ink-2)}
+
+/* ---------- コンテンツ一覧 ---------- */
+.label{display:flex;align-items:center;justify-content:center;gap:12px;margin:36px 0 16px;font:700 11px/1 var(--en);letter-spacing:.32em;color:var(--blue)}
+.label span{padding-left:.32em}
+.label::before,.label::after{content:"";width:34px;height:1.5px;border-radius:1px;background:currentColor;opacity:.3}
+.items{display:grid;gap:14px}
+.item{
+  --accent:#3A9BD5;--tile-a:#EAF6FE;--tile-b:#CDE9FB;--glow:rgba(169,215,239,.34);
+  position:relative;isolation:isolate;overflow:hidden;
+  display:flex;align-items:center;gap:14px;
+  padding:16px 14px 16px 16px;
+  background:#fff;border:1.5px solid var(--line);border-radius:22px;
+  box-shadow:0 12px 26px -16px rgba(28,130,192,.45);
+  color:inherit;text-decoration:none;
+  transition:transform .15s ease,box-shadow .15s ease,border-color .15s ease;
+  animation:up .7s cubic-bezier(.2,.7,.2,1) backwards;
+  animation-delay:calc(var(--d,6) * 110ms);
+}
+/* 暖色系のカード（class に item--warm を追加） */
+.item--warm{--accent:#E27D2E;--tile-a:#FFF6EA;--tile-b:#FFE0BF;--glow:rgba(255,200,150,.32)}
+.item:nth-of-type(1){--d:5}
+.item:nth-of-type(2){--d:6}
+.item:nth-of-type(3){--d:7}
+.item:nth-of-type(4){--d:8}
+.item::before{content:"";position:absolute;z-index:-1;top:-56px;right:-44px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,var(--glow),transparent 70%)}
+.item:active{transform:scale(.98);border-color:var(--blue-2);box-shadow:0 6px 14px -10px rgba(28,130,192,.5)}
+@media (hover:hover){.item:hover{transform:translateY(-2px);border-color:var(--blue-2)}}
+.item-icon{flex:none;display:grid;place-items:center;width:54px;height:54px;border-radius:17px;background:linear-gradient(145deg,var(--tile-a),var(--tile-b));box-shadow:inset 0 0 0 1px rgba(255,255,255,.7)}
+.item-icon svg{width:40px;height:40px;filter:drop-shadow(0 3px 3px rgba(30,60,90,.18))}
+.item-body{flex:1;min-width:0;display:flex;flex-direction:column}
+.item-en{margin-bottom:7px;font:700 10px/1 var(--en);letter-spacing:.18em;color:var(--accent)}
+.item-title{font:800 16.5px/1.35 var(--jp);color:var(--ink)}
+.item-desc{margin-top:5px;font:500 12px/1.6 var(--jp);color:var(--ink-2)}
+.item-go{flex:none;display:grid;place-items:center;width:34px;height:34px;border-radius:50%;color:#fff;background:linear-gradient(145deg,var(--blue-2),var(--blue-deep));box-shadow:0 6px 12px -4px rgba(19,103,159,.45)}
+.item-go svg{width:16px;height:16px}
+.more{margin-top:24px;text-align:center;font:500 11.5px/1.7 var(--jp);color:var(--muted)}
+.more-en{display:inline-block;margin-bottom:2px;font:500 20px/1 var(--script);color:var(--sky);transform:rotate(-4deg)}
+@media (max-width:340px){
+  .item{gap:10px;padding:14px 12px}
+  .item-icon{width:44px;height:44px;border-radius:14px}
+  .item-icon svg{width:32px;height:32px}
+}
+
+/* ---------- フッター ---------- */
+.foot{margin-top:46px;padding-top:28px;border-top:1px solid rgba(28,130,192,.12);text-align:center}
+.foot-mark{display:block;width:34px;height:34px;margin:0 auto 10px;color:var(--blue)}
+.foot .wm{font-size:18px;color:var(--ink)}
+.foot-tag{margin-top:9px;font:600 8.5px/1 var(--en);letter-spacing:.34em;padding-left:.34em;color:var(--muted)}
+.foot-copy{margin-top:16px;font:500 10px/1 var(--en);letter-spacing:.06em;color:#A6B2BC}
+
+/* ---------- 動き ---------- */
+.fade{animation:up .7s cubic-bezier(.2,.7,.2,1) backwards;animation-delay:calc(var(--d,0) * 110ms)}
+@keyframes up{from{opacity:0;transform:translateY(14px)}}
+@keyframes shine{from{transform:translateX(-70%)}to{transform:translateX(70%)}}
+@media (prefers-reduced-motion:reduce){
+  .fade,.item{animation:none}
+  .mcard::after{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- アイコン・ロゴ部品 -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="g-blue" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#63C8F7"/>
+      <stop offset="1" stop-color="#1673BC"/>
+    </linearGradient>
+    <linearGradient id="g-gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFDC78"/>
+      <stop offset="1" stop-color="#F29A2E"/>
+    </linearGradient>
+    <linearGradient id="g-tray" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFB45E"/>
+      <stop offset="1" stop-color="#EE7229"/>
+    </linearGradient>
+    <linearGradient id="g-meat" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F6C46E"/>
+      <stop offset="1" stop-color="#C47427"/>
+    </linearGradient>
+    <radialGradient id="g-green" cx=".35" cy=".3" r=".8">
+      <stop offset="0" stop-color="#9BE37F"/>
+      <stop offset="1" stop-color="#3D9A43"/>
+    </radialGradient>
+    <radialGradient id="g-red" cx=".35" cy=".3" r=".8">
+      <stop offset="0" stop-color="#FF8F7E"/>
+      <stop offset="1" stop-color="#DB3B30"/>
+    </radialGradient>
+    <linearGradient id="g-teal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6FD8CD"/>
+      <stop offset="1" stop-color="#1B9488"/>
+    </linearGradient>
+  </defs>
+  <symbol id="mark" viewBox="0 0 100 100">
+    <path fill="currentColor" d="M95.11 41A46 46 0 1 0 95.11 59H74.39A26 26 0 1 1 74.39 41Z"/>
+    <path fill="currentColor" fill-rule="evenodd" d="M63.9 36.1 53.2 53.2 36.1 63.9 46.8 46.8Z M52.2 50a2.2 2.2 0 1 0-4.4 0a2.2 2.2 0 1 0 4.4 0Z"/>
+  </symbol>
+  <symbol id="mark-c" viewBox="0 0 100 100">
+    <path fill="currentColor" d="M95.21 41.5A46 46 0 1 0 95.21 58.5H81.89A33 33 0 1 1 81.89 41.5Z"/>
+    <path fill="currentColor" d="M60.6 39.4 52.4 52.4 39.4 60.6 47.6 47.6Z"/>
+  </symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24">
+    <path d="M9.5 6 15.5 12l-6 6" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <!-- よくある質問：Q&Aの吹き出し -->
+  <symbol id="i-faq" viewBox="0 0 48 48">
+    <path fill="url(#g-gold)" stroke="#fff" stroke-width="2" paint-order="stroke" d="M26 17H37A7 7 0 0 1 44 24V29A7 7 0 0 1 37 36H36L39.5 41 31 36H26A7 7 0 0 1 19 29V24A7 7 0 0 1 26 17Z"/>
+    <path d="M34.2 32.6 37.5 24.4 40.8 32.6M35.4 29.8H39.6" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path fill="url(#g-blue)" stroke="#fff" stroke-width="2" paint-order="stroke" d="M11 5H25A7 7 0 0 1 32 12V19A7 7 0 0 1 25 26H16L10 31.5 12 26H11A7 7 0 0 1 4 19V12A7 7 0 0 1 11 5Z"/>
+    <ellipse cx="12.5" cy="9" rx="5" ry="1.9" fill="#fff" opacity=".35"/>
+    <circle cx="17.6" cy="15.2" r="4.4" fill="none" stroke="#fff" stroke-width="2.6"/>
+    <path d="M19.8 17.4 22.6 20.2" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/>
+  </symbol>
+  <!-- 食事サポート：お弁当 -->
+  <symbol id="i-meal" viewBox="0 0 48 48">
+    <path d="M17 8.6c-1-1.1-1-2.1 0-3.2M23.5 8.6c-1-1.1-1-2.1 0-3.2M30 8.6c-1-1.1-1-2.1 0-3.2" fill="none" stroke="#9CC6E0" stroke-width="1.8" stroke-linecap="round"/>
+    <rect x="4" y="11" width="40" height="31" rx="7.5" fill="url(#g-tray)" stroke="#fff" stroke-width="2" paint-order="stroke"/>
+    <rect x="6.5" y="12.4" width="35" height="1.3" rx=".65" fill="#fff" opacity=".4"/>
+    <rect x="7.2" y="14.2" width="18" height="24.6" rx="4.5" fill="#FFF8EE"/>
+    <rect x="27.6" y="14.2" width="13.2" height="11.1" rx="4" fill="#FFF8EE"/>
+    <rect x="27.6" y="27.7" width="13.2" height="11.1" rx="4" fill="#FFF8EE"/>
+    <path d="M9.4 36.4c.4-3.2 3.1-4.9 6.1-4.3.1 3.1-2.5 4.8-6.1 4.3z" fill="url(#g-green)"/>
+    <ellipse cx="14.2" cy="21.6" rx="5.2" ry="4.3" fill="url(#g-meat)"/>
+    <ellipse cx="18.6" cy="29.8" rx="5.3" ry="4.4" fill="url(#g-meat)"/>
+    <path d="M11.8 20.5l3.6 2.3M14.3 19.2l3.4 2.2M16.4 28.5l3.6 2.3M18.8 27.2l3.4 2.2" stroke="#9A5518" stroke-opacity=".45" stroke-width="1.1" stroke-linecap="round"/>
+    <path d="M34.2 23.6v-3.2" stroke="#6DB85A" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="31.6" cy="19.8" r="3" fill="url(#g-green)"/>
+    <circle cx="36.8" cy="19.6" r="3" fill="url(#g-green)"/>
+    <circle cx="34.2" cy="17.5" r="3.1" fill="url(#g-green)"/>
+    <circle cx="31.5" cy="33.5" r="3.2" fill="url(#g-red)"/>
+    <circle cx="30.5" cy="32.4" r=".8" fill="#fff" opacity=".7"/>
+    <path d="M31.5 30.5l-.9-.9M31.5 30.5l.9-.9" stroke="#3D9A43" stroke-width="1" stroke-linecap="round"/>
+    <ellipse cx="37.4" cy="33.3" rx="2.7" ry="3.3" fill="#fff" stroke="#F1E3CF" stroke-width=".6"/>
+    <circle cx="37.4" cy="33.5" r="1.6" fill="#FFC23A"/>
+  </symbol>
+  <!-- 汎用：リンク -->
+  <symbol id="i-link" viewBox="0 0 48 48">
+    <rect x="6" y="6" width="36" height="36" rx="11" fill="url(#g-teal)" stroke="#fff" stroke-width="2" paint-order="stroke"/>
+    <ellipse cx="17" cy="12" rx="7" ry="2.2" fill="#fff" opacity=".3"/>
+    <path d="M18 30 30 18M21 18H30V27" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+</svg>
+
+<main class="wrap">
+  <header class="hero">
+    <svg class="hero-mark" aria-hidden="true"><use href="#mark"/></svg>
+    <p class="hero-script fade" aria-hidden="true"><span>Special<br>For Members</span></p>
+
+    <div class="stage fade" style="--d:1" aria-hidden="true">
+      <div class="tilt">
+        <svg class="burst" viewBox="0 0 30 42"><path d="M3.5 30.5 16 37.5M14 9.5l8.5 14" fill="none" stroke="currentColor" stroke-width="4.2" stroke-linecap="round"/></svg>
+        <svg class="crown" viewBox="0 0 120 92">
+          <defs>
+            <linearGradient id="cr-body" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#FFF1B8"/>
+              <stop offset=".35" stop-color="#F2CF6B"/>
+              <stop offset=".72" stop-color="#D9A93E"/>
+              <stop offset="1" stop-color="#B7862A"/>
+            </linearGradient>
+            <linearGradient id="cr-shade" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stop-color="#fff" stop-opacity=".28"/>
+              <stop offset=".45" stop-color="#fff" stop-opacity="0"/>
+              <stop offset="1" stop-color="#7A4F08" stop-opacity=".28"/>
+            </linearGradient>
+            <linearGradient id="cr-band" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#FBE6A6"/>
+              <stop offset=".5" stop-color="#DDB24B"/>
+              <stop offset="1" stop-color="#A77B22"/>
+            </linearGradient>
+            <radialGradient id="cr-ball" cx=".35" cy=".3" r=".75">
+              <stop offset="0" stop-color="#FFF7D6"/>
+              <stop offset=".45" stop-color="#E9C159"/>
+              <stop offset="1" stop-color="#A87C22"/>
+            </radialGradient>
+          </defs>
+          <path d="M20 66 11 27C20 37 28 43 38 47 46 37 53 25 60 14 67 25 74 37 82 47 92 43 100 37 109 27L100 66Z" fill="url(#cr-body)"/>
+          <path d="M20 66 11 27C20 37 28 43 38 47 46 37 53 25 60 14 67 25 74 37 82 47 92 43 100 37 109 27L100 66Z" fill="url(#cr-shade)"/>
+          <circle cx="11" cy="24" r="6" fill="url(#cr-ball)"/>
+          <circle cx="60" cy="10" r="7" fill="url(#cr-ball)"/>
+          <circle cx="109" cy="24" r="6" fill="url(#cr-ball)"/>
+          <rect x="16" y="62" width="88" height="15" rx="6" fill="url(#cr-band)"/>
+          <rect x="22" y="64" width="76" height="2" rx="1" fill="#fff" opacity=".45"/>
+        </svg>
+        <div class="mcard">
+          <svg class="mc-wm"><use href="#mark"/></svg>
+          <div class="mc-brand">
+            <svg class="mc-mark"><use href="#mark"/></svg>
+            <span class="wm"><svg><use href="#mark-c"/></svg>HART</span>
+          </div>
+          <div class="mc-rule"></div>
+          <div class="mc-label">MEMBERS ONLY</div>
+        </div>
+      </div>
+    </div>
+
+    <h1 class="fade" style="--d:2"><span>CHART会員様限定</span><span>サービス</span></h1>
+    <span class="bar fade" style="--d:3"></span>
+    <p class="lead fade" style="--d:3">会員様だけの特別コンテンツ</p>
+    <p class="intro fade" style="--d:4"><span>いつもCHARTをご利用いただき、</span><span>ありがとうございます。</span><br><span>日々のトレーニングや食事に</span><span>役立つ情報をまとめています。</span></p>
+  </header>
+
+  <section>
+    <h2 class="label fade" style="--d:4"><span>CONTENTS</span></h2>
+    <div class="items">
+      <!-- ▼ カードを増やす時は <a class="item"> 〜 </a> をまるごとコピーして、
+           URL（href）・英字（item-en）・タイトル（item-title）・説明（item-desc）を書き換え。
+           アイコンは #i-faq / #i-meal / #i-link（汎用）。class に item--warm を足すとオレンジ系の配色になります。 -->
+      <a class="item" href="https://chart-group.github.io/chart-/yokuaru-shitumon.html">
+        <span class="item-icon"><svg aria-hidden="true"><use href="#i-faq"/></svg></span>
+        <span class="item-body">
+          <span class="item-en">FAQ</span>
+          <span class="item-title">よくある質問</span>
+          <span class="item-desc"><span>トレーニング・栄養・</span><span>ダイエットの疑問を解決</span></span>
+        </span>
+        <span class="item-go"><svg aria-hidden="true"><use href="#i-arrow"/></svg></span>
+      </a>
+
+      <a class="item item--warm" href="https://x.gd/B50os">
+        <span class="item-icon"><svg aria-hidden="true"><use href="#i-meal"/></svg></span>
+        <span class="item-body">
+          <span class="item-en">MEAL SUPPORT</span>
+          <span class="item-title">食事サポート</span>
+          <span class="item-desc"><span>食事管理に便利な、</span><span>おすすめの宅配食をご紹介</span></span>
+        </span>
+        <span class="item-go"><svg aria-hidden="true"><use href="#i-arrow"/></svg></span>
+      </a>
+      <!-- ▲ ここまで -->
+    </div>
+    <p class="more fade" style="--d:8"><span class="more-en">more coming soon…</span><br>コンテンツは順次追加していきます</p>
+  </section>
+
+  <footer class="foot">
+    <svg class="foot-mark" aria-hidden="true"><use href="#mark"/></svg>
+    <span class="wm" aria-label="CHART"><svg aria-hidden="true"><use href="#mark-c"/></svg>HART</span>
+    <p class="foot-tag">FIND YOUR WAY</p>
+    <p class="foot-copy">© CHART GROUP</p>
+  </footer>
+</main>
+</body>
+</html>
