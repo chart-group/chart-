@@ -1,0 +1,3046 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#14284b">
+<title>CHART MEMBER</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
+<style>
+:root {
+  --bg: #eef1f5;
+  --surface: #ffffff;
+  --surface-2: #f6f7fa;
+  --ink: #101b2d;
+  --ink-2: #3a475f;
+  --muted: #6b7890;
+  --line: #dfe4ec;
+  --line-2: #eceff4;
+  --brand: #14284b;
+  --brand-2: #1d3766;
+  --brand-ink: #ffffff;
+  --brand-muted: #a9b8d3;
+  --accent: #f25c2a;
+  --accent-press: #d94c1d;
+  --accent-ink: #ffffff;
+  --accent-soft: #fde9e1;
+  --ok: #178a5c;
+  --ok-soft: #dff3ea;
+  --warn: #a86b00;
+  --warn-soft: #fbf0d9;
+  --danger: #cc3b30;
+  --danger-soft: #fbe5e3;
+  --lot-carryover: #c47a14;
+  --lot-carryover-soft: #fbeedb;
+  --lot-monthly: #2f63d6;
+  --lot-monthly-soft: #e3ebfb;
+  --lot-unlimited: #178a5c;
+  --lot-unlimited-soft: #dff3ea;
+  --lot-pack: #7a4fe0;
+  --lot-pack-soft: #ece5fc;
+  --shadow: 0 1px 2px rgba(16, 27, 45, .06), 0 6px 20px rgba(16, 27, 45, .06);
+  --shadow-lg: 0 18px 50px rgba(16, 27, 45, .22);
+  --radius: 14px;
+  --radius-sm: 10px;
+  --font: "Zen Kaku Gothic New", "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+  --num: "Barlow Condensed", "Oswald", "Arial Narrow", "Zen Kaku Gothic New", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #0a0f18;
+    --surface: #121a28;
+    --surface-2: #172133;
+    --ink: #e9eef6;
+    --ink-2: #c3ccda;
+    --muted: #8d99ae;
+    --line: #243148;
+    --line-2: #1c273a;
+    --brand: #1a3160;
+    --brand-2: #22407a;
+    --brand-muted: #9fb1d4;
+    --accent: #ff7447;
+    --accent-press: #ff8a63;
+    --accent-soft: #3a1f16;
+    --ok: #3cc58c;
+    --ok-soft: #12301f;
+    --warn: #e6a93a;
+    --warn-soft: #33270e;
+    --danger: #ff6b5e;
+    --danger-soft: #3a1714;
+    --lot-carryover: #f0a33e;
+    --lot-carryover-soft: #35260e;
+    --lot-monthly: #6f9bff;
+    --lot-monthly-soft: #172646;
+    --lot-unlimited: #3cc58c;
+    --lot-unlimited-soft: #12301f;
+    --lot-pack: #a787ff;
+    --lot-pack-soft: #251b45;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 6px 20px rgba(0, 0, 0, .25);
+    --shadow-lg: 0 18px 50px rgba(0, 0, 0, .55);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0a0f18;
+  --surface: #121a28;
+  --surface-2: #172133;
+  --ink: #e9eef6;
+  --ink-2: #c3ccda;
+  --muted: #8d99ae;
+  --line: #243148;
+  --line-2: #1c273a;
+  --brand: #1a3160;
+  --brand-2: #22407a;
+  --brand-muted: #9fb1d4;
+  --accent: #ff7447;
+  --accent-press: #ff8a63;
+  --accent-soft: #3a1f16;
+  --ok: #3cc58c;
+  --ok-soft: #12301f;
+  --warn: #e6a93a;
+  --warn-soft: #33270e;
+  --danger: #ff6b5e;
+  --danger-soft: #3a1714;
+  --lot-carryover: #f0a33e;
+  --lot-carryover-soft: #35260e;
+  --lot-monthly: #6f9bff;
+  --lot-monthly-soft: #172646;
+  --lot-unlimited: #3cc58c;
+  --lot-unlimited-soft: #12301f;
+  --lot-pack: #a787ff;
+  --lot-pack-soft: #251b45;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 6px 20px rgba(0, 0, 0, .25);
+  --shadow-lg: 0 18px 50px rgba(0, 0, 0, .55);
+}
+
+* { box-sizing: border-box; }
+html, body { background: var(--bg); }
+body {
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+  font-feature-settings: "palt" 1;
+}
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 3px solid color-mix(in srgb, var(--accent) 55%, transparent); outline-offset: 2px; }
+h1, h2, h3 { margin: 0; line-height: 1.3; text-wrap: balance; }
+p { margin: 0; }
+.num { font-family: var(--num); font-variant-numeric: tabular-nums; letter-spacing: .01em; }
+
+.app {
+  max-width: 540px;
+  margin: 0 auto;
+  padding-inline: 16px;
+  padding-block: 12px 40px;
+  min-height: 100%;
+}
+.app.wide { max-width: 760px; }
+
+/* ---------- 上のバー ---------- */
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  margin-bottom: 8px;
+}
+.bar .title { flex: 1; min-width: 0; }
+.bar .title h1 { font-size: 17px; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bar .title .sub { font-size: 12px; color: var(--muted); }
+.wordmark {
+  font-family: var(--num);
+  font-weight: 700;
+  letter-spacing: .14em;
+  font-size: 15px;
+  color: var(--ink);
+}
+.wordmark b { color: var(--accent); font-weight: 700; }
+.bar .wordmark { white-space: nowrap; font-size: 14px; letter-spacing: .1em; }
+.iconbtn {
+  width: 40px; height: 40px;
+  display: grid; place-items: center;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  border-radius: 12px;
+  flex: none;
+}
+.iconbtn svg { width: 20px; height: 20px; }
+.chip-me {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  font-size: 13px;
+  max-width: 48vw;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.role-badge {
+  font-size: 11px; font-weight: 700;
+  padding: 1px 7px; border-radius: 999px;
+  background: var(--brand); color: var(--brand-ink);
+}
+.role-badge.staff { background: var(--line); color: var(--ink-2); }
+
+/* ---------- ボタン ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 48px;
+  padding: 10px 18px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  font-weight: 700;
+  text-decoration: none;
+  transition: transform .06s ease, background .15s ease;
+}
+.btn:active { transform: translateY(1px); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.btn.primary:active { background: var(--accent-press); }
+.btn.dark { background: var(--brand); border-color: var(--brand); color: var(--brand-ink); }
+.btn.ghost { background: transparent; border-color: transparent; color: var(--ink-2); }
+.btn.danger { color: var(--danger); border-color: color-mix(in srgb, var(--danger) 35%, var(--line)); }
+.btn.block { width: 100%; }
+.btn.big { min-height: 60px; font-size: 18px; border-radius: 14px; }
+.btn.small { min-height: 36px; padding: 6px 12px; font-size: 13px; border-radius: 10px; }
+.btn[disabled] { opacity: .5; cursor: not-allowed; }
+.linkbtn { background: none; border: 0; padding: 4px 0; color: var(--ink-2); text-decoration: underline; text-underline-offset: 3px; font-size: 14px; }
+
+/* ---------- 最初の画面 ---------- */
+.start {
+  display: flex; flex-direction: column; gap: 22px;
+  padding-top: min(10vh, 72px);
+}
+.start-mark { display: flex; flex-direction: column; gap: 6px; }
+.start-mark .wordmark { font-size: 34px; letter-spacing: .16em; line-height: 1; }
+.start-mark .lead { color: var(--muted); font-size: 14px; }
+.door {
+  display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 4px 12px;
+  width: 100%;
+  text-align: left;
+  padding: 20px 20px;
+  border-radius: 18px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+.door .t { font-size: 20px; font-weight: 700; }
+.door .d { grid-column: 1; font-size: 13px; color: var(--muted); }
+.door .arrow { grid-row: 1 / span 2; grid-column: 2; font-family: var(--num); font-size: 26px; color: var(--muted); }
+.door.customer { background: var(--brand); border-color: var(--brand); color: var(--brand-ink); }
+.door.customer .d, .door.customer .arrow { color: var(--brand-muted); }
+
+/* ---------- フォーム ---------- */
+.form { display: flex; flex-direction: column; gap: 16px; }
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field > label, .field > .label { font-size: 13px; font-weight: 700; color: var(--ink-2); }
+.field .hint { font-size: 12px; color: var(--muted); }
+.req { color: var(--accent); font-size: 11px; margin-left: 4px; }
+.input, .select, .textarea {
+  width: 100%;
+  min-height: 50px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  font-size: 16px;
+}
+.textarea { min-height: 84px; resize: vertical; }
+.input::placeholder, .textarea::placeholder { color: color-mix(in srgb, var(--muted) 70%, transparent); }
+.select {
+  appearance: none; -webkit-appearance: none;
+  padding-right: 38px;
+  background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+  background-position: calc(100% - 20px) 50%, calc(100% - 14px) 50%;
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+}
+.select.is-placeholder { color: var(--muted); }
+.row3 { display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 8px; }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.pin { letter-spacing: .5em; font-family: var(--num); font-size: 24px; text-align: center; }
+.msg {
+  padding: 12px 14px;
+  border-radius: 12px;
+  font-size: 14px;
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+.msg.info { background: var(--surface-2); color: var(--ink-2); }
+.msg.ok { background: var(--ok-soft); color: var(--ok); }
+.msg.warn { background: var(--warn-soft); color: var(--warn); }
+.preview {
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--surface-2);
+  border: 1px solid var(--line-2);
+  font-size: 14px;
+  color: var(--ink-2);
+}
+.preview b { color: var(--ink); }
+details.more { border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+details.more > summary { padding: 12px 14px; cursor: pointer; font-weight: 700; font-size: 14px; list-style: none; }
+details.more > summary::-webkit-details-marker { display: none; }
+details.more > summary::after { content: "＋"; float: right; color: var(--muted); }
+details.more[open] > summary::after { content: "－"; }
+details.more > .inner { padding: 0 14px 14px; display: flex; flex-direction: column; gap: 14px; }
+
+/* ---------- 会員カード ---------- */
+.ticket { display: flex; flex-direction: column; filter: drop-shadow(0 10px 22px rgba(16, 27, 45, .14)); }
+.card {
+  position: relative;
+  padding: 18px 20px 20px;
+  border-radius: 20px 20px 0 0;
+  background: radial-gradient(120% 90% at 100% 0%, var(--brand-2) 0%, var(--brand) 55%);
+  color: var(--brand-ink);
+  overflow: hidden;
+}
+.card::after {
+  content: "";
+  position: absolute; inset: auto -40px -60px auto;
+  width: 180px; height: 180px;
+  border-radius: 50%;
+  border: 26px solid rgba(255, 255, 255, .05);
+}
+.card .top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.card .top .wordmark { color: var(--brand-ink); font-size: 13px; }
+.card .plan { font-weight: 700; font-size: 14px; }
+.card .avail-label { margin-top: 14px; font-size: 13px; color: var(--brand-muted); }
+.card .avail { display: flex; align-items: baseline; gap: 6px; margin-top: -4px; }
+.card .avail .n { font-family: var(--num); font-weight: 700; font-size: 104px; line-height: .95; letter-spacing: -.01em; }
+.card .avail .u { font-size: 22px; font-weight: 700; }
+.card .renew { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; margin-top: 10px; }
+.card .renew .k { font-size: 12px; color: var(--brand-muted); }
+.card .renew .v { font-size: 16px; font-weight: 700; }
+.card .days {
+  text-align: right;
+  font-size: 13px; color: var(--brand-muted);
+}
+.card .days .num { font-size: 34px; font-weight: 700; color: var(--brand-ink); line-height: 1; margin: 0 2px; }
+.card .status {
+  display: inline-block; margin-left: 8px;
+  padding: 2px 9px; border-radius: 999px;
+  font-size: 12px; font-weight: 700;
+  background: rgba(255, 255, 255, .14);
+}
+.perf {
+  height: 14px;
+  background:
+    radial-gradient(circle at 0 50%, transparent 7px, var(--surface) 7.5px) left / 51% 100% no-repeat,
+    radial-gradient(circle at 100% 50%, transparent 7px, var(--surface) 7.5px) right / 51% 100% no-repeat;
+  position: relative;
+}
+.perf::before {
+  content: ""; position: absolute; left: 14px; right: 14px; top: 50%;
+  border-top: 2px dashed var(--line);
+}
+.stubs {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  background: var(--surface);
+  border-radius: 0 0 20px 20px;
+  padding: 4px 6px 14px;
+}
+.stubs.four { grid-template-columns: repeat(4, 1fr); }
+.stub { padding: 6px 10px; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.stub + .stub { border-left: 1px solid var(--line-2); }
+.stub .k { font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+.stub .k i { width: 8px; height: 8px; border-radius: 2px; display: inline-block; flex: none; }
+.stub .v { display: flex; align-items: baseline; gap: 2px; }
+.stub .v .num { font-size: 34px; font-weight: 700; line-height: 1.05; }
+.stub .v .u { font-size: 13px; font-weight: 700; color: var(--ink-2); }
+.stub .x { font-size: 11px; color: var(--muted); white-space: nowrap; }
+.dot-carryover { background: var(--lot-carryover); }
+.dot-monthly { background: var(--lot-monthly); }
+.dot-unlimited { background: var(--lot-unlimited); }
+.dot-pack { background: var(--lot-pack); }
+
+/* ---------- 数字タイル ---------- */
+.section { margin-top: 22px; display: flex; flex-direction: column; gap: 10px; }
+.section > .h { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+.section > .h h2 { font-size: 15px; font-weight: 700; }
+.section > .h .s { font-size: 12px; color: var(--muted); }
+.tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.tile {
+  background: var(--surface);
+  border: 1px solid var(--line-2);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  display: flex; flex-direction: column; gap: 2px;
+}
+.tile .k { font-size: 12px; color: var(--muted); line-height: 1.35; min-height: 2.7em; }
+.tile .v { display: flex; align-items: baseline; gap: 2px; }
+.tile .v .num { font-size: 32px; font-weight: 700; line-height: 1; }
+.tile .v .u { font-size: 13px; font-weight: 700; color: var(--ink-2); }
+.tile.warn .v .num { color: var(--danger); }
+
+.notice {
+  display: flex; gap: 10px; align-items: flex-start;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--warn-soft);
+  color: var(--ink);
+  font-size: 14px;
+}
+.notice .ic { flex: none; font-weight: 700; color: var(--warn); }
+.notice.info { background: var(--surface-2); }
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--line-2);
+  border-radius: var(--radius);
+  padding: 4px 14px;
+}
+.kv { display: flex; justify-content: space-between; gap: 12px; padding: 11px 0; font-size: 14px; }
+.kv + .kv { border-top: 1px solid var(--line-2); }
+.kv .k { color: var(--muted); flex: none; }
+.kv .v { text-align: right; font-weight: 500; }
+
+/* ---------- 履歴 ---------- */
+.period { background: var(--surface); border: 1px solid var(--line-2); border-radius: var(--radius); overflow: hidden; }
+.period + .period { margin-top: 10px; }
+.period-h { padding: 12px 14px; display: flex; flex-direction: column; gap: 2px; background: var(--surface-2); border-bottom: 1px solid var(--line-2); }
+.period-h .t { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-weight: 700; font-size: 15px; }
+.period-h .s { font-size: 12px; color: var(--muted); }
+.badge {
+  display: inline-flex; align-items: center;
+  padding: 1px 8px; border-radius: 999px;
+  font-size: 11px; font-weight: 700;
+  background: var(--line-2); color: var(--ink-2);
+  white-space: nowrap;
+}
+.badge.now { background: var(--accent-soft); color: var(--accent); }
+.badge.paused { background: var(--warn-soft); color: var(--warn); }
+.badge.ended { background: var(--danger-soft); color: var(--danger); }
+.badge.void { background: var(--danger-soft); color: var(--danger); }
+.items { list-style: none; margin: 0; padding: 0; }
+.item { display: grid; grid-template-columns: 44px 1fr auto; gap: 4px 10px; padding: 11px 14px; align-items: start; }
+.item + .item { border-top: 1px solid var(--line-2); }
+.item .d { font-family: var(--num); font-size: 16px; font-weight: 600; color: var(--ink-2); line-height: 1.5; }
+.item .l { min-width: 0; }
+.item .l .a { font-size: 14px; font-weight: 700; }
+.item .l .m { font-size: 12px; color: var(--muted); overflow-wrap: anywhere; }
+.item .r { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+.item .q { font-family: var(--num); font-size: 22px; font-weight: 700; line-height: 1; }
+.item .q.plus { color: var(--ok); }
+.item .q.minus { color: var(--ink); }
+.item .q.zero { color: var(--muted); }
+.item.voided .a, .item.voided .q { text-decoration: line-through; color: var(--muted); }
+.lotchip { font-size: 11px; font-weight: 700; padding: 1px 7px; border-radius: 6px; white-space: nowrap; }
+.lot-carryover { color: var(--lot-carryover); background: var(--lot-carryover-soft); }
+.lot-monthly { color: var(--lot-monthly); background: var(--lot-monthly-soft); }
+.lot-unlimited { color: var(--lot-unlimited); background: var(--lot-unlimited-soft); }
+.lot-pack { color: var(--lot-pack); background: var(--lot-pack-soft); }
+.item .void-link {
+  margin-top: 2px; padding: 4px 0;
+  background: none; border: 0;
+  font-size: 12px; font-weight: 700;
+  color: var(--danger);
+  text-decoration: underline; text-underline-offset: 3px;
+}
+.empty { padding: 26px 14px; text-align: center; color: var(--muted); font-size: 14px; }
+
+/* ---------- 顧客一覧 ---------- */
+.searchbar {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+  display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.4fr); gap: 8px;
+  padding: 8px 0 10px;
+  background: var(--bg);
+}
+.clist { display: flex; flex-direction: column; gap: 8px; }
+.crow {
+  display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; align-items: center;
+  width: 100%; text-align: left;
+  padding: 12px 14px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line-2);
+  background: var(--surface);
+}
+.crow .n { font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.crow .kana { font-size: 12px; color: var(--muted); font-weight: 400; }
+.crow .meta { grid-column: 1; font-size: 12px; color: var(--muted); }
+.crow .av { grid-row: 1 / span 2; grid-column: 2; text-align: right; }
+.crow .av .num { font-size: 30px; font-weight: 700; line-height: 1; }
+.crow .av .u { font-size: 12px; font-weight: 700; color: var(--ink-2); }
+.crow .av .s { font-size: 11px; color: var(--muted); display: block; }
+.count-line { font-size: 12px; color: var(--muted); padding: 2px 2px 0; }
+
+/* ---------- 顧客詳細 ---------- */
+.who { display: flex; flex-direction: column; gap: 2px; margin: 4px 0 14px; }
+.who h1 { font-size: 24px; font-weight: 700; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.who .kana { font-size: 13px; color: var(--muted); }
+.who .meta { font-size: 13px; color: var(--ink-2); }
+.dock {
+  position: sticky; bottom: 0; z-index: 6;
+  margin-inline: -16px;
+  padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px));
+  background: linear-gradient(to top, var(--bg) 70%, color-mix(in srgb, var(--bg) 0%, transparent));
+}
+.admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.admin-grid .btn { min-height: 52px; font-size: 14px; justify-content: flex-start; text-align: left; padding: 10px 14px; }
+.admin-grid .btn span.s { display: block; font-size: 11px; font-weight: 400; color: var(--muted); }
+
+/* ---------- シート（下から出る画面） ---------- */
+.scrim {
+  position: fixed; inset: 0; z-index: 40;
+  background: rgba(8, 14, 26, .45);
+  display: flex; align-items: flex-end; justify-content: center;
+  animation: fade .15s ease;
+}
+.sheet {
+  width: 100%; max-width: 540px;
+  max-height: calc(100% - 24px - env(safe-area-inset-top, 0px));
+  overflow: auto;
+  background: var(--bg);
+  border-radius: 20px 20px 0 0;
+  padding: 8px 16px calc(18px + env(safe-area-inset-bottom, 0px));
+  box-shadow: var(--shadow-lg);
+  animation: up .2s ease;
+}
+.sheet .grip { width: 40px; height: 5px; border-radius: 5px; background: var(--line); margin: 4px auto 10px; }
+.sheet .sh { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
+.sheet .sh h2 { font-size: 18px; font-weight: 700; }
+.sheet .acts { display: flex; flex-direction: column; gap: 8px; margin-top: 18px; }
+@media (min-width: 700px) {
+  .scrim { align-items: center; }
+  .sheet { border-radius: 20px; max-height: 88vh; }
+}
+@keyframes fade { from { opacity: 0; } }
+@keyframes up { from { transform: translateY(24px); opacity: .6; } }
+
+.choice {
+  display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; align-items: center;
+  width: 100%; text-align: left;
+  padding: 16px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+.choice + .choice { margin-top: 8px; }
+.choice .t { font-size: 17px; font-weight: 700; }
+.choice .d { font-size: 12px; color: var(--muted); grid-column: 1; }
+.choice .e { grid-row: 1 / span 2; grid-column: 2; font-family: var(--num); font-size: 22px; font-weight: 700; color: var(--ink-2); }
+.choice.main { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+.confirm-box {
+  background: var(--surface);
+  border-radius: 16px;
+  border: 1px solid var(--line-2);
+  padding: 16px;
+  display: flex; flex-direction: column; gap: 10px; align-items: center; text-align: center;
+}
+.confirm-box .kind { font-size: 18px; font-weight: 700; }
+.confirm-box .flow { display: flex; align-items: baseline; gap: 12px; }
+.confirm-box .flow .num { font-size: 56px; font-weight: 700; line-height: 1; }
+.confirm-box .flow .arr { font-size: 22px; color: var(--muted); }
+.confirm-box .flow .after { color: var(--accent); }
+.confirm-box .s { font-size: 13px; color: var(--muted); }
+
+/* ---------- トースト ---------- */
+.toast {
+  position: fixed; left: 50%; z-index: 60;
+  bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+  transform: translateX(-50%);
+  width: min(520px, calc(100% - 32px));
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: var(--ink); color: var(--bg);
+  box-shadow: var(--shadow-lg);
+  font-size: 14px;
+  animation: up .2s ease;
+}
+.toast .t { flex: 1; }
+.toast button { background: none; border: 0; color: var(--accent); font-weight: 700; padding: 6px 4px; }
+.toast.err { background: var(--danger); color: #fff; }
+.toast.err button { color: #fff; }
+
+/* ---------- 管理 ---------- */
+.menu-list { display: flex; flex-direction: column; gap: 8px; }
+.menu-item {
+  display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 2px 12px;
+  width: 100%; text-align: left;
+  padding: 14px 16px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line-2);
+  background: var(--surface);
+}
+.menu-item .t { font-weight: 700; }
+.menu-item .d { font-size: 12px; color: var(--muted); grid-column: 1; }
+.menu-item .arrow { grid-row: 1 / span 2; grid-column: 2; color: var(--muted); font-family: var(--num); font-size: 20px; }
+.log { background: var(--surface); border: 1px solid var(--line-2); border-radius: var(--radius); }
+.logrow { padding: 11px 14px; display: grid; grid-template-columns: 1fr auto; gap: 2px 10px; }
+.logrow + .logrow { border-top: 1px solid var(--line-2); }
+.logrow .a { font-weight: 700; font-size: 14px; }
+.logrow .m { grid-column: 1 / 3; font-size: 12px; color: var(--muted); overflow-wrap: anywhere; }
+.logrow .t { font-size: 12px; color: var(--muted); font-family: var(--num); white-space: nowrap; }
+
+.loading { padding: 60px 0; display: grid; place-items: center; color: var(--muted); font-size: 13px; gap: 12px; }
+.spinner { width: 26px; height: 26px; border-radius: 50%; border: 3px solid var(--line); border-top-color: var(--accent); animation: spin .8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.foot { margin-top: 28px; display: flex; justify-content: center; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+@media (max-width: 360px) {
+  .card .avail .n { font-size: 88px; }
+  .stub .v .num { font-size: 28px; }
+  .tile .v .num { font-size: 26px; }
+}
+
+</style>
+</head>
+<body>
+<main id="app" class="app"></main>
+<noscript><p style="padding:24px">この画面を使うには JavaScript を有効にしてください。</p></noscript>
+<script>
+/* CHART MEMBER 共通の小道具（日付・受付番号） */
+(function (G) {
+  'use strict';
+  const DAY = 86400000;
+  const D = {
+    parse(s) { const [y, m, d] = s.split('-').map(Number); return Date.UTC(y, m - 1, d); },
+    fmt(ms) { return new Date(ms).toISOString().slice(0, 10); },
+    add(s, n) { return D.fmt(D.parse(s) + n * DAY); },
+    diff(a, b) { return Math.round((D.parse(a) - D.parse(b)) / DAY); },
+    dim(y, m) { return new Date(Date.UTC(y, m, 0)).getUTCDate(); },
+    renewalDate(y, m, day) { return D.fmt(Date.UTC(y, m - 1, Math.min(day, D.dim(y, m)))); },
+    nextRenewalAfter(s, day) {
+      const y = +s.slice(0, 4), m = +s.slice(5, 7);
+      const v = D.renewalDate(y, m, day);
+      if (v > s) return v;
+      return m === 12 ? D.renewalDate(y + 1, 1, day) : D.renewalDate(y, m + 1, day);
+    },
+    renewalOnOrAfter(s, day) { return D.nextRenewalAfter(D.add(s, -1), day); },
+    jst(ms) { const x = new Date(ms + 9 * 3600000).toISOString(); return { date: x.slice(0, 10), time: x.slice(11, 23) }; },
+    jstDateOf(iso) { return D.jst(Date.parse(iso)).date; },
+  };
+
+  function uuid() {
+    const c = G.crypto;
+    if (c && c.randomUUID) return c.randomUUID();
+    const b = new Uint8Array(16);
+    if (c && c.getRandomValues) c.getRandomValues(b); else for (let i = 0; i < 16; i++) b[i] = Math.floor(Math.random() * 256);
+    b[6] = (b[6] & 15) | 64; b[8] = (b[8] & 63) | 128;
+    const h = Array.from(b, x => x.toString(16).padStart(2, '0')).join('');
+    return `${h.slice(0, 8)}-${h.slice(8, 12)}-${h.slice(12, 16)}-${h.slice(16, 20)}-${h.slice(20)}`;
+  }
+  G.CMUtil = { D, uuid };
+})(typeof globalThis !== 'undefined' ? globalThis : window);
+
+</script>
+<script>
+/* CHART MEMBER デモ用エンジン
+   本番の setup.sql と同じルール・同じAPIをブラウザの中で動かす（データはメモリ上だけ）。
+   テスト（test/parity.mjs）で、同じ操作をSQL版と流して結果が一致することを確認している。 */
+(function (G) {
+  'use strict';
+
+  class ApiError extends Error {
+    constructor(message, hint) { super(message); this.hint = hint || null; }
+  }
+  const err = (m, h) => new ApiError(m, h);
+
+  // ---------------- 名前の照合 ----------------
+  const KATA = 'ァアィイゥウェエォオカガキギクグケゲコゴサザシジスズセゼソゾタダチヂッツヅテデトドナニヌネノハバパヒビピフブプヘベペホボポマミムメモャヤュユョヨラリルレロヮワヰヱヲンヴヵヶ';
+  const HIRA = 'ぁあぃいぅうぇえぉおかがきぎくぐけげこごさざしじすずせぜそぞただちぢっつづてでとどなにぬねのはばぱひびぴふぶぷへべぺほぼぽまみむめもゃやゅゆょよらりるれろゎわゐゑをんゔゕゖ';
+  const ITA_F = '髙﨑𠮷德邊邉齋齊濵冨惠國澤廣眞榮瀨嶋條櫻';
+  const ITA_T = '高崎吉徳辺辺斎斉浜富恵国沢広真栄瀬島条桜';
+  function translate(s, from, to) {
+    const f = Array.from(from), t = Array.from(to), m = new Map();
+    f.forEach((ch, i) => { if (!m.has(ch)) m.set(ch, i < t.length ? t[i] : ''); });
+    return Array.from(s).map(ch => (m.has(ch) ? m.get(ch) : ch)).join('');
+  }
+  const normName = p => translate(String(p == null ? '' : p).normalize('NFKC').replace(/[\s・]+/gu, ''), ITA_F, ITA_T).toLowerCase();
+  const normKana = p => translate(normName(p), KATA, HIRA);
+  const trimOrNull = v => { if (v == null) return null; const t = String(v).trim(); return t === '' ? null : t; };
+  const str = v => (v == null ? null : String(v));
+  const intOrNull = v => (v == null || v === '' ? null : parseInt(v, 10));
+  const numOrNull = v => (v == null || v === '' ? null : Number(v));
+  const fmtN = n => (Number.isInteger(n) ? String(n) : n.toFixed(1));
+
+  // ---------------- 日付（'YYYY-MM-DD'） ----------------
+  const DAY = 86400000;
+  const D = {
+    parse(s) { const [y, m, d] = s.split('-').map(Number); return Date.UTC(y, m - 1, d); },
+    fmt(ms) { return new Date(ms).toISOString().slice(0, 10); },
+    add(s, n) { return D.fmt(D.parse(s) + n * DAY); },
+    diff(a, b) { return Math.round((D.parse(a) - D.parse(b)) / DAY); },
+    dim(y, m) { return new Date(Date.UTC(y, m, 0)).getUTCDate(); },
+    renewalDate(y, m, day) { return D.fmt(Date.UTC(y, m - 1, Math.min(day, D.dim(y, m)))); },
+    nextRenewalAfter(s, day) {
+      const y = +s.slice(0, 4), m = +s.slice(5, 7);
+      const v = D.renewalDate(y, m, day);
+      if (v > s) return v;
+      return m === 12 ? D.renewalDate(y + 1, 1, day) : D.renewalDate(y, m + 1, day);
+    },
+    renewalOnOrAfter(s, day) { return D.nextRenewalAfter(D.add(s, -1), day); },
+    jst(ms) { const x = new Date(ms + 9 * 3600000).toISOString(); return { date: x.slice(0, 10), time: x.slice(11, 23) }; },
+    jstDateOf(iso) { return D.jst(Date.parse(iso)).date; },
+  };
+
+  function uuid() {
+    const c = G.crypto;
+    if (c && c.randomUUID) return c.randomUUID();
+    const b = new Uint8Array(16);
+    if (c && c.getRandomValues) c.getRandomValues(b); else for (let i = 0; i < 16; i++) b[i] = Math.floor(Math.random() * 256);
+    b[6] = (b[6] & 15) | 64; b[8] = (b[8] & 63) | 128;
+    const h = Array.from(b, x => x.toString(16).padStart(2, '0')).join('');
+    return `${h.slice(0, 8)}-${h.slice(8, 12)}-${h.slice(12, 16)}-${h.slice(16, 20)}-${h.slice(20)}`;
+  }
+  const newToken = () => uuid().replace(/-/g, '') + uuid().replace(/-/g, '');
+  // デモ用の簡易ハッシュ（本番は SQL 側の sha256）
+  function hashText(s) {
+    let h1 = 0x811c9dc5, h2 = 0x01000193;
+    for (const ch of String(s)) { const c = ch.codePointAt(0); h1 = Math.imul(h1 ^ c, 16777619) >>> 0; h2 = Math.imul(h2 ^ c, 2246822519) >>> 0; }
+    return h1.toString(16).padStart(8, '0') + h2.toString(16).padStart(8, '0');
+  }
+  const clone = v => (v === undefined ? undefined : JSON.parse(JSON.stringify(v)));
+  // 消化の順番：当月分を先に使い、使い切ったら前月繰越 → 回数券 → 無期限
+  const LOT_RANK = { monthly: 1, carryover: 2, pack: 3, unlimited: 9 };
+  const isHalf = n => typeof n === 'number' && isFinite(n) && Math.round(n * 2) === n * 2;
+
+  class Engine {
+    constructor() { this.reset(); }
+
+    reset() {
+      this.db = { version: 4, seq: {}, stores: [], plans: [], staff: [], customers: [], contracts: [], periods: [], lots: [],
+                  ledger: [], events: [], audit: [], sessions: [], attempts: [], requests: {} };
+      this.override = null;   // デモの日付
+      this.clock = null;      // デモの時刻（'HH:MM'）
+      this.headers = null;    // 接続元（テスト用）
+    }
+    nextId(t) { this.db.seq[t] = (this.db.seq[t] || 0) + 1; return this.db.seq[t]; }
+
+    // ---------------- 時刻 ----------------
+    now() {
+      if (this._tx) return this._tx;   // 1回の呼び出しの中では同じ時刻（SQLのトランザクションと同じ）
+      if (!this.override) return new Date().toISOString();
+      const t = this.clock || D.jst(Date.now()).time;   // デモの時刻（未設定なら今の時刻）
+      return new Date(Date.parse(`${this.override}T${t}+09:00`)).toISOString();
+    }
+    today() { return this.override || D.jst(Date.now()).date; }
+    realNow() { return Date.now(); }
+
+    // ---------------- 参照 ----------------
+    cust(id) { return this.db.customers.find(c => c.id === id); }
+    lot(id) { return this.db.lots.find(l => l.id === id); }
+    period(id) { return this.db.periods.find(p => p.id === id); }
+    plan(id) { return this.db.plans.find(p => p.id === id); }
+    staffById(id) { return this.db.staff.find(s => s.id === id); }
+    openContract(cid) { return this.db.contracts.find(k => k.customer_id === cid && k.ended_on == null); }
+    openPeriod(contractId) { return this.db.periods.find(p => p.contract_id === contractId && p.closed_at == null); }
+
+    // ---------------- 束と台帳 ----------------
+    lotExpires(l) { return l.period_id != null ? this.period(l.period_id).end_date : l.expires_on; }
+    lotBalance(id) { let s = 0; for (const g of this.db.ledger) if (g.lot_id === id) s += g.qty; return s; }
+    vLots(cid) {
+      return this.db.lots.filter(l => l.customer_id === cid)
+        .map(l => Object.assign({}, l, { effective_expires_on: this.lotExpires(l), balance: this.lotBalance(l.id) }));
+    }
+    lotUsableOn(id, d) {
+      const l = this.lot(id); if (!l) return false;
+      const e = this.lotExpires(l);
+      return l.closed_at == null && l.valid_from <= d && (e == null || d < e);
+    }
+    ledgerAdd(cid, lotId, type, qty, staffId = null, reason = null, note = null, periodId = null, batch = null, effectiveOn = null, eventId = null) {
+      const l = this.lot(lotId);
+      if (!l || l.customer_id !== cid) throw err('台帳：チケットの束と顧客が一致しません');
+      if (l.closed_at != null) throw err('台帳：締め済みのチケットは動かせません');
+      if (type === 'consume' && !this.lotUsableOn(lotId, this.today())) throw err('台帳：有効期間外のチケットは使えません');
+      const lb = this.lotBalance(lotId);
+      if (lb + qty < 0) throw err('残りの回数より多くは減らせません');
+      if (!isHalf(qty)) throw err('回数は0.5回（30分）単位です');
+      const signOk = qty !== 0 && ((['grant', 'carry_in', 'void'].includes(type) && qty > 0) ||
+        (['carry_out', 'expire', 'consume'].includes(type) && qty < 0) ||
+        ['adjust', 'plan_change'].includes(type));
+      if (!signOk) throw err('台帳：増減の値が正しくありません');
+      if (['grant', 'carry_in', 'carry_out', 'expire'].includes(type) &&
+          this.db.ledger.some(g => g.lot_id === lotId && g.entry_type === type)) {
+        throw err('台帳：同じ処理はすでに記録されています');
+      }
+      let cb = 0; for (const g of this.db.ledger) if (g.customer_id === cid) cb += g.qty;
+      const row = { id: this.nextId('ledger'), customer_id: cid, lot_id: lotId, entry_type: type, qty,
+        balance_before: cb, balance_after: cb + qty, lot_balance_after: lb + qty, period_id: periodId,
+        batch_id: batch, reason, note: trimOrNull(note), staff_id: staffId, event_id: eventId,
+        effective_on: effectiveOn || this.today(), created_at: this.now() };
+      this.db.ledger.push(row);
+      return row;
+    }
+    newLot(cid, type, periodId, validFrom, expiresOn = null, sourceLotId = null, staffId = null) {
+      if (['monthly', 'carryover'].includes(type) !== (periodId != null)) throw err('チケットの束の設定が正しくありません');
+      if ((type === 'pack') !== (expiresOn != null)) throw err('チケットの束の設定が正しくありません');
+      if (periodId != null && this.db.lots.some(l => l.period_id === periodId && l.lot_type === type)) {
+        throw err('同じ期間に同じ種類の束はすでにあります');
+      }
+      const l = { id: this.nextId('lots'), customer_id: cid, lot_type: type, period_id: periodId, source_lot_id: sourceLotId,
+        valid_from: validFrom, expires_on: expiresOn, closed_at: null, created_at: this.now(), created_by: staffId, note: null };
+      this.db.lots.push(l);
+      return l.id;
+    }
+    // 消化の順番（SQL の app.pick_lot と同じ）
+    usableLots(cid, d) {
+      const c = this.vLots(cid).filter(v => v.closed_at == null && v.balance > 0 && v.valid_from <= d &&
+        (v.effective_expires_on == null || d < v.effective_expires_on));
+      c.sort((a, b) =>
+        (a.effective_expires_on == null) - (b.effective_expires_on == null) ||
+        String(a.effective_expires_on || '').localeCompare(String(b.effective_expires_on || '')) ||
+        (LOT_RANK[a.lot_type] || 5) - (LOT_RANK[b.lot_type] || 5) || a.id - b.id);
+      return c;
+    }
+    pickLot(cid, d) { const c = this.usableLots(cid, d); return c.length ? c[0].id : null; }
+    // amount回分を、消化の順番どおりにどの束から何回使うか
+    consumePlan(cid, amount) {
+      const plan = [];
+      let left = amount;
+      for (const v of this.usableLots(cid, this.today())) {
+        if (left <= 0) break;
+        const take = Math.min(left, v.balance);
+        plan.push({ lot_id: v.id, lot_type: v.lot_type, qty: take });
+        left -= take;
+      }
+      return { plan, short: left > 0 ? left : 0 };
+    }
+    balances(cid) {
+      const t = this.today(), r = { carryover: 0, monthly: 0, unlimited: 0, pack: 0, total: 0 };
+      for (const v of this.vLots(cid)) {
+        if (v.closed_at == null && v.valid_from <= t && (v.effective_expires_on == null || t < v.effective_expires_on)) {
+          r[v.lot_type] += v.balance; r.total += v.balance;
+        }
+      }
+      return r;
+    }
+    totalBalance(cid) { return this.balances(cid).total; }
+
+    audit(role, staffId, cid, action, qty, detail) {
+      this.db.audit.push({ id: this.nextId('audit'), at: this.now(), actor_role: role, actor_staff_id: staffId,
+        customer_id: cid, action, qty_delta: qty == null ? null : qty, detail: clone(detail || {}) });
+    }
+
+    // ---------------- 契約・更新処理 ----------------
+    startContract(cid, planId, start, day, staffId = null, batch = null) {
+      const plan = this.db.plans.find(p => p.id === planId && p.kind === 'monthly' && p.is_active);
+      if (!plan) throw err('プランを選んでください');
+      if (day == null || day < 1 || day > 31) throw err('更新日は1〜31日から選んでください');
+      if (!start) throw err('開始日を選んでください');
+      if (start > this.today()) throw err('開始日に未来の日付は選べません');
+      const end = D.nextRenewalAfter(start, day);
+      if (end <= this.today()) throw err('開始日が古すぎます。今の期間の開始日（直近の更新日）を選んでください');
+      if (this.openContract(cid)) throw err('この方にはすでに契約中の契約があります');
+      const ts = this.now();
+      const k = { id: this.nextId('contracts'), customer_id: cid, kind: 'monthly', renewal_day: day, started_on: start,
+        ended_on: null, pending_plan_id: null, pending_status: null, created_at: ts, updated_at: ts };
+      this.db.contracts.push(k);
+      const p = { id: this.nextId('periods'), contract_id: k.id, customer_id: cid, start_date: start, end_date: end,
+        plan_id: plan.id, status: 'active', sessions_granted: plan.sessions, carryover_max: plan.carryover_max,
+        closed_at: null, created_at: ts };
+      this.db.periods.push(p);
+      if (plan.sessions > 0) {
+        const lot = this.newLot(cid, 'monthly', p.id, start, null, null, staffId);
+        this.ledgerAdd(cid, lot, 'grant', plan.sessions, staffId, 'contract_start', null, p.id, batch, start);
+      }
+      return k.id;
+    }
+
+    renewOnce(contractId) {
+      const c = this.db.contracts.find(k => k.id === contractId);
+      if (!c || c.ended_on != null) return false;
+      const p = this.openPeriod(c.id);
+      if (!p) throw err(`契約 ${c.id} に今の期間がありません`);
+      if (p.end_date > this.today()) return false;
+      const d = p.end_date;
+      const status = c.pending_status || p.status;
+      const plan = this.plan(c.pending_plan_id != null ? c.pending_plan_id : p.plan_id);
+      const m = this.db.lots.find(l => l.period_id === p.id && l.lot_type === 'monthly');
+      const cl = this.db.lots.find(l => l.period_id === p.id && l.lot_type === 'carryover');
+      const rm = m ? this.lotBalance(m.id) : 0;
+      const rc = cl ? this.lotBalance(cl.id) : 0;
+      const carry = status !== 'ended' ? Math.min(rm, p.carryover_max) : 0;
+      const batch = uuid();
+      if (rc > 0) this.ledgerAdd(c.customer_id, cl.id, 'expire', -rc, null, 'carryover_expired', null, p.id, batch, d);
+      if (carry > 0) this.ledgerAdd(c.customer_id, m.id, 'carry_out', -carry, null, 'carry_out', null, p.id, batch, d);
+      if (rm - carry > 0) {
+        this.ledgerAdd(c.customer_id, m.id, 'expire', -(rm - carry), null,
+          status === 'ended' ? 'contract_ended' : 'over_carry_limit', null, p.id, batch, d);
+      }
+      const ts = this.now();
+      for (const l of this.db.lots) if (l.period_id === p.id) l.closed_at = ts;
+      p.closed_at = ts;
+      if (status === 'ended') {
+        Object.assign(c, { ended_on: d, pending_plan_id: null, pending_status: null, updated_at: ts });
+        this.audit('system', null, c.customer_id, 'contract_ended', -(rm + rc), { ended_on: d, expired: rm + rc });
+        return true;
+      }
+      const e = D.nextRenewalAfter(d, c.renewal_day);
+      const grant = status === 'active' ? plan.sessions : 0;
+      if (this.db.periods.some(x => x.contract_id === c.id && x.start_date === d)) throw err('期間が重複しています');
+      const np = { id: this.nextId('periods'), contract_id: c.id, customer_id: c.customer_id, start_date: d, end_date: e,
+        plan_id: plan.id, status, sessions_granted: grant, carryover_max: plan.carryover_max, closed_at: null, created_at: ts };
+      this.db.periods.push(np);
+      if (carry > 0) {
+        const lot = this.newLot(c.customer_id, 'carryover', np.id, d, null, m.id, null);
+        this.ledgerAdd(c.customer_id, lot, 'carry_in', carry, null, 'carry_in', null, np.id, batch, d);
+      }
+      if (grant > 0) {
+        const lot = this.newLot(c.customer_id, 'monthly', np.id, d, null, null, null);
+        this.ledgerAdd(c.customer_id, lot, 'grant', grant, null, 'monthly_grant', null, np.id, batch, d);
+      }
+      Object.assign(c, { pending_plan_id: null, pending_status: null, updated_at: ts });
+      this.audit('system', null, c.customer_id, 'renewal', grant - (rm - carry) - rc,
+        { period_start: d, next_renewal: e, plan: plan.name, status, carried: carry, expired: (rm - carry) + rc, granted: grant });
+      return true;
+    }
+
+    ensureCurrent(cid) {
+      if (!this.cust(cid)) throw err('お客様が見つかりません');
+      const k = this.openContract(cid);
+      if (k) {
+        let n = 0;
+        while (this.renewOnce(k.id)) { n++; if (n > 240) throw err(`更新処理が終わりません（契約 ${k.id}）`); }
+      }
+      for (const v of this.vLots(cid)) {
+        if (v.closed_at == null && v.lot_type === 'pack' && v.effective_expires_on <= this.today()) {
+          if (v.balance > 0) this.ledgerAdd(cid, v.id, 'expire', -v.balance, null, 'pack_expired', null, null, null, v.expires_on);
+          this.lot(v.id).closed_at = this.now();
+        }
+      }
+    }
+
+    runDueRenewals() {
+      const t = this.today(), ids = new Set();
+      for (const p of this.db.periods) {
+        const k = this.db.contracts.find(x => x.id === p.contract_id);
+        if (k && k.ended_on == null && p.closed_at == null && p.end_date <= t) ids.add(p.customer_id);
+      }
+      for (const l of this.db.lots) if (l.lot_type === 'pack' && l.closed_at == null && l.expires_on <= t) ids.add(l.customer_id);
+      let n = 0;
+      for (const id of [...ids].sort((a, b) => a - b)) {
+        const snap = this.snapshot();
+        try { this.ensureCurrent(id); n++; }
+        catch (e) { this.restore(snap); this.audit('system', null, id, 'renewal_error', null, { error: e.message }); }
+      }
+      return n;
+    }
+
+    // ---------------- 表示用 ----------------
+    periodStats(cid, periodId) {
+      const r = { visits: 0, consumed: 0, cancel_consumed: 0, cancel_free: 0 };
+      if (periodId == null) return r;
+      for (const e of this.db.events) {
+        if (e.customer_id !== cid || e.period_id !== periodId || e.voided_at != null) continue;
+        if (e.kind === 'session') r.visits++;
+        if (e.kind === 'session' || e.kind === 'cancel_consume') r.consumed += e.amount;
+        if (e.kind === 'cancel_consume') r.cancel_consumed += e.amount;
+        if (e.kind === 'cancel_free') r.cancel_free++;
+      }
+      return r;
+    }
+    planJson(id) {
+      const p = this.plan(id); if (!p) return null;
+      return { id: p.id, code: p.code, name: p.name, sessions: p.sessions, carryover_max: p.carryover_max, price_yen: p.price_yen };
+    }
+    customerSummary(cid, forStaff) {
+      const cu = this.cust(cid);
+      if (!cu) throw err('お客様が見つかりません');
+      const store = this.db.stores.find(s => s.id === cu.store_id);
+      const c = this.openContract(cid);
+      let ctr = null, ended = null, p = null;
+      if (c) {
+        p = this.openPeriod(c.id);
+        ctr = {
+          id: c.id, status: p.status, plan: this.planJson(p.plan_id), renewal_day: c.renewal_day, started_on: c.started_on,
+          period: { id: p.id, start: p.start_date, end: D.add(p.end_date, -1) },
+          next_renewal: p.end_date, days_left: D.diff(p.end_date, this.today()),
+          pending: { plan: c.pending_plan_id != null ? this.planJson(c.pending_plan_id) : null, status: c.pending_status || null },
+        };
+      } else {
+        const ks = this.db.contracts.filter(k => k.customer_id === cid).sort((a, b) =>
+          (a.ended_on == null) - (b.ended_on == null) || String(b.ended_on || '').localeCompare(String(a.ended_on || '')) || b.id - a.id);
+        if (ks.length) {
+          const k = ks[0];
+          const lp = this.db.periods.filter(x => x.contract_id === k.id).sort((a, b) => b.start_date.localeCompare(a.start_date))[0];
+          ended = { ended_on: k.ended_on, plan_name: lp ? this.plan(lp.plan_id).name : null };
+        }
+      }
+      const open = this.vLots(cid).filter(v => v.closed_at == null);
+      const maxOf = xs => (xs.length ? xs.sort().slice(-1)[0] : null);
+      const minOf = xs => (xs.length ? xs.sort()[0] : null);
+      const expires = {
+        carryover: maxOf(open.filter(v => v.lot_type === 'carryover').map(v => D.add(v.effective_expires_on, -1))),
+        monthly: maxOf(open.filter(v => v.lot_type === 'monthly').map(v => D.add(v.effective_expires_on, -1))),
+        pack: minOf(open.filter(v => v.lot_type === 'pack' && v.balance > 0).map(v => D.add(v.effective_expires_on, -1))),
+      };
+      const nl = this.pickLot(cid, this.today());
+      const customer = { id: cu.id, name: cu.name, name_kana: cu.name_kana, store_id: cu.store_id, store: store ? store.name : null };
+      if (forStaff) Object.assign(customer, { birth_date: cu.birth_date, note: cu.note });
+      return {
+        today: this.today(), customer, contract: ctr, ended_contract: ended, balances: this.balances(cid), expires,
+        stats: this.periodStats(cid, ctr ? p.id : null), next_lot_type: nl ? this.lot(nl).lot_type : null,
+      };
+    }
+
+    history(cid, role, viewerStaffId) {
+      const t = this.today(), items = [];
+      const name = id => { const s = this.staffById(id); return s ? s.name : null; };
+      for (const e of this.db.events.filter(x => x.customer_id === cid)) {
+        const gs = this.db.ledger.filter(x => x.event_id === e.id && x.entry_type === 'consume');
+        const g = gs.length ? gs[gs.length - 1] : null;
+        const types = [...new Set(gs.map(x => this.lot(x.lot_id).lot_type))];
+        const item = { type: e.kind, event_id: e.id, minutes: e.minutes || null,
+          delta: e.kind === 'cancel_free' || e.voided_at != null ? 0 : -e.amount,
+          lot_type: types[0] || null, lot_types: types, voided: e.voided_at != null, void_reason: e.void_reason || null };
+        if (role !== 'customer') {
+          const usable = gs.every(x => this.lotUsableOn(x.lot_id, t));
+          Object.assign(item, {
+            ledger_id: g ? g.id : null, balance_after: g ? g.balance_after : null, staff: name(e.staff_id),
+            note: e.note || null, voided_by: e.voided_by != null ? name(e.voided_by) : null, voided_at: e.voided_at || null,
+            voidable: e.voided_at == null && (
+              (role === 'admin' || role === 'staff') && usable),
+          });
+        }
+        items.push({ period_id: e.period_id, on: D.jstDateOf(e.occurred_at), at: e.occurred_at, sort_id: e.id, src: 1, item });
+      }
+      for (const g of this.db.ledger.filter(x => x.customer_id === cid)) {
+        if (g.entry_type === 'consume' || (g.entry_type === 'void' && role === 'customer')) continue;
+        const l = this.lot(g.lot_id);
+        const item = { type: g.entry_type, delta: g.qty, lot_type: l.lot_type, reason: g.reason || null };
+        if (role !== 'customer') {
+          Object.assign(item, { ledger_id: g.id, balance_after: g.balance_after,
+            staff: name(g.staff_id) || (g.staff_id == null ? '自動' : null), note: g.note || null });
+        }
+        items.push({ period_id: g.period_id, on: g.effective_on, at: g.created_at, sort_id: g.id, src: 2, item });
+      }
+      const groups = new Map();
+      for (const i of items) {
+        const key = i.period_id == null ? 'none' : i.period_id;
+        if (!groups.has(key)) groups.set(key, []);
+        groups.get(key).push(i);
+      }
+      const out = [];
+      for (const [key, list] of groups) {
+        list.sort((a, b) => b.on.localeCompare(a.on) || b.at.localeCompare(a.at) || b.src - a.src || b.sort_id - a.sort_id);
+        const p = key === 'none' ? null : this.period(key);
+        out.push({
+          sortDate: p ? p.start_date : list.map(i => i.on).sort().slice(-1)[0], pid: p ? p.id : null,
+          period: p ? { id: p.id, start: p.start_date, end: D.add(p.end_date, -1), plan: this.plan(p.plan_id).name,
+                        status: p.status, current: p.closed_at == null } : null,
+          stats: p ? this.periodStats(cid, p.id) : null,
+          items: list.map(i => Object.assign({}, i.item, { on: i.on, at: i.at })),
+        });
+      }
+      out.sort((a, b) => b.sortDate.localeCompare(a.sortDate) || (a.pid == null ? -1 : b.pid == null ? 1 : b.pid - a.pid));
+      return out.map(({ period, stats, items: it }) => ({ period, stats, items: it }));
+    }
+
+    contractChanges(cid) {
+      const acts = ['customer_created', 'customer_updated', 'contract_started', 'plan_change_scheduled', 'plan_changed_now',
+        'renewal_day_changed', 'status_scheduled', 'status_changed_now', 'pending_cancelled', 'contract_ended'];
+      return this.db.audit.filter(a => a.customer_id === cid && acts.includes(a.action)).sort((a, b) => b.id - a.id)
+        .map(a => { const s = this.staffById(a.actor_staff_id); return { at: a.at, action: a.action, staff: s ? s.name : '自動', detail: clone(a.detail) }; });
+    }
+
+    // ---------------- ログイン ----------------
+    issueToken(kind, cid, sid) {
+      const t = newToken();
+      const now = this.realNow();
+      this.db.sessions.push({ token_hash: hashText(t), kind, customer_id: cid, staff_id: sid, created_at: now,
+        expires_at: now + (kind === 'customer' ? 365 * DAY : 30 * DAY), last_seen_at: now, revoked_at: null });
+      this.db.sessions = this.db.sessions.filter(s => s.expires_at >= now - 30 * DAY);
+      return t;
+    }
+    clientIp() {
+      const h = this.headers;
+      if (!h) return 'unknown';
+      const v = h['cf-connecting-ip'] || h['x-real-ip'] || (h['x-forwarded-for'] ? String(h['x-forwarded-for']).split(',')[0] : null);
+      return v && v.trim() ? v.trim() : 'unknown';
+    }
+    auth(token, need) {
+      if (token == null || String(token).length < 32) throw err('ログインしてください', 'auth');
+      const s = this.db.sessions.find(x => x.token_hash === hashText(token));
+      if (!s || s.revoked_at != null || s.expires_at < this.realNow()) {
+        throw err('ログインの期限が切れました。もう一度ログインしてください', 'auth');
+      }
+      let ctx;
+      if (s.kind === 'customer') ctx = { kind: 'customer', role: 'customer', customer_id: s.customer_id, staff_id: null, staff_name: null };
+      else {
+        const st = this.staffById(s.staff_id);
+        if (!st || !st.is_active) throw err('このアカウントは使えません', 'auth');
+        ctx = { kind: 'staff', role: st.role, customer_id: null, staff_id: st.id, staff_name: st.name };
+      }
+      if ((need === 'customer' && ctx.role !== 'customer') || (need === 'staff' && !['staff', 'admin'].includes(ctx.role))) {
+        throw err('この画面を使う権限がありません', 'forbidden');
+      }
+      if (need === 'admin' && ctx.role !== 'admin') throw err('この操作は管理者だけができます', 'forbidden');
+      s.last_seen_at = this.realNow();
+      return ctx;
+    }
+    hashPin(salt, pin) { return hashText(salt + ':' + pin); }
+    checkPinFormat(pin) { if (pin == null || !/^[0-9]{4,8}$/.test(pin)) throw err('暗証番号は4〜8桁の数字にしてください'); }
+    priorResult(rid) { if (rid == null) return null; const r = this.db.requests[rid]; return r ? Object.assign(clone(r.result), { duplicate: true }) : null; }
+    saveResult(rid, action, cid, sid, result) {
+      if (rid != null) {
+        if (this.db.requests[rid]) throw err('受付番号が重複しています');
+        this.db.requests[rid] = { action, customer_id: cid, staff_id: sid, result: clone(result), created_at: this.realNow() };
+      }
+      return result;
+    }
+    setupAdmin(name, pin) {
+      this.checkPinFormat(pin);
+      const n = String(name).trim();
+      let st = this.db.staff.find(s => s.name === n && s.is_active);
+      if (!st) { st = this.insertStaff(n, 'admin', true); }
+      const salt = newToken();
+      Object.assign(st, { role: 'admin', pin_salt: salt, pin_hash: this.hashPin(salt, pin), failed_count: 0, locked_until: null, updated_at: this.now() });
+      this.audit('system', null, null, 'setup_admin', null, { staff_id: st.id, name: n });
+      return st;
+    }
+    insertStaff(name, role, active) {
+      if (!name || !String(name).trim()) throw err('名前を入れてください');
+      if (active && this.db.staff.some(s => s.is_active && s.name === name)) throw new ApiError('__unique__');
+      const ts = this.now();
+      const st = { id: this.nextId('staff'), name, role, pin_salt: null, pin_hash: null, is_active: active, failed_count: 0,
+        locked_until: null, created_at: ts, updated_at: ts };
+      this.db.staff.push(st);
+      return st;
+    }
+    currentPeriodId(cid) {
+      const k = this.openContract(cid); if (!k) return null;
+      const p = this.openPeriod(k.id); return p ? p.id : null;
+    }
+
+    // v3までの記録を、時間（30/60/90分）と複数の束にまたがる消化に対応した形に直す
+    migrate() {
+      const db = this.db;
+      if ((db.version || 0) >= 4) return false;
+      for (const e of db.events) {
+        if (e.minutes == null) { e.minutes = 60; e.amount = e.kind === 'cancel_free' ? 0 : 1; }
+        if (e.ledger_id != null) { const g = db.ledger.find(x => x.id === e.ledger_id); if (g) g.event_id = e.id; }
+        if (e.void_ledger_id != null) { const g = db.ledger.find(x => x.id === e.void_ledger_id); if (g) g.event_id = e.id; }
+        delete e.ledger_id; delete e.void_ledger_id;
+      }
+      for (const g of db.ledger) if (g.event_id === undefined) g.event_id = null;
+      db.version = 4;
+      return true;
+    }
+
+    // ---------------- スナップショット（失敗した処理は丸ごと取り消す） ----------------
+    snapshot() { return JSON.stringify(this.db); }
+    restore(s) { this.db = JSON.parse(s); }
+
+    call(fn, args) {
+      const f = API[fn];
+      if (!f) throw err(`不明なAPIです：${fn}`);
+      const snap = this.snapshot();
+      this._tx = null;
+      this._tx = this.now();
+      try { return clone(f.call(this, args || {})); }
+      catch (e) {
+        this.restore(snap);
+        if (e instanceof ApiError) throw e;
+        throw err(e && e.message ? e.message : String(e));
+      } finally { this._tx = null; }
+    }
+  }
+
+  // =================================================================
+  // API（SQL の public.api_* と同じ名前・同じ引数・同じ結果）
+  // =================================================================
+  const API = {
+    api_bootstrap() {
+      const plans = this.db.plans.filter(p => p.is_active && p.kind === 'monthly')
+        .sort((a, b) => a.sort_order - b.sort_order || a.id - b.id).map(p => this.planJson(p.id));
+      return {
+        today: this.today(),
+        stores: this.db.stores.filter(s => s.is_active).sort((a, b) => a.sort_order - b.sort_order || a.id - b.id).map(s => ({ id: s.id, name: s.name })),
+        staff: this.db.staff.filter(s => s.is_active && s.pin_hash != null).sort((a, b) => a.id - b.id).map(s => ({ id: s.id, name: s.name })),
+        plans,
+      };
+    },
+
+    api_customer_login({ p_store_id, p_name, p_birth_date }) {
+      const ip = this.clientIp(), now = this.realNow();
+      const fails = this.db.attempts.filter(a => a.kind === 'customer' && a.ip === ip && !a.success && a.at > now - 600000).length;
+      if (fails >= 20) return { ok: false, message: '入力の間違いが続いたため、10分ほどたってからもう一度お試しください' };
+      if (p_store_id == null || p_birth_date == null || normName(p_name) === '') {
+        return { ok: false, message: '店舗・お名前・生年月日をすべて入れてください' };
+      }
+      const nk = normName(p_name), kk = normKana(p_name);
+      const ids = this.db.customers.filter(c => c.store_id === p_store_id && c.birth_date === p_birth_date &&
+        (c.name_key === nk || c.kana_key === kk)).map(c => c.id);
+      if (ids.length !== 1) {
+        this.db.attempts.push({ id: this.nextId('attempts'), kind: 'customer', ip, subject: String(p_store_id), success: false, at: now });
+        if (ids.length > 1) return { ok: false, message: '同じお名前・生年月日の方が複数いらっしゃいます。店舗スタッフにお声がけください' };
+        return { ok: false, message: '一致するお客様が見つかりませんでした。店舗・お名前・生年月日をご確認ください' };
+      }
+      this.db.attempts.push({ id: this.nextId('attempts'), kind: 'customer', ip, subject: String(p_store_id), success: true, at: now });
+      return { ok: true, role: 'customer', token: this.issueToken('customer', ids[0], null) };
+    },
+
+    api_staff_login({ p_staff_id, p_pin }) {
+      const ip = this.clientIp(), now = this.realNow();
+      const fails = this.db.attempts.filter(a => a.kind === 'staff' && a.ip === ip && !a.success && a.at > now - 600000).length;
+      if (fails >= 30) return { ok: false, message: '間違いが続いたため、10分ほどたってからもう一度お試しください' };
+      const st = this.db.staff.find(s => s.id === p_staff_id && s.is_active);
+      if (!st || st.pin_hash == null) {
+        this.db.attempts.push({ id: this.nextId('attempts'), kind: 'staff', ip, subject: p_staff_id == null ? '' : String(p_staff_id), success: false, at: now });
+        return { ok: false, message: '名前か暗証番号が違います' };
+      }
+      if (st.failed_count >= 10) return { ok: false, message: 'ロックされています。管理者に解除を頼んでください' };
+      if (st.locked_until != null && st.locked_until > now) {
+        return { ok: false, message: 'ロック中です。あと' + Math.ceil((st.locked_until - now) / 60000) + '分待ってください' };
+      }
+      if (p_pin == null || this.hashPin(st.pin_salt, p_pin) !== st.pin_hash) {
+        const n = st.failed_count + 1;
+        st.failed_count = n;
+        if (n >= 5) st.locked_until = now + 30 * 60000;
+        this.db.attempts.push({ id: this.nextId('attempts'), kind: 'staff', ip, subject: String(st.id), success: false, at: now });
+        return { ok: false, message: n >= 10 ? 'ロックしました。管理者に解除を頼んでください'
+          : n >= 5 ? '5回続けて間違えたため、30分ロックしました' : `名前か暗証番号が違います（あと${5 - n}回でロック）` };
+      }
+      st.failed_count = 0; st.locked_until = null;
+      this.db.attempts.push({ id: this.nextId('attempts'), kind: 'staff', ip, subject: String(st.id), success: true, at: now });
+      return { ok: true, role: st.role, token: this.issueToken('staff', null, st.id), staff: { id: st.id, name: st.name, role: st.role } };
+    },
+
+    api_logout({ p_token }) {
+      const h = hashText(p_token == null ? '' : p_token);
+      for (const s of this.db.sessions) if (s.token_hash === h && s.revoked_at == null) s.revoked_at = this.realNow();
+      return { ok: true };
+    },
+
+    api_me({ p_token }) {
+      const ctx = this.auth(p_token, 'any');
+      if (ctx.kind === 'customer') return { role: 'customer', name: this.cust(ctx.customer_id).name };
+      return { role: ctx.role, staff: { id: ctx.staff_id, name: ctx.staff_name, role: ctx.role } };
+    },
+
+    api_customer_home({ p_token }) {
+      const ctx = this.auth(p_token, 'customer');
+      this.ensureCurrent(ctx.customer_id);
+      return this.customerSummary(ctx.customer_id, false);
+    },
+
+    api_customer_history({ p_token }) {
+      const ctx = this.auth(p_token, 'customer');
+      this.ensureCurrent(ctx.customer_id);
+      return { periods: this.history(ctx.customer_id, 'customer', null) };
+    },
+
+    api_search_customers({ p_token, p_store_id = null, p_query = '' }) {
+      this.auth(p_token, 'staff');
+      const q = normName(p_query), qk = normKana(p_query);
+      const hits = this.db.customers.filter(c => (p_store_id == null || c.store_id === p_store_id) &&
+        (q === '' || c.name_key.includes(q) || c.kana_key.includes(qk)));
+      hits.sort((a, b) => (a.kana_key < b.kana_key ? -1 : a.kana_key > b.kana_key ? 1 : a.id - b.id));
+      const ids = hits.slice(0, 100).map(c => c.id);
+      const t = this.today();
+      const due = new Set();
+      for (const id of ids) {
+        const k = this.openContract(id); if (!k) continue;
+        const p = this.openPeriod(k.id); if (p && p.end_date <= t) due.add(id);
+      }
+      for (const id of [...due].sort((a, b) => a - b)) this.ensureCurrent(id);
+      return {
+        customers: ids.map(id => {
+          const c = this.cust(id), k = this.openContract(id), p = k ? this.openPeriod(k.id) : null;
+          return { id: c.id, name: c.name, name_kana: c.name_kana, store: this.db.stores.find(s => s.id === c.store_id).name,
+            plan: p ? this.plan(p.plan_id).name : null, status: p ? p.status : 'ended',
+            available: this.totalBalance(id), next_renewal: p ? p.end_date : null };
+        }),
+      };
+    },
+
+    api_customer_detail({ p_token, p_customer_id }) {
+      const ctx = this.auth(p_token, 'staff');
+      this.ensureCurrent(p_customer_id);
+      return Object.assign(this.customerSummary(p_customer_id, true), {
+        history: this.history(p_customer_id, ctx.role, ctx.staff_id),
+        changes: this.contractChanges(p_customer_id),
+        viewer: { role: ctx.role, staff_id: ctx.staff_id },
+      });
+    },
+
+    // セッション登録：p_minutes は 30・60・90（60分＝1回）
+    api_register_session({ p_token, p_customer_id, p_kind, p_minutes = 60, p_note = null, p_request_id = null }) {
+      const ctx = this.auth(p_token, 'staff');
+      if (p_kind == null || !['session', 'cancel_consume', 'cancel_free'].includes(p_kind)) throw err('登録の種類を選んでください');
+      const minutes = p_minutes == null ? 60 : Number(p_minutes);
+      if (![30, 60, 90].includes(minutes)) throw err('時間は30分・60分・90分から選んでください');
+      this.ensureCurrent(p_customer_id);
+      const prev = this.priorResult(p_request_id);
+      if (prev) return prev;
+      const periodId = this.currentPeriodId(p_customer_id);
+      const before = this.totalBalance(p_customer_id);
+      const uses = p_kind !== 'cancel_free';
+      const amount = uses ? minutes / 60 : 0;
+      let used = [];
+      let plan = [];
+      if (uses) {
+        const r = this.consumePlan(p_customer_id, amount);
+        if (r.short > 0) {
+          throw err(`チケットが足りません（残り${fmtN(before)}回、必要${fmtN(amount)}回）。管理者にチケットの付与を頼んでください`);
+        }
+        plan = r.plan;
+        used = plan.map(x => ({ lot_type: x.lot_type, qty: x.qty }));
+      }
+      const eid = this.nextId('events');
+      for (const x of plan) this.ledgerAdd(p_customer_id, x.lot_id, 'consume', -x.qty, ctx.staff_id, p_kind, p_note, periodId, null, null, eid);
+      this.db.events.push({ id: eid, customer_id: p_customer_id, period_id: periodId, kind: p_kind, minutes, amount,
+        occurred_at: this.now(), staff_id: ctx.staff_id, note: trimOrNull(p_note),
+        voided_at: null, voided_by: null, void_reason: null });
+      const after = this.totalBalance(p_customer_id);
+      this.audit(ctx.role, ctx.staff_id, p_customer_id, 'session_' + p_kind, after - before,
+        { event_id: eid, minutes, used, before, after, note: trimOrNull(p_note), request_id: p_request_id });
+      return this.saveResult(p_request_id, 'register_session', p_customer_id, ctx.staff_id,
+        { ok: true, event_id: eid, kind: p_kind, minutes, amount, used, before, after });
+    },
+
+    // 登録前の確認：どの束から何回使うか（記録はしない）
+    api_preview_session({ p_token, p_customer_id, p_minutes = 60 }) {
+      this.auth(p_token, 'staff');
+      this.ensureCurrent(p_customer_id);
+      const amount = Number(p_minutes) / 60;
+      const { plan, short } = this.consumePlan(p_customer_id, amount);
+      return { amount, before: this.totalBalance(p_customer_id), short, used: plan.map(x => ({ lot_type: x.lot_type, qty: x.qty })) };
+    },
+
+    api_void_event({ p_token, p_event_id, p_reason, p_request_id = null }) {
+      const ctx = this.auth(p_token, 'staff');
+      if (trimOrNull(p_reason) == null) throw err('取消の理由を選んでください');
+      let e = this.db.events.find(x => x.id === p_event_id);
+      if (!e) throw err('記録が見つかりません');
+      this.ensureCurrent(e.customer_id);
+      const prev = this.priorResult(p_request_id);
+      if (prev) return prev;
+      e = this.db.events.find(x => x.id === p_event_id);
+      if (e.voided_at != null) throw err('この記録はすでに取り消されています');
+      const before = this.totalBalance(e.customer_id);
+      const gs = this.db.ledger.filter(g => g.event_id === e.id && g.entry_type === 'consume');
+      if (gs.some(g => !this.lotUsableOn(g.lot_id, this.today()))) {
+        throw err('このチケットは有効期間が終わっているため取り消せません。管理者が回数を調整してください');
+      }
+      for (const g of gs) this.ledgerAdd(e.customer_id, g.lot_id, 'void', -g.qty, ctx.staff_id, 'void', p_reason, e.period_id, null, null, e.id);
+      Object.assign(e, { voided_at: this.now(), voided_by: ctx.staff_id, void_reason: String(p_reason).trim() });
+      const after = this.totalBalance(e.customer_id);
+      this.audit(ctx.role, ctx.staff_id, e.customer_id, 'session_voided', after - before,
+        { event_id: e.id, kind: e.kind, minutes: e.minutes, reason: String(p_reason).trim(), before, after });
+      return this.saveResult(p_request_id, 'void_event', e.customer_id, ctx.staff_id, { ok: true, event_id: e.id, before, after });
+    },
+
+    api_create_customer({ p_token, p_data }) {
+      const ctx = this.auth(p_token, 'staff');
+      const d = p_data || {};
+      const storeId = intOrNull(d.store_id);
+      if (!this.db.stores.some(s => s.id === storeId && s.is_active)) throw err('店舗を選んでください');
+      if (normName(d.name) === '') throw err('お名前を入れてください');
+      if (normName(d.name_kana) === '') throw err('ふりがなを入れてください');
+      const birth = trimOrNull(str(d.birth_date));
+      if (birth == null || birth >= this.today()) throw err('生年月日を選んでください');
+      const start = trimOrNull(str(d.start_date)) || this.today();
+      const day = intOrNull(d.renewal_day) != null ? intOrNull(d.renewal_day) : +start.slice(8, 10);
+      const plan = this.db.plans.find(p => p.id === intOrNull(d.plan_id) && p.kind === 'monthly' && p.is_active);
+      if (!plan) throw err('プランを選んでください');
+      const nk = normName(d.name), kk = normKana(d.name_kana);
+      if (this.db.customers.some(c => c.store_id === storeId && c.name_key === nk && c.birth_date === birth)) {
+        throw err('同じ店舗に、同じお名前・生年月日の方がすでに登録されています');
+      }
+      const ts = this.now();
+      const id = this.nextId('customers');
+      this.db.customers.push({ id, store_id: storeId, name: String(d.name).trim(), name_kana: String(d.name_kana).trim(),
+        name_key: nk, kana_key: kk, birth_date: birth, note: trimOrNull(d.note), created_at: ts, created_by: ctx.staff_id, updated_at: ts });
+      const batch = uuid();
+      this.startContract(id, plan.id, start, day, ctx.staff_id, batch);
+      const periodId = this.currentPeriodId(id);
+      const mig = d.migrate || {};
+      const mr = numOrNull(mig.monthly_remaining);
+      const cr = numOrNull(mig.carryover) || 0;
+      const ur = numOrNull(mig.unlimited) || 0;
+      if (mr != null && (!isHalf(mr) || mr < 0 || mr > 99)) throw err('当月分の残りは0〜99（0.5回単位）で入れてください');
+      if (!isHalf(cr) || !isHalf(ur) || cr < 0 || cr > 99 || ur < 0 || ur > 99) throw err('残数は0〜99（0.5回単位）で入れてください');
+      if (mr != null && mr !== plan.sessions) {
+        const lot = this.db.lots.find(l => l.period_id === periodId && l.lot_type === 'monthly');
+        if (!lot) {
+          const lid = this.newLot(id, 'monthly', periodId, start, null, null, ctx.staff_id);
+          this.ledgerAdd(id, lid, 'grant', mr, ctx.staff_id, 'migration', '移行時の当月分', periodId, batch);
+        } else {
+          this.ledgerAdd(id, lot.id, 'adjust', mr - plan.sessions, ctx.staff_id, 'migration', '移行前に利用済みの分', periodId, batch);
+        }
+      }
+      if (cr > 0) {
+        const lid = this.newLot(id, 'carryover', periodId, start, null, null, ctx.staff_id);
+        this.ledgerAdd(id, lid, 'grant', cr, ctx.staff_id, 'migration', '移行時の前月繰越', periodId, batch);
+      }
+      if (ur > 0) {
+        const lid = this.newLot(id, 'unlimited', null, this.today(), null, null, ctx.staff_id);
+        this.ledgerAdd(id, lid, 'grant', ur, ctx.staff_id, 'migration', '移行時の無期限チケット', periodId, batch);
+      }
+      this.audit(ctx.role, ctx.staff_id, id, 'customer_created', this.totalBalance(id),
+        { name: String(d.name).trim(), plan: plan.name, start_date: start, renewal_day: day, migrate: clone(mig) });
+      return { ok: true, customer_id: id };
+    },
+
+    api_update_customer({ p_token, p_customer_id, p_data }) {
+      const ctx = this.auth(p_token, 'staff');
+      const o = this.cust(p_customer_id);
+      if (!o) throw err('お客様が見つかりません');
+      const d = p_data || {}, n = Object.assign({}, o);
+      if ('store_id' in d) {
+        if (!this.db.stores.some(s => s.id === intOrNull(d.store_id))) throw err('店舗を選んでください');
+        n.store_id = intOrNull(d.store_id);
+      }
+      if ('name' in d) { if (normName(d.name) === '') throw err('お名前を入れてください'); n.name = String(d.name).trim(); n.name_key = normName(n.name); }
+      if ('name_kana' in d) { if (normName(d.name_kana) === '') throw err('ふりがなを入れてください'); n.name_kana = String(d.name_kana).trim(); n.kana_key = normKana(n.name_kana); }
+      if ('birth_date' in d) {
+        n.birth_date = trimOrNull(str(d.birth_date));
+        if (n.birth_date == null || n.birth_date >= this.today()) throw err('生年月日を選んでください');
+      }
+      if ('note' in d) n.note = trimOrNull(d.note);
+      if (this.db.customers.some(c => c.id !== o.id && c.store_id === n.store_id && c.name_key === n.name_key && c.birth_date === n.birth_date)) {
+        throw err('同じ店舗に、同じお名前・生年月日の方がすでに登録されています');
+      }
+      const before = { store_id: o.store_id, name: o.name, name_kana: o.name_kana, birth_date: o.birth_date, note: o.note };
+      Object.assign(o, { store_id: n.store_id, name: n.name, name_key: n.name_key, name_kana: n.name_kana, kana_key: n.kana_key,
+        birth_date: n.birth_date, note: n.note, updated_at: this.now() });
+      this.audit(ctx.role, ctx.staff_id, o.id, 'customer_updated', null, { before,
+        after: { store_id: n.store_id, name: n.name, name_kana: n.name_kana, birth_date: n.birth_date, note: n.note } });
+      return { ok: true };
+    },
+
+    api_start_contract({ p_token, p_customer_id, p_plan_id, p_start_date = null, p_renewal_day = null }) {
+      const ctx = this.auth(p_token, 'staff');
+      this.ensureCurrent(p_customer_id);
+      const start = p_start_date || this.today();
+      const day = p_renewal_day != null ? p_renewal_day : +start.slice(8, 10);
+      const k = this.startContract(p_customer_id, p_plan_id, start, day, ctx.staff_id, uuid());
+      const plan = this.plan(p_plan_id);
+      this.audit(ctx.role, ctx.staff_id, p_customer_id, 'contract_started', null,
+        { plan: plan ? plan.name : null, start_date: start, renewal_day: day });
+      return { ok: true, contract_id: k };
+    },
+
+    api_change_plan({ p_token, p_customer_id, p_plan_id, p_timing = 'next', p_reason = null }) {
+      const ctx = this.auth(p_token, 'staff');
+      this.ensureCurrent(p_customer_id);
+      const c = this.openContract(p_customer_id);
+      if (!c) throw err('契約中の契約がありません');
+      const p = this.openPeriod(c.id);
+      const oldPlan = this.plan(p.plan_id);
+      const np = this.db.plans.find(x => x.id === p_plan_id && x.kind === 'monthly' && x.is_active);
+      if (!np) throw err('プランを選んでください');
+      const timing = p_timing == null ? 'next' : p_timing;
+      if (timing === 'next') {
+        c.pending_plan_id = np.id === p.plan_id ? null : np.id;
+        c.updated_at = this.now();
+        this.audit(ctx.role, ctx.staff_id, p_customer_id, 'plan_change_scheduled', null,
+          { from: oldPlan.name, to: np.name, effective: p.end_date, reason: p_reason });
+        return { ok: true, effective: p.end_date };
+      }
+      if (timing === 'now') {
+        if (np.id === p.plan_id) throw err('今と同じプランです');
+        const granted = p.sessions_granted;
+        Object.assign(p, { plan_id: np.id, carryover_max: np.carryover_max, sessions_granted: p.status === 'active' ? np.sessions : 0 });
+        let delta = 0;
+        if (p.status === 'active') {
+          const lot = this.db.lots.find(l => l.period_id === p.id && l.lot_type === 'monthly');
+          if (!lot) {
+            if (np.sessions > 0) {
+              const lid = this.newLot(p_customer_id, 'monthly', p.id, this.today(), null, null, ctx.staff_id);
+              this.ledgerAdd(p_customer_id, lid, 'grant', np.sessions, ctx.staff_id, 'plan_change', p_reason, p.id);
+              delta = np.sessions;
+            }
+          } else {
+            const bal = this.lotBalance(lot.id);
+            delta = Math.max(np.sessions - granted, -bal);
+            if (delta !== 0) this.ledgerAdd(p_customer_id, lot.id, 'plan_change', delta, ctx.staff_id, 'plan_change', p_reason, p.id);
+          }
+        }
+        c.pending_plan_id = null; c.updated_at = this.now();
+        this.audit(ctx.role, ctx.staff_id, p_customer_id, 'plan_changed_now', delta, { from: oldPlan.name, to: np.name, delta, reason: p_reason });
+        return { ok: true, delta };
+      }
+      throw err('変更のタイミングを選んでください');
+    },
+
+    api_change_renewal_day({ p_token, p_customer_id, p_day, p_reason = null }) {
+      const ctx = this.auth(p_token, 'staff');
+      if (p_day == null || p_day < 1 || p_day > 31) throw err('更新日は1〜31日から選んでください');
+      this.ensureCurrent(p_customer_id);
+      const c = this.openContract(p_customer_id);
+      if (!c) throw err('契約中の契約がありません');
+      if (c.renewal_day === p_day) throw err('今と同じ更新日です');
+      const p = this.openPeriod(c.id);
+      const before = p.end_date, nd = D.renewalOnOrAfter(p.end_date, p_day);
+      p.end_date = nd;
+      const fromDay = c.renewal_day;
+      c.renewal_day = p_day; c.updated_at = this.now();
+      this.audit(ctx.role, ctx.staff_id, p_customer_id, 'renewal_day_changed', null,
+        { from_day: fromDay, to_day: p_day, next_renewal_before: before, next_renewal_after: nd, reason: p_reason });
+      return { ok: true, next_renewal: nd };
+    },
+
+    api_change_status({ p_token, p_customer_id, p_action, p_timing = 'next', p_reason = null }) {
+      const ctx = this.auth(p_token, 'staff');
+      this.ensureCurrent(p_customer_id);
+      const c = this.openContract(p_customer_id);
+      if (!c) throw err('契約中の契約がありません');
+      const p = this.openPeriod(c.id);
+      const timing = p_timing == null ? 'next' : p_timing;
+      if (p_action === 'cancel_pending') {
+        const pp = c.pending_plan_id != null ? this.plan(c.pending_plan_id).name : null, ps = c.pending_status || null;
+        c.pending_plan_id = null; c.pending_status = null; c.updated_at = this.now();
+        this.audit(ctx.role, ctx.staff_id, p_customer_id, 'pending_cancelled', null, { plan: pp, status: ps });
+        return { ok: true };
+      }
+      if (p_action === 'pause') {
+        if (p.status === 'paused' && c.pending_status == null) throw err('すでに休会中です');
+        c.pending_status = p.status === 'paused' ? null : 'paused'; c.updated_at = this.now();
+        this.audit(ctx.role, ctx.staff_id, p_customer_id, 'status_scheduled', null, { status: 'paused', effective: p.end_date, reason: p_reason });
+        return { ok: true, effective: p.end_date };
+      }
+      if (p_action === 'resume') {
+        if (p.status === 'active') {
+          if (['paused', 'ended'].includes(c.pending_status)) {
+            const ps = c.pending_status;
+            c.pending_status = null; c.updated_at = this.now();
+            this.audit(ctx.role, ctx.staff_id, p_customer_id, 'pending_cancelled', null, { status: ps, reason: p_reason });
+            return { ok: true };
+          }
+          throw err('休会中ではありません');
+        }
+        if (timing === 'next') {
+          c.pending_status = 'active'; c.updated_at = this.now();
+          this.audit(ctx.role, ctx.staff_id, p_customer_id, 'status_scheduled', null, { status: 'active', effective: p.end_date, reason: p_reason });
+          return { ok: true, effective: p.end_date };
+        }
+        const plan = this.plan(c.pending_plan_id != null ? c.pending_plan_id : p.plan_id);
+        Object.assign(p, { status: 'active', plan_id: plan.id, carryover_max: plan.carryover_max, sessions_granted: plan.sessions });
+        if (plan.sessions > 0) {
+          const lot = this.db.lots.find(l => l.period_id === p.id && l.lot_type === 'monthly');
+          const batch = uuid();
+          if (!lot) {
+            const lid = this.newLot(p_customer_id, 'monthly', p.id, this.today(), null, null, ctx.staff_id);
+            this.ledgerAdd(p_customer_id, lid, 'grant', plan.sessions, ctx.staff_id, 'resume', p_reason, p.id, batch);
+          } else {
+            this.ledgerAdd(p_customer_id, lot.id, 'adjust', plan.sessions, ctx.staff_id, 'resume', p_reason, p.id, batch);
+          }
+        }
+        c.pending_status = null; c.pending_plan_id = null; c.updated_at = this.now();
+        this.audit(ctx.role, ctx.staff_id, p_customer_id, 'status_changed_now', plan.sessions,
+          { status: 'active', plan: plan.name, granted: plan.sessions, reason: p_reason });
+        return { ok: true };
+      }
+      if (p_action === 'withdraw') {
+        if (timing === 'next') {
+          c.pending_status = 'ended'; c.updated_at = this.now();
+          this.audit(ctx.role, ctx.staff_id, p_customer_id, 'status_scheduled', null, { status: 'ended', effective: p.end_date, reason: p_reason });
+          return { ok: true, effective: p.end_date };
+        }
+        let exp = 0;
+        const batch = uuid();
+        for (const l of this.db.lots.filter(x => x.period_id === p.id).sort((a, b) => a.id - b.id)) {
+          const b = this.lotBalance(l.id);
+          if (b > 0) { this.ledgerAdd(p_customer_id, l.id, 'expire', -b, ctx.staff_id, 'withdrawn', p_reason, p.id, batch); exp += b; }
+        }
+        const ts = this.now();
+        for (const l of this.db.lots) if (l.period_id === p.id) l.closed_at = ts;
+        p.closed_at = ts;
+        Object.assign(c, { ended_on: this.today(), pending_plan_id: null, pending_status: null, updated_at: ts });
+        this.audit(ctx.role, ctx.staff_id, p_customer_id, 'status_changed_now', -exp, { status: 'ended', expired: exp, reason: p_reason });
+        return { ok: true, expired: exp };
+      }
+      throw err('操作を選んでください');
+    },
+
+    api_adjust_tickets({ p_token, p_customer_id, p_lot_type, p_qty, p_reason, p_note = null, p_request_id = null }) {
+      const ctx = this.auth(p_token, 'staff');
+      if (p_lot_type == null || !['monthly', 'carryover', 'unlimited'].includes(p_lot_type)) throw err('チケットの種類を選んでください');
+      if (p_qty == null || p_qty === 0 || !isHalf(p_qty) || Math.abs(p_qty) > 20) throw err('増減は-20〜+20（0.5回単位）で選んでください');
+      if (trimOrNull(p_reason) == null) throw err('理由を選んでください');
+      this.ensureCurrent(p_customer_id);
+      const prev = this.priorResult(p_request_id);
+      if (prev) return prev;
+      const periodId = this.currentPeriodId(p_customer_id);
+      const before = this.totalBalance(p_customer_id);
+      if (p_lot_type === 'unlimited') {
+        if (p_qty > 0) {
+          const lid = this.newLot(p_customer_id, 'unlimited', null, this.today(), null, null, ctx.staff_id);
+          this.ledgerAdd(p_customer_id, lid, 'grant', p_qty, ctx.staff_id, p_reason, p_note, periodId);
+        } else {
+          if (this.balances(p_customer_id).unlimited < -p_qty) throw err('無期限チケットの残りより多くは減らせません');
+          let left = -p_qty;
+          for (const v of this.vLots(p_customer_id).filter(x => x.lot_type === 'unlimited' && x.closed_at == null && x.balance > 0).sort((a, b) => a.id - b.id)) {
+            if (left === 0) break;
+            const take = Math.min(left, v.balance);
+            this.ledgerAdd(p_customer_id, v.id, 'adjust', -take, ctx.staff_id, p_reason, p_note, periodId);
+            left -= take;
+          }
+        }
+      } else {
+        if (periodId == null) throw err('契約中の期間がないため、当月分・前月繰越は調整できません');
+        const lot = this.db.lots.find(l => l.period_id === periodId && l.lot_type === p_lot_type);
+        if (!lot) {
+          if (p_qty < 0) throw err('減らせる回数がありません');
+          const lid = this.newLot(p_customer_id, p_lot_type, periodId, this.period(periodId).start_date, null, null, ctx.staff_id);
+          this.ledgerAdd(p_customer_id, lid, 'grant', p_qty, ctx.staff_id, p_reason, p_note, periodId);
+        } else {
+          if (this.lotBalance(lot.id) + p_qty < 0) throw err('残りの回数より多くは減らせません');
+          this.ledgerAdd(p_customer_id, lot.id, 'adjust', p_qty, ctx.staff_id, p_reason, p_note, periodId);
+        }
+      }
+      const after = this.totalBalance(p_customer_id);
+      this.audit(ctx.role, ctx.staff_id, p_customer_id, 'tickets_adjusted', p_qty,
+        { lot_type: p_lot_type, qty: p_qty, reason: p_reason, note: trimOrNull(p_note), before, after });
+      return this.saveResult(p_request_id, 'adjust_tickets', p_customer_id, ctx.staff_id, { ok: true, before, after });
+    },
+
+    api_list_staff({ p_token }) {
+      this.auth(p_token, 'admin');
+      const now = this.realNow();
+      return {
+        staff: this.db.staff.slice().sort((a, b) => (b.is_active - a.is_active) || a.id - b.id).map(s => ({
+          id: s.id, name: s.name, role: s.role, is_active: s.is_active, has_pin: s.pin_hash != null,
+          locked: s.failed_count >= 10 || (s.locked_until != null && s.locked_until > now), failed_count: s.failed_count,
+        })),
+      };
+    },
+
+    api_save_staff({ p_token, p_data }) {
+      const ctx = this.auth(p_token, 'admin');
+      const d = p_data || {};
+      const id = intOrNull(d.id), name = String(d.name == null ? '' : d.name).trim(), role = d.role == null ? 'staff' : d.role;
+      const active = d.is_active == null ? true : (d.is_active === true || d.is_active === 'true');
+      if (name === '') throw err('名前を入れてください');
+      if (!['staff', 'admin'].includes(role)) throw err('権限を選んでください');
+      if (id == null) {
+        if (active && this.db.staff.some(s => s.is_active && s.name === name)) throw err('同じ名前の従業員がすでにいます');
+        const st = this.insertStaff(name, role, active);
+        this.audit(ctx.role, ctx.staff_id, null, 'staff_created', null, { staff_id: st.id, name, role });
+        return { ok: true, id: st.id };
+      }
+      const o = this.staffById(id);
+      if (!o) throw err('従業員が見つかりません');
+      if (id === ctx.staff_id && (role !== 'admin' || !active)) throw err('自分の権限を外したり、無効にしたりはできません');
+      if (o.role === 'admin' && (role !== 'admin' || !active) && !this.db.staff.some(s => s.role === 'admin' && s.is_active && s.id !== id)) {
+        throw err('管理者が1人もいなくなるため変更できません');
+      }
+      if (active && this.db.staff.some(s => s.id !== id && s.is_active && s.name === name)) throw err('同じ名前の従業員がすでにいます');
+      const before = { name: o.name, role: o.role, is_active: o.is_active };
+      Object.assign(o, { name, role, is_active: active, updated_at: this.now() });
+      if (!active) for (const s of this.db.sessions) if (s.staff_id === id && s.revoked_at == null) s.revoked_at = this.realNow();
+      this.audit(ctx.role, ctx.staff_id, null, 'staff_updated', null, { staff_id: id, before, after: { name, role, is_active: active } });
+      return { ok: true, id };
+    },
+
+    api_set_staff_pin({ p_token, p_staff_id, p_pin }) {
+      const ctx = this.auth(p_token, 'admin');
+      this.checkPinFormat(p_pin);
+      const st = this.db.staff.find(s => s.id === p_staff_id && s.is_active);
+      if (!st) throw err('従業員が見つかりません');
+      const salt = newToken();
+      Object.assign(st, { pin_salt: salt, pin_hash: this.hashPin(salt, p_pin), failed_count: 0, locked_until: null, updated_at: this.now() });
+      if (p_staff_id !== ctx.staff_id) for (const s of this.db.sessions) if (s.staff_id === p_staff_id && s.revoked_at == null) s.revoked_at = this.realNow();
+      this.audit(ctx.role, ctx.staff_id, null, 'staff_pin_set', null, { staff_id: p_staff_id, name: st.name });
+      return { ok: true };
+    },
+
+    api_save_store({ p_token, p_data }) {
+      const ctx = this.auth(p_token, 'admin');
+      const d = p_data || {};
+      let id = intOrNull(d.id);
+      const name = String(d.name == null ? '' : d.name).trim();
+      const ord = intOrNull(d.sort_order) != null ? intOrNull(d.sort_order) : 0;
+      const active = d.is_active == null ? true : (d.is_active === true || d.is_active === 'true');
+      if (name === '') throw err('店舗名を入れてください');
+      if (this.db.stores.some(s => s.name === name && s.id !== id)) throw err('同じ名前の店舗がすでにあります');
+      if (id == null) {
+        id = this.nextId('stores');
+        const so = intOrNull(d.sort_order) != null ? intOrNull(d.sort_order) : (this.db.stores.reduce((m, s) => Math.max(m, s.sort_order), 0) + 10);
+        this.db.stores.push({ id, name, sort_order: so, is_active: active, created_at: this.now() });
+      } else {
+        const s = this.db.stores.find(x => x.id === id);
+        if (!s) throw err('店舗が見つかりません');
+        Object.assign(s, { name, sort_order: ord, is_active: active });
+      }
+      this.audit(ctx.role, ctx.staff_id, null, 'store_saved', null, { store_id: id, name, is_active: active });
+      return { ok: true, id };
+    },
+
+    api_list_stores({ p_token }) {
+      this.auth(p_token, 'admin');
+      return {
+        stores: this.db.stores.slice().sort((a, b) => a.sort_order - b.sort_order || a.id - b.id).map(s => ({
+          id: s.id, name: s.name, sort_order: s.sort_order, is_active: s.is_active,
+          customers: this.db.customers.filter(c => c.store_id === s.id).length,
+        })),
+      };
+    },
+
+    api_audit_log({ p_token, p_filters = {} }) {
+      this.auth(p_token, 'staff');
+      const f = p_filters || {};
+      const limit = Math.min(intOrNull(f.limit) != null ? intOrNull(f.limit) : 200, 1000);
+      const cid = intOrNull(f.customer_id), sid = intOrNull(f.staff_id), act = trimOrNull(f.action);
+      const rows = this.db.audit.filter(a => (cid == null || a.customer_id === cid) && (sid == null || a.actor_staff_id === sid) &&
+        (act == null || a.action.startsWith(act))).sort((a, b) => b.id - a.id).slice(0, limit);
+      return {
+        logs: rows.map(a => {
+          const s = this.staffById(a.actor_staff_id), c = a.customer_id != null ? this.cust(a.customer_id) : null;
+          const st = c ? this.db.stores.find(x => x.id === c.store_id) : null;
+          return { id: a.id, at: a.at, actor: s ? s.name : (a.actor_role === 'system' ? '自動' : a.actor_role), actor_role: a.actor_role,
+            customer_id: a.customer_id, customer: c ? c.name : null, store: st ? st.name : null, action: a.action,
+            qty: a.qty_delta, detail: clone(a.detail) };
+        }),
+      };
+    },
+
+    api_run_renewals({ p_token }) {
+      const ctx = this.auth(p_token, 'admin');
+      const n = this.runDueRenewals();
+      this.audit(ctx.role, ctx.staff_id, null, 'renewals_run', null, { processed: n });
+      return { ok: true, processed: n };
+    },
+  };
+
+  // setup.sql の初期データと同じ（プラン・直営18店）
+  function seedBase(e) {
+    [['m2', '月2回', 2, 0, 17600, 10], ['m4', '月4回', 4, 1, 33000, 20], ['m6', '月6回', 6, 1, 47850, 30],
+     ['m8', '月8回', 8, 2, 61600, 40], ['m12', '月12回', 12, 3, 89100, 50]].forEach(([code, name, sessions, cm, price, so]) => {
+      e.db.plans.push({ id: e.nextId('plans'), code, name, kind: 'monthly', sessions, carryover_max: cm, price_yen: price,
+        validity_months: null, sort_order: so, is_active: true });
+    });
+    ['表参道', '東長崎', '旗の台', '曳舟', '京成小岩', '大山', '目白', '駒込', '鷺ノ宮', '千川ANNEX', '西馬込', '武蔵関', '千川',
+     '西落合', '成増', '平和台', '牛込柳町', '桜台'].forEach((name, i) => {
+      e.db.stores.push({ id: e.nextId('stores'), name, sort_order: (i + 1) * 10, is_active: true, created_at: e.now() });
+    });
+  }
+
+  G.CMEngine = { Engine, ApiError, D, normName, normKana, uuid, seedBase, LOT_RANK, fmtN };
+})(typeof globalThis !== 'undefined' ? globalThis : window);
+
+</script>
+<script>
+/* CHART MEMBER 画面 */
+(function () {
+  'use strict';
+  const CFG = window.CHART_MEMBER_CONFIG || {};
+  const LIVE = !!(String(CFG.SUPABASE_URL || '').trim() && String(CFG.SUPABASE_KEY || '').trim());
+  const { D, uuid } = window.CMUtil;
+
+  class AppError extends Error { constructor(m, hint) { super(m); this.hint = hint || null; } }
+  const wait = ms => new Promise(r => setTimeout(r, ms));
+
+  // ------------------------------------------------------------------
+  // 端末に覚えておくもの（前回の店舗・名前・ログイン）
+  // ------------------------------------------------------------------
+  const keep = {
+    get(k) { try { return localStorage.getItem('chart_member_' + k); } catch (e) { return null; } },
+    set(k, v) {
+      try { if (v == null) localStorage.removeItem('chart_member_' + k); else localStorage.setItem('chart_member_' + k, String(v)); }
+      catch (e) { /* 保存できない環境でもそのまま動く */ }
+    },
+  };
+
+  // ------------------------------------------------------------------
+  // つなぎ先（Supabase）
+  // ------------------------------------------------------------------
+  function makeLive() {
+    const base = String(CFG.SUPABASE_URL).trim().replace(/\/+$/, '');
+    const key = String(CFG.SUPABASE_KEY).trim();
+    const headers = { 'Content-Type': 'application/json', apikey: key };
+    if (!key.startsWith('sb_')) headers.Authorization = 'Bearer ' + key;   // 旧形式の anon key
+    return {
+      async call(fn, args) {
+        let res;
+        try {
+          res = await fetch(`${base}/rest/v1/rpc/${fn}`, { method: 'POST', headers, body: JSON.stringify(args || {}) });
+        } catch (e) {
+          throw new AppError('通信できませんでした。電波の良いところで、もう一度お試しください', 'network');
+        }
+        const text = await res.text();
+        let data = null;
+        try { data = text ? JSON.parse(text) : null; } catch (e) { data = null; }
+        if (!res.ok) throw new AppError((data && data.message) || `エラーが起きました（${res.status}）`, data && data.hint);
+        return data;
+      },
+    };
+  }
+  // 接続先が空のとき：このHTMLだけで動く（記録はこの端末のブラウザに保存）
+  const STAFF_NAMES = ['志水秀吾', '島田陸', '吉原陸', '飯泉友裕', '安部華那', '植田知成', '和納匠汰', '長谷川昌亮',
+    '西山千里', '細谷隼', '北航世', '飯田晴智', '髙橋詩織', '内嶺月壱', '山内陽仁', '小野川清',
+    '美山大河', '伊藤匠平', '渋谷佑', '新裕真', '佐藤圭佑', '川瀬駿平', '松尾憲'];
+  const DB_KEY = 'chart_member_db';
+  const COMMON_PIN = '0311';       // 従業員の共通の暗証番号
+  const MASTER_PIN = '03110505';   // 管理者（マスターキー）
+  const ADMINS = ['飯泉友裕', '志水秀吾', '細谷隼'];
+  function makeLocal() {
+    const CM = window.CMEngine;
+    const E = new CM.Engine();
+    let saved = null;
+    try { saved = localStorage.getItem(DB_KEY); } catch (e) { saved = null; }
+    if (saved) { try { E.db = JSON.parse(saved); } catch (e) { saved = null; } }
+    if (!saved) {
+      CM.seedBase(E);
+      STAFF_NAMES.forEach(n => E.insertStaff(n, 'staff', true));
+      ADMINS.forEach(n => E.setupAdmin(n, MASTER_PIN));
+      E.db.admins_v7 = true;
+    } else {
+      E.migrate();
+      const me = E.db.staff.find(x => x.name === '飯泉友裕' && x.is_active);
+      if (me && me.pin_hash && E.hashPin(me.pin_salt, '826491') === me.pin_hash) E.setupAdmin('飯泉友裕', '0311');
+    }
+    // 管理者3人をマスターキーに（1回だけ。以前の記録にも反映）
+    if (!E.db.admins_v7) {
+      ADMINS.forEach(n => E.setupAdmin(n, MASTER_PIN));
+      E.db.admins_v7 = true;
+    }
+    // 暗証番号がまだない従業員は、全員共通の番号にする（1回だけ）
+    if (!E.db.common_pin_set) {
+      for (const st of E.db.staff) {
+        if (st.is_active && !st.pin_hash) { st.pin_salt = uuid(); st.pin_hash = E.hashPin(st.pin_salt, COMMON_PIN); }
+      }
+      E.db.common_pin_set = true;
+    }
+    const save = () => { try { localStorage.setItem(DB_KEY, E.snapshot()); return true; } catch (e) { return false; } };
+    const canSave = save();
+    return {
+      local: true, engine: E, save, canSave,
+      async call(fn, args) {
+        let r;
+        try { r = E.call(fn, args || {}); } catch (e) { throw new AppError(e.message, e.hint); }
+        save();
+        return r;
+      },
+    };
+  }
+  let backend = null;
+  const api = (fn, args) => backend.call(fn, args || {});
+
+  // ------------------------------------------------------------------
+  // 小さな道具
+  // ------------------------------------------------------------------
+  function h(tag, props, ...kids) {
+    const el = document.createElement(tag);
+    if (props) {
+      for (const [k, v] of Object.entries(props)) {
+        if (v == null || v === false) continue;
+        if (k === 'class') el.className = v;
+        else if (k.startsWith('on') && typeof v === 'function') el.addEventListener(k.slice(2), v);
+        else if (k === 'value') el.value = v;
+        else if (v === true) el.setAttribute(k, '');
+        else el.setAttribute(k, v);
+      }
+    }
+    for (const c of kids.flat(Infinity)) {
+      if (c == null || c === false || c === '') continue;
+      el.append(c instanceof Node ? c : document.createTextNode(String(c)));
+    }
+    return el;
+  }
+  const ICONS = {
+    back: '<path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>',
+    x: '<path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>',
+    menu: '<path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>',
+  };
+  function icon(n) {
+    const s = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    s.setAttribute('viewBox', '0 0 24 24'); s.setAttribute('aria-hidden', 'true');
+    s.innerHTML = ICONS[n];
+    return s;
+  }
+  const WD = ['日', '月', '火', '水', '木', '金', '土'];
+  const wd = s => WD[new Date(D.parse(s)).getUTCDay()];
+  const md = s => (s ? `${+s.slice(5, 7)}/${+s.slice(8, 10)}` : '');
+  const mdw = s => (s ? `${md(s)}（${wd(s)}）` : '');
+  const jpd = s => (s ? `${+s.slice(5, 7)}月${+s.slice(8, 10)}日` : '');
+  const jpdw = s => (s ? `${jpd(s)}（${wd(s)}）` : '');
+  const ymd = s => (s ? `${s.slice(0, 4)}年${+s.slice(5, 7)}月${+s.slice(8, 10)}日` : '');
+  const hm = iso => (iso ? D.jst(Date.parse(iso)).time.slice(0, 5) : '');
+  const ageOf = (birth, today) => {
+    let a = +today.slice(0, 4) - +birth.slice(0, 4);
+    if (today.slice(5) < birth.slice(5)) a--;
+    return a;
+  };
+  const yen = n => (n == null ? '' : n.toLocaleString('ja-JP') + '円');
+
+  const LOT = { carryover: '前月繰越', monthly: '当月分', unlimited: '無期限', pack: '回数券' };
+  const KIND = { session: '通常セッション', cancel_consume: '当日キャンセル（チケット消化）', cancel_free: 'キャンセル（チケット消化なし）' };
+  const SYSTEM_REASONS = new Set(['monthly_grant', 'contract_start', 'resume', 'plan_change', 'migration', 'carry_in', 'carry_out',
+    'carryover_expired', 'over_carry_limit', 'contract_ended', 'withdrawn', 'pack_expired', 'void', 'session', 'cancel_consume']);
+
+  function itemLabel(it) {
+    switch (it.type) {
+      case 'session': case 'cancel_consume': return KIND[it.type] + (it.minutes ? `　${it.minutes}分` : '');
+      case 'cancel_free': return KIND[it.type];
+      case 'grant':
+        if (it.reason === 'monthly_grant' || it.reason === 'contract_start') return '月額更新';
+        if (it.reason === 'resume') return '月額付与（再開）';
+        if (it.reason === 'plan_change') return '月額付与（プラン変更）';
+        if (it.reason === 'migration') return `移行時の${LOT[it.lot_type]}`;
+        return it.lot_type === 'unlimited' ? '無期限チケット付与' : `${LOT[it.lot_type]}の追加`;
+      case 'carry_in': return '前月繰越';
+      case 'carry_out': return '次の期間へ繰越';
+      case 'expire':
+        return { carryover_expired: '繰越分の失効', over_carry_limit: '繰越できない分の失効', contract_ended: '退会による失効',
+          withdrawn: '退会による失効', pack_expired: '期限切れ' }[it.reason] || '失効';
+      case 'adjust':
+        if (it.reason === 'migration') return '移行前に使った分';
+        if (it.reason === 'resume') return '月額付与（再開）';
+        return it.delta > 0 ? `${LOT[it.lot_type]}の追加` : `${LOT[it.lot_type]}の減算`;
+      case 'plan_change': return 'プラン変更による調整';
+      case 'void': return '取消による戻し';
+      default: return it.type;
+    }
+  }
+  const humanReason = it => (it.reason && !SYSTEM_REASONS.has(it.reason) ? it.reason : null);
+  const N = n => (n == null ? '' : Number.isInteger(n) ? String(n) : Number(n).toFixed(1));
+  const signed = n => (n > 0 ? `+${N(n)}` : n < 0 ? `−${N(-n)}` : '±0');
+  const MIN_LABEL = m => ({ 30: '30分（0.5回）', 60: '60分（1回）', 90: '90分（1.5回）' }[m] || `${m}分`);
+
+  // ------------------------------------------------------------------
+  // トースト・シート・読み込み中
+  // ------------------------------------------------------------------
+  let toastTimer = null;
+  function toast(text, { error = false, action = null } = {}) {
+    const old = document.querySelector('.toast'); if (old) old.remove();
+    const el = h('div', { class: 'toast' + (error ? ' err' : ''), role: 'status', 'aria-live': 'polite' },
+      h('span', { class: 't' }, text),
+      action && h('button', { type: 'button', onclick: () => { el.remove(); action.fn(); } }, action.label));
+    document.body.append(el);
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.remove(), action ? 9000 : error ? 6000 : 3500);
+  }
+  function sheet(title, build) {
+    const body = h('div');
+    const scrim = h('div', { class: 'scrim' });
+    const close = () => { scrim.remove(); document.removeEventListener('keydown', onKey); };
+    const onKey = e => { if (e.key === 'Escape') close(); };
+    scrim.addEventListener('click', e => { if (e.target === scrim) close(); });
+    scrim.append(h('div', { class: 'sheet', role: 'dialog', 'aria-modal': 'true', 'aria-label': title },
+      h('div', { class: 'grip' }),
+      h('div', { class: 'sh' }, h('h2', null, title), h('button', { class: 'iconbtn', type: 'button', 'aria-label': '閉じる', onclick: close }, icon('x'))),
+      body));
+    document.body.append(scrim);
+    document.addEventListener('keydown', onKey);
+    build(body, close);
+    const f = scrim.querySelector('button.choice, select, input');
+    if (f && window.matchMedia('(min-width: 700px)').matches) f.focus();
+    return close;
+  }
+  const loadingEl = () => h('div', { class: 'loading' }, h('div', { class: 'spinner' }), '読み込み中…');
+  async function busy(btn, fn) {
+    if (btn.disabled) return;
+    const label = btn.textContent;
+    btn.disabled = true; btn.textContent = '処理中…';
+    try { return await fn(); } finally { btn.disabled = false; btn.textContent = label; }
+  }
+  function msgBox() {
+    const el = h('div', { class: 'msg', role: 'alert' });
+    el.hidden = true;
+    el.show = (text, kind = '') => { el.className = 'msg' + (kind ? ' ' + kind : ''); el.textContent = text; el.hidden = !text; };
+    return el;
+  }
+
+  // フォーム部品
+  function field(label, control, { hint, req } = {}) {
+    const id = control.id || ('f' + Math.random().toString(36).slice(2, 8));
+    control.id = id;
+    return h('div', { class: 'field' }, h('label', { for: id }, label, req && h('span', { class: 'req' }, '必須')), control, hint && h('div', { class: 'hint' }, hint));
+  }
+  function select(options, value, { placeholder, id, cls = '' } = {}) {
+    const el = h('select', { class: 'select ' + cls, id });
+    if (placeholder != null) el.append(h('option', { value: '' }, placeholder));
+    for (const o of options) el.append(h('option', { value: String(o.value) }, o.label));
+    if (value != null) el.value = String(value);
+    const sync = () => el.classList.toggle('is-placeholder', el.value === '');
+    el.addEventListener('change', sync); sync();
+    return el;
+  }
+  function birthPicker(value, today) {
+    const y0 = +today.slice(0, 4);
+    const ys = []; for (let y = y0 - 5; y >= 1930; y--) ys.push({ value: y, label: `${y}年` });
+    const ms = []; for (let m = 1; m <= 12; m++) ms.push({ value: m, label: `${m}月` });
+    const ds = []; for (let d = 1; d <= 31; d++) ds.push({ value: d, label: `${d}日` });
+    const Y = select(ys, value ? +value.slice(0, 4) : null, { placeholder: '年' });
+    const M = select(ms, value ? +value.slice(5, 7) : null, { placeholder: '月' });
+    const Dd = select(ds, value ? +value.slice(8, 10) : null, { placeholder: '日' });
+    Y.setAttribute('aria-label', '生まれた年'); M.setAttribute('aria-label', '月'); Dd.setAttribute('aria-label', '日');
+    const el = h('div', { class: 'row3' }, Y, M, Dd);
+    el.get = () => {
+      if (!Y.value || !M.value || !Dd.value) return null;
+      const y = +Y.value, m = +M.value, d = +Dd.value;
+      if (d > D.dim(y, m)) return 'invalid';
+      return `${y}-${String(m).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+    };
+    el.set = v => { Y.value = +v.slice(0, 4); M.value = +v.slice(5, 7); Dd.value = +v.slice(8, 10); [Y, M, Dd].forEach(s => s.dispatchEvent(new Event('change'))); };
+    return el;
+  }
+
+  // ------------------------------------------------------------------
+  // 状態と画面の切り替え
+  // ------------------------------------------------------------------
+  const S = { boot: null, token: null, role: null, me: null, view: null, params: {}, stack: [] };
+  const VIEWS = {};
+  const WIDE = new Set(['sSearch', 'cDetail', 'aMenu', 'aStaff', 'aStores', 'aLog', 'aPlans', 'aNew']);
+  let renderSeq = 0;
+
+  function go(view, params = {}, { replace = false } = {}) {
+    if (!replace && S.view) S.stack.push({ view: S.view, params: S.params });
+    S.view = view; S.params = params;
+    render({ top: true });
+  }
+  function back() {
+    const p = S.stack.pop();
+    if (p) { S.view = p.view; S.params = p.params; render({ top: true }); }
+    else go('start', {}, { replace: true });
+  }
+  async function render({ top = false, quiet = false } = {}) {
+    const seq = ++renderSeq;
+    const root = document.getElementById('app');
+    root.className = 'app' + (WIDE.has(S.view) ? ' wide' : '');
+    const y = window.scrollY;
+    if (!quiet) root.replaceChildren(loadingEl());
+    try {
+      const el = await VIEWS[S.view](S.params);
+      if (seq !== renderSeq) return;
+      root.replaceChildren(el);
+      window.scrollTo(0, top ? 0 : y);
+      rememberView();
+    } catch (e) {
+      if (seq !== renderSeq) return;
+      if (!handleError(e)) root.replaceChildren(h('div', { class: 'loading' }, e.message || 'エラーが起きました',
+        h('button', { class: 'btn small', type: 'button', onclick: () => render() }, 'もう一度読み込む')));
+    }
+  }
+  const refresh = () => render({ quiet: true });
+  function handleError(e) {
+    if (e && e.hint === 'auth') {
+      clearLogin();
+      S.stack = [];
+      toast(e.message || 'もう一度ログインしてください', { error: true });
+      S.view = 'start'; S.params = {};
+      render({ top: true });
+      return true;
+    }
+    toast((e && e.message) || 'エラーが起きました', { error: true });
+    return false;
+  }
+  // ログインは「お客様側」「従業員側」それぞれ覚えておき、次は前回の画面から始める
+  const sideOf = role => (role === 'customer' ? 'customer' : 'staff');
+  const SIDE_VIEWS = { customer: ['cHome', 'cHistory'], staff: ['sSearch', 'cDetail', 'aMenu', 'aStaff', 'aStores', 'aLog', 'aPlans'] };
+  function setLogin(r, role, me) {
+    S.token = r.token; S.role = role; S.me = me;
+    const side = sideOf(role);
+    keep.set('tok_' + side, r.token); keep.set('side', side);
+  }
+  function clearLogin() {
+    if (S.role) { const side = sideOf(S.role); keep.set('tok_' + side, null); keep.set('last_' + side, null); }
+    S.token = null; S.role = null; S.me = null;
+  }
+  function rememberView() {
+    if (!S.token || !S.role) return;
+    const side = sideOf(S.role);
+    if (!SIDE_VIEWS[side].includes(S.view)) return;
+    keep.set('last_' + side, JSON.stringify({ view: S.view, params: S.params || {} }));
+    keep.set('side', side);
+  }
+  // 保存しているログインで、その側の前回の画面へ（なければログイン画面へ）
+  async function enterSide(side, { silent = false } = {}) {
+    const t = keep.get('tok_' + side);
+    if (t) {
+      try {
+        const me = await api('api_me', { p_token: t });
+        if (sideOf(me.role) === side) {
+          S.token = t; S.role = me.role; S.me = me.role === 'customer' ? { name: me.name } : me.staff;
+          let last = null;
+          try { last = JSON.parse(keep.get('last_' + side) || 'null'); } catch (e) { last = null; }
+          const v = last && SIDE_VIEWS[side].includes(last.view) ? last : { view: side === 'customer' ? 'cHome' : 'sSearch', params: {} };
+          S.stack = [];
+          keep.set('side', side);
+          go(v.view, v.params || {}, { replace: true });
+          return true;
+        }
+      } catch (e) { /* 期限切れなど：ログイン画面へ */ }
+      keep.set('tok_' + side, null);
+    }
+    if (!silent) go(side === 'customer' ? 'cLogin' : 'sLogin');
+    return false;
+  }
+  function toStart() { S.stack = []; S.view = null; go('start', {}, { replace: true }); }
+  async function logout() {
+    const t = S.token;
+    clearLogin();
+    S.stack = [];
+    if (t) api('api_logout', { p_token: t }).catch(() => {});
+    go('start', {}, { replace: true });
+  }
+  async function reloadBoot() { S.boot = await api('api_bootstrap'); }
+
+  // ------------------------------------------------------------------
+  // 最初の画面
+  // ------------------------------------------------------------------
+  VIEWS.start = async () => {
+    return h('div', { class: 'start' },
+      h('div', { class: 'start-mark' },
+        h('div', { class: 'wordmark' }, 'CHART ', h('b', null, 'MEMBER')),
+        h('p', { class: 'lead' }, 'セッションの残り回数と利用履歴'),
+      ),
+      h('button', { class: 'door customer', type: 'button', onclick: () => enterSide('customer') },
+        h('span', { class: 't' }, 'お客様はこちら'),
+        h('span', { class: 'd' }, '店舗・お名前・生年月日で、ご自分のページが開きます'),
+        h('span', { class: 'arrow' }, '→')),
+      h('button', { class: 'door', type: 'button', onclick: () => enterSide('staff') },
+        h('span', { class: 't' }, '従業員はこちら'),
+        h('span', { class: 'd' }, '名前を選んで暗証番号を入れます'),
+        h('span', { class: 'arrow' }, '→')),
+      backend.local && h('p', { style: 'font-size:12px;color:var(--muted)' },
+        backend.canSave ? '今は、この端末の中だけに記録しています（ほかのスマホからは見えません）。'
+          : 'この端末では記録を保存できません。ブラウザのプライベートモードをやめて開き直してください。'),
+    );
+  };
+
+  // ------------------------------------------------------------------
+  // お客様
+  // ------------------------------------------------------------------
+  function backBar(title, sub) {
+    return h('div', { class: 'bar' },
+      h('button', { class: 'iconbtn', type: 'button', 'aria-label': '戻る', onclick: back }, icon('back')),
+      h('div', { class: 'title' }, h('h1', null, title), sub && h('div', { class: 'sub' }, sub)));
+  }
+
+  VIEWS.cLogin = async () => {
+    const today = S.boot.today;
+    const stores = S.boot.stores.map(s => ({ value: s.id, label: s.name }));
+    const storeSel = select(stores, keep.get('store'), { placeholder: '店舗を選んでください' });
+    const name = h('input', { class: 'input', type: 'text', autocomplete: 'name', placeholder: '例：山田 花子' });
+    name.value = keep.get('c_name') || '';
+    const birth = birthPicker(keep.get('c_birth') || null, today);
+    const msg = msgBox();
+    const btn = h('button', { class: 'btn primary big block', type: 'submit' }, '自分のページを見る');
+    const form = h('form', { class: 'form', novalidate: true },
+      field('店舗', storeSel),
+      field('お名前', name, { hint: '漢字でも、ひらがなでも大丈夫です（スペースはあってもなくても大丈夫）' }),
+      h('div', { class: 'field' }, h('div', { class: 'label' }, '生年月日'), birth),
+      msg, btn);
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      busy(btn, async () => {
+        const b = birth.get();
+        if (!storeSel.value || !name.value.trim() || !b) return msg.show('店舗・お名前・生年月日をすべて入れてください');
+        if (b === 'invalid') return msg.show('生年月日の日付を確かめてください');
+        try {
+          const r = await api('api_customer_login', { p_store_id: +storeSel.value, p_name: name.value, p_birth_date: b });
+          if (!r.ok) return msg.show(r.message);
+          keep.set('store', storeSel.value); keep.set('c_name', name.value); keep.set('c_birth', b);
+          setLogin(r, 'customer', null);
+          S.stack = [];
+          go('cHome', {}, { replace: true });
+        } catch (err) { msg.show(err.message); }
+      });
+    });
+    return h('div', null, backBar('お客様ログイン'), form);
+  };
+
+  // 会員カード（お客様・従業員の両方で使う）
+  function ticketCard(d) {
+    const c = d.contract, b = d.balances, ex = d.expires || {};
+    const status = c ? (c.status === 'paused' ? '休会中' : null) : '退会済み';
+    const planName = c ? `${c.plan.name}プラン` : (d.ended_contract ? `${d.ended_contract.plan_name || ''}プラン` : '');
+    const renew = c
+      ? h('div', { class: 'renew' },
+          h('div', null, h('div', { class: 'k' }, '次回更新'), h('div', { class: 'v' }, jpdw(c.next_renewal))),
+          h('div', { class: 'days' }, 'あと', h('span', { class: 'num' }, c.days_left), '日'))
+      : h('div', { class: 'renew' }, h('div', null, h('div', { class: 'k' }, '退会日'), h('div', { class: 'v' }, d.ended_contract ? jpd(d.ended_contract.ended_on) : '—')));
+    const stub = (type, n, x) => h('div', { class: 'stub' },
+      h('div', { class: 'k' }, h('i', { class: 'dot-' + type }), LOT[type]),
+      h('div', { class: 'v' }, h('span', { class: 'num' }, N(n)), h('span', { class: 'u' }, '回')),
+      h('div', { class: 'x' }, x));
+    const until = s => (s ? `${md(s)}まで` : '—');
+    const stubs = [
+      stub('carryover', b.carryover, b.carryover ? until(ex.carryover) : '—'),
+      stub('monthly', b.monthly, c && c.status === 'paused' ? '休会中' : until(ex.monthly)),
+      stub('unlimited', b.unlimited, '期限なし'),
+    ];
+    if (b.pack > 0) stubs.push(stub('pack', b.pack, until(ex.pack)));
+    return h('div', { class: 'ticket' },
+      h('div', { class: 'card' },
+        h('div', { class: 'top' }, h('span', { class: 'wordmark' }, 'CHART MEMBER'),
+          h('span', { class: 'plan' }, planName, status && h('span', { class: 'status' }, status))),
+        h('div', { class: 'avail-label' }, '利用可能'),
+        h('div', { class: 'avail' }, h('span', { class: 'n' }, N(b.total)), h('span', { class: 'u' }, '回')),
+        renew),
+      h('div', { class: 'perf', 'aria-hidden': 'true' }),
+      h('div', { class: 'stubs' + (stubs.length === 4 ? ' four' : '') }, stubs));
+  }
+  function statTiles(d) {
+    const s = d.stats;
+    const tile = (k, v, cls = '') => h('div', { class: 'tile ' + cls }, h('div', { class: 'k' }, k),
+      h('div', { class: 'v' }, h('span', { class: 'num' }, N(v)), h('span', { class: 'u' }, '回')));
+    return h('div', { class: 'tiles' },
+      tile('今月の来店', s.visits), tile('チケット消化', s.consumed), tile('当日キャンセルによる消化', s.cancel_consumed));
+  }
+  // お知らせ（予定の変更・休会・もうすぐ失効する回数）
+  function notices(d, forStaff) {
+    const out = [], c = d.contract, b = d.balances;
+    const note = (text, cls = '') => h('div', { class: 'notice ' + cls }, h('span', { class: 'ic' }, '●'), h('span', null, text));
+    if (c) {
+      const p = c.pending || {};
+      if (p.status === 'ended') out.push(note(`${jpd(c.next_renewal)}の更新日で退会になります。当月分と前月繰越はその日に失効します。`));
+      else if (p.status === 'paused') out.push(note(`${jpd(c.next_renewal)}から休会になります。休会中は月額分の付与がお休みになります。`));
+      else if (p.status === 'active') out.push(note(`${jpd(c.next_renewal)}から再開します。`, 'info'));
+      if (p.plan && p.status !== 'ended') out.push(note(`${jpd(c.next_renewal)}の更新から${p.plan.name}プランになります。`, 'info'));
+      if (c.status === 'paused' && !p.status) out.push(note('休会中です。前月繰越と無期限チケットは使えます。', 'info'));
+      const lose = p.status === 'ended' ? 0 : b.carryover + Math.max(0, b.monthly - c.plan.carryover_max);
+      if (lose > 0 && c.days_left <= 7) {
+        out.push(note(`${jpd(D.add(c.next_renewal, -1))}までに使わないと、${N(lose)}回が失効します（当月分の残りは${c.plan.carryover_max}回まで翌月に繰越。前月繰越の残りは消えます）。`));
+      }
+    } else if (d.ended_contract) {
+      out.push(note(b.unlimited > 0 ? `${jpd(d.ended_contract.ended_on)}に退会しました。無期限チケットは引き続き使えます。`
+        : `${jpd(d.ended_contract.ended_on)}に退会しました。`, 'info'));
+    }
+    if (forStaff && d.customer.note) out.push(note(`備考：${d.customer.note}`, 'info'));
+    return out.length ? h('div', { class: 'section', style: 'gap:8px' }, out) : null;
+  }
+
+  VIEWS.cHome = async () => {
+    const d = await api('api_customer_home', { p_token: S.token });
+    const c = d.contract;
+    return h('div', null,
+      h('div', { class: 'bar' },
+        h('div', { class: 'title' }, h('h1', null, `${d.customer.name} 様`), h('div', { class: 'sub' }, `${d.customer.store}店`)),
+        h('button', { class: 'btn small ghost', type: 'button', onclick: logout }, 'ログアウト')),
+      ticketCard(d),
+      notices(d, false),
+      h('div', { class: 'section' },
+        h('div', { class: 'h' }, h('h2', null, '今月の利用'), c && h('span', { class: 's' }, `${md(c.period.start)}〜${md(c.period.end)}`)),
+        statTiles(d)),
+      h('div', { class: 'section' },
+        h('button', { class: 'btn block big', type: 'button', onclick: () => go('cHistory') }, '利用履歴を見る')),
+      h('p', { style: 'margin-top:18px;font-size:12px;color:var(--muted);text-align:center' },
+        '当月分 → 前月繰越 → 無期限 の順に使います', h('br'), '60分＝1回・30分＝0.5回・90分＝1.5回'),
+      h('div', { class: 'foot' }, h('button', { class: 'linkbtn', type: 'button', onclick: toStart }, '最初の画面へ')),
+    );
+  };
+
+  VIEWS.cHistory = async () => {
+    const d = await api('api_customer_history', { p_token: S.token });
+    return h('div', null, backBar('利用履歴', '新しい順'), historyView(d.periods, { detailed: false }));
+  };
+
+  // 履歴（期間ごと）
+  function historyView(periods, { detailed, onVoid } = {}) {
+    if (!periods || !periods.length) return h('div', { class: 'period' }, h('div', { class: 'empty' }, 'まだ履歴はありません'));
+    return h('div', null, periods.map(g => h('section', { class: 'period' },
+      h('div', { class: 'period-h' },
+        h('div', { class: 't' },
+          g.period ? `${md(g.period.start)}〜${md(g.period.end)}` : '契約期間外',
+          g.period && h('span', { class: 'badge' }, g.period.plan),
+          g.period && g.period.current && h('span', { class: 'badge now' }, '今の期間'),
+          g.period && g.period.status === 'paused' && h('span', { class: 'badge paused' }, '休会')),
+        g.stats && h('div', { class: 's' }, `来店 ${g.stats.visits}回・チケット消化 ${N(g.stats.consumed)}回` +
+          (g.stats.cancel_consumed ? `（うち当日キャンセル ${N(g.stats.cancel_consumed)}回）` : ''))),
+      h('ul', { class: 'items' }, g.items.map(it => itemRow(it, detailed, onVoid))))));
+  }
+  function itemRow(it, detailed, onVoid) {
+    const meta = [];
+    const reason = humanReason(it);
+    if (reason) meta.push(reason);
+    const isEvent = it.type in KIND;
+    if (detailed) {
+      if (isEvent) meta.push(hm(it.at));
+      if (it.staff) meta.push(`担当 ${it.staff}`);
+      if (it.balance_after != null && !it.voided) meta.push(`処理後の残り ${N(it.balance_after)}回`);
+      if (it.note) meta.push(`備考：${it.note}`);
+      if (it.voided) meta.push(`取消：${it.void_reason || ''}${it.voided_by ? `（${it.voided_by}）` : ''}`);
+    } else if (it.voided) meta.push('この登録は取り消されました');
+    const q = it.delta;
+    return h('li', { class: 'item' + (it.voided ? ' voided' : '') },
+      h('div', { class: 'd' }, md(it.on)),
+      h('div', { class: 'l' },
+        h('div', { class: 'a' }, itemLabel(it), it.voided && h('span', { class: 'badge void', style: 'margin-left:6px' }, '取消')),
+        meta.length > 0 && h('div', { class: 'm' }, meta.join('　')),
+        detailed && it.voidable && onVoid && h('button', { class: 'void-link', type: 'button', onclick: () => onVoid(it) }, 'この登録を取り消す')),
+      h('div', { class: 'r' },
+        h('span', { class: 'q ' + (q > 0 ? 'plus' : q < 0 ? 'minus' : 'zero') }, signed(q)),
+        (it.lot_types && it.lot_types.length ? it.lot_types : it.lot_type ? [it.lot_type] : [])
+          .map(t => h('span', { class: 'lotchip lot-' + t }, LOT[t]))));
+  }
+
+  // ------------------------------------------------------------------
+  // 従業員ログイン
+  // ------------------------------------------------------------------
+  VIEWS.sLogin = async () => {
+    await reloadBoot();
+    const staff = S.boot.staff.map(s => ({ value: s.id, label: s.name }));
+    const who = select(staff, keep.get('staff'), { placeholder: '名前を選んでください' });
+    const pin = h('input', { class: 'input pin', type: 'password', inputmode: 'numeric', pattern: '[0-9]*', maxlength: '8', autocomplete: 'off', placeholder: '••••' });
+    const msg = msgBox();
+    const btn = h('button', { class: 'btn dark big block', type: 'submit' }, 'ログイン');
+    const form = h('form', { class: 'form', novalidate: true },
+      field('名前', who),
+      field('暗証番号', pin, { hint: '4〜8桁の数字。わからないときは管理者に聞いてください' }),
+      msg, btn);
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      busy(btn, async () => {
+        if (!who.value || !pin.value) return msg.show('名前と暗証番号を入れてください');
+        try {
+          const r = await api('api_staff_login', { p_staff_id: +who.value, p_pin: pin.value });
+          if (!r.ok) { pin.value = ''; return msg.show(r.message); }
+          keep.set('staff', who.value);
+          setLogin(r, r.role, r.staff);
+          S.stack = [];
+          go('sSearch', {}, { replace: true });
+        } catch (err) { msg.show(err.message); }
+      });
+    });
+    if (!staff.length) msg.show('暗証番号が設定された従業員がいません。管理者がセットアップSQLの最後の行で設定してください', 'warn');
+    setTimeout(() => { if (who.value) pin.focus(); }, 50);
+    return h('div', null, backBar('従業員ログイン'), form);
+  };
+
+  // 従業員画面の上のバー
+  function staffBar({ backable = false, title } = {}) {
+    const me = S.me || {};
+    return h('div', { class: 'bar' },
+      backable ? h('button', { class: 'iconbtn', type: 'button', 'aria-label': '戻る', onclick: back }, icon('back'))
+        : h('span', { class: 'wordmark' }, 'CHART ', h('b', null, 'MEMBER')),
+      h('div', { class: 'title' }, title && h('h1', null, title)),
+      h('span', { class: 'chip-me' }, me.name || '', h('span', { class: 'role-badge' + (S.role === 'admin' ? '' : ' staff') }, S.role === 'admin' ? '管理者' : '従業員')),
+      h('button', { class: 'iconbtn', type: 'button', 'aria-label': 'メニュー', onclick: openMenu }, icon('menu')));
+  }
+  function openMenu() {
+    sheet('メニュー', (body, close) => {
+      const item = (t, d, fn) => h('button', { class: 'menu-item', type: 'button', onclick: () => { close(); fn(); } },
+        h('span', { class: 't' }, t), d && h('span', { class: 'd' }, d), h('span', { class: 'arrow' }, '→'));
+      body.append(h('div', { class: 'menu-list' },
+        item('顧客一覧', '検索・セッション登録', () => { S.stack = []; go('sSearch', {}, { replace: true }); }),
+        item('新規顧客登録', '新しいお客様・既存会員の移行', () => go('aNew')),
+        item('操作ログ', '誰が・いつ・どの顧客に・何をしたか', () => go('aLog')),
+        S.role === 'admin' && item('管理メニュー', '従業員・店舗・バックアップ（管理者だけ）', () => go('aMenu')),
+        item('最初の画面へ', 'ログインしたまま戻る（お客様側に切り替えるとき）', toStart),
+        item('ログアウト', `${(S.me || {}).name || ''}さんのログインを終える`, logout)));
+    });
+  }
+
+  // ------------------------------------------------------------------
+  // 顧客一覧
+  // ------------------------------------------------------------------
+  VIEWS.sSearch = async () => {
+    const stores = S.boot.stores.map(s => ({ value: s.id, label: s.name }));
+    const storeSel = select(stores, keep.get('search_store') || '', { placeholder: '全店舗' });
+    storeSel.setAttribute('aria-label', '店舗');
+    const q = h('input', { class: 'input', type: 'search', placeholder: '名前・ふりがなで検索', 'aria-label': '名前・ふりがなで検索', enterkeyhint: 'search' });
+    q.value = S.params.q || '';
+    const list = h('div', { class: 'clist' }, loadingEl());
+    const count = h('div', { class: 'count-line' });
+    let seq = 0;
+    async function run() {
+      const my = ++seq;
+      keep.set('search_store', storeSel.value || null);
+      S.params.q = q.value;
+      try {
+        const r = await api('api_search_customers', { p_token: S.token, p_store_id: storeSel.value ? +storeSel.value : null, p_query: q.value });
+        if (my !== seq) return;
+        count.textContent = r.customers.length >= 100 ? '100人まで表示しています。名前で絞り込んでください' : `${r.customers.length}人`;
+        list.replaceChildren(...(r.customers.length ? r.customers.map(custRow) : [h('div', { class: 'period' }, h('div', { class: 'empty' }, '見つかりませんでした'))]));
+      } catch (e) { if (!handleError(e)) list.replaceChildren(); }
+    }
+    let t = null;
+    q.addEventListener('input', () => { clearTimeout(t); t = setTimeout(run, 250); });
+    storeSel.addEventListener('change', run);
+    run();
+    return h('div', null,
+      staffBar(),
+      h('div', { style: 'display:flex;justify-content:flex-end;margin-bottom:4px' },
+        h('button', { class: 'btn small primary', type: 'button', onclick: () => go('aNew') }, '＋ 新規顧客登録')),
+      h('div', { class: 'searchbar' }, storeSel, q),
+      count, list);
+  };
+  function custRow(c) {
+    const badge = c.status === 'paused' ? h('span', { class: 'badge paused' }, '休会中') : c.status === 'ended' ? h('span', { class: 'badge ended' }, '退会') : null;
+    return h('button', { class: 'crow', type: 'button', onclick: () => go('cDetail', { id: c.id }) },
+      h('span', { class: 'n' }, c.name, badge, h('span', { class: 'kana' }, c.name_kana)),
+      h('span', { class: 'meta' }, [c.store, c.plan, c.next_renewal ? `次回更新 ${md(c.next_renewal)}` : null].filter(Boolean).join('・')),
+      h('span', { class: 'av' }, h('span', { class: 'num' }, N(c.available)), h('span', { class: 'u' }, '回'), h('span', { class: 's' }, '利用可能')));
+  }
+
+  // ------------------------------------------------------------------
+  // 顧客詳細
+  // ------------------------------------------------------------------
+  VIEWS.cDetail = async ({ id }) => {
+    const d = await api('api_customer_detail', { p_token: S.token, p_customer_id: id });
+    const c = d.contract, cu = d.customer, admin = true;   // お客様に関わる操作は従業員も全員できる
+    const badge = !c ? h('span', { class: 'badge ended' }, '退会') : c.status === 'paused' ? h('span', { class: 'badge paused' }, '休会中') : null;
+    const kv = (k, v) => h('div', { class: 'kv' }, h('span', { class: 'k' }, k), h('span', { class: 'v' }, v));
+    const pend = [];
+    if (c && c.pending) {
+      if (c.pending.plan) pend.push(`${md(c.next_renewal)}から${c.pending.plan.name}`);
+      if (c.pending.status) pend.push(`${md(c.next_renewal)}から${{ paused: '休会', active: '再開', ended: '退会' }[c.pending.status]}`);
+    }
+    const contractPanel = c ? h('div', { class: 'panel' },
+      kv('プラン', `${c.plan.name}（${yen(c.plan.price_yen)}・繰越は${c.plan.carryover_max}回まで）`),
+      kv('更新日', `毎月${c.renewal_day}日${c.renewal_day >= 29 ? '（ない月は月末）' : ''}`),
+      kv('今の期間', `${md(c.period.start)}〜${md(c.period.end)}`),
+      kv('次回更新', `${mdw(c.next_renewal)}・あと${c.days_left}日`),
+      pend.length > 0 && kv('予定', pend.join('／')))
+      : h('div', { class: 'panel' }, kv('契約', d.ended_contract ? `${ymd(d.ended_contract.ended_on)}に退会` : 'なし'));
+
+    const adminPanel = admin ? h('div', { class: 'section' },
+      h('div', { class: 'h' }, h('h2', null, '契約・回数の管理')),
+      h('div', { class: 'admin-grid' },
+        c && h('button', { class: 'btn', type: 'button', onclick: () => openPlanChange(d) }, h('span', null, 'プラン変更', h('span', { class: 's' }, '次回更新から／今日から'))),
+        c && h('button', { class: 'btn', type: 'button', onclick: () => openRenewalDay(d) }, h('span', null, '更新日の変更', h('span', { class: 's' }, `今は毎月${c.renewal_day}日`))),
+        c && h('button', { class: 'btn', type: 'button', onclick: () => openStatus(d) }, h('span', null, '休会・再開・退会', h('span', { class: 's' }, '予定の取り消しも'))),
+        !c && h('button', { class: 'btn', type: 'button', onclick: () => openRestart(d) }, h('span', null, '再入会', h('span', { class: 's' }, '新しく契約を始める'))),
+        h('button', { class: 'btn', type: 'button', onclick: () => openAdjust(d) }, h('span', null, 'チケット付与・修正', h('span', { class: 's' }, '無期限の付与・回数の調整'))),
+        h('button', { class: 'btn', type: 'button', onclick: () => openEdit(d) }, h('span', null, '顧客情報の編集', h('span', { class: 's' }, '店舗・名前・生年月日・備考'))),
+        h('button', { class: 'btn', type: 'button', onclick: () => go('aLog', { customer_id: cu.id, customer: cu.name }) }, h('span', null, '操作ログ', h('span', { class: 's' }, 'この方への操作だけ'))))) : null;
+
+    const changes = admin && d.changes && d.changes.length ? h('details', { class: 'more', style: 'margin-top:10px' },
+      h('summary', null, `契約の変更履歴（${d.changes.length}件）`),
+      h('div', { class: 'inner' }, h('div', { class: 'log' }, d.changes.map(x => h('div', { class: 'logrow' },
+        h('span', { class: 'a' }, ACTION[x.action] || x.action), h('span', { class: 't' }, `${md(D.jstDateOf(x.at))} ${hm(x.at)}`),
+        h('span', { class: 'm' }, [x.staff, auditSummary(x.action, x.detail)].filter(Boolean).join('・'))))))) : null;
+
+    return h('div', null,
+      staffBar({ backable: true }),
+      h('div', { class: 'who' },
+        h('h1', null, cu.name, badge),
+        h('div', { class: 'kana' }, cu.name_kana),
+        h('div', { class: 'meta' }, `${cu.store}店・${ymd(cu.birth_date)}生（${ageOf(cu.birth_date, d.today)}歳）`)),
+      ticketCard(d),
+      notices(d, true),
+      h('div', { class: 'section' },
+        h('div', { class: 'h' }, h('h2', null, '今月の利用'), c && h('span', { class: 's' }, `${md(c.period.start)}〜${md(c.period.end)}`)),
+        statTiles(d), contractPanel),
+      adminPanel, changes,
+      h('div', { class: 'section' },
+        h('div', { class: 'h' }, h('h2', null, '利用履歴'), h('span', { class: 's' }, '新しい順・処理後の残りつき')),
+        historyView(d.history, { detailed: true, onVoid: it => openVoid(d, it) })),
+      h('div', { class: 'dock' }, h('button', { class: 'btn primary big block', type: 'button', onclick: () => openRegister(d) }, 'セッション登録')));
+  };
+
+  // セッション登録
+  function openRegister(d) {
+    const kinds = [
+      { k: 'session', t: '通常セッション', s: '来店＋1・時間の分だけチケットを引く' },
+      { k: 'cancel_consume', t: '当日キャンセル（チケットを消化する）', s: '来店は増えない・時間の分だけチケットを引く' },
+      { k: 'cancel_free', t: 'キャンセル（チケットを消化しない）', s: 'チケットはそのまま・記録だけ残す' },
+    ];
+    sheet('セッション登録', (body, close) => {
+      const step1 = () => {
+        body.replaceChildren(
+          h('p', { style: 'font-size:14px;color:var(--muted);margin-bottom:12px' }, `${d.customer.name} 様　利用可能 ${N(d.balances.total)}回`),
+          ...kinds.map((x, i) => h('button', { class: 'choice' + (i === 0 ? ' main' : ''), type: 'button', onclick: () => step2(x) },
+            h('span', { class: 't' }, x.t), h('span', { class: 'd' }, x.s), h('span', { class: 'e' }, '→'))));
+      };
+      const step2 = x => {
+        const rid = uuid();
+        const uses = x.k !== 'cancel_free';
+        const before = d.balances.total;
+        const minutes = select([30, 60, 90].map(m => ({ value: m, label: MIN_LABEL(m) })), keep.get('minutes') || 60);
+        const afterEl = h('span', { class: 'num after' });
+        const how = h('div', { class: 's' });
+        const note = h('textarea', { class: 'textarea', placeholder: '例：当日の体調不良のため' });
+        const msg = msgBox();
+        const btn = h('button', { class: 'btn primary big block', type: 'button' }, '登録する');
+        let seq = 0;
+        const upd = async () => {
+          if (!uses) { afterEl.textContent = N(before); how.textContent = '残りの回数は変わりません'; return; }
+          const my = ++seq;
+          try {
+            const pv = await api('api_preview_session', { p_token: S.token, p_customer_id: d.customer.id, p_minutes: +minutes.value });
+            if (my !== seq) return;
+            if (pv.short > 0) {
+              afterEl.textContent = '—'; btn.disabled = true;
+              how.textContent = `チケットが足りません（残り${N(pv.before)}回）。時間を短くするか、管理者に付与を頼んでください`;
+            } else {
+              afterEl.textContent = N(pv.before - pv.amount); btn.disabled = false;
+              how.textContent = pv.used.map(u => `${LOT[u.lot_type]}から${N(u.qty)}回`).join('・') + '使います';
+            }
+          } catch (e) { handleError(e); }
+        };
+        minutes.addEventListener('change', () => { keep.set('minutes', minutes.value); upd(); });
+        btn.addEventListener('click', () => busy(btn, async () => {
+          try {
+            const r = await api('api_register_session', { p_token: S.token, p_customer_id: d.customer.id, p_kind: x.k,
+              p_minutes: uses ? +minutes.value : 60, p_note: note.value || null, p_request_id: rid });
+            close();
+            await refresh();
+            toast(uses ? `登録しました（${r.minutes}分）。残り${N(r.after)}回` : '登録しました（チケットはそのまま）', {
+              action: { label: '取り消す', fn: () => undoEvent(r.event_id) },
+            });
+          } catch (e) { if (!handleError(e)) msg.show(e.message); }
+        }));
+        body.replaceChildren(
+          h('div', { class: 'confirm-box' },
+            h('div', { class: 'kind' }, x.t),
+            h('div', { class: 's' }, `${d.customer.name} 様`),
+            h('div', { class: 'flow' },
+              h('span', { class: 'num' }, N(before)), h('span', { class: 'arr' }, '→'), afterEl, h('span', null, '回')),
+            how),
+          uses && h('div', { class: 'form', style: 'margin-top:12px' }, field('時間', minutes)),
+          h('details', { class: 'more', style: 'margin-top:12px' }, h('summary', null, '備考を入れる（任意）'), h('div', { class: 'inner' }, note)),
+          msg,
+          h('div', { class: 'acts' }, btn, h('button', { class: 'btn ghost block', type: 'button', onclick: step1 }, '選び直す')));
+        upd();
+      };
+      step1();
+    });
+  }
+  async function undoEvent(eventId) {
+    try {
+      await api('api_void_event', { p_token: S.token, p_event_id: eventId, p_reason: '登録直後の取消', p_request_id: uuid() });
+      await refresh();
+      toast('取り消しました');
+    } catch (e) { handleError(e); }
+  }
+  function openVoid(d, it) {
+    sheet('登録の取消', (body, close) => {
+      const reason = select([
+        { value: '入力ミス（別のお客様）', label: '入力ミス（別のお客様だった）' },
+        { value: '入力ミス（種類の間違い）', label: '入力ミス（登録の種類を間違えた）' },
+        { value: '二重登録', label: '二重に登録してしまった' },
+        { value: 'その他', label: 'その他' }], null, { placeholder: '理由を選んでください' });
+      const msg = msgBox();
+      const btn = h('button', { class: 'btn primary big block', type: 'button' }, '取り消す');
+      btn.addEventListener('click', () => busy(btn, async () => {
+        if (!reason.value) return msg.show('理由を選んでください');
+        try {
+          const r = await api('api_void_event', { p_token: S.token, p_event_id: it.event_id, p_reason: reason.value, p_request_id: uuid() });
+          close(); await refresh();
+          toast(`取り消しました。残り${N(r.after)}回`);
+        } catch (e) { if (!handleError(e)) msg.show(e.message); }
+      }));
+      body.append(
+        h('div', { class: 'preview' }, h('b', null, `${md(it.on)} ${KIND[it.type]}`), ` を取り消します。`,
+          it.type !== 'cancel_free' ? `使ったチケット${N(-it.delta)}回（${(it.lot_types || [it.lot_type]).map(t => LOT[t]).join('・')}）が戻ります。` : '回数は変わりません。', '記録は「取消」として残ります。'),
+        h('div', { class: 'form', style: 'margin-top:14px' }, field('理由', reason)), msg,
+        h('div', { class: 'acts' }, btn));
+    });
+  }
+
+  // ------------------------------------------------------------------
+  // 管理者の操作
+  // ------------------------------------------------------------------
+  function planOptions(withPrice = true) {
+    return S.boot.plans.map(p => ({ value: p.id, label: withPrice ? `${p.name}（${yen(p.price_yen)}・繰越${p.carryover_max}回まで）` : p.name }));
+  }
+  function simpleForm(body, close, { fields, preview, submitLabel, submit }) {
+    const msg = msgBox();
+    const pv = preview ? h('div', { class: 'preview' }) : null;
+    const btn = h('button', { class: 'btn primary big block', type: 'button' }, submitLabel);
+    const upd = () => { if (pv) { const t = preview(); pv.replaceChildren(...(Array.isArray(t) ? t : [t])); pv.hidden = !t; } };
+    btn.addEventListener('click', () => busy(btn, async () => {
+      try {
+        const r = await submit(msg);
+        if (r === false) return;
+        close(); await refresh();
+        if (typeof r === 'string') toast(r);
+      } catch (e) { if (!handleError(e)) msg.show(e.message); }
+    }));
+    body.append(h('div', { class: 'form' }, fields, pv, msg), h('div', { class: 'acts' }, btn));
+    body.addEventListener('change', upd); body.addEventListener('input', upd); upd();
+  }
+
+  function openPlanChange(d) {
+    const c = d.contract;
+    sheet('プラン変更', (body, close) => {
+      const plan = select(planOptions(), c.pending.plan ? c.pending.plan.id : c.plan.id);
+      const timing = select([{ value: 'next', label: `次回更新から（${mdw(c.next_renewal)}）` }, { value: 'now', label: '今日から（当月分を差分だけ増減）' }], 'next');
+      const reason = h('input', { class: 'input', placeholder: '例：回数を減らしたい' });
+      simpleForm(body, close, {
+        fields: [field('新しいプラン', plan), field('変更のタイミング', timing, { hint: 'ふだんは「次回更新から」を使います' }), field('理由（任意）', reason)],
+        preview: () => {
+          const np = S.boot.plans.find(p => p.id === +plan.value);
+          if (!np) return '';
+          if (timing.value === 'next') {
+            if (np.id === c.plan.id) return c.pending.plan ? `予約している${c.pending.plan.name}への変更を取り消します。` : '今と同じプランです。';
+            return [h('b', null, `${jpd(c.next_renewal)}の更新から${np.name}`), `（毎月${np.sessions}回・繰越${np.carryover_max}回まで）になります。今の期間はそのままです。繰越の上限は今の${c.plan.name}で判定します。`];
+          }
+          if (np.id === c.plan.id) return '今と同じプランです。';
+          if (c.status === 'paused') return `今日から${np.name}にします（休会中なので付与はありません）。`;
+          const delta = Math.max(np.sessions - c.plan.sessions, -d.balances.monthly);
+          return [h('b', null, `今日から${np.name}`), `。当月分を${signed(delta)}回調整します（${N(d.balances.monthly)} → ${N(d.balances.monthly + delta)}回）。残りより多くは減らしません。`];
+        },
+        submitLabel: '変更する',
+        submit: async () => {
+          const r = await api('api_change_plan', { p_token: S.token, p_customer_id: d.customer.id, p_plan_id: +plan.value, p_timing: timing.value, p_reason: reason.value || null });
+          return timing.value === 'next' ? `${md(r.effective)}からの変更を予約しました` : 'プランを変更しました';
+        },
+      });
+    });
+  }
+
+  function openRenewalDay(d) {
+    const c = d.contract;
+    sheet('更新日の変更', (body, close) => {
+      const days = []; for (let i = 1; i <= 31; i++) days.push({ value: i, label: `毎月${i}日${i >= 29 ? '（ない月は月末）' : ''}` });
+      const day = select(days, c.renewal_day);
+      const reason = h('input', { class: 'input', placeholder: '例：引き落とし日の変更' });
+      simpleForm(body, close, {
+        fields: [field('新しい更新日', day), field('理由（任意）', reason)],
+        preview: () => {
+          const v = +day.value;
+          if (v === c.renewal_day) return '今と同じ更新日です。';
+          const nn = D.renewalOnOrAfter(c.next_renewal, v);
+          const ext = D.diff(nn, c.next_renewal);
+          return [h('b', null, `今の期間：${md(c.period.start)}〜${md(D.add(nn, -1))}（次回更新 ${mdw(nn)}）`),
+            ext > 0 ? `。今の期間が${ext}日延び、前月繰越と当月分の期限も一緒に延びます。` : '。次回更新日は変わりません。',
+            '期間を縮めることはしないので、二重付与や早すぎる失効は起きません。'];
+        },
+        submitLabel: '変更する',
+        submit: async () => {
+          const r = await api('api_change_renewal_day', { p_token: S.token, p_customer_id: d.customer.id, p_day: +day.value, p_reason: reason.value || null });
+          return `更新日を変更しました（次回更新 ${md(r.next_renewal)}）`;
+        },
+      });
+    });
+  }
+
+  function openStatus(d) {
+    const c = d.contract, p = c.pending || {};
+    const opts = [];
+    if (p.status || p.plan) opts.push({ value: 'cancel_pending|next', label: '予定している変更を取り消す' });
+    if (c.status === 'active') {
+      if (p.status !== 'paused') opts.push({ value: 'pause|next', label: `休会する（${md(c.next_renewal)}から）` });
+    } else {
+      if (p.status !== 'active') opts.push({ value: 'resume|next', label: `再開する（${md(c.next_renewal)}から）` });
+      opts.push({ value: 'resume|now', label: '再開する（今日から・月額分をすぐ付与）' });
+    }
+    if (p.status !== 'ended') opts.push({ value: 'withdraw|next', label: `退会する（${md(c.next_renewal)}の更新日で）` });
+    opts.push({ value: 'withdraw|now', label: '退会する（今日で・当月分と繰越は失効）' });
+    sheet('休会・再開・退会', (body, close) => {
+      const act = select(opts, null, { placeholder: '操作を選んでください' });
+      const reason = h('input', { class: 'input', placeholder: '例：出張のため' });
+      simpleForm(body, close, {
+        fields: [field('操作', act), field('理由（任意）', reason)],
+        preview: () => {
+          const [a, t] = (act.value || '|').split('|');
+          const plan = (p.plan || c.plan);
+          switch (`${a}|${t}`) {
+            case 'cancel_pending|next': return '予約しているプラン変更・休会・再開・退会をすべて取り消します。';
+            case 'pause|next': return `${jpd(c.next_renewal)}から休会します。休会中の期間は月額分を付与しません。前月繰越（最大${c.plan.carryover_max}回）と無期限チケットは使えます。`;
+            case 'resume|next': return `${jpd(c.next_renewal)}から再開し、${plan.name}の月額分を付与します。`;
+            case 'resume|now': return `今日から再開し、今の期間（〜${md(c.period.end)}）に${plan.name}の${plan.sessions}回をすぐ付与します。期間の長さを合わせたいときは、あわせて更新日を変更してください。`;
+            case 'withdraw|next': return `${jpd(c.next_renewal)}の更新日で退会します。それまでは今の回数を使えます。当月分と前月繰越はその日に失効し、無期限チケットは残ります。`;
+            case 'withdraw|now': return [h('b', null, '今日で退会します。'), `当月分${N(d.balances.monthly)}回と前月繰越${N(d.balances.carryover)}回はすぐ失効します。無期限チケット${N(d.balances.unlimited)}回は残ります。`];
+            default: return '';
+          }
+        },
+        submitLabel: '実行する',
+        submit: async msg => {
+          if (!act.value) { msg.show('操作を選んでください'); return false; }
+          const [a, t] = act.value.split('|');
+          await api('api_change_status', { p_token: S.token, p_customer_id: d.customer.id, p_action: a, p_timing: t, p_reason: reason.value || null });
+          return a === 'cancel_pending' ? '予定を取り消しました' : t === 'next' ? `${md(c.next_renewal)}からの予定にしました` : '変更しました';
+        },
+      });
+    });
+  }
+
+  function openRestart(d) {
+    sheet('再入会（新しく契約を始める）', (body, close) => {
+      const today = S.boot.today;
+      const plan = select(planOptions(), null, { placeholder: 'プランを選んでください' });
+      const start = startSelect(today);
+      const day = renewalDaySelect(+today.slice(8, 10));
+      start.addEventListener('change', () => { if (!day.dataset.touched) day.value = String(+start.value.slice(8, 10)); });
+      day.addEventListener('change', () => { day.dataset.touched = '1'; });
+      simpleForm(body, close, {
+        fields: [field('プラン', plan), field('開始日', start), field('更新日', day)],
+        preview: () => firstPeriodPreview(start.value, +day.value, S.boot.plans.find(p => p.id === +plan.value)),
+        submitLabel: '契約を始める',
+        submit: async msg => {
+          if (!plan.value) { msg.show('プランを選んでください'); return false; }
+          await api('api_start_contract', { p_token: S.token, p_customer_id: d.customer.id, p_plan_id: +plan.value, p_start_date: start.value, p_renewal_day: +day.value });
+          return '契約を始めました';
+        },
+      });
+    });
+  }
+
+  const ADJ_REASONS = ['キャンペーン', '紹介特典', '会社判断', 'お詫び対応', '入力ミスの修正', 'その他'];
+  function openAdjust(d) {
+    sheet('チケット付与・修正', (body, close) => {
+      const types = [{ value: 'unlimited', label: '無期限チケット（期限なし）' }];
+      if (d.contract) types.push({ value: 'monthly', label: `当月分（${md(d.contract.period.end)}まで）` }, { value: 'carryover', label: `前月繰越（${md(d.contract.period.end)}まで）` });
+      const type = select(types, 'unlimited');
+      const qty = select([0.5, 1, 1.5, 2, 3, 4, 5, 10, -0.5, -1, -1.5, -2, -3, -4, -5]
+        .map(n => ({ value: n, label: n > 0 ? `＋${N(n)}回（増やす）` : `−${N(-n)}回（減らす）` })), 1);
+      const reason = select(ADJ_REASONS.map(r => ({ value: r, label: r })), null, { placeholder: '理由を選んでください' });
+      const note = h('input', { class: 'input', placeholder: '例：ご友人の紹介' });
+      const rid = uuid();
+      simpleForm(body, close, {
+        fields: [field('チケットの種類', type), field('増減', qty), field('理由', reason, { req: true }), field('備考（任意）', note)],
+        preview: () => {
+          const now = d.balances[type.value], n = +qty.value;
+          return [h('b', null, `${LOT[type.value]} ${N(now)}回 → ${N(now + n)}回`), `（利用可能 ${N(d.balances.total)} → ${N(d.balances.total + n)}回）。数字を直接書き換えず、「${signed(n)}」の記録として残します。`];
+        },
+        submitLabel: '記録する',
+        submit: async msg => {
+          if (!reason.value) { msg.show('理由を選んでください'); return false; }
+          const r = await api('api_adjust_tickets', { p_token: S.token, p_customer_id: d.customer.id, p_lot_type: type.value, p_qty: +qty.value, p_reason: reason.value, p_note: note.value || null, p_request_id: rid });
+          return `記録しました。利用可能 ${N(r.after)}回`;
+        },
+      });
+    });
+  }
+
+  function openEdit(d) {
+    const cu = d.customer;
+    sheet('顧客情報の編集', (body, close) => {
+      const store = select(S.boot.stores.map(s => ({ value: s.id, label: s.name })), cu.store_id);
+      const name = h('input', { class: 'input', value: cu.name });
+      const kana = h('input', { class: 'input', value: cu.name_kana });
+      const birth = birthPicker(cu.birth_date, d.today);
+      const note = h('textarea', { class: 'textarea', placeholder: '例：腰痛あり。平日夜の利用が多い' });
+      note.value = cu.note || '';
+      simpleForm(body, close, {
+        fields: [field('店舗', store), field('お名前', name), field('ふりがな', kana), h('div', { class: 'field' }, h('div', { class: 'label' }, '生年月日'), birth), field('備考（従業員だけが見られます）', note)],
+        submitLabel: '保存する',
+        submit: async msg => {
+          const b = birth.get();
+          if (!b || b === 'invalid') { msg.show('生年月日を確かめてください'); return false; }
+          const data = {};
+          if (+store.value !== cu.store_id) data.store_id = +store.value;
+          if (name.value.trim() !== cu.name) data.name = name.value;
+          if (kana.value.trim() !== cu.name_kana) data.name_kana = kana.value;
+          if (b !== cu.birth_date) data.birth_date = b;
+          if ((note.value.trim() || null) !== (cu.note || null)) data.note = note.value;
+          if (!Object.keys(data).length) { msg.show('変更はありません', 'info'); return false; }
+          await api('api_update_customer', { p_token: S.token, p_customer_id: cu.id, p_data: data });
+          return '保存しました';
+        },
+      });
+    });
+  }
+
+  // 開始日（今日から31日前まで）と更新日のプルダウン
+  function startSelect(today) {
+    const opts = [];
+    for (let i = 0; i <= 31; i++) { const s = D.add(today, -i); opts.push({ value: s, label: i === 0 ? `今日（${mdw(s)}）` : mdw(s) }); }
+    return select(opts, today);
+  }
+  function renewalDaySelect(v) {
+    const days = []; for (let i = 1; i <= 31; i++) days.push({ value: i, label: `毎月${i}日${i >= 29 ? '（ない月は月末）' : ''}` });
+    return select(days, v);
+  }
+  function firstPeriodPreview(start, day, plan) {
+    if (!start || !day) return '';
+    const end = D.nextRenewalAfter(start, day);
+    if (end <= S.boot.today) return h('span', { style: 'color:var(--danger)' }, '開始日が古すぎます。今の期間の開始日（直近の更新日）を選んでください。');
+    const len = D.diff(end, start);
+    return [h('b', null, `初回の期間：${md(start)}〜${md(D.add(end, -1))}（${len}日間）`), `・次回更新 ${mdw(end)}`,
+      plan ? `・${plan.name}の${plan.sessions}回を付与` : '', len < 20 ? '。初回の期間が短くなります。更新日を開始日と同じ日にすると1か月になります。' : ''];
+  }
+
+  // ------------------------------------------------------------------
+  // 新規顧客登録
+  // ------------------------------------------------------------------
+  VIEWS.aNew = async () => {
+    const today = S.boot.today;
+    const store = select(S.boot.stores.map(s => ({ value: s.id, label: s.name })), keep.get('search_store') || null, { placeholder: '店舗を選んでください' });
+    const name = h('input', { class: 'input', placeholder: '例：山田 花子', autocomplete: 'off' });
+    const kana = h('input', { class: 'input', placeholder: '例：やまだ はなこ', autocomplete: 'off' });
+    const birth = birthPicker(null, today);
+    const plan = select(planOptions(), null, { placeholder: 'プランを選んでください' });
+    const start = startSelect(today);
+    const day = renewalDaySelect(+today.slice(8, 10));
+    start.addEventListener('change', () => { if (!day.dataset.touched) { day.value = String(+start.value.slice(8, 10)); } });
+    day.addEventListener('change', () => { day.dataset.touched = '1'; });
+    const mMonthly = select([], '');
+    const halfSteps = max => Array.from({ length: max * 2 + 1 }, (_, i) => ({ value: i / 2, label: `${N(i / 2)}回` }));
+    const mCarry = select(halfSteps(5), 0);
+    const mUnl = select(halfSteps(10), 0);
+    const syncMonthly = () => {
+      const p = S.boot.plans.find(x => x.id === +plan.value);
+      const keepV = mMonthly.value;
+      mMonthly.replaceChildren(h('option', { value: '' }, p ? `満額（${p.sessions}回）` : '満額'));
+      if (p) for (let n = 0; n <= p.sessions; n += 0.5) mMonthly.append(h('option', { value: String(n) }, `${N(n)}回`));
+      mMonthly.value = keepV && p && +keepV <= p.sessions ? keepV : '';
+    };
+    plan.addEventListener('change', syncMonthly); syncMonthly();
+    const note = h('textarea', { class: 'textarea', placeholder: '例：腰痛あり。平日夜の利用が多い' });
+    const pv = h('div', { class: 'preview' });
+    const upd = () => { const t = firstPeriodPreview(start.value, +day.value, S.boot.plans.find(p => p.id === +plan.value)); pv.replaceChildren(...[].concat(t)); };
+    const msg = msgBox();
+    const btn = h('button', { class: 'btn primary big block', type: 'submit' }, '登録する');
+    const form = h('form', { class: 'form', novalidate: true },
+      field('店舗', store, { req: true }),
+      field('お名前', name, { req: true }),
+      field('ふりがな', kana, { req: true, hint: 'お客様は、ふりがなでもログインできます' }),
+      h('div', { class: 'field' }, h('div', { class: 'label' }, '生年月日', h('span', { class: 'req' }, '必須')), birth, h('div', { class: 'hint' }, 'お客様のログインに使います')),
+      field('プラン', plan, { req: true }),
+      field('開始日', start, { hint: '既存会員の方は、今の期間の開始日（直近の更新日）を選びます' }),
+      field('更新日', day),
+      pv,
+      h('details', { class: 'more' }, h('summary', null, '既存会員の移行（今の残りの回数を入れる）'),
+        h('div', { class: 'inner' },
+          field('当月分の残り', mMonthly, { hint: '移行前にすでに使った分を引いた、今の残り' }),
+          field('前月繰越の残り', mCarry),
+          field('無期限チケットの残り', mUnl))),
+      field('備考（任意・従業員だけが見られます）', note),
+      msg, btn);
+    form.addEventListener('change', upd); upd();
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      busy(btn, async () => {
+        const b = birth.get();
+        if (!store.value || !name.value.trim() || !kana.value.trim() || !plan.value) return msg.show('必須の項目をすべて入れてください');
+        if (!b || b === 'invalid') return msg.show('生年月日を確かめてください');
+        const migrate = {};
+        if (mMonthly.value !== '') migrate.monthly_remaining = +mMonthly.value;
+        if (+mCarry.value) migrate.carryover = +mCarry.value;
+        if (+mUnl.value) migrate.unlimited = +mUnl.value;
+        try {
+          const r = await api('api_create_customer', { p_token: S.token, p_data: {
+            store_id: +store.value, name: name.value, name_kana: kana.value, birth_date: b, plan_id: +plan.value,
+            start_date: start.value, renewal_day: +day.value, note: note.value || null, migrate } });
+          toast('登録しました');
+          go('cDetail', { id: r.customer_id }, { replace: true });
+        } catch (err) { if (!handleError(err)) msg.show(err.message); }
+      });
+    });
+    return h('div', null, staffBar({ backable: true, title: '新規顧客登録' }), form);
+  };
+
+  // ------------------------------------------------------------------
+  // 管理メニュー
+  // ------------------------------------------------------------------
+  VIEWS.aMenu = async () => {
+    const item = (t, d, fn) => h('button', { class: 'menu-item', type: 'button', onclick: fn },
+      h('span', { class: 't' }, t), h('span', { class: 'd' }, d), h('span', { class: 'arrow' }, '→'));
+    const runBtn = h('button', { class: 'btn block', type: 'button' }, '更新処理を今すぐ実行');
+    runBtn.addEventListener('click', () => busy(runBtn, async () => {
+      try { const r = await api('api_run_renewals', { p_token: S.token }); toast(r.processed ? `${r.processed}人の更新を処理しました` : '更新日を過ぎた人はいませんでした'); }
+      catch (e) { handleError(e); }
+    }));
+    return h('div', null, staffBar({ backable: true, title: '管理メニュー' }),
+      h('div', { class: 'menu-list' },
+        item('従業員', '追加・権限・暗証番号・ロック解除', () => go('aStaff')),
+        item('店舗', '追加・名前の変更・表示の切り替え', () => go('aStores')),
+        item('操作ログ', '誰が・いつ・どの顧客に・何をしたか', () => go('aLog')),
+        item('プラン', '月額プランの一覧', () => go('aPlans'))),
+      h('div', { class: 'section' },
+        h('div', { class: 'h' }, h('h2', null, '自動更新')),
+        h('p', { style: 'font-size:13px;color:var(--muted)' }, '毎日0:05（日本時間）に、更新日が来たお客様の繰越・失効・付与を自動で行います。お客様の画面を開いたときにも追いつくので、ふだん押す必要はありません。何度押しても二重には付与されません。'),
+        runBtn),
+      backend.local && h('div', { class: 'section' },
+        h('div', { class: 'h' }, h('h2', null, 'バックアップ')),
+        h('p', { style: 'font-size:13px;color:var(--muted)' }, '記録はこの端末のブラウザの中だけにあります。ブラウザの履歴やデータを消すと消えるので、ときどき保存してください。'),
+        h('button', { class: 'btn block', type: 'button', onclick: downloadBackup }, 'バックアップを保存'),
+        h('label', { class: 'btn block', style: 'margin-top:8px' }, 'バックアップから戻す',
+          h('input', { type: 'file', accept: '.json,application/json', style: 'display:none', onchange: restoreBackup }))));
+  };
+  function downloadBackup() {
+    const blob = new Blob([backend.engine.snapshot()], { type: 'application/json' });
+    const a = h('a', { href: URL.createObjectURL(blob), download: `chart-member-backup-${S.boot.today}.json` });
+    document.body.append(a); a.click(); a.remove();
+    toast('バックアップを保存しました');
+  }
+  function restoreBackup(e) {
+    const f = e.target.files && e.target.files[0];
+    if (!f) return;
+    const r = new FileReader();
+    r.onload = async () => {
+      try {
+        const db = JSON.parse(r.result);
+        if (!db || !Array.isArray(db.stores) || !Array.isArray(db.ledger)) throw new Error();
+        backend.engine.db = db; backend.save();
+        clearLogin(); S.stack = []; S.boot = await api('api_bootstrap');
+        toast('バックアップから戻しました。もう一度ログインしてください');
+        go('start', {}, { replace: true });
+      } catch (err) { toast('このファイルは読み込めません', { error: true }); }
+    };
+    r.readAsText(f);
+  }
+
+  VIEWS.aPlans = async () => {
+    const kv = (k, v) => h('div', { class: 'kv' }, h('span', { class: 'k' }, k), h('span', { class: 'v' }, v));
+    return h('div', null, staffBar({ backable: true, title: 'プラン' }),
+      h('div', { class: 'panel' }, S.boot.plans.map(p => kv(p.name, `${yen(p.price_yen)}・毎月${p.sessions}回・繰越${p.carryover_max}回まで`))),
+      h('p', { style: 'margin-top:12px;font-size:12px;color:var(--muted)' }, 'プランの追加・変更はセットアップSQLの plans で行います（変更は次の更新から反映され、過去の期間は当時のルールのまま残ります）。'));
+  };
+
+  VIEWS.aStaff = async () => {
+    const r = await api('api_list_staff', { p_token: S.token });
+    const row = s => h('button', { class: 'crow', type: 'button', onclick: () => openStaff(s) },
+      h('span', { class: 'n' }, s.name, h('span', { class: 'role-badge' + (s.role === 'admin' ? '' : ' staff') }, s.role === 'admin' ? '管理者' : '従業員'),
+        !s.is_active && h('span', { class: 'badge ended' }, '無効'), s.locked && h('span', { class: 'badge void' }, 'ロック中')),
+      h('span', { class: 'meta' }, s.has_pin ? '暗証番号あり' : '暗証番号なし（ログイン画面に出ません）'),
+      h('span', { class: 'av' }, h('span', { class: 's' }, '編集')));
+    return h('div', null, staffBar({ backable: true, title: '従業員' }),
+      h('div', { style: 'display:flex;justify-content:flex-end;margin-bottom:8px' },
+        h('button', { class: 'btn small primary', type: 'button', onclick: () => openStaff(null) }, '＋ 従業員を追加')),
+      h('div', { class: 'clist' }, r.staff.map(row)));
+  };
+  function openStaff(s) {
+    sheet(s ? `${s.name}` : '従業員を追加', (body, close) => {
+      const name = h('input', { class: 'input', value: s ? s.name : '', placeholder: '例：CHART 太郎' });
+      const role = select([{ value: 'staff', label: '従業員' }, { value: 'admin', label: '管理者' }], s ? s.role : 'staff');
+      const active = select([{ value: 'true', label: '有効' }, { value: 'false', label: '無効（ログインできない）' }], s ? String(s.is_active) : 'true');
+      const pin = h('input', { class: 'input pin', type: 'password', inputmode: 'numeric', pattern: '[0-9]*', maxlength: '8', autocomplete: 'new-password', placeholder: s && s.has_pin ? '変えるときだけ' : '空欄なら共通の番号' });
+      simpleForm(body, close, {
+        fields: [field('名前', name), field('権限', role), s && field('状態', active),
+          field('暗証番号', pin, { hint: s ? '入れると新しい番号になり、ロックも解除されます' : '空欄のままなら、従業員は共通の番号、管理者はマスターキーになります' })],
+        submitLabel: '保存する',
+        submit: async msg => {
+          if (pin.value && !/^[0-9]{4,8}$/.test(pin.value)) { msg.show('暗証番号は4〜8桁の数字にしてください'); return false; }
+          const r = await api('api_save_staff', { p_token: S.token, p_data: { id: s ? s.id : null, name: name.value, role: role.value, is_active: active.value === 'true' } });
+          const newPin = pin.value || (s ? '' : (backend.local ? (role.value === 'admin' ? MASTER_PIN : COMMON_PIN) : ''));
+          if (newPin) await api('api_set_staff_pin', { p_token: S.token, p_staff_id: r.id, p_pin: newPin });
+          await reloadBoot();
+          return '保存しました';
+        },
+      });
+    });
+  }
+
+  VIEWS.aStores = async () => {
+    const r = await api('api_list_stores', { p_token: S.token });
+    const row = s => h('button', { class: 'crow', type: 'button', onclick: () => openStore(s) },
+      h('span', { class: 'n' }, s.name, !s.is_active && h('span', { class: 'badge ended' }, '非表示')),
+      h('span', { class: 'meta' }, `並び順 ${s.sort_order}・顧客 ${s.customers}人`),
+      h('span', { class: 'av' }, h('span', { class: 's' }, '編集')));
+    return h('div', null, staffBar({ backable: true, title: '店舗' }),
+      h('div', { style: 'display:flex;justify-content:flex-end;margin-bottom:8px' },
+        h('button', { class: 'btn small primary', type: 'button', onclick: () => openStore(null) }, '＋ 店舗を追加')),
+      h('div', { class: 'clist' }, r.stores.map(row)));
+  };
+  function openStore(s) {
+    sheet(s ? s.name : '店舗を追加', (body, close) => {
+      const name = h('input', { class: 'input', value: s ? s.name : '', placeholder: '例：中板橋' });
+      const ord = select(Array.from({ length: 40 }, (_, i) => ({ value: (i + 1) * 10, label: `${(i + 1) * 10}` })), s ? s.sort_order : null, { placeholder: '最後に追加' });
+      const active = select([{ value: 'true', label: '表示する' }, { value: 'false', label: '表示しない（ログイン画面に出さない）' }], s ? String(s.is_active) : 'true');
+      simpleForm(body, close, {
+        fields: [field('店舗名', name), field('並び順', ord, { hint: '小さい順にログイン画面に並びます' }), field('表示', active)],
+        submitLabel: '保存する',
+        submit: async () => {
+          await api('api_save_store', { p_token: S.token, p_data: { id: s ? s.id : null, name: name.value, sort_order: ord.value || null, is_active: active.value === 'true' } });
+          await reloadBoot();
+          return '保存しました';
+        },
+      });
+    });
+  }
+
+  // 操作ログ
+  const ACTION = {
+    session_session: '通常セッション', session_cancel_consume: '当日キャンセル（消化）', session_cancel_free: 'キャンセル（消化なし）',
+    session_voided: '登録の取消', tickets_adjusted: 'チケット付与・修正', customer_created: '顧客登録', customer_updated: '顧客情報の変更',
+    contract_started: '再入会', plan_change_scheduled: 'プラン変更の予約', plan_changed_now: 'プラン変更（今日から）',
+    renewal_day_changed: '更新日の変更', status_scheduled: '休会・再開・退会の予約', status_changed_now: '休会・再開・退会（今日から）',
+    pending_cancelled: '予定の取り消し', renewal: '月額更新（自動）', contract_ended: '退会（自動）', renewal_error: '更新エラー',
+    staff_created: '従業員の追加', staff_updated: '従業員の変更', staff_pin_set: '暗証番号の設定', store_saved: '店舗の保存',
+    renewals_run: '更新処理の手動実行', setup_admin: '管理者の設定',
+  };
+  const LOG_GROUPS = {
+    '': null,
+    session: ['session_session', 'session_cancel_consume', 'session_cancel_free', 'session_voided'],
+    tickets: ['tickets_adjusted'],
+    contract: ['customer_created', 'customer_updated', 'contract_started', 'plan_change_scheduled', 'plan_changed_now', 'renewal_day_changed', 'status_scheduled', 'status_changed_now', 'pending_cancelled'],
+    auto: ['renewal', 'contract_ended', 'renewal_error', 'renewals_run'],
+    admin: ['staff_created', 'staff_updated', 'staff_pin_set', 'store_saved', 'setup_admin'],
+  };
+  const STATUS_JA = { paused: '休会', active: '再開', ended: '退会' };
+  function auditSummary(action, x) {
+    x = x || {};
+    switch (action) {
+      case 'session_session': case 'session_cancel_consume':
+        return `${x.minutes ? `${x.minutes}分・` : ''}残り ${N(x.before)}→${N(x.after)}回（${(x.used || (x.lot_type ? [{ lot_type: x.lot_type }] : [])).map(u => LOT[u.lot_type]).join('・')}）${x.note ? `・${x.note}` : ''}`;
+      case 'session_cancel_free': return `残りは変わらず ${N(x.after)}回${x.note ? `・${x.note}` : ''}`;
+      case 'session_voided': return `${KIND[x.kind] || ''}${x.minutes && x.kind !== 'cancel_free' ? ` ${x.minutes}分` : ''}を取消・${x.reason || ''}・残り ${N(x.before)}→${N(x.after)}回`;
+      case 'tickets_adjusted': return `${LOT[x.lot_type]} ${signed(x.qty)}（${x.reason}${x.note ? `・${x.note}` : ''}）残り ${N(x.before)}→${N(x.after)}回`;
+      case 'customer_created': return `${x.name || ''}・${x.plan || ''}・開始 ${md(x.start_date)}・毎月${x.renewal_day}日更新`;
+      case 'customer_updated': {
+        const b = x.before || {}, a = x.after || {}, ch = [];
+        if (b.name !== a.name) ch.push(`名前 ${b.name}→${a.name}`);
+        if (b.name_kana !== a.name_kana) ch.push('ふりがな');
+        if (b.birth_date !== a.birth_date) ch.push('生年月日');
+        if (b.store_id !== a.store_id) ch.push('店舗');
+        if (b.note !== a.note) ch.push('備考');
+        return ch.join('・') + 'を変更';
+      }
+      case 'contract_started': return `${x.plan || ''}・開始 ${md(x.start_date)}・毎月${x.renewal_day}日更新`;
+      case 'plan_change_scheduled': return `${x.from} → ${x.to}（${md(x.effective)}から）${x.reason ? `・${x.reason}` : ''}`;
+      case 'plan_changed_now': return `${x.from} → ${x.to}（当月分 ${signed(x.delta)}）${x.reason ? `・${x.reason}` : ''}`;
+      case 'renewal_day_changed': return `毎月${x.from_day}日 → ${x.to_day}日（次回更新 ${md(x.next_renewal_before)} → ${md(x.next_renewal_after)}）`;
+      case 'status_scheduled': return `${md(x.effective)}から${STATUS_JA[x.status] || ''}${x.reason ? `・${x.reason}` : ''}`;
+      case 'status_changed_now': return `今日から${STATUS_JA[x.status] || ''}${x.expired ? `・${x.expired}回失効` : ''}${x.granted ? `・${x.granted}回付与` : ''}${x.reason ? `・${x.reason}` : ''}`;
+      case 'pending_cancelled': return '予定していた変更を取り消し';
+      case 'renewal': return `${md(x.period_start)}更新・繰越${x.carried}・失効${x.expired}・付与${x.granted}（次回 ${md(x.next_renewal)}）`;
+      case 'contract_ended': return `${md(x.ended_on)}で退会・${x.expired}回失効`;
+      case 'renewal_error': return x.error || '';
+      case 'staff_created': return `${x.name}（${x.role === 'admin' ? '管理者' : '従業員'}）`;
+      case 'staff_updated': return `${(x.before || {}).name} → ${(x.after || {}).name}・${(x.after || {}).role === 'admin' ? '管理者' : '従業員'}・${(x.after || {}).is_active ? '有効' : '無効'}`;
+      case 'staff_pin_set': return x.name || '';
+      case 'store_saved': return `${x.name}${x.is_active === false ? '（非表示）' : ''}`;
+      case 'renewals_run': return `${x.processed}人を処理`;
+      case 'setup_admin': return x.name || '';
+      default: return '';
+    }
+  }
+  VIEWS.aLog = async (params) => {
+    const group = select([{ value: 'session', label: 'セッション登録・取消' }, { value: 'tickets', label: 'チケット付与・修正' },
+      { value: 'contract', label: '顧客・契約の変更' }, { value: 'auto', label: '自動更新' }, { value: 'admin', label: '従業員・店舗' }],
+      params.group || '', { placeholder: 'すべての操作' });
+    const who = select(S.boot.staff.map(s => ({ value: s.id, label: s.name })), params.staff_id || '', { placeholder: 'すべての人' });
+    const list = h('div', { class: 'log' }, loadingEl());
+    async function run() {
+      params.group = group.value; params.staff_id = who.value;
+      try {
+        const r = await api('api_audit_log', { p_token: S.token, p_filters: { customer_id: params.customer_id || null, staff_id: who.value || null, limit: 300 } });
+        const g = LOG_GROUPS[group.value];
+        const rows = r.logs.filter(l => !g || g.includes(l.action));
+        list.replaceChildren(...(rows.length ? rows.map(l => h('div', { class: 'logrow' },
+          h('span', { class: 'a' }, ACTION[l.action] || l.action, l.qty ? ` ${signed(l.qty)}` : ''),
+          h('span', { class: 't' }, `${md(D.jstDateOf(l.at))} ${hm(l.at)}`),
+          h('span', { class: 'm' }, [l.actor, l.customer && `${l.customer}（${l.store}）`, auditSummary(l.action, l.detail)].filter(Boolean).join('・'))))
+          : [h('div', { class: 'empty' }, '記録はありません')]));
+      } catch (e) { handleError(e); }
+    }
+    group.addEventListener('change', run); who.addEventListener('change', run);
+    run();
+    return h('div', null, staffBar({ backable: true, title: params.customer ? `操作ログ：${params.customer}` : '操作ログ' }),
+      h('div', { class: 'row2', style: 'margin-bottom:10px' }, group, who),
+      h('p', { style: 'font-size:12px;color:var(--muted);margin-bottom:8px' }, '新しい順・最大300件。記録は削除できません。'),
+      list);
+  };
+
+  // ------------------------------------------------------------------
+  // 起動
+  // ------------------------------------------------------------------
+  async function start() {
+    const root = document.getElementById('app');
+    root.replaceChildren(loadingEl());
+    backend = LIVE ? makeLive() : makeLocal();
+    try {
+      S.boot = await api('api_bootstrap');
+    } catch (e) {
+      root.replaceChildren(h('div', { class: 'start' },
+        h('div', { class: 'start-mark' }, h('div', { class: 'wordmark' }, 'CHART ', h('b', null, 'MEMBER'))),
+        h('div', { class: 'msg' }, `サーバーに接続できませんでした（${e.message}）。`),
+        h('p', { style: 'font-size:13px;color:var(--muted)' }, 'ファイル先頭の SUPABASE_URL・SUPABASE_KEY と、セットアップSQLを実行したかを確かめてください。'),
+        h('button', { class: 'btn', type: 'button', onclick: start }, 'もう一度つなぐ')));
+      return;
+    }
+    // 前回ログインしていた側（お客様／従業員）の、前回の画面から始める
+    const side = keep.get('side');
+    if ((side === 'customer' || side === 'staff') && await enterSide(side, { silent: true })) return;
+    go('start', {}, { replace: true });
+  }
+  start();
+})();
+
+</script>
+</body>
+</html>
