@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="format-detection" content="telephone=no, address=no, email=no">
+<meta name="description" content="パーソナルジムCHART 千川店・千川ANNEX店のご予約ページです。">
+<meta property="og:title" content="CHART ご予約">
+<meta property="og:description" content="千川店・千川ANNEX店のご予約はこちら">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>CHART ご予約</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&family=Caveat:wght@500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&text=CHARTFINDYOUW%20&display=swap">
+<style>
+  :root{
+    --ground:#F3F9FD;
+    --blob:#E2F1FB;
+    --blob-2:#EAF5FC;
+    --line:#CFE6F4;
+    --edge:#8CCAE7;
+    --chip:#E7F3FB;
+    --card:#FFFFFF;
+    --blue:#0877AA;
+    --blue-press:#06628C;
+    --blue-deep:#0B5E92;
+    --ink:#0E1B26;
+    --text:#2D4555;
+    --muted:#587383;
+    --script:#9FD0EA;
+    --gutter:16px;
+    --font-jp:"M PLUS Rounded 1c","Hiragino Maru Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic","Meiryo",sans-serif;
+    --font-script:"Caveat","Segoe Script","Bradley Hand",cursive;
+    --font-brand:"Montserrat","Avenir Next","Helvetica Neue",Arial,sans-serif;
+    color-scheme:light;
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    background:
+      radial-gradient(440px 300px at 100% 0, var(--blob) 0, rgba(226,241,251,0) 72%),
+      radial-gradient(380px 320px at 0 70%, var(--blob-2) 0, rgba(234,245,252,0) 72%),
+      var(--ground);
+    color:var(--text);
+    font-family:var(--font-jp);
+    font-weight:500;
+    font-size:15px;
+    line-height:1.7;
+  }
+
+  .page{position:relative;max-width:520px;margin-inline:auto;padding-inline:var(--gutter);padding-block:14px 36px;display:flex;flex-direction:column;gap:18px}
+  .wm{position:absolute;top:-84px;left:-72px;width:200px;height:200px;color:var(--blue);opacity:.05;pointer-events:none}
+
+  /* ブランド */
+  .brand{position:relative;margin:0;display:flex;align-items:center;gap:9px;color:var(--ink)}
+  .brand-mark{width:30px;height:30px;color:var(--blue);flex:none}
+  .brand-word{font-family:var(--font-brand);font-weight:600;font-size:19px;letter-spacing:.16em;line-height:1}
+  .brand-sub{font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.06em;line-height:1.2;padding-left:10px;border-left:1px solid var(--line)}
+
+  /* 見出し（リッチメニューのタイルと同じ組み方） */
+  .hero{position:relative;display:flex;flex-direction:column;gap:10px;padding-top:18px}
+  .hero-script{position:absolute;right:2px;top:-6px;font-family:var(--font-script);font-weight:500;font-size:34px;line-height:1;color:var(--script);transform:rotate(-8deg);pointer-events:none}
+  .hero h1{margin:0;font-size:28px;line-height:1.3;font-weight:800;color:var(--ink);letter-spacing:.04em;text-wrap:balance}
+  .rule{display:block;width:44px;height:4px;border-radius:4px;background:var(--blue)}
+  .lead{margin:0;font-size:14.5px;line-height:1.8;word-break:keep-all;overflow-wrap:anywhere}
+
+  /* 店舗カード（カード全体がボタン） */
+  .stores{display:flex;flex-direction:column;gap:14px}
+  .store{position:relative;overflow:hidden;display:flex;flex-direction:column;gap:6px;padding:18px;border:1.5px solid var(--edge);border-radius:22px;
+    background:
+      radial-gradient(85% 55% at 0 0, var(--blob) 0, rgba(226,241,251,0) 70%),
+      radial-gradient(70% 45% at 100% 100%, var(--blob-2) 0, rgba(234,245,252,0) 72%),
+      var(--card);
+    box-shadow:0 16px 28px -20px rgba(8,94,140,.6);
+    color:inherit;text-decoration:none;-webkit-tap-highlight-color:transparent;
+    transition:transform .15s,border-color .15s}
+  .store-en{position:absolute;top:14px;right:18px;font-family:var(--font-script);font-weight:500;font-size:25px;line-height:1;color:var(--script);transform:rotate(-7deg);white-space:nowrap;pointer-events:none}
+  .store-chip{align-self:flex-start;padding:2px 11px;border-radius:999px;background:var(--chip);color:var(--blue-deep);font-size:12.5px;font-weight:700;letter-spacing:.04em;line-height:1.7}
+  .store-name{margin-top:2px;font-size:25px;line-height:1.35;font-weight:800;color:var(--ink);letter-spacing:.02em}
+  .store-addr{display:flex;gap:6px;align-items:flex-start;font-size:13px;line-height:1.6;color:var(--text)}
+  .store-addr svg{flex:none;width:15px;height:15px;margin-top:3px;color:var(--blue)}
+  .nb{white-space:nowrap}
+
+  .cta{margin-top:8px;display:flex;align-items:center;gap:10px;min-height:56px;padding:6px 8px 6px 48px;border-radius:999px;background:var(--blue);color:#fff;font-size:16px;font-weight:800;letter-spacing:.02em;line-height:1.3;box-shadow:0 12px 20px -12px rgba(8,119,170,.95);transition:background-color .15s}
+  .cta-label{flex:1;text-align:center}
+  .cta-arrow{flex:0 0 38px;height:38px;border-radius:50%;background:#fff;color:var(--blue);display:grid;place-items:center}
+  .cta-arrow svg{width:18px;height:18px}
+
+  .store:hover{border-color:var(--blue)}
+  .store:hover .cta{background:var(--blue-press)}
+  .store:active{transform:scale(.985)}
+  .store:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+
+  /* 困ったとき */
+  .help{padding-top:16px;border-top:1px solid var(--line)}
+  .help h2{margin:0 0 4px;font-size:14px;font-weight:800;color:var(--ink)}
+  .help p{margin:0;font-size:13px;line-height:1.75;word-break:keep-all;overflow-wrap:anywhere}
+
+  .foot{margin:6px 0 0;display:flex;align-items:center;justify-content:center;gap:8px;color:var(--blue-deep);font-family:var(--font-brand);font-weight:600;font-size:11px;letter-spacing:.24em}
+  .foot svg{width:18px;height:18px;color:var(--blue)}
+
+  @media (min-width:560px){
+    .page{padding-block:28px 48px}
+    .hero h1{font-size:32px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none !important}
+    .store:active{transform:none}
+  }
+</style>
+</head>
+<body>
+<div class="page" lang="ja">
+  <svg class="wm" viewBox="0 0 100 100" aria-hidden="true"><path fill="currentColor" d="M94.67 39A46 46 0 1 0 94.67 61L75.75 61A28 28 0 1 1 75.75 39Z"/><path fill="currentColor" d="M63.4 36.6 53.9 53.9 36.6 63.4 46.1 46.1Z"/></svg>
+
+  <p class="brand">
+    <svg class="brand-mark" viewBox="0 0 100 100" aria-hidden="true"><path fill="currentColor" d="M94.67 39A46 46 0 1 0 94.67 61L75.75 61A28 28 0 1 1 75.75 39Z"/><path fill="currentColor" d="M63.4 36.6 53.9 53.9 36.6 63.4 46.1 46.1Z"/><circle cx="50" cy="50" r="2.9" fill="#fff"/></svg>
+    <span class="brand-word">CHART</span>
+    <span class="brand-sub">パーソナルジム</span>
+  </p>
+
+  <header class="hero">
+    <span class="hero-script" aria-hidden="true">Reservation</span>
+    <h1>ご予約</h1>
+    <span class="rule" aria-hidden="true"></span>
+    <p class="lead">いつもご利用ありがとうございます。<br>ご予約する<wbr>店舗を<wbr>お選びください。</p>
+  </header>
+
+  <!--
+    店舗を増やす・URLを変えるときは、下の <a class="store"> のかたまりをコピーして
+    href（Squareの予約URL）・店舗名・住所を書き換えるだけでOK
+  -->
+  <nav class="stores" aria-label="予約する店舗">
+
+    <a class="store" href="https://book.squareup.com/appointments/l87p1oh8flsok0/location/L89F38XGM5APB/services" aria-labelledby="s1-name s1-cta" aria-describedby="s1-addr">
+      <span class="store-en" aria-hidden="true">Senkawa</span>
+      <span class="store-chip">千川駅 徒歩1分</span>
+      <span class="store-name" id="s1-name">千川店</span>
+      <span class="store-addr" id="s1-addr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span>豊島区要町3-28-13 <span class="nb">モリセイ本館 1階</span></span></span>
+      <span class="cta"><span class="cta-label" id="s1-cta">この店舗で予約する</span><span class="cta-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></span></span>
+    </a>
+
+    <a class="store" href="https://book.squareup.com/appointments/l87p1oh8flsok0/location/LZM5F91XTE3GB/services" aria-labelledby="s2-name s2-cta" aria-describedby="s2-addr">
+      <span class="store-en" aria-hidden="true">Senkawa Annex</span>
+      <span class="store-chip">千川駅 徒歩0分</span>
+      <span class="store-name" id="s2-name">千川ANNEX店</span>
+      <span class="store-addr" id="s2-addr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span>豊島区要町3-11-1 <span class="nb">菊信第一ビル 3階</span></span></span>
+      <span class="cta"><span class="cta-label" id="s2-cta">この店舗で予約する</span><span class="cta-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></span></span>
+    </a>
+
+  </nav>
+
+  <section class="help" aria-labelledby="helpTitle">
+    <h2 id="helpTitle">どちらの店舗かわからないときは</h2>
+    <p>このLINEの<wbr>トーク画面から、<wbr>お気軽に<wbr>お問い合わせください。</p>
+  </section>
+
+  <p class="foot"><svg viewBox="0 0 100 100" aria-hidden="true"><path fill="currentColor" d="M94.67 39A46 46 0 1 0 94.67 61L75.75 61A28 28 0 1 1 75.75 39Z"/><path fill="currentColor" d="M63.4 36.6 53.9 53.9 36.6 63.4 46.1 46.1Z"/></svg>FIND YOUR WAY</p>
+</div>
+</body>
+</html>
